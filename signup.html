@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Sign Up</title>
+</head>
+<body>
+  <h2>User Sign Up</h2>
+  <form id="signupForm">
+    <label>Name:</label><br />
+    <input type="text" id="name" required /><br /><br />
+
+    <label>Email:</label><br />
+    <input type="email" id="email" required /><br /><br />
+
+    <label>Phone:</label><br />
+    <input type="text" id="phone" required /><br /><br />
+
+    <label>City:</label><br />
+    <input type="text" id="city" /><br /><br />
+
+    <label>Address:</label><br />
+    <input type="text" id="address" /><br /><br />
+
+    <label>Password:</label><br />
+    <input type="password" id="password" required minlength="8" maxlength="8" /><br /><br />
+
+    <button type="submit">Register</button>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userData = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        password: document.getElementById('password').value,
+      };
+
+      try {
+        const res = await fetch('http://localhost:5000/api/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          document.getElementById('message').textContent = 'Registration successful! You can now login.';
+          // Optionally redirect to login page
+          // window.location.href = 'login.html';
+        } else {
+          document.getElementById('message').textContent = data.error || 'Registration failed!';
+        }
+      } catch (err) {
+        document.getElementById('message').textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
+
