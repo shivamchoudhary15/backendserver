@@ -1,23 +1,15 @@
 {
-  "name": "database",
+  "name": "backendserver",
   "version": "1.0.0",
-  "main": "booking.js",
+  "main": "server.js",
   "scripts": {
-    "start-backend": "node server.js",
-    "start-frontend": "cross-env DANGEROUSLY_DISABLE_HOST_CHECK=true npm start --prefix pandit-booking-frontend",
-    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\""
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0"
-  },
-  "description": "",
-  "devDependencies": {
-    "concurrently": "^9.2.0",
-    "cross-env": "^7.0.3"
   }
 }
