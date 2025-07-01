@@ -1,0 +1,75 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+
+import Home from './pages/Home';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+import ReviewForm from './pages/Review';
+import Payment from './pages/Payment';
+import Booking from './pages/Booking';
+import Notifications from './pages/Notifications';
+import Dashboard from './pages/Dashboard';
+
+import ProtectedRoute from './components/ProtectedRoute'; // 👈 import protected route
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <h1>Welcome to Pandit Booking</h1>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+
+          {/*Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/booking"
+            element={
+              <ProtectedRoute>
+                <Booking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reviews"
+            element={
+              <ProtectedRoute>
+                <ReviewForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <Payment />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/home" replace />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
