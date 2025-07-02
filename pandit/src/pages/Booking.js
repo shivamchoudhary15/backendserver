@@ -34,47 +34,50 @@ function Booking() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
+  const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
 
-    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-      alert('Please fill all the fields');
-      return;
-    }
+  if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
+    alert('Please fill all the fields');
+    return;
+  }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('You must be logged in to book a service.');
-      return;
-    }
+  const token = localStorage.getItem('token');
+  const userid = localStorage.getItem('userid'); // 👈 make sure this exists
 
-    const bookingData = {
-      serviceid,
-      panditid,
-      puja_date,
-      puja_time,
-      location,
-      SamanList: poojaId,
-    };
+  if (!token || !userid) {
+    alert('You must be logged in to book a service.');
+    return;
+  }
 
-    try {
-      await createBooking(bookingData, token); // send token to API
-      alert('Booking created successfully!');
-
-      setDetails({
-        serviceid: '',
-        panditid: '',
-        poojaId: '',
-        puja_date: '',
-        puja_time: '',
-        location: '',
-      });
-    } catch (error) {
-      console.error('Booking API error:', error.response?.data || error.message);
-      alert(error.response?.data?.error || 'Booking failed. Please try again.');
-    }
+  const bookingData = {
+    userid,
+    serviceid,
+    panditid,
+    puja_date,
+    puja_time,
+    location,
+    SamanList: poojaId,
   };
+
+  try {
+    await createBooking(bookingData);
+    alert('Booking created successfully!');
+    setDetails({
+      serviceid: '',
+      panditid: '',
+      poojaId: '',
+      puja_date: '',
+      puja_time: '',
+      location: '',
+    });
+  } catch (error) {
+    console.error('Booking API error:', error.response?.data || error.message);
+    alert(error.response?.data?.error || 'Booking failed. Please try again.');
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit}>
