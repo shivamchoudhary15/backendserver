@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // ✅ Use env variable or fallback to localhost
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE || 'http://localhost:5000/api',
+  baseURL: 'https://backendserver-6-yebf.onrender.com/api',
 });
 
 // Automatically attach token to requests
