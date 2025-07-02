@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Review = require('../models/review');
+const Review = require('../models/Review');
 
 // Submit a new review
 router.post('/submit', async (req, res) => {
