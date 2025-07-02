@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createBooking } from '../api/api'; // Assumes Axios is set up to include token
+import { createBooking } from '../api/api';
 
 const dummyServices = [
   { id: 's1', name: 'Pooja A' },
@@ -34,50 +34,50 @@ function Booking() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
+    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
 
-  if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-    alert('Please fill all the fields');
-    return;
-  }
+    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
+      alert('Please fill all fields');
+      return;
+    }
 
-  const token = localStorage.getItem('token');
-  const userid = localStorage.getItem('userid'); // 👈 make sure this exists
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userid = user?._id;
 
-  if (!token || !userid) {
-    alert('You must be logged in to book a service.');
-    return;
-  }
+    if (!token || !userid) {
+      alert('You must be logged in to book a service.');
+      return;
+    }
 
-  const bookingData = {
-    userid,
-    serviceid,
-    panditid,
-    puja_date,
-    puja_time,
-    location,
-    SamanList: poojaId,
+    const bookingData = {
+      userid,
+      serviceid,
+      panditid,
+      puja_date,
+      puja_time,
+      location,
+      SamanList: poojaId,
+    };
+
+    try {
+      await createBooking(bookingData);
+      alert('Booking created successfully!');
+      setDetails({
+        serviceid: '',
+        panditid: '',
+        poojaId: '',
+        puja_date: '',
+        puja_time: '',
+        location: '',
+      });
+    } catch (error) {
+      console.error('Booking API error:', error.response?.data || error.message);
+      alert(error.response?.data?.error || 'Booking failed. Please try again.');
+    }
   };
-
-  try {
-    await createBooking(bookingData);
-    alert('Booking created successfully!');
-    setDetails({
-      serviceid: '',
-      panditid: '',
-      poojaId: '',
-      puja_date: '',
-      puja_time: '',
-      location: '',
-    });
-  } catch (error) {
-    console.error('Booking API error:', error.response?.data || error.message);
-    alert(error.response?.data?.error || 'Booking failed. Please try again.');
-  }
-};
-
 
   return (
     <form onSubmit={handleSubmit}>
@@ -146,6 +146,7 @@ function Booking() {
 }
 
 export default Booking;
+
 
 
 
