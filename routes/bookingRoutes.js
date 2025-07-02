@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
-const authMiddleware = require('../middleware/authMiddleware'); // JWT middleware
 
-// ===================== CREATE BOOKING (Protected) =====================
-router.post('/create', authMiddleware, async (req, res) => {
+// ===================== CREATE BOOKING (Now Public) =====================
+router.post('/create', async (req, res) => {
   try {
-    const { panditid, serviceid, puja_date, puja_time, location, SamanList } = req.body;
-    const userid = req.user?.id; // from decoded JWT
+    const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList } = req.body;
 
     // Validate required fields
     if (!userid || !panditid || !serviceid || !puja_date || !location) {
@@ -32,10 +30,14 @@ router.post('/create', authMiddleware, async (req, res) => {
   }
 });
 
-// ===================== GET USER'S BOOKINGS (Protected) =====================
-router.get('/view', authMiddleware, async (req, res) => {
+// ===================== GET USER'S BOOKINGS (Now Public) =====================
+router.get('/view', async (req, res) => {
   try {
-    const userid = req.user?.id;
+    const { userid } = req.query;
+
+    if (!userid) {
+      return res.status(400).json({ error: 'Missing userid in query' });
+    }
 
     const bookings = await Booking.find({ userid }).populate('panditid serviceid');
     res.status(200).json(bookings);
@@ -46,6 +48,7 @@ router.get('/view', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
