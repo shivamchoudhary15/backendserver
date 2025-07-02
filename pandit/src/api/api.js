@@ -23,7 +23,8 @@ export const getUsers = () => API.get('/users/view');
 
 // === Bookings ===
 export const createBooking = (bookingData) => API.post('/bookings/create', bookingData);
-export const getBookings = () => API.get('/bookings/view');
+export const getBookings = (userid) => API.get(`/bookings/view?userid=${userid}`);
+
 
 // === Services ===
 export const getServices = () => API.get('/services');
