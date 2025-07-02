@@ -21,9 +21,9 @@ export default function Login() {
       const response = await login(form);
       const { token, user } = response.data;
 
-      if (token) {
+      if (token && user?._id) {
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user)); // ✅ Full user object
         alert('Login successful!');
         navigate('/dashboard');
       } else {
@@ -40,29 +40,15 @@ export default function Login() {
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <input
-        name="email"
-        placeholder="Email"
-        type="email"
-        value={form.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="password"
-        placeholder="Password"
-        type="password"
-        value={form.password}
-        onChange={handleChange}
-        required
-      />
+      <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+      <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
       <button type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
       </button>
     </form>
   );
 }
+
 
 
 
