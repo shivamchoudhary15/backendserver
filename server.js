@@ -12,13 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ MongoDB connected'))
-.catch((err) => console.error('❌ DB connection error:', err));
+// MongoDB Connection (cleaned)
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ DB connection error:', err));
 
 // Import Routes
 const userRoutes = require('./routes/userRoutes');
@@ -38,12 +35,12 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 
-// Test Route
+// Default route
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-// Handle JSON Syntax Errors
+// JSON syntax error handler
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: 'Invalid JSON' });
@@ -56,6 +53,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+
  
 
 
