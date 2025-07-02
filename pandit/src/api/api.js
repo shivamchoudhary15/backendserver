@@ -1,9 +1,9 @@
 // src/api/api.js
 import axios from 'axios';
 
-// Create axios instance with base URL
+// ✅ Use env variable or fallback to localhost
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: process.env.REACT_APP_API_BASE || 'http://localhost:5000/api',
 });
 
 // Automatically attach token to requests
@@ -42,3 +42,4 @@ export const getPayments = () => API.get('/payments');
 export const createReview = (reviewData) => API.post('/reviews/submit', reviewData);
 export const getReviews = () => API.get('/reviews/view');
 export const deleteReview = (id) => API.delete(`/reviews/${id}`);
+
