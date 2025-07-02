@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const authMiddleware = require('../middleware/authMiddleware');
 
 // ========== REGISTER/SIGNUP (Public) ==========
 router.post('/add', async (req, res) => {
@@ -78,8 +77,8 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ========== GET ALL USERS (Protected) ==========
-router.get('/view', authMiddleware, async (req, res) => {
+// ========== GET ALL USERS (Now Public for testing) ==========
+router.get('/view', async (req, res) => {
   try {
     const users = await User.find().select('-password -__v');
     res.status(200).json(users);
@@ -90,6 +89,7 @@ router.get('/view', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
 
 
 
