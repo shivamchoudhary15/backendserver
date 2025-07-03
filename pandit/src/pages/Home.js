@@ -106,11 +106,11 @@ const dummyServices = [
 ];
 
 const dummyImages = [
-  'https://www.google.com/imgres?q=ganesh%20puja&imgurl=https%3A%2F%2Fd18guwlcxyb2ak.cloudfront.net%2Fwp-content%2Fuploads%2F2019%2F12%2F31033604%2FBY-GODS-GANESH-PUJA-600x900.jpg&imgrefurl=https%3A%2F%2Fwww.pujaabhishekam.com%2Fpuja%2Fganesh-puja%3Fsrsltid%3DAfmBOoqB1Xb-uMoQtCE6k_-0Ds4pka911foZo6IGD70Gaf9AlOrNPs8p&docid=gD2Vj46Op-E93M&tbnid=CsdZor1B0pc9sM&vet=12ahUKEwihuqfM_J-OAxU6RWcHHWD7FTYQM3oECBsQAA..i&w=600&h=900&hcb=2&ved=2ahUKEwihuqfM_J-OAxU6RWcHHWD7FTYQM3oECBsQAA',
-  'https://www.google.com/imgres?q=Satyanarayan%20Katha&imgurl=https%3A%2F%2Fd18guwlcxyb2ak.cloudfront.net%2Fwp-content%2Fuploads%2F2019%2F03%2F13035054%2FCIty-Varanasi-Satyanarayan-Katha.jpg&imgrefurl=https%3A%2F%2Fwww.pujaabhishekam.com%2Fpuja%2Fsatyanarayan-katha%3Fsrsltid%3DAfmBOopdD4H2lBE1mrkQ__ManbFyTyVruCy7SHxE8uxgd-Su2HZQWDVe&docid=S5olyfX3L0q17M&tbnid=w3KqHp2dcLyFTM&vet=12ahUKEwiRoOfv_J-OAxWkTGwGHfSoE1EQM3oECBwQAA..i&w=1500&h=1091&hcb=2&ved=2ahUKEwiRoOfv_J-OAxWkTGwGHfSoE1EQM3oECBwQAA',
-  'https://www.google.com/imgres?q=Navagraha%20Shanti&imgurl=https%3A%2F%2Fkashidham.in%2Fwp-content%2Fuploads%2F2024%2F03%2Fnavgrah-shanti.jpg&imgrefurl=https%3A%2F%2Fkashidham.in%2Fkashidham-seva-kendra%2Fnavgraha-shanti%2F&docid=BnDy0pB0NSJQ9M&tbnid=BeZjfGiCkTeeLM&vet=12ahUKEwiH-ImH_Z-OAxXMcGwGHaq4K0wQM3oECBoQAA..i&w=1000&h=1000&hcb=2&ved=2ahUKEwiH-ImH_Z-OAxXMcGwGHaq4K0wQM3oECBoQAA',
-  'https://www.google.com/imgres?q=Griha%20Pravesh&imgurl=https%3A%2F%2Fvideogiri.com%2Fcdn%2Fshop%2Fcollections%2FGriha_Pravesh.webp%3Fv%3D1729749982%26width%3D1296&imgrefurl=https%3A%2F%2Fvideogiri.com%2Fcollections%2Fgriha-pravesh%3Fsrsltid%3DAfmBOoqu1e3WGk67Wzcd5NJnMa3-KfM4MgLOsj_VHVi_mV1NI4EI6YuS&docid=FSKPrMIhnmrHxM&tbnid=Kjh-vGxDfNZFEM&vet=12ahUKEwjtrv6h_Z-OAxUhxzgGHaFDKAEQM3oFCIEBEAA..i&w=1080&h=1080&hcb=2&ved=2ahUKEwjtrv6h_Z-OAxUhxzgGHaFDKAEQM3oFCIEBEAA',
-  'https://www.google.com/imgres?q=rudra%20abhishek&imgurl=https%3A%2F%2Fwww.shivaa.org%2Fwp-content%2Fuploads%2F2023%2F10%2Fra.jpeg&imgrefurl=https%3A%2F%2Fwww.shivaa.org%2Fproduct%2Frudra-abhishekam%2F&docid=DzSirk07VU207M&tbnid=ROQvGOFHbIrnMM&vet=12ahUKEwjQ5dy2_Z-OAxXPzjgGHQCKEzUQM3oECBkQAA..i&w=800&h=600&hcb=2&ved=2ahUKEwjQ5dy2_Z-OAxXPzjgGHQCKEzUQM3oECBkQA',
+  'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
+  'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
+  'https://kashidham.in/wp-content/uploads/2024/03/navgrah-shanti.jpg',
+  'https://www.gharjunction.com/img/blog/68.jpg',
+  'https://shivology.com/img/article-image-589.jpg',
   'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp'
 ];
 
