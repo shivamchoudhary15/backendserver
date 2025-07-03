@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
       <div>
-        <h1>Welcome to Pandit Booking</h1>
+  
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
