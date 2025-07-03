@@ -31,21 +31,24 @@ router.post('/create', async (req, res) => {
 });
 
 // ===================== GET USER'S BOOKINGS (Now Public) =====================
+// ===================== GET BOOKINGS =====================
 router.get('/view', async (req, res) => {
   try {
     const { userid } = req.query;
 
-    if (!userid) {
-      return res.status(400).json({ error: 'Missing userid in query' });
+    let query = {};
+    if (userid) {
+      query.userid = userid;
     }
 
-    const bookings = await Booking.find({ userid }).populate('panditid serviceid');
+    const bookings = await Booking.find(query).populate('panditid serviceid');
     res.status(200).json(bookings);
   } catch (err) {
     console.error('Error fetching bookings:', err);
     res.status(500).json({ error: 'Failed to retrieve bookings.' });
   }
 });
+
 
 module.exports = router;
 
