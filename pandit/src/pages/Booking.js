@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createBooking, getBookings } from '../api/api';
 
-const dummyServices = [
-  { id: 's1', name: 'Pooja A' },
-  { id: 's2', name: 'Pooja B' },
-  { id: 's3', name: 'Pooja C' },
+const availableServices = [
+  { id: 's1', name: 'Home Pooja' },
+  { id: 's2', name: 'Temple Pooja' },
+  { id: 's3', name: 'Online Pooja' },
 ];
 
 const indianPandits = [
@@ -39,7 +39,6 @@ function Booking() {
   });
 
   const [bookings, setBookings] = useState([]);
-
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
   const userid = user?._id;
@@ -66,12 +65,12 @@ function Booking() {
     const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
 
     if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-      alert('Please fill all fields');
+      alert('❌ Please fill all fields');
       return;
     }
 
     if (!token || !userid) {
-      alert('You must be logged in to book a service.');
+      alert('⚠️ You must be logged in to book a service.');
       return;
     }
 
@@ -101,24 +100,24 @@ function Booking() {
       setBookings(updated.data);
     } catch (error) {
       console.error('Booking API error:', error.response?.data || error.message);
-      alert(error.response?.data?.error || 'Booking failed. Please try again.');
+      alert(error.response?.data?.error || '❌ Booking failed. Please try again.');
     }
   };
 
   return (
-    <div style={{ padding: '30px', fontFamily: 'Segoe UI' }}>
-      <form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: 'auto' }}>
-        <h2>📅 Book a Pooja</h2>
+    <div style={{ padding: '30px', fontFamily: 'Segoe UI, sans-serif' }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: 'auto', background: '#fff9f4', padding: 20, borderRadius: 10, boxShadow: '0 0 10px #ddd' }}>
+        <h2 style={{ textAlign: 'center' }}>📅 Book a Pooja</h2>
 
-        <label>Service:</label>
+        <label>🛕 Service</label>
         <select name="serviceid" value={details.serviceid} onChange={handleChange} required>
           <option value="">-- Select Service --</option>
-          {dummyServices.map((service) => (
+          {availableServices.map((service) => (
             <option key={service.id} value={service.id}>{service.name}</option>
           ))}
         </select>
 
-        <label>Pandit:</label>
+        <label>🧘 Pandit</label>
         <select name="panditid" value={details.panditid} onChange={handleChange} required>
           <option value="">-- Select Pandit --</option>
           {indianPandits.map((pandit) => (
@@ -126,7 +125,7 @@ function Booking() {
           ))}
         </select>
 
-        <label>Pooja:</label>
+        <label>📖 Pooja</label>
         <select name="poojaId" value={details.poojaId} onChange={handleChange} required>
           <option value="">-- Select Pooja --</option>
           {popularPoojas.map((pooja) => (
@@ -134,28 +133,33 @@ function Booking() {
           ))}
         </select>
 
-        <label>Date:</label>
+        <label>📅 Date</label>
         <input type="date" name="puja_date" value={details.puja_date} onChange={handleChange} required />
 
-        <label>Time:</label>
+        <label>⏰ Time</label>
         <input type="time" name="puja_time" value={details.puja_time} onChange={handleChange} required />
 
-        <label>Location:</label>
-        <input type="text" name="location" value={details.location} onChange={handleChange} required />
+        <label>📍 Location</label>
+        <input type="text" name="location" placeholder="e.g. Delhi, Mumbai..." value={details.location} onChange={handleChange} required />
 
-        <button type="submit" style={{ marginTop: 20 }}>📩 Book Now</button>
+        <button type="submit" style={{ marginTop: 20, width: '100%', padding: '10px', backgroundColor: '#2c7be5', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+          📩 Book Now
+        </button>
       </form>
 
-      <hr style={{ margin: '40px 0' }} />
+      <hr style={{ margin: '50px 0' }} />
 
-      <h2>📝 Your Bookings</h2>
+      <h2 style={{ textAlign: 'center' }}>📝 Your Bookings</h2>
       {bookings.length === 0 ? (
-        <p>No bookings found.</p>
+        <p style={{ textAlign: 'center' }}>No bookings found.</p>
       ) : (
-        <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+        <ul style={{ listStyleType: 'none', padding: 0, maxWidth: 700, margin: 'auto' }}>
           {bookings.map((booking) => (
-            <li key={booking._id}>
-              <strong>Pooja:</strong> {booking.SamanList} | <strong>Date:</strong> {booking.puja_date} | <strong>Time:</strong> {booking.puja_time} | <strong>Location:</strong> {booking.location}
+            <li key={booking._id} style={{ marginBottom: '10px', padding: '10px', backgroundColor: '#f1f9ff', borderRadius: '6px' }}>
+              <strong>📖 Pooja:</strong> {booking.SamanList} <br />
+              <strong>🗓 Date:</strong> {booking.puja_date} <br />
+              <strong>⏰ Time:</strong> {booking.puja_time} <br />
+              <strong>📍 Location:</strong> {booking.location}
             </li>
           ))}
         </ul>
@@ -165,6 +169,7 @@ function Booking() {
 }
 
 export default Booking;
+
 
 
 
