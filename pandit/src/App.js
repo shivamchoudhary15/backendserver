@@ -65,7 +65,7 @@ function App() {
           />
 
           {/* Redirect unknown routes to home */}
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </div>
     </Router>
