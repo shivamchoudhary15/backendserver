@@ -54,7 +54,7 @@ function Home() {
               transition={{ duration: 0.2 }}
             >
               <img
-                src={service.image || dummyImages[index % dummyImages.length]}
+                src={service.image || poojaImageMap[service.name] || '/images/default.jpg'}
                 alt={service.name}
                 style={styles.cardImage}
               />
@@ -96,6 +96,17 @@ function Home() {
   );
 }
 
+// Image map based on service name
+const poojaImageMap = {
+  'Ganesh Puja': 'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
+  'Satyanarayan Katha': 'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
+  'Navagraha Shanti': 'https://kashidham.in/wp-content/uploads/2024/03/navgrah-shanti.jpg',
+  'Griha Pravesh': 'https://www.gharjunction.com/img/blog/68.jpg',
+  'Rudra Abhishek': 'https://shivology.com/img/article-image-589.jpg',
+  'Lakshmi Puja': 'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp'
+};
+
+// Default dummy services
 const dummyServices = [
   { name: 'Ganesh Puja', description: 'Removes obstacles and ensures success.' },
   { name: 'Satyanarayan Katha', description: 'For prosperity and blessings in life.' },
@@ -103,15 +114,6 @@ const dummyServices = [
   { name: 'Griha Pravesh', description: 'Performed before entering a new home.' },
   { name: 'Rudra Abhishek', description: 'Puja of Lord Shiva for inner peace.' },
   { name: 'Lakshmi Puja', description: 'Invokes wealth and abundance.' },
-];
-
-const dummyImages = [
-  'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
-  'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
-  'https://kashidham.in/wp-content/uploads/2024/03/navgrah-shanti.jpg',
-  'https://www.gharjunction.com/img/blog/68.jpg',
-  'https://shivology.com/img/article-image-589.jpg',
-  'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp'
 ];
 
 const styles = {
