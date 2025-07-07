@@ -1,8 +1,8 @@
-// src/api/api.js
+
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://backendserver-6-yebf.onrender.com/api',
+  baseURL: 'https://backendserver-6-yebf.onrender.com/api', // ye render ki backend public url hai 
 });
 
 API.interceptors.request.use(
@@ -16,12 +16,12 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// === Auth ===
+// api for authers
 export const signup = (userData) => API.post('/users/add', userData);
 export const login = (userData) => API.post('/users/login', userData);
 export const getUsers = () => API.get('/users/view');
 
-// === Bookings ===
+// ye bookings variable hai 
 export const createBooking = (bookingData) => API.post('/bookings/create', bookingData);
 export const getBookings = (userid) => API.get(`/bookings/view?userid=${userid}`);
 
