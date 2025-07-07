@@ -4,7 +4,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// ========== REGISTER/SIGNUP (Public) ==========
+// user signup ke liye 
 router.post('/add', async (req, res) => {
   try {
     const { name, email, phone, city, address, password, role } = req.body;
@@ -48,7 +48,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// ========== LOGIN (Public) ==========
+// user login ke liye
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ========== GET ALL USERS (Now Public for testing) ==========
+//  sare authorized user ko dekne ke liye
 router.get('/view', async (req, res) => {
   try {
     const users = await User.find().select('-password -__v');
