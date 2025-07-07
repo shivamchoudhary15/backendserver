@@ -2,16 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
 
-// ===================== CREATE BOOKING (Now Public) =====================
-router.post('/create', async (req, res) => {
+// isse booking create hogi
+router.post('/create', async (req,res) => {
   try {
     const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList } = req.body;
-
-    // Validate required fields
+    
     if (!userid || !panditid || !serviceid || !puja_date || !location) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-
     const booking = new Booking({
       userid,
       panditid,
@@ -23,21 +21,19 @@ router.post('/create', async (req, res) => {
     });
 
     const savedBooking = await booking.save();
-    res.status(201).json({ message: 'Booking created successfully', booking: savedBooking });
+    res.status(201).json({ message: 'Booking hogai', booking: savedBooking });
   } catch (err) {
     console.error('Booking creation error:', err);
-    res.status(500).json({ error: 'Booking failed. Server error.' });
+    res.status(500).json({ error: 'Booking nahi hui. Server error.' });
   }
 });
 
-// ===================== GET USER'S BOOKINGS (Now Public) =====================
-// ===================== GET BOOKINGS =====================
+// ise ham sari bookings dekh sakte hai or hamne koi middleware nahi lagaya hua hai tu hai har koi access kar sakta hai
 router.get('/view', async (req, res) => {
   try {
-    const { userid } = req.query;
-
+    const {userid}=req.query;
     let query = {};
-    if (userid) {
+    if (userid){
       query.userid = userid;
     }
 
@@ -48,7 +44,6 @@ router.get('/view', async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve bookings.' });
   }
 });
-
 
 module.exports = router;
 
