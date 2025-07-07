@@ -22,10 +22,10 @@ export default function Signup() {
     e.preventDefault();
     try {
       await signup(form);
-      alert('✅ Signup successful! You can now log in.');
+      alert(' Signup successful! You can now log in.');
       navigate('/login');
     } catch (err) {
-      alert(err.response?.data?.error || '❌ Signup failed');
+      alert(err.response?.data?.error || ' Signup failed');
     }
   };
 
