@@ -65,12 +65,12 @@ function Booking() {
     const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
 
     if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-      alert('❌ Please fill all fields');
+      alert(' Please fill all fields');
       return;
     }
 
     if (!token || !userid) {
-      alert('⚠️ You must be logged in to book a service.');
+      alert(' You must be logged in to book a service.');
       return;
     }
 
@@ -100,7 +100,7 @@ function Booking() {
       setBookings(updated.data);
     } catch (error) {
       console.error('Booking API error:', error.response?.data || error.message);
-      alert(error.response?.data?.error || '❌ Booking failed. Please try again.');
+      alert(error.response?.data?.error || ' Booking failed. Please try again.');
     }
   };
 
