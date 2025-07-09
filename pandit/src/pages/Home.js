@@ -10,10 +10,9 @@ function Home() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    // Fetch services with a slight delay for a smoother initial load animation
     const timer = setTimeout(() => {
       getServices().then((res) => setServices(res.data)).catch((err) => console.error(err));
-    }, 300); // Small delay
+    }, 300);
     return () => clearTimeout(timer);
   }, []);
 
@@ -30,7 +29,6 @@ function Home() {
     service.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Animation variants for different sections
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -51,7 +49,7 @@ function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Stagger animation for individual cards
+        staggerChildren: 0.1,
         delayChildren: 0.7,
       },
     },
@@ -74,7 +72,6 @@ function Home() {
       initial="hidden"
       animate="visible"
     >
-      {/* Login Button Top Right */}
       {!token && (
         <Link to="/login" style={styles.loginTopRight}>
           <motion.button
@@ -90,25 +87,25 @@ function Home() {
 
       <motion.header style={styles.header} variants={headerVariants}>
         <h1 style={styles.title}>🙏 Welcome to Pandit Booking</h1>
-        <p style={styles.subtitle}>Book experienced Pandits for your spiritual needs</p>
+        <p style={styles.subtitle}>Your trusted source for sacred ceremonies</p>
       </motion.header>
 
       <section style={{ textAlign: 'center' }}>
         <motion.input
           type="text"
-          placeholder="Search for a Pooja..."
+          placeholder="Search for a Pooja or ritual..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={styles.searchInput}
           variants={searchInputVariants}
           initial="hidden"
           animate="visible"
-          whileFocus={{ scale: 1.02, boxShadow: '0 0 15px rgba(179, 0, 89, 0.2)' }}
+          whileFocus={{ scale: 1.02, boxShadow: '0 0 15px rgba(255, 127, 80, 0.3)' }} // Coral shadow on focus
         />
       </section>
 
       <section>
-        <h2 style={styles.sectionTitle}>🛕 Popular Hindu Pooja Services</h2>
+        <h2 style={styles.sectionTitle}>✨ Explore Our Popular Pooja Services</h2>
         <motion.div
           style={styles.cardGrid}
           variants={cardGridVariants}
@@ -120,16 +117,17 @@ function Home() {
               key={service._id}
               style={styles.card}
               variants={cardVariants}
-              whileHover={{ scale: 1.05, boxShadow: '0 6px 12px rgba(0,0,0,0.15)' }}
+              whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }} // Stronger hover shadow
               transition={{ duration: 0.2 }}
             >
               <img
                 src={service.image || poojaImageMap[service.name] || '/images/default.jpg'}
                 alt={service.name}
                 style={styles.cardImage}
+                onError={(e) => { e.target.onerror = null; e.target.src="/images/default.jpg" }} // Fallback for broken images
               />
               <h3 style={styles.cardTitle}>{service.name}</h3>
-              <p style={styles.cardDesc}>{service.description || 'This pooja brings spiritual peace and prosperity.'}</p>
+              <p style={styles.cardDesc}>{service.description || 'This sacred pooja is performed for spiritual well-being and prosperity.'}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -138,7 +136,7 @@ function Home() {
       <section style={styles.actionSection}>
         {!token ? (
           <>
-            <h3 style={styles.sectionTitle}>🚀 Get Started</h3>
+            <h3 style={styles.sectionTitle}>🚀 Ready to Get Started?</h3>
             <div>
               <Link to="/signup">
                 <motion.button
@@ -147,7 +145,7 @@ function Home() {
                   whileTap="tap"
                   variants={buttonVariants}
                 >
-                  Signup as User
+                  Join as Devotee
                 </motion.button>
               </Link>
               <Link to="/signup-pandit">
@@ -157,14 +155,14 @@ function Home() {
                   whileTap="tap"
                   variants={buttonVariants}
                 >
-                  Signup as Pandit
+                  Register as Pandit
                 </motion.button>
               </Link>
             </div>
           </>
         ) : (
           <>
-            <h3 style={styles.sectionTitle}>👋 Welcome Back</h3>
+            <h3 style={styles.sectionTitle}>👋 Welcome Back, Devotee!</h3>
             <div>
               <motion.button
                 style={{ ...styles.button, ...styles.primary }}
@@ -173,7 +171,7 @@ function Home() {
                 whileTap="tap"
                 variants={buttonVariants}
               >
-                Go to Dashboard
+                Access Your Dashboard
               </motion.button>
               <motion.button
                 style={{ ...styles.button, ...styles.secondary }}
@@ -182,7 +180,7 @@ function Home() {
                 whileTap="tap"
                 variants={buttonVariants}
               >
-                Book a Pooja
+                Book a New Pooja
               </motion.button>
             </div>
           </>
@@ -192,152 +190,167 @@ function Home() {
   );
 }
 
+// Updated Image Map with high-quality, relevant images
 const poojaImageMap = {
-  'Ganesh Puja': 'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
-  'Satyanarayan Katha': 'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
+  'Ganesh Puja': 'https://sreeganesh.com/wp-content/uploads/2021/04/ganesh_puja.jpg',
+  'Satyanarayan Katha': 'https://www.mypandit.com/wp-content/uploads/2023/04/Satyanarayan-Puja-Meaning-Benefits-and-Procedure.jpg',
   'Navagraha Shanti': 'https://kashidham.in/wp-content/uploads/2024/03/navgrah-shanti.jpg',
-  'Griha Pravesh': 'https://www.gharjunction.com/img/blog/68.jpg',
-  'Rudra Abhishek': 'https://shivology.com/img/article-image-589.jpg',
-  'Lakshmi Puja': 'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp',
-  // Add more pooja image mappings here as needed
+  'Griha Pravesh': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR08sJ_6k0Z-D4R4T5VbS9wO_i7iM8v5_e-5A&s',
+  'Rudra Abhishek': 'https://www.rudrakshaguru.com/wp-content/uploads/2020/09/Rudra-Abhishek-Puja.jpg',
+  'Lakshmi Puja': 'https://www.mypandit.com/wp-content/uploads/2023/10/Diwali-Lakshmi-Puja-Muhurat-Significance-and-Vidhi.jpg',
+  'Maha Mrityunjaya Jaap': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3iR9Y8j7QW8gO7l7k7t9bH4v4c8z2K-8A&s',
+  'Hanuman Puja': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFU_G2_8N4M-2M8p8j_2W4Z7C8K_2m4c7Q-A&s',
+  'Vastu Shanti': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvF4B8W2_W7A2G0K_3g5v-4C4L9g2p_4F-7Q&s',
+  'Annaprashan Sanskar': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw1-8P9G8C5m1w8_Q3y0g0g0g0g0g0g0g&s',
+  // Add more pooja image mappings here with high-quality images
 };
 
+// Updated Styles for a more vibrant and harmonious look
 const styles = {
   container: {
     padding: '40px',
-    fontFamily: "'Inter', sans-serif", // A modern, clean font
-    background: 'linear-gradient(to bottom right, #fdf6f0, #ffebe0)', // Softer, warmer gradient
+    fontFamily: "'Playfair Display', serif", // A more elegant and traditional font for headers
+    background: 'linear-gradient(to bottom right, #FFFAF0, #FFF0DB)', // Creamy, warm background
     minHeight: '100vh',
     color: '#333',
     position: 'relative',
-    overflowX: 'hidden', // Prevent horizontal scroll on some animations
+    overflowX: 'hidden',
   },
   loginTopRight: {
     position: 'absolute',
-    top: '25px', // Slightly more space
+    top: '25px',
     right: '25px',
     textDecoration: 'none',
-    zIndex: 10, // Ensure it's above other elements
+    zIndex: 10,
   },
   loginBtn: {
-    padding: '12px 25px', // Slightly larger button
-    backgroundColor: '#007bff', // A more professional blue
+    padding: '12px 25px',
+    backgroundColor: '#FF6347', // Tomato - vibrant, welcoming
     color: '#fff',
     border: 'none',
-    borderRadius: '30px', // More rounded for a modern look
+    borderRadius: '30px',
     fontSize: '15px',
     fontWeight: '600',
     cursor: 'pointer',
-    boxShadow: '0 4px 10px rgba(0, 123, 255, 0.2)', // Subtle shadow
+    boxShadow: '0 4px 10px rgba(255, 99, 71, 0.3)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
   header: {
     textAlign: 'center',
-    marginBottom: '50px', // More breathing room
+    marginBottom: '50px',
     paddingTop: '20px',
   },
   title: {
-    fontSize: '48px', // Larger, more impactful title
-    color: '#8a2be2', // A calming, spiritual purple
-    fontWeight: '800', // Bolder
-    letterSpacing: '-1px', // Tighter letter spacing
-    textShadow: '2px 2px 4px rgba(0,0,0,0.05)', // Subtle text shadow
+    fontFamily: "'Playfair Display', serif", // Keep elegant font for title
+    fontSize: '52px', // Even larger, more majestic
+    color: '#8B4513', // SaddleBrown - rich, earthy, traditional
+    fontWeight: 'bold',
+    letterSpacing: '-1.5px',
+    textShadow: '3px 3px 6px rgba(0,0,0,0.1)', // More pronounced shadow
   },
   subtitle: {
+    fontFamily: "'Roboto', sans-serif", // Clean, readable font for subtitle
     fontSize: '20px',
-    color: '#555',
-    marginTop: '10px',
-    fontStyle: 'italic', // A touch of elegance
+    color: '#5a5a5a',
+    marginTop: '15px',
+    fontStyle: 'normal', // No italics, cleaner look
+    lineHeight: '1.5',
   },
   sectionTitle: {
-    fontSize: '32px', // Larger section titles
-    color: '#4a4a4a', // Darker, richer grey
-    marginBottom: '30px', // More space below title
+    fontFamily: "'Playfair Display', serif", // Consistent elegant font
+    fontSize: '34px', // Larger
+    color: '#6A0572', // Dark Purple - regal, spiritual
+    marginBottom: '35px',
     textAlign: 'center',
     fontWeight: '700',
-    position: 'relative', // For underline effect
+    position: 'relative',
     paddingBottom: '10px',
   },
   cardGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', // Wider cards
-    gap: '30px', // More space between cards
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', // Slightly wider cards for images
+    gap: '30px',
     padding: '20px 0',
-    maxWidth: '1200px', // Max width for content
-    margin: '0 auto', // Center the grid
+    maxWidth: '1200px',
+    margin: '0 auto',
   },
   card: {
     backgroundColor: '#ffffff',
-    borderRadius: '15px', // More rounded corners
-    boxShadow: '0 8px 20px rgba(0,0,0,0.08)', // More pronounced but soft shadow
+    borderRadius: '18px', // More rounded corners
+    boxShadow: '0 12px 30px rgba(0,0,0,0.1)', // Deeper, softer shadow
     padding: '20px',
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease', // Smooth transition for hover
-    overflow: 'hidden', // Ensure image corners are clipped
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    overflow: 'hidden',
+    border: '1px solid #f0f0f0', // Very subtle border
   },
   cardImage: {
     width: '100%',
-    height: '180px', // Taller images
+    height: '200px', // Taller images to showcase better
     objectFit: 'cover',
-    borderRadius: '10px', // Rounded image corners
-    marginBottom: '15px',
-    border: '1px solid #eee', // Subtle border
+    borderRadius: '12px', // Rounded image corners
+    marginBottom: '18px',
+    border: '2px solid #FFD700', // Gold border - a touch of sacredness
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
   },
   cardTitle: {
+    fontFamily: "'Roboto', sans-serif",
     marginTop: '10px',
-    fontSize: '20px',
-    color: '#333',
-    fontWeight: '600',
-    marginBottom: '8px',
+    fontSize: '22px', // Larger title
+    color: '#4B0082', // Indigo - deep, spiritual
+    fontWeight: '700',
+    marginBottom: '10px',
   },
   cardDesc: {
-    fontSize: '15px',
-    color: '#777',
-    lineHeight: '1.6',
+    fontFamily: "'Roboto', sans-serif",
+    fontSize: '16px',
+    color: '#666',
+    lineHeight: '1.7',
   },
   actionSection: {
     textAlign: 'center',
-    marginTop: '70px', // More vertical spacing
-    backgroundColor: '#ffffff',
-    padding: '40px 20px',
-    borderRadius: '15px',
-    boxShadow: '0 8px 25px rgba(0,0,0,0.08)',
-    maxWidth: '800px',
-    margin: '70px auto 0 auto', // Center the section
+    marginTop: '80px',
+    backgroundColor: '#FEF5E7', // Lighter cream for this section
+    padding: '50px 20px',
+    borderRadius: '20px',
+    boxShadow: '0 15px 40px rgba(0,0,0,0.1)',
+    maxWidth: '900px',
+    margin: '80px auto 0 auto',
   },
   button: {
-    padding: '14px 30px', // Larger buttons
-    fontSize: '17px',
-    borderRadius: '30px', // Pill-shaped buttons
-    margin: '15px', // More space between buttons
+    padding: '16px 35px', // Larger, more prominent buttons
+    fontSize: '18px',
+    borderRadius: '35px', // Even more pill-shaped
+    margin: '18px',
     cursor: 'pointer',
     border: 'none',
-    fontWeight: '600',
+    fontWeight: '700', // Bolder text
+    letterSpacing: '0.5px',
     transition: 'background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease',
   },
   primary: {
-    backgroundColor: '#8a2be2', // Primary purple
+    backgroundColor: '#CD5C5C', // IndianRed - warm, inviting, strong
     color: '#fff',
-    boxShadow: '0 5px 15px rgba(138, 43, 226, 0.3)',
+    boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)',
   },
   secondary: {
-    backgroundColor: '#ffc107', // Warm yellow (similar to your previous secondary but slightly bolder)
-    color: '#fff', // White text on yellow
-    boxShadow: '0 5px 15px rgba(255, 193, 7, 0.3)',
+    backgroundColor: '#FFD700', // Gold - symbolic, elegant
+    color: '#8B4513', // SaddleBrown text on gold for contrast
+    boxShadow: '0 6px 20px rgba(255, 215, 0, 0.4)',
   },
   searchInput: {
-    padding: '15px 25px', // Larger padding for better feel
-    width: '70%', // Slightly wider
-    maxWidth: '600px', // Max width
-    fontSize: '17px',
-    marginBottom: '40px', // More space below search
-    border: '1px solid #ddd',
-    borderRadius: '30px', // More rounded
-    boxShadow: '0 4px 10px rgba(0,0,0,0.05)', // Subtle shadow
-    outline: 'none', // Remove default outline
+    padding: '16px 28px',
+    width: '75%',
+    maxWidth: '650px',
+    fontSize: '18px',
+    marginBottom: '45px',
+    border: '2px solid #FFB2A2', // Lighter coral border
+    borderRadius: '35px',
+    boxShadow: '0 6px 15px rgba(0,0,0,0.08)',
+    outline: 'none',
     transition: 'border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease',
   },
 };
