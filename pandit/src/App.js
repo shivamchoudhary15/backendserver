@@ -9,8 +9,9 @@ import Payment from './pages/Payment';
 import Booking from './pages/Booking';
 import Notifications from './pages/Notifications';
 import Dashboard from './pages/Dashboard';
+import PanditSignup from './pages/PanditSignup'; 
 
-import ProtectedRoute from './components/ProtectedRoute'; // 👈 import protected route
+import ProtectedRoute from './components/ProtectedRoute'; //  yaha pe ham import kara rahe protected routes ko
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup/pandit" element={<PanditSignup />} />
+
 
           {/*Protected Routes */}
           <Route
