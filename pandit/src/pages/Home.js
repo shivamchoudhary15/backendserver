@@ -28,6 +28,13 @@ function Home() {
 
   return (
     <div style={styles.container}>
+      {/* Login Button Top Right */}
+      {!token && (
+        <Link to="/login" style={styles.loginTopRight}>
+          <button style={styles.loginBtn}>Login</button>
+        </Link>
+      )}
+
       <header style={styles.header}>
         <h1 style={styles.title}>🙏 Welcome to Pandit Booking</h1>
         <p style={styles.subtitle}>Book experienced Pandits for your spiritual needs</p>
@@ -70,8 +77,8 @@ function Home() {
           <>
             <h3 style={styles.sectionTitle}>🚀 Get Started</h3>
             <div>
-              <Link to="/signup"><button style={{ ...styles.button, ...styles.primary }}>Signup</button></Link>
-              <Link to="/login"><button style={{ ...styles.button, ...styles.secondary }}>Login</button></Link>
+              <Link to="/signup"><button style={{ ...styles.button, ...styles.primary }}>Signup as User</button></Link>
+              <Link to="/signup-pandit"><button style={{ ...styles.button, ...styles.secondary }}>Signup as Pandit</button></Link>
             </div>
           </>
         ) : (
@@ -92,7 +99,6 @@ function Home() {
   );
 }
 
-// Image map (optional fallback)
 const poojaImageMap = {
   'Ganesh Puja': 'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
   'Satyanarayan Katha': 'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
@@ -109,6 +115,22 @@ const styles = {
     background: 'linear-gradient(to bottom right, #f7f0e8, #fff6f1)',
     minHeight: '100vh',
     color: '#333',
+    position: 'relative',
+  },
+  loginTopRight: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    textDecoration: 'none',
+  },
+  loginBtn: {
+    padding: '10px 20px',
+    backgroundColor: '#4caf50',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '14px',
+    cursor: 'pointer',
   },
   header: { textAlign: 'center', marginBottom: '40px' },
   title: { fontSize: '40px', color: '#b30059', fontWeight: 'bold' },
@@ -162,5 +184,6 @@ const styles = {
 };
 
 export default Home;
+
 
 
