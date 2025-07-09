@@ -10,6 +10,7 @@ import Booking from './pages/Booking';
 import Notifications from './pages/Notifications';
 import Dashboard from './pages/Dashboard';
 import PanditSignup from './pages/PanditSignup'; 
+import PanditDashboard from './pages/PanditDashboard';
 
 import ProtectedRoute from './components/ProtectedRoute'; //  yaha pe ham import kara rahe protected routes ko
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup/pandit" element={<PanditSignup />} />
+          <Route path="/pandit-dashboard" element={<PanditDashboard />} />
 
 
           {/*Protected Routes */}
