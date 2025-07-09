@@ -1,51 +1,104 @@
-const express = require('express');
-const router = express.Router();
-const Pandit = require('../models/pandit');
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-// Add new pandit (admin use or testing)
-router.post('/add', async (req, res) => {
-  try {
-    const pandit = new Pandit(req.body);
-    await pandit.save();
-    res.status(201).json(pandit);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+export default function PanditSignup() {
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    city: '',
+    experienceYears: '',
+    languages: '',
+    specialties: '',
+    bio: '',
+    profile_photo_url: '',
+  });
 
-// View all pandits
-router.get('/view', async (req, res) => {
-  try {
-    const pandits = await Pandit.find();
-    res.json(pandits);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-// Signup as Pandit
-router.post('/signup', async (req, res) => {
-  try {
-    const { name, phone, email, password } = req.body;
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    // Basic validation
-    if (!name || !phone || !email || !password) {
-      return res.status(400).json({ error: 'Name, phone, email, and password are required' });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await axios.post('http://localhost:5000/api/pandits/signup', form);
+      alert('✅ Pandit registered successfully!');
+      navigate('/login');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Something went wrong');
     }
+  };
 
-    // Check if pandit already exists
-    const existing = await Pandit.findOne({ $or: [{ email }, { phone }] });
-    if (existing) {
-      return res.status(409).json({ error: 'Pandit with this email or phone already exists' });
-    }
+  return (
+    <div style={styles.container}>
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <h2 style={styles.title}>🧘 Pandit Signup</h2>
 
-    // Create and save
-    const pandit = new Pandit(req.body);
-    await pandit.save();
-    res.status(201).json({ message: 'Pandit registered successfully', pandit });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+        {error && <p style={styles.error}>{error}</p>}
 
-module.exports = router;
+        <input name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required style={styles.input} />
+        <input name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange} required style={styles.input} />
+        <input name="email" placeholder="Email Address" type="email" value={form.email} onChange={handleChange} required style={styles.input} />
+        <input name="password" placeholder="Password (8 chars)" type="password" value={form.password} onChange={handleChange} required minLength={8} maxLength={8} style={styles.input} />
+        <input name="city" placeholder="City" value={form.city} onChange={handleChange} style={styles.input} />
+        <input name="experienceYears" placeholder="Years of Experience" type="number" value={form.experienceYears} onChange={handleChange} style={styles.input} />
+        <input name="languages" placeholder="Languages (comma-separated)" value={form.languages} onChange={handleChange} style={styles.input} />
+        <input name="specialties" placeholder="Specialties (comma-separated)" value={form.specialties} onChange={handleChange} style={styles.input} />
+        <textarea name="bio" placeholder="Short Bio" value={form.bio} onChange={handleChange} rows={3} style={styles.input}></textarea>
+        <input name="profile_photo_url" placeholder="Profile Photo URL" value={form.profile_photo_url} onChange={handleChange} style={styles.input} />
+
+        <button type="submit" style={styles.button}>📩 Register</button>
+      </form>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    padding: '40px',
+    maxWidth: '500px',
+    margin: '80px auto',
+    fontFamily: 'Segoe UI, sans-serif',
+    backgroundColor: '#fdfdfd',
+    borderRadius: '10px',
+    boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: '24px',
+    marginBottom: '10px',
+    color: '#333',
+  },
+  input: {
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '6px',
+    border: '1px solid #ccc',
+  },
+  button: {
+    padding: '12px',
+    fontSize: '16px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: '14px',
+  },
+};
+
