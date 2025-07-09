@@ -3,6 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getServices } from '../api/api';
 import { motion } from 'framer-motion';
 
+// Import your background image. If it's in public folder, you can reference it directly.
+// For example, if you put 'spiritual-bg.jpg' in 'public/images/'
+const SPIRITUAL_BACKGROUND_IMAGE = '/images/spiritual-bg.jpg';
+// Or if you use a direct URL (e.g., from Unsplash or another stock photo site)
+// const SPIRITUAL_BACKGROUND_IMAGE = 'https://images.unsplash.com/photo-1549724505-dfb1a3e6a457?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
+
 function Home() {
   const [services, setServices] = useState([]);
   const [search, setSearch] = useState('');
@@ -67,130 +74,134 @@ function Home() {
 
   return (
     <motion.div
-      style={styles.container}
+      style={styles.containerWrapper} // Use wrapper for background image
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      {!token && (
-        <Link to="/login" style={styles.loginTopRight}>
-          <motion.button
-            style={styles.loginBtn}
-            whileHover="hover"
-            whileTap="tap"
-            variants={buttonVariants}
-          >
-            Login
-          </motion.button>
-        </Link>
-      )}
+      <div style={styles.overlay}></div> {/* Overlay for readability */}
 
-      <motion.header style={styles.header} variants={headerVariants}>
-        <h1 style={styles.title}>🙏 Welcome to Pandit Booking</h1>
-        <p style={styles.subtitle}>Your trusted source for sacred ceremonies</p>
-      </motion.header>
-
-      <section style={{ textAlign: 'center' }}>
-        <motion.input
-          type="text"
-          placeholder="Search for a Pooja or ritual..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={styles.searchInput}
-          variants={searchInputVariants}
-          initial="hidden"
-          animate="visible"
-          whileFocus={{ scale: 1.02, boxShadow: '0 0 15px rgba(255, 127, 80, 0.3)' }} // Coral shadow on focus
-        />
-      </section>
-
-      <section>
-        <h2 style={styles.sectionTitle}>✨ Explore Our Popular Pooja Services</h2>
-        <motion.div
-          style={styles.cardGrid}
-          variants={cardGridVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {filteredServices.map((service) => (
-            <motion.div
-              key={service._id}
-              style={styles.card}
-              variants={cardVariants}
-              whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }} // Stronger hover shadow
-              transition={{ duration: 0.2 }}
+      {/* Actual content container */}
+      <div style={styles.contentContainer}>
+        {!token && (
+          <Link to="/login" style={styles.loginTopRight}>
+            <motion.button
+              style={styles.loginBtn}
+              whileHover="hover"
+              whileTap="tap"
+              variants={buttonVariants}
             >
-              <img
-                src={service.image || poojaImageMap[service.name] || '/images/default.jpg'}
-                alt={service.name}
-                style={styles.cardImage}
-                onError={(e) => { e.target.onerror = null; e.target.src="/images/default.jpg" }} // Fallback for broken images
-              />
-              <h3 style={styles.cardTitle}>{service.name}</h3>
-              <p style={styles.cardDesc}>{service.description || 'This sacred pooja is performed for spiritual well-being and prosperity.'}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+              Login
+            </motion.button>
+          </Link>
+        )}
 
-      <section style={styles.actionSection}>
-        {!token ? (
-          <>
-            <h3 style={styles.sectionTitle}>🚀 Ready to Get Started?</h3>
-            <div>
-              <Link to="/signup">
+        <motion.header style={styles.header} variants={headerVariants}>
+          <h1 style={styles.title}>🙏 Welcome to Pandit Booking</h1>
+          <p style={styles.subtitle}>Your trusted source for sacred ceremonies</p>
+        </motion.header>
+
+        <section style={{ textAlign: 'center' }}>
+          <motion.input
+            type="text"
+            placeholder="Search for a Pooja or ritual..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={styles.searchInput}
+            variants={searchInputVariants}
+            initial="hidden"
+            animate="visible"
+            whileFocus={{ scale: 1.02, boxShadow: '0 0 15px rgba(255, 127, 80, 0.3)' }}
+          />
+        </section>
+
+        <section>
+          <h2 style={styles.sectionTitle}>✨ Explore Our Popular Pooja Services</h2>
+          <motion.div
+            style={styles.cardGrid}
+            variants={cardGridVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {filteredServices.map((service) => (
+              <motion.div
+                key={service._id}
+                style={styles.card}
+                variants={cardVariants}
+                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
+                transition={{ duration: 0.2 }}
+              >
+                <img
+                  src={service.image || poojaImageMap[service.name] || '/images/default.jpg'}
+                  alt={service.name}
+                  style={styles.cardImage}
+                  onError={(e) => { e.target.onerror = null; e.target.src="/images/default.jpg" }}
+                />
+                <h3 style={styles.cardTitle}>{service.name}</h3>
+                <p style={styles.cardDesc}>{service.description || 'This sacred pooja is performed for spiritual well-being and prosperity.'}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </section>
+
+        <section style={styles.actionSection}>
+          {!token ? (
+            <>
+              <h3 style={styles.sectionTitle}>🚀 Ready to Get Started?</h3>
+              <div>
+                <Link to="/signup">
+                  <motion.button
+                    style={{ ...styles.button, ...styles.primary }}
+                    whileHover="hover"
+                    whileTap="tap"
+                    variants={buttonVariants}
+                  >
+                    Join as Devotee
+                  </motion.button>
+                </Link>
+                <Link to="/signup-pandit">
+                  <motion.button
+                    style={{ ...styles.button, ...styles.secondary }}
+                    whileHover="hover"
+                    whileTap="tap"
+                    variants={buttonVariants}
+                  >
+                    Register as Pandit
+                  </motion.button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3 style={styles.sectionTitle}>👋 Welcome Back, Devotee!</h3>
+              <div>
                 <motion.button
                   style={{ ...styles.button, ...styles.primary }}
+                  onClick={() => navigate('/dashboard')}
                   whileHover="hover"
                   whileTap="tap"
                   variants={buttonVariants}
                 >
-                  Join as Devotee
+                  Access Your Dashboard
                 </motion.button>
-              </Link>
-              <Link to="/signup-pandit">
                 <motion.button
                   style={{ ...styles.button, ...styles.secondary }}
+                  onClick={handleBookingClick}
                   whileHover="hover"
                   whileTap="tap"
                   variants={buttonVariants}
                 >
-                  Register as Pandit
+                  Book a New Pooja
                 </motion.button>
-              </Link>
-            </div>
-          </>
-        ) : (
-          <>
-            <h3 style={styles.sectionTitle}>👋 Welcome Back, Devotee!</h3>
-            <div>
-              <motion.button
-                style={{ ...styles.button, ...styles.primary }}
-                onClick={() => navigate('/dashboard')}
-                whileHover="hover"
-                whileTap="tap"
-                variants={buttonVariants}
-              >
-                Access Your Dashboard
-              </motion.button>
-              <motion.button
-                style={{ ...styles.button, ...styles.secondary }}
-                onClick={handleBookingClick}
-                whileHover="hover"
-                whileTap="tap"
-                variants={buttonVariants}
-              >
-                Book a New Pooja
-              </motion.button>
-            </div>
-          </>
-        )}
-      </section>
+              </div>
+            </>
+          )}
+        </section>
+      </div>
     </motion.div>
   );
 }
 
-// Updated Image Map with high-quality, relevant images
 const poojaImageMap = {
   'Ganesh Puja': 'https://sreeganesh.com/wp-content/uploads/2021/04/ganesh_puja.jpg',
   'Satyanarayan Katha': 'https://www.mypandit.com/wp-content/uploads/2023/04/Satyanarayan-Puja-Meaning-Benefits-and-Procedure.jpg',
@@ -202,19 +213,38 @@ const poojaImageMap = {
   'Hanuman Puja': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFU_G2_8N4M-2M8p8j_2W4Z7C8K_2m4c7Q-A&s',
   'Vastu Shanti': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvF4B8W2_W7A2G0K_3g5v-4C4L9g2p_4F-7Q&s',
   'Annaprashan Sanskar': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw1-8P9G8C5m1w8_Q3y0g0g0g0g0g0g0g&s',
-  // Add more pooja image mappings here with high-quality images
 };
 
-// Updated Styles for a more vibrant and harmonious look
 const styles = {
-  container: {
-    padding: '40px',
-    fontFamily: "'Playfair Display', serif", // A more elegant and traditional font for headers
-    background: 'linear-gradient(to bottom right, #FFFAF0, #FFF0DB)', // Creamy, warm background
-    minHeight: '100vh',
-    color: '#333',
+  containerWrapper: { // This wrapper will hold the background image
     position: 'relative',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start', // Align content to top
+    alignItems: 'center',
+    background: `url(${SPIRITUAL_BACKGROUND_IMAGE}) no-repeat center center fixed`,
+    backgroundSize: 'cover',
+    fontFamily: "'Playfair Display', serif",
+    color: '#333', // Default text color for the page
     overflowX: 'hidden',
+  },
+  overlay: { // Semi-transparent overlay for text readability
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)', // White overlay with 75% opacity
+    zIndex: 1, // Ensure overlay is behind content but above background image
+  },
+  contentContainer: { // This will contain all your actual UI elements
+    position: 'relative', // Positioned above the overlay
+    zIndex: 2, // Ensure content is on top
+    width: '100%',
+    maxWidth: '1400px', // Max width for overall content
+    padding: '40px',
+    boxSizing: 'border-box', // Include padding in width calculation
   },
   loginTopRight: {
     position: 'absolute',
@@ -225,7 +255,7 @@ const styles = {
   },
   loginBtn: {
     padding: '12px 25px',
-    backgroundColor: '#FF6347', // Tomato - vibrant, welcoming
+    backgroundColor: '#FF6347',
     color: '#fff',
     border: 'none',
     borderRadius: '30px',
@@ -241,25 +271,25 @@ const styles = {
     paddingTop: '20px',
   },
   title: {
-    fontFamily: "'Playfair Display', serif", // Keep elegant font for title
-    fontSize: '52px', // Even larger, more majestic
-    color: '#8B4513', // SaddleBrown - rich, earthy, traditional
+    fontFamily: "'Playfair Display', serif",
+    fontSize: '52px',
+    color: '#6A0572', // Deep purple for title
     fontWeight: 'bold',
     letterSpacing: '-1.5px',
-    textShadow: '3px 3px 6px rgba(0,0,0,0.1)', // More pronounced shadow
+    textShadow: '3px 3px 6px rgba(0,0,0,0.1)',
   },
   subtitle: {
-    fontFamily: "'Roboto', sans-serif", // Clean, readable font for subtitle
+    fontFamily: "'Roboto', sans-serif",
     fontSize: '20px',
     color: '#5a5a5a',
     marginTop: '15px',
-    fontStyle: 'normal', // No italics, cleaner look
+    fontStyle: 'normal',
     lineHeight: '1.5',
   },
   sectionTitle: {
-    fontFamily: "'Playfair Display', serif", // Consistent elegant font
-    fontSize: '34px', // Larger
-    color: '#6A0572', // Dark Purple - regal, spiritual
+    fontFamily: "'Playfair Display', serif",
+    fontSize: '34px',
+    color: '#8B4513', // SaddleBrown for section titles
     marginBottom: '35px',
     textAlign: 'center',
     fontWeight: '700',
@@ -268,7 +298,7 @@ const styles = {
   },
   cardGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', // Slightly wider cards for images
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '30px',
     padding: '20px 0',
     maxWidth: '1200px',
@@ -276,8 +306,8 @@ const styles = {
   },
   card: {
     backgroundColor: '#ffffff',
-    borderRadius: '18px', // More rounded corners
-    boxShadow: '0 12px 30px rgba(0,0,0,0.1)', // Deeper, softer shadow
+    borderRadius: '18px',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.1)',
     padding: '20px',
     textAlign: 'center',
     display: 'flex',
@@ -285,22 +315,22 @@ const styles = {
     justifyContent: 'space-between',
     transition: 'transform 0.2s ease, box-shadow 0.2s ease',
     overflow: 'hidden',
-    border: '1px solid #f0f0f0', // Very subtle border
+    border: '1px solid #f0f0f0',
   },
   cardImage: {
     width: '100%',
-    height: '200px', // Taller images to showcase better
+    height: '200px',
     objectFit: 'cover',
-    borderRadius: '12px', // Rounded image corners
+    borderRadius: '12px',
     marginBottom: '18px',
-    border: '2px solid #FFD700', // Gold border - a touch of sacredness
+    border: '2px solid #FFD700',
     boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
   },
   cardTitle: {
     fontFamily: "'Roboto', sans-serif",
     marginTop: '10px',
-    fontSize: '22px', // Larger title
-    color: '#4B0082', // Indigo - deep, spiritual
+    fontSize: '22px',
+    color: '#4B0082',
     fontWeight: '700',
     marginBottom: '10px',
   },
@@ -313,7 +343,7 @@ const styles = {
   actionSection: {
     textAlign: 'center',
     marginTop: '80px',
-    backgroundColor: '#FEF5E7', // Lighter cream for this section
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Slightly transparent white for this section
     padding: '50px 20px',
     borderRadius: '20px',
     boxShadow: '0 15px 40px rgba(0,0,0,0.1)',
@@ -321,24 +351,24 @@ const styles = {
     margin: '80px auto 0 auto',
   },
   button: {
-    padding: '16px 35px', // Larger, more prominent buttons
+    padding: '16px 35px',
     fontSize: '18px',
-    borderRadius: '35px', // Even more pill-shaped
+    borderRadius: '35px',
     margin: '18px',
     cursor: 'pointer',
     border: 'none',
-    fontWeight: '700', // Bolder text
+    fontWeight: '700',
     letterSpacing: '0.5px',
     transition: 'background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease',
   },
   primary: {
-    backgroundColor: '#CD5C5C', // IndianRed - warm, inviting, strong
+    backgroundColor: '#CD5C5C',
     color: '#fff',
     boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)',
   },
   secondary: {
-    backgroundColor: '#FFD700', // Gold - symbolic, elegant
-    color: '#8B4513', // SaddleBrown text on gold for contrast
+    backgroundColor: '#FFD700',
+    color: '#8B4513',
     boxShadow: '0 6px 20px rgba(255, 215, 0, 0.4)',
   },
   searchInput: {
@@ -347,7 +377,7 @@ const styles = {
     maxWidth: '650px',
     fontSize: '18px',
     marginBottom: '45px',
-    border: '2px solid #FFB2A2', // Lighter coral border
+    border: '2px solid #FFB2A2',
     borderRadius: '35px',
     boxShadow: '0 6px 15px rgba(0,0,0,0.08)',
     outline: 'none',
