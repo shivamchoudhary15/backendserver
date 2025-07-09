@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Pandit = require('../models/pandit');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// user signup ke liye 
+// Signup for users
 router.post('/add', async (req, res) => {
   try {
     const { name, email, phone, city, address, password, role } = req.body;
@@ -48,36 +49,50 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// user login ke liye
+
+// ✅ Login for both users and pandits
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
+    let account = await User.findOne({ email: email.toLowerCase() });
+    let role = 'user';
+
+    if (!account) {
+      account = await Pandit.findOne({ email: email.toLowerCase() });
+      role = 'pandit';
+    }
+
+    if (!account) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, account.password);
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
+    // ❌ Block unverified pandits
+    if (role === 'pandit' && !account.is_verified) {
+      return res.status(403).json({ error: 'Pandit is not verified by admin yet' });
+    }
+
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      { id: account._id, email: account.email, role },
       process.env.JWT_SECRET || 'dev_secret',
       { expiresIn: '7d' }
     );
 
-    const { password: _, ...userData } = user.toObject();
-    res.json({ message: 'Login successful', token, user: userData });
+    const { password: _, ...userData } = account.toObject();
+    res.json({ message: 'Login successful', token, user: { ...userData, role } });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed. Server error.' });
   }
 });
 
-//  sare authorized user ko dekne ke liye
+
+// ✅ View all users (optional)
 router.get('/view', async (req, res) => {
   try {
     const users = await User.find().select('-password -__v');
