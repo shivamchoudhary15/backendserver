@@ -25,6 +25,7 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const poojaRoutes = require('./routes/poojaRoutes');
 
 // yaa pe use kar rahe hai 
 app.use('/api/users', userRoutes);
@@ -34,6 +35,7 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/poojas', poojaRoutes);
 
 // ye default route jisme ye likha hoga 
 app.get('/', (req, res) => {
