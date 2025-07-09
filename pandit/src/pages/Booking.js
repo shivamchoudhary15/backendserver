@@ -20,7 +20,6 @@ function Booking() {
   const token = localStorage.getItem('token');
   const userid = user?._id;
 
-  // Fetch dynamic dropdown data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +45,6 @@ function Booking() {
     fetchData();
   }, []);
 
-  // Fetch bookings on mount
   useEffect(() => {
     const fetchBookings = async () => {
       if (!userid) return;
@@ -107,9 +105,53 @@ function Booking() {
     }
   };
 
+  return (
+    <div style={{ padding: '40px 10%' }}>
+      <form onSubmit={handleSubmit}>
+        {/* Service */}
+        <select name="serviceid" value={details.serviceid} onChange={handleChange} required style={inputStyle}>
+          <option value="">-- Select Service --</option>
+          {services.map((s) => (
+            <option key={s._id} value={s._id}>{s.name}</option>
+          ))}
+        </select>
 
+        {/* Pandit */}
+        <select name="panditid" value={details.panditid} onChange={handleChange} required style={inputStyle}>
+          <option value="">-- Select Pandit --</option>
+          {pandits.map((p) => (
+            <option key={p._id} value={p._id}>{p.name}</option>
+          ))}
+        </select>
 
+        {/* Pooja */}
+        <select name="poojaId" value={details.poojaId} onChange={handleChange} required style={inputStyle}>
+          <option value="">-- Select Pooja --</option>
+          {poojas.map((pooja) => (
+            <option key={pooja._id} value={pooja._id}>{pooja.name}</option>
+          ))}
+        </select>
 
+        {/* Date, Time, Location */}
+        <input type="date" name="puja_date" value={details.puja_date} onChange={handleChange} required style={inputStyle} />
+        <input type="time" name="puja_time" value={details.puja_time} onChange={handleChange} required style={inputStyle} />
+        <input type="text" name="location" placeholder="Location" value={details.location} onChange={handleChange} required style={inputStyle} />
+
+        <button type="submit">Book Now</button>
+      </form>
+    </div>
+  );
+}
+
+const inputStyle = {
+  display: 'block',
+  marginBottom: '16px',
+  width: '100%',
+  padding: '12px',
+  fontSize: '16px',
+};
+
+export default Booking;
 
 
 
