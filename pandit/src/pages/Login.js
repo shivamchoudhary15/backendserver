@@ -22,8 +22,10 @@ export default function Login() {
       const { token, user } = response.data;
 
       if (token && user?._id) {
+        // 🔐 Save login session
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
+
         alert('✅ Login successful!');
         navigate('/dashboard');
       } else {
