@@ -114,6 +114,7 @@ const dummyServices = [
   { name: 'Griha Pravesh', description: 'Performed before entering a new home.' },
   { name: 'Rudra Abhishek', description: 'Puja of Lord Shiva for inner peace.' },
   { name: 'Lakshmi Puja', description: 'Invokes wealth and abundance.' },
+  {name:'ramayan',description:'our history our truth.'},
 ];
 
 const styles = {
