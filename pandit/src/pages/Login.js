@@ -43,13 +43,18 @@ const Login = () => {
 
   return (
     <div style={styles.container}>
-      {/* Left Side: Login Form */}
+      {/* Left Side: Spiritual Image */}
       <div style={styles.left}>
+        <img src={BACKGROUND_IMAGE} alt="Spiritual" style={styles.bgImage} />
+      </div>
+
+      {/* Right Side: Login Form */}
+      <div style={styles.right}>
         <motion.div
           style={styles.card}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, type: 'spring' }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
         >
           <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
           <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
@@ -102,11 +107,6 @@ const Login = () => {
           </form>
         </motion.div>
       </div>
-
-      {/* Right Side: Spiritual Image */}
-      <div style={styles.right}>
-        <img src={BACKGROUND_IMAGE} alt="Background" style={styles.bgImage} />
-      </div>
     </div>
   );
 };
@@ -122,14 +122,14 @@ const styles = {
   },
   left: {
     flex: 1,
-    background: '#fff',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
   },
   right: {
     flex: 1,
-    overflow: 'hidden',
+    background: '#f9f5f0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bgImage: {
     width: '100%',
@@ -137,14 +137,15 @@ const styles = {
     objectFit: 'cover',
   },
   card: {
-    background: 'white',
+    background: 'rgba(255, 255, 255, 0.92)', // Semi-transparent white
     borderRadius: '20px',
-    border: '3px solid #d2691e', // Orange border
+    border: '3px solid #d2691e',
     padding: '40px',
     width: '90%',
     maxWidth: '400px',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
     textAlign: 'center',
+    backdropFilter: 'blur(4px)',
   },
   logo: {
     width: '100px',
@@ -153,7 +154,7 @@ const styles = {
     objectFit: 'cover',
     border: '4px solid #FFD700',
     marginBottom: '10px',
-    boxShadow: '0 5px 15px rgba(0,0,0,0.15)',
+    boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
   },
   subtitle: {
     fontSize: '16px',
@@ -174,7 +175,7 @@ const styles = {
   label: {
     fontWeight: 'bold',
     fontSize: '16px',
-    color: '#8B0000', // Deep red
+    color: '#8B0000',
     marginBottom: '5px',
   },
   input: {
