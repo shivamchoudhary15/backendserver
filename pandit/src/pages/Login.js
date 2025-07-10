@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
-const BACKGROUND_IMAGE = '/images/background.jpg'; // Left side image (spiritual themed)
-const LOGO_IMAGE = '/images/subh.png'; // Circular logo
+const BACKGROUND_IMAGE = '/images/background.jpg';
+const LOGO_IMAGE = '/images/subh.png';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,28 +42,25 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.container}>
-        {/* Left Side */}
-        <div style={styles.left}>
-          <img src={BACKGROUND_IMAGE} alt="Spiritual" style={styles.image} />
-        </div>
+    <div style={styles.container}>
+      <div style={styles.left}>
+        <img src={BACKGROUND_IMAGE} alt="Background" style={styles.bgImage} />
+      </div>
 
-        {/* Right Side */}
+      <div style={styles.right}>
         <motion.div
-          style={styles.right}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
+          style={styles.card}
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, type: 'spring' }}
         >
-          <div style={styles.card}>
-            <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
-            <h2 style={styles.title}>Welcome Back!</h2>
-            <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
+          <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
+          <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
 
+          <form onSubmit={handleSubmit} style={styles.form}>
             {error && <div style={styles.error}>{error}</div>}
 
-            <form onSubmit={handleSubmit} style={styles.form}>
+            <div style={styles.inputGroup}>
               <label style={styles.label}>Email Address</label>
               <input
                 type="email"
@@ -71,10 +68,12 @@ const Login = () => {
                 value={form.email}
                 onChange={handleChange}
                 required
-                placeholder="example@gmail.com"
                 style={styles.input}
+                placeholder="example@gmail.com"
               />
+            </div>
 
+            <div style={styles.inputGroup}>
               <label style={styles.label}>Password</label>
               <input
                 type="password"
@@ -82,30 +81,30 @@ const Login = () => {
                 value={form.password}
                 onChange={handleChange}
                 required
-                placeholder="********"
                 style={styles.input}
+                placeholder="********"
               />
+            </div>
 
-              <motion.button
-                type="submit"
-                style={styles.button}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={loading}
-              >
-                {loading ? 'Logging in...' : 'Login'}
-              </motion.button>
-            </form>
+            <motion.button
+              type="submit"
+              style={styles.button}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+            >
+              {loading ? 'Logging in...' : 'Login'}
+            </motion.button>
 
-            <p style={styles.bottomText}>
+            <p style={styles.text}>
               Don’t have an account?{' '}
               <Link to="/signup" style={styles.link}>Join as Devotee</Link>
             </p>
-            <p style={styles.bottomText}>
+            <p style={{ ...styles.text, marginTop: '10px' }}>
               Are you a Pandit?{' '}
               <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
             </p>
-          </div>
+          </form>
         </motion.div>
       </div>
     </div>
@@ -114,93 +113,100 @@ const Login = () => {
 
 export default Login;
 
-// CSS-in-JS styles
 const styles = {
-  wrapper: {
-    width: '100vw',
-    height: '100vh',
-    background: '#f6efe7',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   container: {
-    width: '90%',
-    maxWidth: '1100px',
-    height: '90%',
     display: 'flex',
-    boxShadow: '0 15px 30px rgba(0,0,0,0.2)',
-    borderRadius: '15px',
-    overflow: 'hidden',
-    background: '#fff',
+    minHeight: '100vh',
+    fontFamily: 'Segoe UI, sans-serif',
+    flexDirection: 'row',
   },
   left: {
     flex: 1,
-    background: '#fff',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
-  image: {
+  right: {
+    flex: 1,
+    backgroundColor: '#fffaf0', // match image tone
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px',
+  },
+  bgImage: {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
   },
-  right: {
-    flex: 1,
-    backgroundColor: '#fff8f0',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   card: {
-    width: '90%',
+    background: '#ffffffd8',
+    borderRadius: '20px',
+    border: '3px solid #d2691e',
+    padding: '40px',
+    width: '100%',
     maxWidth: '400px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
     textAlign: 'center',
   },
   logo: {
-    width: '80px',
-    height: '80px',
+    width: '120px',
+    height: '120px',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: '3px solid #FFD700',
+    border: '4px solid #FFD700',
     marginBottom: '10px',
-  },
-  title: {
-    margin: '10px 0 5px',
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#333',
+    boxShadow: '0 5px 15px rgba(0,0,0,0.15)',
   },
   subtitle: {
-    fontSize: '14px',
+    fontSize: '16px',
+    color: '#444',
     fontStyle: 'italic',
-    color: '#555',
-    marginBottom: '20px',
+    marginBottom: '25px',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '15px',
+    gap: '20px',
+  },
+  inputGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   label: {
-    textAlign: 'left',
     fontWeight: 'bold',
-    fontSize: '14px',
+    fontSize: '15px',
     color: '#8B0000',
+    marginBottom: '5px',
   },
   input: {
-    padding: '10px 14px',
-    borderRadius: '8px',
+    padding: '12px 16px',
+    borderRadius: '10px',
     border: '1px solid #ccc',
-    fontSize: '15px',
+    fontSize: '16px',
+    width: '100%',
+    outline: 'none',
   },
   button: {
-    padding: '12px',
+    padding: '14px',
     background: 'linear-gradient(to right, #e94e77, #f2709c)',
     border: 'none',
-    borderRadius: '25px',
+    borderRadius: '30px',
     color: '#fff',
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
+  },
+  text: {
+    fontSize: '14px',
+    color: '#333',
+  },
+  link: {
+    color: '#8B0000',
+    fontWeight: 'bold',
+    textDecoration: 'none',
   },
   error: {
     backgroundColor: '#ffe6e6',
@@ -208,16 +214,5 @@ const styles = {
     padding: '10px',
     borderRadius: '8px',
     fontWeight: 'bold',
-    marginBottom: '10px',
-  },
-  bottomText: {
-    fontSize: '14px',
-    color: '#333',
-    marginTop: '10px',
-  },
-  link: {
-    color: '#8B0000',
-    fontWeight: 'bold',
-    textDecoration: 'none',
   },
 };
