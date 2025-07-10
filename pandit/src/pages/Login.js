@@ -3,10 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
-// --- IMPORTANT: DIRECT URL FOR SPIRITUAL BACKGROUND IMAGE IS NOW ACTIVE ---
-const SPIRITUAL_BACKGROUND_IMAGE = 'https://images.unsplash.com/photo-1657651512394-259598dbba30?q=80&w=1460&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-// If this URL becomes unavailable, you might need to find a new one or use a local image.
-
+// Using the direct URL for the spiritual background image
+const SPIRITUAL_BACKGROUND_IMAGE = 'https://plus.unsplash.com/premium_photo-1716903508664-8e23f6ba4331?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -31,7 +29,7 @@ export default function Login() {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
 
-        alert('✅ Login successful!');
+        alert('✅ Login successful! Redirecting...');
         navigate('/dashboard');
       } else {
         setError('Invalid login response. Please try again.');
@@ -44,81 +42,111 @@ export default function Login() {
     }
   };
 
-  // Framer Motion Variants
-  const containerVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+  // Framer Motion Variants for more intricate animations
+  const pageWrapperVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
   };
 
-  const formVariants = {
+  const formContainerVariants = {
+    hidden: { y: 50, opacity: 0, scale: 0.9 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 70,
+        damping: 10,
+        delay: 0.3, // Delay for the whole form to appear after background
+      },
+    },
+  };
+
+  const formItemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { delay: 0.3, duration: 0.5 } },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } },
   };
 
   const buttonVariants = {
-    hover: { scale: 1.02, boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.25)' },
-    tap: { scale: 0.98 },
+    hover: {
+      scale: 1.03,
+      boxShadow: '0px 10px 25px rgba(205, 92, 92, 0.4)', // Deeper shadow on hover
+      transition: { duration: 0.2 }
+    },
+    tap: { scale: 0.97 },
   };
 
   const inputFocus = {
-    boxShadow: '0 0 0 3px rgba(106, 5, 114, 0.2)', // Purple glow
+    boxShadow: '0 0 0 4px rgba(106, 5, 114, 0.3)', // Larger, softer purple glow
     borderColor: '#6A0572',
+    transition: { duration: 0.2 }
   };
 
   return (
-    <div style={styles.pageWrapper}>
+    <motion.div
+      style={styles.pageWrapper}
+      variants={pageWrapperVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div style={styles.overlay}></div>
 
       <motion.div
         style={styles.container}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        variants={formContainerVariants}
       >
-        <motion.form
-          onSubmit={handleSubmit}
-          style={styles.form}
-          variants={formVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 style={styles.title}>🔐 Login to Your Account</h2>
+        <motion.div style={styles.form} variants={formItemVariants}>
+          <div style={styles.logoPlaceholder}>
+            <span style={styles.logoIcon}><i className="fas fa-om"></i></span> {/* Om icon */}
+            <h2 style={styles.title}>Pandit Booking</h2>
+            <p style={styles.subtitle}>Welcome Back, Devotee!</p>
+          </div>
 
           {error && (
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
+              exit={{ opacity: 0, y: 10 }} // Animation for disappearing error
               transition={{ duration: 0.3 }}
               style={styles.errorMessage}
             >
+              <i className="fas fa-exclamation-circle" style={{ marginRight: '8px' }}></i>
               {error}
             </motion.p>
           )}
 
-          <label style={styles.label}>Email Address</label>
-          <motion.input
-            name="email"
-            type="email"
-            placeholder="devotee@example.com"
-            value={form.email}
-            onChange={handleChange}
-            required
-            style={styles.input}
-            whileFocus={inputFocus}
-          />
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>
+              <i className="fas fa-envelope" style={styles.icon}></i> Email Address
+            </label>
+            <motion.input
+              name="email"
+              type="email"
+              placeholder="devotee@example.com"
+              value={form.email}
+              onChange={handleChange}
+              required
+              style={styles.input}
+              whileFocus={inputFocus}
+            />
+          </div>
 
-          <label style={styles.label}>Password</label>
-          <motion.input
-            name="password"
-            type="password"
-            placeholder="********"
-            value={form.password}
-            onChange={handleChange}
-            required
-            style={styles.input}
-            whileFocus={inputFocus}
-          />
+          <div style={styles.inputGroup}>
+            <label style={styles.label}>
+              <i className="fas fa-lock" style={styles.icon}></i> Password
+            </label>
+            <motion.input
+              name="password"
+              type="password"
+              placeholder="********"
+              value={form.password}
+              onChange={handleChange}
+              required
+              style={styles.input}
+              whileFocus={inputFocus}
+            />
+          </div>
 
           <motion.button
             type="submit"
@@ -128,24 +156,32 @@ export default function Login() {
             whileHover="hover"
             whileTap="tap"
           >
-            {loading ? '🔄 Logging in...' : '🚀 Login'}
+            {loading ? (
+              <>
+                <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i> Logging in...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-sign-in-alt" style={{ marginRight: '8px' }}></i> Login
+              </>
+            )}
           </motion.button>
 
           <p style={styles.signupText}>
             Don't have an account?{' '}
             <Link to="/signup" style={styles.signupLink}>
-              Sign Up Here
+              Sign Up Here <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
             </Link>
           </p>
           <p style={styles.signupText}>
             Are you a Pandit?{' '}
             <Link to="/signup-pandit" style={styles.signupLink}>
-              Register as Pandit
+              Register as Pandit <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
             </Link>
           </p>
         </motion.form>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -169,86 +205,119 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.88)',
+    backgroundColor: 'rgba(255, 255, 255, 0.92)', // Slightly more opaque overlay for content focus
     zIndex: 1,
   },
   container: {
     position: 'relative',
     zIndex: 2,
-    padding: '40px',
-    maxWidth: '480px',
+    padding: '40px 50px', // More horizontal padding
+    maxWidth: '500px', // Slightly wider container
     width: '90%',
     margin: 'auto',
-    fontFamily: "'Roboto', sans-serif",
     backgroundColor: '#ffffff',
-    borderRadius: '18px',
-    boxShadow: '0 15px 40px rgba(0,0,0,0.15)',
+    borderRadius: '20px', // More rounded
+    boxShadow: '0 20px 50px rgba(0,0,0,0.2)', // Deeper, softer shadow
     display: 'flex',
     flexDirection: 'column',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
+    gap: '22px', // More space between elements
+  },
+  logoPlaceholder: {
+    textAlign: 'center',
+    marginBottom: '30px',
+  },
+  logoIcon: {
+    fontSize: '55px', // Larger icon
+    color: '#6A0572', // Deep purple
+    marginBottom: '10px',
+    display: 'block', // Ensures margin works
   },
   title: {
-    textAlign: 'center',
-    color: '#6A0572',
-    fontSize: '32px',
-    marginBottom: '20px',
     fontFamily: "'Playfair Display', serif",
+    fontSize: '38px', // Larger, more impactful title
+    color: '#8B4513', // SaddleBrown
     fontWeight: 'bold',
-    textShadow: '1px 1px 2px rgba(0,0,0,0.05)',
-  },
-  label: {
-    fontWeight: '600',
-    color: '#4a4a4a',
-    fontSize: '16px',
     marginBottom: '5px',
+    textShadow: '1px 1px 3px rgba(0,0,0,0.08)',
   },
-  input: {
-    padding: '14px 18px',
-    fontSize: '16px',
-    borderRadius: '10px',
-    border: '1px solid #ddd',
-    outline: 'none',
-    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-  },
-  button: {
-    marginTop: '15px',
-    padding: '15px 25px',
-    fontSize: '17px',
-    backgroundColor: '#CD5C5C',
-    color: 'white',
-    border: 'none',
-    borderRadius: '30px',
-    cursor: 'pointer',
-    fontWeight: '700',
-    letterSpacing: '0.5px',
-    boxShadow: '0 5px 15px rgba(205, 92, 92, 0.3)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease',
+  subtitle: {
+    fontSize: '18px',
+    color: '#555',
+    marginBottom: '20px',
+    fontStyle: 'italic',
   },
   errorMessage: {
     color: '#dc3545',
     backgroundColor: '#ffe6e6',
     border: '1px solid #dc3545',
-    padding: '10px 15px',
-    borderRadius: '8px',
+    padding: '12px 20px', // More padding
+    borderRadius: '10px', // More rounded
     fontSize: '15px',
     textAlign: 'center',
-    marginBottom: '10px',
+    marginBottom: '15px',
     fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px', // Space between label and input
+  },
+  label: {
+    fontWeight: '600',
+    color: '#4A4A4A', // Slightly darker grey
+    fontSize: '16px',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: '10px',
+    color: '#6A0572', // Deep purple for icons
+    fontSize: '18px',
+  },
+  input: {
+    padding: '16px 20px', // Increased padding for a more substantial feel
+    fontSize: '17px', // Slightly larger font
+    borderRadius: '12px', // More rounded
+    border: '1px solid #e0e0e0', // Lighter, subtle border
+    outline: 'none',
+    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+    width: 'calc(100% - 40px)', // Adjust width for padding
+    boxSizing: 'border-box', // Include padding in width
+  },
+  button: {
+    marginTop: '25px', // More space above button
+    padding: '16px 30px', // Larger padding
+    fontSize: '18px', // Larger font
+    background: 'linear-gradient(135deg, #CD5C5C 0%, #FF6347 100%)', // IndianRed to Tomato gradient
+    color: 'white',
+    border: 'none',
+    borderRadius: '35px', // More pill-shaped
+    cursor: 'pointer',
+    fontWeight: '700',
+    letterSpacing: '0.8px', // Tighter spacing
+    boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)', // Initial shadow
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   signupText: {
     textAlign: 'center',
     fontSize: '15px',
-    color: '#555',
-    marginTop: '15px',
+    color: '#666',
+    marginTop: '18px', // More space between sections
   },
   signupLink: {
-    color: '#8B4513',
+    color: '#8B4513', // SaddleBrown for links
     textDecoration: 'none',
-    fontWeight: '600',
-    transition: 'color 0.3s ease',
+    fontWeight: '700',
+    transition: 'color 0.3s ease, text-decoration 0.3s ease',
   },
 };
