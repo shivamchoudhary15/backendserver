@@ -172,9 +172,11 @@ export default function Login() {
           </motion.button>
 
           <div style={styles.linksContainer}>
-            <Link to="/forgot-password" style={styles.textLink}>Forgot Password?</Link>
-            <Link to="/signup" style={styles.textLink}>Register Here</Link>
-          </div>
+                <Link to="/forgot-password" style={styles.textLink}>Forgot Password?</Link>
+                <Link to="/signup" style={styles.textLink}>Join as Devotee</Link>
+                <Link to="/signup/pandit" style={styles.textLink}>Register as Pandit</Link>
+           </div>
+
         </motion.form>
       </motion.div>
     </motion.div>
