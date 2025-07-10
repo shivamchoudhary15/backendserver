@@ -1,17 +1,65 @@
 /* Dashboard.css */
 
+/* === Custom Button Styles === */
 .custom-btn {
   flex: 1;
-  padding: 10px;
-  background-color: #2c7be5;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #2c7be5 0%, #1a5fd0 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(44, 123, 229, 0.4);
+  transform: scale(1);
 }
 
 .custom-btn:hover {
-  background-color: #1a5fd0; /* Blue pop hover */
+  background: linear-gradient(135deg, #1a5fd0 0%, #2c7be5 100%);
+  box-shadow: 0 6px 18px rgba(26, 95, 208, 0.5);
+  transform: scale(1.03);
+}
+
+.custom-btn:active {
+  transform: scale(0.97);
+}
+
+/* === Message Feedback === */
+.success-message {
+  color: #27ae60;
+  font-weight: bold;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  animation: shake 0.4s ease;
+}
+
+/* === Animation Keyframes === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-5px);
+  }
+  40%, 80% {
+    transform: translateX(5px);
+  }
 }
