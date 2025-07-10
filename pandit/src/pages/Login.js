@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
-import './Login.css';
+import { motion } from 'framer-motion';
+import './Login.css'; // We'll keep styles here except background image
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -38,14 +39,30 @@ const Login = () => {
     }
   };
 
+  // ✅ Inline background style using public image
+  const backgroundImageStyle = {
+    backgroundImage: `url(${process.env.PUBLIC_URL}/images/background.jpg)`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    width: '100%',
+    height: '100%',
+  };
+
   return (
     <div className="login-container">
-      <div className="login-left" />
+      {/* Left side with background image */}
+      <div className="login-left" style={backgroundImageStyle}></div>
 
+      {/* Right side login form */}
       <div className="login-right">
-        <div className="login-form-box">
+        <motion.div
+          className="login-form-box"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+        >
           <img
-            src="/images/subh.png"
+            src={`${process.env.PUBLIC_URL}/images/logo.png`}
             alt="Logo"
             className="login-logo"
           />
@@ -53,47 +70,51 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error">{error}</div>}
+            <div>
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                placeholder="example@gmail.com"
+              />
+            </div>
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                placeholder="********"
+              />
+            </div>
 
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              placeholder="example@gmail.com"
-            />
-
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              placeholder="********"
-            />
-
-            <button type="submit" disabled={loading}>
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+            >
               {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </form>
+            </motion.button>
 
-          <div className="login-link">
-            <p>
-              Don’t have an account?{' '}
+            <p className="login-link">
+              Don’t have an account? <br />
               <Link to="/signup">Join as Devotee</Link>
             </p>
-            <p>
-              Are you a Pandit?{' '}
+            <p className="login-link">
+              Are you a Pandit? <br />
               <Link to="/signup/pandit">Register as Pandit</Link>
             </p>
-          </div>
-        </div>
+          </form>
+        </motion.div>
       </div>
     </div>
   );
 };
 
 export default Login;
-
