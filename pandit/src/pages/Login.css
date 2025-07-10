@@ -1,4 +1,3 @@
-/* Container split layout */
 .login-container {
   display: flex;
   height: 100vh;
@@ -7,60 +6,50 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left: Background image */
 .login-left {
   flex: 1;
-  background-image: url('/images/background.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
-/* Right: Login form */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9); /* Light blend */
+  background-color: #fff; /* match background image */
 }
 
-/* Login box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
   text-align: center;
 }
 
-/* Logo styling */
 .login-logo {
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
+  margin-bottom: 15px;
   border: 4px solid #ffd700;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  margin-bottom: 15px;
 }
 
-/* Tagline */
 .login-tagline {
-  font-size: 15px;
+  font-size: 16px;
   color: #333;
   font-style: italic;
   margin-bottom: 20px;
 }
 
-/* Form styling */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  text-align: left;
 }
 
 .login-form label {
-  font-weight: bold;
+  text-align: left;
+  font-weight: 600;
   font-size: 14px;
   color: #8B0000;
 }
@@ -71,9 +60,9 @@
   border: 1px solid #ccc;
   font-size: 15px;
   outline: none;
+  width: 100%;
 }
 
-/* Button */
 .login-form button {
   padding: 12px;
   background: linear-gradient(to right, #d2691e, #ff9900);
@@ -90,7 +79,6 @@
   opacity: 0.9;
 }
 
-/* Error message */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -99,10 +87,9 @@
   font-weight: bold;
 }
 
-/* Links */
 .login-link {
   font-size: 14px;
-  margin-top: 20px;
+  margin-top: 8px;
   color: #333;
 }
 
@@ -112,7 +99,6 @@
   text-decoration: none;
 }
 
-/* Responsive */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
@@ -129,7 +115,7 @@
   }
 
   .login-logo {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 }
