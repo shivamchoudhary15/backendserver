@@ -42,62 +42,71 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.overlay}></div>
-      <motion.div
-        style={styles.card}
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, type: 'spring' }}
-      >
-        <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
-        <form onSubmit={handleSubmit} style={styles.form}>
-          {error && <div style={styles.error}>{error}</div>}
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>📧 Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              style={styles.input}
-              placeholder="example@gmail.com"
-            />
-          </div>
-          <div style={styles.inputGroup}>
-            <label style={styles.label}>🔒 Password</label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              style={styles.input}
-              placeholder="********"
-            />
-          </div>
+    <div style={styles.container}>
+      {/* Left Side: Login Form */}
+      <div style={styles.left}>
+        <motion.div
+          style={styles.card}
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+        >
+          <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
+          <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
 
-          <motion.button
-            type="submit"
-            style={styles.button}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            disabled={loading}
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </motion.button>
+          <form onSubmit={handleSubmit} style={styles.form}>
+            {error && <div style={styles.error}>{error}</div>}
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                style={styles.input}
+                placeholder="example@gmail.com"
+              />
+            </div>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                style={styles.input}
+                placeholder="********"
+              />
+            </div>
 
-          <p style={styles.text}>
-            Don’t have an account?{' '}
-            <Link to="/signup" style={styles.link}>Join as Devotee</Link>
-          </p>
-          <p style={styles.text}>
-            Are you a Pandit?{' '}
-            <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
-          </p>
-        </form>
-      </motion.div>
+            <motion.button
+              type="submit"
+              style={styles.button}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+            >
+              {loading ? 'Logging in...' : 'Login'}
+            </motion.button>
+
+            <p style={styles.text}>
+              Don’t have an account?{' '}
+              <Link to="/signup" style={styles.link}>Join as Devotee</Link>
+            </p>
+            <p style={styles.text}>
+              Are you a Pandit?{' '}
+              <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
+            </p>
+          </form>
+        </motion.div>
+      </div>
+
+      {/* Right Side: Spiritual Image */}
+      <div style={styles.right}>
+        <img src={BACKGROUND_IMAGE} alt="Background" style={styles.bgImage} />
+      </div>
     </div>
   );
 };
@@ -105,30 +114,32 @@ const Login = () => {
 export default Login;
 
 const styles = {
-  page: {
-    backgroundImage: `url(${BACKGROUND_IMAGE})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    minHeight: '100vh',
+  container: {
+    display: 'flex',
+    height: '100vh',
+    width: '100%',
+    fontFamily: 'Segoe UI, sans-serif',
+  },
+  left: {
+    flex: 1,
+    background: '#fff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Segoe UI, sans-serif',
-    position: 'relative',
   },
-  overlay: {
-    position: 'absolute',
-    inset: 0,
-    background: 'rgba(255, 255, 255, 0.2)',
-    backdropFilter: 'blur(6px)',
-    zIndex: 1,
+  right: {
+    flex: 1,
+    overflow: 'hidden',
+  },
+  bgImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
   card: {
-    position: 'relative',
-    zIndex: 2,
     background: 'white',
     borderRadius: '20px',
-    border: '3px solid #d2691e', // 🔸 orange-ish spiritual tone
+    border: '3px solid #d2691e', // Orange border
     padding: '40px',
     width: '90%',
     maxWidth: '400px',
@@ -141,8 +152,14 @@ const styles = {
     borderRadius: '50%',
     objectFit: 'cover',
     border: '4px solid #FFD700',
-    marginBottom: '20px',
+    marginBottom: '10px',
     boxShadow: '0 5px 15px rgba(0,0,0,0.15)',
+  },
+  subtitle: {
+    fontSize: '16px',
+    color: '#333',
+    fontStyle: 'italic',
+    marginBottom: '20px',
   },
   form: {
     display: 'flex',
@@ -157,7 +174,7 @@ const styles = {
   label: {
     fontWeight: 'bold',
     fontSize: '16px',
-    color: '#8B0000', // Deep red color
+    color: '#8B0000', // Deep red
     marginBottom: '5px',
   },
   input: {
