@@ -1,4 +1,4 @@
-/* Container split layout */
+/* Container Layout */
 .login-container {
   display: flex;
   height: 100vh;
@@ -7,54 +7,53 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left Image Panel */
+/* Left Panel: Full Image */
 .login-left {
   flex: 1;
   background-image: url('/images/background.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* Right Form Panel */
+/* Right Panel: Login Form */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff8f0; /* Soft background that blends with image */
+  background-color: #fef7ec; /* Slight beige tone that blends well */
 }
 
-/* Login Card Box */
+/* Login Form Box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
   padding: 40px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  background-color: #fef7ec; /* Matching the right panel */
   text-align: center;
 }
 
-/* Logo styling */
+/* Logo Styling */
 .login-logo {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 15px;
-  border: 4px solid #ffd700;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 5px solid #ffd700;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
 }
 
 /* Tagline */
 .login-tagline {
-  font-size: 15px;
-  color: #333;
+  font-size: 16px;
+  color: #4b2e0d;
   font-style: italic;
   margin-bottom: 20px;
 }
 
-/* Form Styling */
+/* Form Styles */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -62,17 +61,20 @@
 }
 
 .login-form label {
-  text-align: left;
   font-weight: 600;
   font-size: 14px;
   color: #8B0000;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
 }
 
 .login-form input {
-  padding: 12px 15px;
+  padding: 12px 14px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 15px;
+  width: 100%;
   outline: none;
 }
 
@@ -90,7 +92,7 @@
 }
 
 .login-form button:hover {
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 /* Error Box */
@@ -104,8 +106,8 @@
 
 /* Links */
 .login-link {
+  margin-top: 15px;
   font-size: 14px;
-  margin-top: 8px;
   color: #333;
 }
 
@@ -115,31 +117,30 @@
   text-decoration: none;
 }
 
-/* Responsive Design */
+/* Responsive: Mobile Layout */
 @media screen and (max-width: 768px) {
   .login-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .login-left,
   .login-right {
-    flex: none;
     width: 100%;
     height: 50vh;
   }
 
   .login-right {
-    height: auto;
     padding: 20px;
   }
 
   .login-form-box {
-    padding: 20px;
+    background-color: #fef7ec;
     box-shadow: none;
+    padding: 25px;
   }
 
   .login-logo {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
   }
 }
