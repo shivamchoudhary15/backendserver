@@ -42,17 +42,13 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.left}>
-        <img src={BACKGROUND_IMAGE} alt="Background" style={styles.bgImage} />
-      </div>
-
-      <div style={styles.right}>
+    <div style={styles.page}>
+      <div style={styles.overlay}>
         <motion.div
-          style={styles.card}
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, type: 'spring' }}
+          style={styles.formContainer}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
         >
           <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
           <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
@@ -97,12 +93,10 @@ const Login = () => {
             </motion.button>
 
             <p style={styles.text}>
-              Don’t have an account?{' '}
-              <Link to="/signup" style={styles.link}>Join as Devotee</Link>
+              Don’t have an account? <Link to="/signup" style={styles.link}>Join as Devotee</Link>
             </p>
-            <p style={{ ...styles.text, marginTop: '10px' }}>
-              Are you a Pandit?{' '}
-              <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
+            <p style={{ ...styles.text, marginTop: '8px' }}>
+              Are you a Pandit? <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
             </p>
           </form>
         </motion.div>
@@ -114,40 +108,30 @@ const Login = () => {
 export default Login;
 
 const styles = {
-  container: {
-    display: 'flex',
+  page: {
+    backgroundImage: `url(${BACKGROUND_IMAGE})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
-    fontFamily: 'Segoe UI, sans-serif',
-    flexDirection: 'row',
-    margin: 0,
-    padding: 0,
-  },
-  left: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-  right: {
-    flex: 1,
-    backgroundColor: '#fdf1e5', // Matched to spiritual background
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  overlay: {
+    width: '100%',
     padding: '20px',
+    backgroundColor: 'rgba(255,255,255, 0)', // fully transparent, image shows fully
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  bgImage: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  card: {
-    background: '#fff',
-    borderRadius: '20px',
-    border: '3px solid #d2691e',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '400px',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+  formContainer: {
     textAlign: 'center',
+    color: '#222',
+    maxWidth: '400px',
+    width: '100%',
+    padding: '20px',
   },
   logo: {
     width: '130px',
@@ -156,13 +140,11 @@ const styles = {
     objectFit: 'cover',
     border: '4px solid #FFD700',
     marginBottom: '10px',
-    boxShadow: '0 5px 15px rgba(0,0,0,0.15)',
-    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: '16px',
-    color: '#444',
     fontStyle: 'italic',
+    color: '#333',
     marginBottom: '25px',
   },
   form: {
@@ -171,37 +153,34 @@ const styles = {
     gap: '20px',
   },
   inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    textAlign: 'left',
   },
   label: {
     fontWeight: 'bold',
-    fontSize: '15px',
     color: '#8B0000',
     marginBottom: '5px',
+    fontSize: '15px',
   },
   input: {
-    padding: '12px 16px',
-    borderRadius: '10px',
-    border: '1px solid #ccc',
-    fontSize: '16px',
     width: '100%',
-    outline: 'none',
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid #ccc',
+    fontSize: '15px',
   },
   button: {
     padding: '14px',
     background: 'linear-gradient(to right, #d2691e, #ff9933)',
     border: 'none',
-    borderRadius: '30px',
+    borderRadius: '25px',
     color: '#fff',
+    fontWeight: 'bold',
     fontSize: '16px',
-    fontWeight: '600',
     cursor: 'pointer',
   },
   text: {
     fontSize: '14px',
-    color: '#333',
+    color: '#222',
   },
   link: {
     color: '#8B0000',
@@ -212,7 +191,8 @@ const styles = {
     backgroundColor: '#ffe6e6',
     color: '#d8000c',
     padding: '10px',
-    borderRadius: '8px',
+    borderRadius: '6px',
     fontWeight: 'bold',
+    fontSize: '14px',
   },
 };
