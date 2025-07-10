@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 // --- YOUR SHUBHKARYA LOGO/IMAGE PATH ---
 // Make sure you have placed your image file (e.g., 'shubhkarya-logo.png')
 // inside your 'public/images/' folder.
-const SHUBHKARYA_LOGO_PATH = '/images/shubhkarya-logo.png'; // <--- UPDATE THIS PATH TO YOUR IMAGE FILE
+const SHUBHKARYA_LOGO_PATH = '/images/logo_shubh.png'; // <--- UPDATE THIS PATH TO YOUR IMAGE FILE
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
