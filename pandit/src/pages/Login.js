@@ -194,7 +194,7 @@ export default function Login() {
           </p>
           <p style={styles.signupText}>
             Are you a Pandit?{' '}
-            <Link to="/signup-pandit" style={styles.signupLink}>
+            <Link to="/signup/pandit" style={styles.signupLink}>
               Register as Pandit <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
             </Link>
           </p>
