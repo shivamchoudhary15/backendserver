@@ -69,7 +69,15 @@ function Dashboard() {
         </div>
       )}
 
-      <div style={styles.buttonGroup}>
+      // <div style={styles.buttonGroup}>
+      //   <button className="custom-btn" onClick={handleBookingRedirect}>
+      //     📅 Book a Service
+      //   </button>
+      //   <button className="custom-btn" onClick={handleLogout}>
+      //     🚪 Logout
+      //   </button>
+      // </div>
+       <div style={styles.buttonGroup}>
         <button className="custom-btn" onClick={handleBookingRedirect}>
           📅 Book a Service
         </button>
@@ -78,7 +86,17 @@ function Dashboard() {
         </button>
       </div>
 
-      {/* New buttons */}
+
+
+      // {/* New buttons */}
+      // <div style={styles.buttonGroup}>
+      //   <button className="custom-btn" onClick={() => navigate('/join-devotee')}>
+      //     🙏 Join as Devotee
+      //   </button>
+      //   <button className="custom-btn" onClick={() => navigate('/register-pandit')}>
+      //     📿 Register as Pandit
+      //   </button>
+      // </div>
       <div style={styles.buttonGroup}>
         <button className="custom-btn" onClick={() => navigate('/join-devotee')}>
           🙏 Join as Devotee
@@ -87,6 +105,7 @@ function Dashboard() {
           📿 Register as Pandit
         </button>
       </div>
+
 
       <hr style={{ margin: '30px 0' }} />
       <h3 style={styles.reviewHeading}>✍️ Submit a Review</h3>
@@ -131,9 +150,13 @@ function Dashboard() {
           />
         </label>
 
+        // <button type="submit" className="custom-btn">
+        //   📝 Submit Review
+        // </button>
         <button type="submit" className="custom-btn">
           📝 Submit Review
         </button>
+
       </form>
     </div>
   );
