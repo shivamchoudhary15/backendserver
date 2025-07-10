@@ -1,0 +1,17 @@
+/* Dashboard.css */
+
+.custom-btn {
+  flex: 1;
+  padding: 10px;
+  background-color: #2c7be5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #1a5fd0; /* Blue pop hover */
+}
