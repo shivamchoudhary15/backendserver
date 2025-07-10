@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview } from '../api/api';
-import { motion } from 'framer-motion';
-import './Dashboard.css'; // Updated CSS with animations and styles
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -40,6 +38,7 @@ function Dashboard() {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
+
     const { name, rating, comment } = review;
     const ratingValue = Number(rating);
 
@@ -59,22 +58,13 @@ function Dashboard() {
   };
 
   return (
-    <motion.div
-      style={styles.container}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      <motion.h2
-        style={styles.heading}
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        📊 Dashboard
-      </motion.h2>
+    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+      <h2>📊 Dashboard</h2>
+    <div style={styles.container}>
+      <h2 style={styles.heading}>📊 Dashboard</h2>
 
       {user && (
+        <div style={{ marginBottom: '20px' }}>
         <div style={styles.userInfo}>
           <p>
             Welcome, <strong>{user.name}</strong> ({user.email})
@@ -82,51 +72,46 @@ function Dashboard() {
         </div>
       )}
 
+      <div style={{ marginBottom: '20px' }}>
+        <button onClick={handleBookingRedirect}>📅 Book a Service</button>
+        <button
+          onClick={handleLogout}
+          style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}
+        >
       <div style={styles.buttonGroup}>
-        <button className="custom-btn" onClick={handleBookingRedirect}>
+        <button style={styles.primaryButton} onClick={handleBookingRedirect}>
           📅 Book a Service
         </button>
-        <button className="custom-btn" onClick={handleLogout}>
+        <button style={styles.logoutButton} onClick={handleLogout}>
           🚪 Logout
         </button>
       </div>
 
-      <div style={styles.buttonGroup}>
-        <button className="custom-btn" onClick={() => navigate('/join-devotee')}>
-          🙏 Join as Devotee
-        </button>
-        <button className="custom-btn" onClick={() => navigate('/register-pandit')}>
-          📿 Register as Pandit
-        </button>
-      </div>
-
+      <hr />
+      <h3>✍️ Submit a Review</h3>
+      {reviewMessage && <p>{reviewMessage}</p>}
       <hr style={{ margin: '30px 0' }} />
       <h3 style={styles.reviewHeading}>✍️ Submit a Review</h3>
+      {reviewMessage && <p style={styles.message}>{reviewMessage}</p>}
 
-      {reviewMessage && (
-        <p className={reviewMessage.includes('✅') ? 'success-message' : 'error-message'}>
-          {reviewMessage}
-        </p>
-      )}
-
-      <motion.form
-        onSubmit={handleReviewSubmit}
-        style={styles.form}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-      >
+      <form onSubmit={handleReviewSubmit}>
+        <label>
+      <form onSubmit={handleReviewSubmit} style={styles.form}>
         <label style={styles.label}>
           Name:
           <input
             type="text"
             name="name"
             value={review.name}
-            disabled
+            onChange={(e) => setReview({ ...review, name: e.target.value })}
+            required
             style={styles.input}
+            disabled
           />
         </label>
+        <br />
 
+        <label>
         <label style={styles.label}>
           Rating (1–5):
           <input
@@ -140,7 +125,9 @@ function Dashboard() {
             style={styles.input}
           />
         </label>
+        <br />
 
+        <label>
         <label style={styles.label}>
           Comment:
           <textarea
@@ -151,24 +138,27 @@ function Dashboard() {
             style={styles.textarea}
           />
         </label>
+        <br />
 
-        <button type="submit" className="custom-btn">
+        <button type="submit">📝 Submit Review</button>
+        <button type="submit" style={styles.primaryButton}>
           📝 Submit Review
         </button>
-      </motion.form>
-    </motion.div>
+      </form>
+    </div>
   );
 }
 
+export default Dashboard;
 const styles = {
   container: {
     padding: '30px',
-    maxWidth: '650px',
-    margin: '40px auto',
+    maxWidth: '600px',
+    margin: 'auto',
     fontFamily: 'Segoe UI, sans-serif',
-    background: 'linear-gradient(to right, #ffffff, #f7f9fc)',
-    borderRadius: '16px',
-    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.1)',
+    background: '#fefefe',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
   },
   heading: {
     textAlign: 'center',
@@ -189,10 +179,35 @@ const styles = {
     marginBottom: '20px',
     gap: '10px',
   },
+  primaryButton: {
+    flex: 1,
+    padding: '10px',
+    backgroundColor: '#2c7be5',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  logoutButton: {
+    flex: 1,
+    padding: '10px',
+    backgroundColor: '#e74c3c',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
   reviewHeading: {
     fontSize: '22px',
     marginBottom: '10px',
     color: '#34495e',
+  },
+  message: {
+    color: '#16a085',
+    fontWeight: 'bold',
+    marginBottom: '10px',
   },
   form: {
     display: 'flex',
@@ -223,9 +238,5 @@ const styles = {
 };
 
 export default Dashboard;
-
-
-// export default Dashboard;
-
 
 
