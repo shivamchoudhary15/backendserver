@@ -3,12 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
-// Background image (can be changed)
-const SPIRITUAL_BACKGROUND_IMAGE =
-  'https://plus.unsplash.com/premium_photo-1716903508664-8e23f6ba4331?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-// --- Direct URL for spiritual background image ---
-// If you find an even higher resolution/clearer image, update this URL.
+// --- BACKGROUND IMAGE SOURCE ---
+// This is the direct URL you provided.
+// For best reliability, consider using a high-quality local image.
 const SPIRITUAL_BACKGROUND_IMAGE = 'https://plus.unsplash.com/premium_photo-1716903508664-8e23f6ba4331?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
+// --- YOUR SHUBHKARYA LOGO IMAGE PATH ---
+// Make sure you have placed your logo file (e.g., 'shubhkaraya-logo.png')
+// inside your 'public/images/' folder.
+const SHUBHKARYA_LOGO_PATH = '/images/logo_shubh.png'; // <--- IMPORTANT: Verify this path and filename!
 
 // --- Custom gradient for the submit button ---
 const PRIMARY_BUTTON_GRADIENT = 'linear-gradient(145deg, #CD5C5C 0%, #FF6347 100%)'; // IndianRed to Tomato
@@ -65,7 +68,6 @@ export default function Login() {
         type: 'spring',
         stiffness: 70,
         damping: 10,
-        delay: 0.3,
         delay: 0.3, // Delay for the whole form to appear after background
       },
     },
@@ -79,8 +81,6 @@ export default function Login() {
   const buttonVariants = {
     hover: {
       scale: 1.03,
-      boxShadow: '0px 10px 25px rgba(205, 92, 92, 0.4)',
-      transition: { duration: 0.2 },
       boxShadow: '0px 12px 30px rgba(205, 92, 92, 0.5)', // Deeper, more vibrant shadow on hover
       background: 'linear-gradient(145deg, #FF6347 0%, #CD5C5C 100%)', // Reverse gradient on hover
       transition: { duration: 0.2 }
@@ -89,10 +89,8 @@ export default function Login() {
   };
 
   const inputFocus = {
-    boxShadow: '0 0 0 4px rgba(106, 5, 114, 0.3)',
     boxShadow: '0 0 0 5px rgba(106, 5, 114, 0.35)', // Larger, more pronounced glow
     borderColor: '#6A0572',
-    transition: { duration: 0.2 },
     transition: { duration: 0.2 }
   };
 
@@ -103,9 +101,9 @@ export default function Login() {
       initial="hidden"
       animate="visible"
     >
+      {/* This overlay div is effectively hidden by styles.overlay.display: 'none' */}
       <div style={styles.overlay}></div>
 
-      <motion.div style={styles.container} variants={formContainerVariants}>
       <motion.div
         style={styles.container}
         variants={formContainerVariants}
@@ -114,19 +112,14 @@ export default function Login() {
           onSubmit={handleSubmit}
           style={styles.form}
           variants={formItemVariants}
-          onSubmit={handleSubmit}
           initial="hidden"
           animate="visible"
         >
           <div style={styles.logoPlaceholder}>
-            <span style={styles.logoIcon}>
-              <i className="fas fa-om"></i>
-            </span>
-            <h2 style={styles.title}>Pandit Booking</h2>
-            <p style={styles.subtitle}>Welcome Back, Devotee!</p>
-            <span style={styles.logoIcon}><i className="fas fa-om"></i></span>
-            <h2 style={styles.title}>ShubhKarya</h2> {/* Startup name: ShubhKarya */}
-            <p style={styles.subtitle}>Your Path to Sacred Beginnings</p> {/* New tagline */}
+            {/* Your ShubhKarya Logo Image */}
+            <img src={SHUBHKARYA_LOGO_PATH} alt="ShubhKarya Logo" style={styles.shubhKaryaLogo} onError={(e) => { e.target.onerror = null; e.target.src="/images/default.jpg"; console.error("Logo failed to load:", SHUBHKARYA_LOGO_PATH); }} />
+            <h2 style={styles.title}>ShubhKarya</h2> {/* Startup name */}
+            <p style={styles.subtitle}>Your Path to Sacred Beginnings</p> {/* Tagline */}
           </div>
 
           {error && (
@@ -225,30 +218,21 @@ const styles = {
     color: '#333',
     overflow: 'hidden',
   },
+  // This 'overlay' is now effectively hidden to make the background image clearer.
+  // The background clarity and blurring behind the form is handled by 'styles.container'.
   overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.92)',
-    backgroundColor: 'rgba(255, 255, 255, 0.82)', // Reduced opacity for more background image clarity
-    zIndex: 1,
-    backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.92) 100%)', // Subtle radial gradient
+    display: 'none',
   },
   container: {
     position: 'relative',
     zIndex: 2,
-    padding: '40px 50px',
-    maxWidth: '500px',
-    padding: '45px 55px', // Increased padding for more luxurious feel
+    padding: '45px 55px', // Increased padding for a luxurious feel
     maxWidth: '520px', // Slightly wider
     width: '90%',
     margin: 'auto',
-    backgroundColor: '#ffffff',
-    borderRadius: '20px',
-    boxShadow: '0 20px 50px rgba(0,0,0,0.2)',
-    backgroundColor: '#ffffff', // Clean white background for the form card
+    backgroundColor: 'rgba(255, 255, 255, 0.7)', // Semi-transparent white for the form card
+    backdropFilter: 'blur(10px)', // Blurs the background *behind* the card (modern effect)
+    WebkitBackdropFilter: 'blur(10px)', // For Safari support
     borderRadius: '25px', // Even more rounded corners
     boxShadow: '0 25px 60px rgba(0,0,0,0.25)', // Deeper, more elegant shadow
     display: 'flex',
@@ -257,41 +241,29 @@ const styles = {
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '22px',
     gap: '24px', // More space between elements
   },
   logoPlaceholder: {
     textAlign: 'center',
-    marginBottom: '30px',
     marginBottom: '35px',
   },
-  logoIcon: {
-    fontSize: '55px',
-    color: '#6A0572',
-    marginBottom: '10px',
-    fontSize: '60px', // Larger icon for more presence
-    color: '#6A0572', // Deep purple
-    marginBottom: '12px',
-    display: 'block',
-    textShadow: '2px 2px 5px rgba(0,0,0,0.1)', // Subtle shadow for icon
+  shubhKaryaLogo: { // Specific styles for your logo image
+    width: '80px', // Adjust size as needed
+    height: 'auto',
+    marginBottom: '12px', // Space below logo
+    borderRadius: '50%', // If you want a circular logo
+    border: '3px solid #FFD700', // Gold border for auspicious touch
+    boxShadow: '0 5px 15px rgba(0,0,0,0.15)', // Subtle shadow for depth
   },
   title: {
     fontFamily: "'Playfair Display', serif",
-    fontSize: '38px',
-    color: '#8B4513',
     fontSize: '42px', // Larger, more impactful title for ShubhKarya
     color: '#8B4513', // SaddleBrown
     fontWeight: 'bold',
-    marginBottom: '5px',
-    textShadow: '1px 1px 3px rgba(0,0,0,0.08)',
     marginBottom: '8px',
     textShadow: '1px 1px 4px rgba(0,0,0,0.1)',
   },
   subtitle: {
-    fontSize: '18px',
-    color: '#555',
-    marginBottom: '20px',
-    fontStyle: 'italic',
     fontSize: '19px', // Slightly larger subtitle
     color: '#666',
     marginBottom: '25px',
@@ -302,14 +274,10 @@ const styles = {
     color: '#dc3545',
     backgroundColor: '#ffe6e6',
     border: '1px solid #dc3545',
-    padding: '12px 20px',
-    borderRadius: '10px',
-    fontSize: '15px',
     padding: '14px 22px',
     borderRadius: '12px',
     fontSize: '16px',
     textAlign: 'center',
-    marginBottom: '15px',
     marginBottom: '18px',
     fontWeight: '500',
     display: 'flex',
@@ -320,58 +288,41 @@ const styles = {
   inputGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
     gap: '10px',
   },
   label: {
     fontWeight: '600',
     color: '#4A4A4A',
-    fontSize: '16px',
     fontSize: '17px',
     display: 'flex',
     alignItems: 'center',
   },
   icon: {
-    marginRight: '10px',
     marginRight: '12px',
     color: '#6A0572',
-    fontSize: '18px',
     fontSize: '20px',
   },
   input: {
-    padding: '16px 20px',
-    fontSize: '17px',
-    borderRadius: '12px',
-    border: '1px solid #e0e0e0',
     padding: '18px 22px', // Increased padding for a substantial feel
     fontSize: '18px',
     borderRadius: '15px', // More rounded
     border: '1px solid #d0d0d0', // Very subtle border
     outline: 'none',
-    transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-    width: 'calc(100% - 40px)',
     transition: 'border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease',
     width: 'calc(100% - 44px)', // Adjust width for padding
     boxSizing: 'border-box',
     backgroundColor: '#fdfdfd', // Very subtle off-white background for inputs
   },
   button: {
-    marginTop: '25px',
-    padding: '16px 30px',
-    fontSize: '18px',
-    background: 'linear-gradient(135deg, #CD5C5C 0%, #FF6347 100%)',
-    marginTop: '30px', // More space above button
-    padding: '18px 35px', // Larger button
-    fontSize: '19px', // Larger font
+    marginTop: '30px',
+    padding: '18px 35px',
+    fontSize: '19px',
     background: PRIMARY_BUTTON_GRADIENT, // Custom gradient
     color: 'white',
     border: 'none',
-    borderRadius: '35px',
     borderRadius: '40px', // Very pill-shaped
     cursor: 'pointer',
     fontWeight: '700',
-    letterSpacing: '0.8px',
-    boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)',
     letterSpacing: '1px',
     boxShadow: '0 8px 25px rgba(205, 92, 92, 0.4)', // Initial shadow
     transition: 'all 0.3s ease',
@@ -381,10 +332,8 @@ const styles = {
   },
   signupText: {
     textAlign: 'center',
-    fontSize: '15px',
     fontSize: '16px',
     color: '#666',
-    marginTop: '18px',
     marginTop: '22px',
   },
   signupLink: {
