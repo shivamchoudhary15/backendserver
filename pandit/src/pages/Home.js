@@ -82,30 +82,6 @@ function Home() {
           ))}
         </div>
       </section>
-
-      <section style={styles.actionSection}>
-        {!token ? (
-          <>
-            <h3 style={styles.sectionTitle}>🚀 Get Started</h3>
-            <div>
-              <Link to="/signup"><button style={{ ...styles.button, ...styles.primary }}>Join as Devotee</button></Link>
-              <Link to="/signup/pandit"><button style={{ ...styles.button, ...styles.secondary }}>Register as Pandit</button></Link>
-            </div>
-          </>
-        ) : (
-          <>
-            <h3 style={styles.sectionTitle}>👋 Welcome Back</h3>
-            <div>
-              <button style={{ ...styles.button, ...styles.primary }} onClick={() => navigate('/dashboard')}>
-                Go to Dashboard
-              </button>
-              <button style={{ ...styles.button, ...styles.secondary }} onClick={handleBookingClick}>
-                Book a Pooja
-              </button>
-            </div>
-          </>
-        )}
-      </section>
     </div>
   );
 }
@@ -214,26 +190,6 @@ const styles = {
   cardDesc: {
     fontSize: '14px',
     color: '#666',
-  },
-  actionSection: {
-    marginTop: '50px',
-    textAlign: 'center',
-  },
-  button: {
-    padding: '12px 20px',
-    fontSize: '16px',
-    borderRadius: '8px',
-    margin: '10px',
-    cursor: 'pointer',
-    border: 'none',
-  },
-  primary: {
-    backgroundColor: '#2c7be5',
-    color: '#fff',
-  },
-  secondary: {
-    backgroundColor: '#f4b400',
-    color: '#fff',
   },
   searchInput: {
     padding: '10px',
