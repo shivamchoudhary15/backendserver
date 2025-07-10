@@ -38,7 +38,6 @@ function Dashboard() {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-
     const { name, rating, comment } = review;
     const ratingValue = Number(rating);
 
@@ -58,13 +57,10 @@ function Dashboard() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-      <h2>📊 Dashboard</h2>
     <div style={styles.container}>
       <h2 style={styles.heading}>📊 Dashboard</h2>
 
       {user && (
-        <div style={{ marginBottom: '20px' }}>
         <div style={styles.userInfo}>
           <p>
             Welcome, <strong>{user.name}</strong> ({user.email})
@@ -72,12 +68,6 @@ function Dashboard() {
         </div>
       )}
 
-      <div style={{ marginBottom: '20px' }}>
-        <button onClick={handleBookingRedirect}>📅 Book a Service</button>
-        <button
-          onClick={handleLogout}
-          style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}
-        >
       <div style={styles.buttonGroup}>
         <button style={styles.primaryButton} onClick={handleBookingRedirect}>
           📅 Book a Service
@@ -87,15 +77,11 @@ function Dashboard() {
         </button>
       </div>
 
-      <hr />
-      <h3>✍️ Submit a Review</h3>
-      {reviewMessage && <p>{reviewMessage}</p>}
       <hr style={{ margin: '30px 0' }} />
+
       <h3 style={styles.reviewHeading}>✍️ Submit a Review</h3>
       {reviewMessage && <p style={styles.message}>{reviewMessage}</p>}
 
-      <form onSubmit={handleReviewSubmit}>
-        <label>
       <form onSubmit={handleReviewSubmit} style={styles.form}>
         <label style={styles.label}>
           Name:
@@ -109,9 +95,7 @@ function Dashboard() {
             disabled
           />
         </label>
-        <br />
 
-        <label>
         <label style={styles.label}>
           Rating (1–5):
           <input
@@ -125,9 +109,7 @@ function Dashboard() {
             style={styles.input}
           />
         </label>
-        <br />
 
-        <label>
         <label style={styles.label}>
           Comment:
           <textarea
@@ -138,9 +120,7 @@ function Dashboard() {
             style={styles.textarea}
           />
         </label>
-        <br />
 
-        <button type="submit">📝 Submit Review</button>
         <button type="submit" style={styles.primaryButton}>
           📝 Submit Review
         </button>
@@ -150,6 +130,7 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
 const styles = {
   container: {
     padding: '30px',
@@ -236,7 +217,3 @@ const styles = {
     fontSize: '15px',
   },
 };
-
-export default Dashboard;
-
-
