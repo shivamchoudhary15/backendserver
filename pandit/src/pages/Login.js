@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
-import './Login.css'; // ✅ Import the CSS file
+import './Login.css'; // 👈 Import CSS
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -40,49 +40,54 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left Side Background Image */}
+      {/* Left: Background Image */}
       <div className="login-left" />
 
-      {/* Right Side Login Form */}
+      {/* Right: Login Form */}
       <div className="login-right">
         <div className="login-form-box">
-          <img src="/images/subh.png" alt="Logo" className="login-logo" />
+          <img src="/images/logo.png" alt="Logo" className="login-logo" />
           <p className="login-tagline">Your Path to Sacred Beginnings</p>
 
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error">{error}</div>}
-
-            <label>Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              placeholder="example@gmail.com"
-            />
-
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              placeholder="********"
-            />
-
+            <div>
+              <label>Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                placeholder="example@gmail.com"
+              />
+            </div>
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                placeholder="********"
+              />
+            </div>
             <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
-
-            <p className="login-link">
-              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
-            </p>
-            <p className="login-link">
-              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
-            </p>
           </form>
+
+          <div className="login-link">
+            <p>
+              Don’t have an account?{' '}
+              <Link to="/signup">Join as Devotee</Link>
+            </p>
+            <p style={{ marginTop: '10px' }}>
+              Are you a Pandit?{' '}
+              <Link to="/signup/pandit">Register as Pandit</Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
