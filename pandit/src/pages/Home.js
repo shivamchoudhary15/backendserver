@@ -34,11 +34,12 @@ function Home() {
         <div>
           <h1 style={styles.logo}>🕉️ Pandit Booking</h1>
         </div>
-        <div style={styles.navLinks}>
-          <Link to="/signup" style={styles.navLink}>Join as Devotee</Link>
-          <Link to="/signup/pandit" style={styles.navLink}>Register as Pandit</Link>
-          {!token && <Link to="/login" style={styles.navLink}>Login</Link>}
-        </div>
+     <div style={styles.navLinks}>
+         <Link to="/signup" style={styles.navLink}>Join as Devotee</Link>
+        <Link to="/signup/pandit" style={styles.navLink}>Register as Pandit</Link>
+        <Link to="/login" style={styles.navLink}>Login</Link>
+     </div>
+
       </nav>
 
       <header style={styles.header}>
