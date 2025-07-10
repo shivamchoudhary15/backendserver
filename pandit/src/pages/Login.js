@@ -3,8 +3,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
-// Using the direct URL for the spiritual background image
-const SPIRITUAL_BACKGROUND_IMAGE = 'https://plus.unsplash.com/premium_photo-1716903508664-8e23f6ba4331?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+// Background image (can be changed)
+const SPIRITUAL_BACKGROUND_IMAGE =
+  'https://plus.unsplash.com/premium_photo-1716903508664-8e23f6ba4331?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,7 +43,6 @@ export default function Login() {
     }
   };
 
-  // Framer Motion Variants for more intricate animations
   const pageWrapperVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -58,7 +58,7 @@ export default function Login() {
         type: 'spring',
         stiffness: 70,
         damping: 10,
-        delay: 0.3, // Delay for the whole form to appear after background
+        delay: 0.3,
       },
     },
   };
@@ -71,16 +71,16 @@ export default function Login() {
   const buttonVariants = {
     hover: {
       scale: 1.03,
-      boxShadow: '0px 10px 25px rgba(205, 92, 92, 0.4)', // Deeper shadow on hover
-      transition: { duration: 0.2 }
+      boxShadow: '0px 10px 25px rgba(205, 92, 92, 0.4)',
+      transition: { duration: 0.2 },
     },
     tap: { scale: 0.97 },
   };
 
   const inputFocus = {
-    boxShadow: '0 0 0 4px rgba(106, 5, 114, 0.3)', // Larger, softer purple glow
+    boxShadow: '0 0 0 4px rgba(106, 5, 114, 0.3)',
     borderColor: '#6A0572',
-    transition: { duration: 0.2 }
+    transition: { duration: 0.2 },
   };
 
   return (
@@ -92,13 +92,16 @@ export default function Login() {
     >
       <div style={styles.overlay}></div>
 
-      <motion.div
-        style={styles.container}
-        variants={formContainerVariants}
-      >
-        <motion.div style={styles.form} variants={formItemVariants}>
+      <motion.div style={styles.container} variants={formContainerVariants}>
+        <motion.form
+          style={styles.form}
+          variants={formItemVariants}
+          onSubmit={handleSubmit}
+        >
           <div style={styles.logoPlaceholder}>
-            <span style={styles.logoIcon}><i className="fas fa-om"></i></span> {/* Om icon */}
+            <span style={styles.logoIcon}>
+              <i className="fas fa-om"></i>
+            </span>
             <h2 style={styles.title}>Pandit Booking</h2>
             <p style={styles.subtitle}>Welcome Back, Devotee!</p>
           </div>
@@ -107,7 +110,7 @@ export default function Login() {
             <motion.p
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }} // Animation for disappearing error
+              exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.3 }}
               style={styles.errorMessage}
             >
@@ -205,41 +208,41 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.92)', // Slightly more opaque overlay for content focus
+    backgroundColor: 'rgba(255, 255, 255, 0.92)',
     zIndex: 1,
   },
   container: {
     position: 'relative',
     zIndex: 2,
-    padding: '40px 50px', // More horizontal padding
-    maxWidth: '500px', // Slightly wider container
+    padding: '40px 50px',
+    maxWidth: '500px',
     width: '90%',
     margin: 'auto',
     backgroundColor: '#ffffff',
-    borderRadius: '20px', // More rounded
-    boxShadow: '0 20px 50px rgba(0,0,0,0.2)', // Deeper, softer shadow
+    borderRadius: '20px',
+    boxShadow: '0 20px 50px rgba(0,0,0,0.2)',
     display: 'flex',
     flexDirection: 'column',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '22px', // More space between elements
+    gap: '22px',
   },
   logoPlaceholder: {
     textAlign: 'center',
     marginBottom: '30px',
   },
   logoIcon: {
-    fontSize: '55px', // Larger icon
-    color: '#6A0572', // Deep purple
+    fontSize: '55px',
+    color: '#6A0572',
     marginBottom: '10px',
-    display: 'block', // Ensures margin works
+    display: 'block',
   },
   title: {
     fontFamily: "'Playfair Display', serif",
-    fontSize: '38px', // Larger, more impactful title
-    color: '#8B4513', // SaddleBrown
+    fontSize: '38px',
+    color: '#8B4513',
     fontWeight: 'bold',
     marginBottom: '5px',
     textShadow: '1px 1px 3px rgba(0,0,0,0.08)',
@@ -254,8 +257,8 @@ const styles = {
     color: '#dc3545',
     backgroundColor: '#ffe6e6',
     border: '1px solid #dc3545',
-    padding: '12px 20px', // More padding
-    borderRadius: '10px', // More rounded
+    padding: '12px 20px',
+    borderRadius: '10px',
     fontSize: '15px',
     textAlign: 'center',
     marginBottom: '15px',
@@ -267,42 +270,42 @@ const styles = {
   inputGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px', // Space between label and input
+    gap: '8px',
   },
   label: {
     fontWeight: '600',
-    color: '#4A4A4A', // Slightly darker grey
+    color: '#4A4A4A',
     fontSize: '16px',
     display: 'flex',
     alignItems: 'center',
   },
   icon: {
     marginRight: '10px',
-    color: '#6A0572', // Deep purple for icons
+    color: '#6A0572',
     fontSize: '18px',
   },
   input: {
-    padding: '16px 20px', // Increased padding for a more substantial feel
-    fontSize: '17px', // Slightly larger font
-    borderRadius: '12px', // More rounded
-    border: '1px solid #e0e0e0', // Lighter, subtle border
+    padding: '16px 20px',
+    fontSize: '17px',
+    borderRadius: '12px',
+    border: '1px solid #e0e0e0',
     outline: 'none',
     transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
-    width: 'calc(100% - 40px)', // Adjust width for padding
-    boxSizing: 'border-box', // Include padding in width
+    width: 'calc(100% - 40px)',
+    boxSizing: 'border-box',
   },
   button: {
-    marginTop: '25px', // More space above button
-    padding: '16px 30px', // Larger padding
-    fontSize: '18px', // Larger font
-    background: 'linear-gradient(135deg, #CD5C5C 0%, #FF6347 100%)', // IndianRed to Tomato gradient
+    marginTop: '25px',
+    padding: '16px 30px',
+    fontSize: '18px',
+    background: 'linear-gradient(135deg, #CD5C5C 0%, #FF6347 100%)',
     color: 'white',
     border: 'none',
-    borderRadius: '35px', // More pill-shaped
+    borderRadius: '35px',
     cursor: 'pointer',
     fontWeight: '700',
-    letterSpacing: '0.8px', // Tighter spacing
-    boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)', // Initial shadow
+    letterSpacing: '0.8px',
+    boxShadow: '0 6px 20px rgba(205, 92, 92, 0.4)',
     transition: 'all 0.3s ease',
     display: 'flex',
     alignItems: 'center',
@@ -312,10 +315,10 @@ const styles = {
     textAlign: 'center',
     fontSize: '15px',
     color: '#666',
-    marginTop: '18px', // More space between sections
+    marginTop: '18px',
   },
   signupLink: {
-    color: '#8B4513', // SaddleBrown for links
+    color: '#8B4513',
     textDecoration: 'none',
     fontWeight: '700',
     transition: 'color 0.3s ease, text-decoration 0.3s ease',
