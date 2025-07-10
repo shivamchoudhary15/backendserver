@@ -1,4 +1,4 @@
-/* Container Layout */
+/* Container split layout */
 .login-container {
   display: flex;
   height: 100vh;
@@ -7,7 +7,7 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left Panel: Full Image */
+/* Left: Background image */
 .login-left {
   flex: 1;
   background-image: url('/images/background.jpg');
@@ -16,69 +16,64 @@
   background-repeat: no-repeat;
 }
 
-/* Right Panel: Login Form */
+/* Right: Login form */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fef7ec; /* Slight beige tone that blends well */
+  background-color: rgba(255, 255, 255, 0.9); /* Light blend */
 }
 
-/* Login Form Box */
+/* Login box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
-  padding: 40px;
-  background-color: #fef7ec; /* Matching the right panel */
   text-align: center;
 }
 
-/* Logo Styling */
+/* Logo styling */
 .login-logo {
   width: 130px;
   height: 130px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid #ffd700;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  margin-bottom: 10px;
+  border: 4px solid #ffd700;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
 }
 
 /* Tagline */
 .login-tagline {
-  font-size: 16px;
-  color: #4b2e0d;
+  font-size: 15px;
+  color: #333;
   font-style: italic;
   margin-bottom: 20px;
 }
 
-/* Form Styles */
+/* Form styling */
 .login-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  text-align: left;
 }
 
 .login-form label {
-  font-weight: 600;
+  font-weight: bold;
   font-size: 14px;
   color: #8B0000;
-  display: block;
-  text-align: left;
-  margin-bottom: 5px;
 }
 
 .login-form input {
-  padding: 12px 14px;
+  padding: 12px 15px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 15px;
-  width: 100%;
   outline: none;
 }
 
-/* Submit Button */
+/* Button */
 .login-form button {
   padding: 12px;
   background: linear-gradient(to right, #d2691e, #ff9900);
@@ -92,10 +87,10 @@
 }
 
 .login-form button:hover {
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
-/* Error Box */
+/* Error message */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -106,8 +101,8 @@
 
 /* Links */
 .login-link {
-  margin-top: 15px;
   font-size: 14px;
+  margin-top: 20px;
   color: #333;
 }
 
@@ -117,10 +112,10 @@
   text-decoration: none;
 }
 
-/* Responsive: Mobile Layout */
+/* Responsive */
 @media screen and (max-width: 768px) {
   .login-container {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   .login-left,
@@ -129,14 +124,8 @@
     height: 50vh;
   }
 
-  .login-right {
-    padding: 20px;
-  }
-
   .login-form-box {
-    background-color: #fef7ec;
-    box-shadow: none;
-    padding: 25px;
+    padding: 20px;
   }
 
   .login-logo {
