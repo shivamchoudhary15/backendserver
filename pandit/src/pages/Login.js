@@ -119,17 +119,16 @@ const styles = {
     minHeight: '100vh',
     fontFamily: 'Segoe UI, sans-serif',
     flexDirection: 'row',
+    margin: 0,
+    padding: 0,
   },
   left: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
     overflow: 'hidden',
   },
   right: {
     flex: 1,
-    backgroundColor: '#fffaf0', // match image tone
+    backgroundColor: '#fdf1e5', // Matched to spiritual background
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -141,7 +140,7 @@ const styles = {
     objectFit: 'cover',
   },
   card: {
-    background: '#ffffffd8',
+    background: '#fff',
     borderRadius: '20px',
     border: '3px solid #d2691e',
     padding: '40px',
@@ -151,13 +150,14 @@ const styles = {
     textAlign: 'center',
   },
   logo: {
-    width: '120px',
-    height: '120px',
+    width: '130px',
+    height: '130px',
     borderRadius: '50%',
     objectFit: 'cover',
     border: '4px solid #FFD700',
     marginBottom: '10px',
     boxShadow: '0 5px 15px rgba(0,0,0,0.15)',
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: '16px',
@@ -191,7 +191,7 @@ const styles = {
   },
   button: {
     padding: '14px',
-    background: 'linear-gradient(to right, #e94e77, #f2709c)',
+    background: 'linear-gradient(to right, #d2691e, #ff9933)',
     border: 'none',
     borderRadius: '30px',
     color: '#fff',
