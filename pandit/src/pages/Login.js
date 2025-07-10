@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
-const BACKGROUND_IMAGE = '/images/background.jpg';
-const LOGO_IMAGE = '/images/subh.png';
+const BACKGROUND_IMAGE = '/images/background.jpg'; // Left side image (spiritual themed)
+const LOGO_IMAGE = '/images/subh.png'; // Circular logo
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,26 +42,28 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.container}>
-      {/* Left Side: Spiritual Image */}
-      <div style={styles.left}>
-        <img src={BACKGROUND_IMAGE} alt="Spiritual" style={styles.bgImage} />
-      </div>
+    <div style={styles.wrapper}>
+      <div style={styles.container}>
+        {/* Left Side */}
+        <div style={styles.left}>
+          <img src={BACKGROUND_IMAGE} alt="Spiritual" style={styles.image} />
+        </div>
 
-      {/* Right Side: Login Form */}
-      <div style={styles.right}>
+        {/* Right Side */}
         <motion.div
-          style={styles.card}
-          initial={{ opacity: 0, x: 100 }}
+          style={styles.right}
+          initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 0.8, type: 'spring' }}
         >
-          <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
-          <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
+          <div style={styles.card}>
+            <img src={LOGO_IMAGE} alt="Logo" style={styles.logo} />
+            <h2 style={styles.title}>Welcome Back!</h2>
+            <p style={styles.subtitle}>Your Path to Sacred Beginnings</p>
 
-          <form onSubmit={handleSubmit} style={styles.form}>
             {error && <div style={styles.error}>{error}</div>}
-            <div style={styles.inputGroup}>
+
+            <form onSubmit={handleSubmit} style={styles.form}>
               <label style={styles.label}>Email Address</label>
               <input
                 type="email"
@@ -69,11 +71,10 @@ const Login = () => {
                 value={form.email}
                 onChange={handleChange}
                 required
-                style={styles.input}
                 placeholder="example@gmail.com"
+                style={styles.input}
               />
-            </div>
-            <div style={styles.inputGroup}>
+
               <label style={styles.label}>Password</label>
               <input
                 type="password"
@@ -81,30 +82,30 @@ const Login = () => {
                 value={form.password}
                 onChange={handleChange}
                 required
-                style={styles.input}
                 placeholder="********"
+                style={styles.input}
               />
-            </div>
 
-            <motion.button
-              type="submit"
-              style={styles.button}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={loading}
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </motion.button>
+              <motion.button
+                type="submit"
+                style={styles.button}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                disabled={loading}
+              >
+                {loading ? 'Logging in...' : 'Login'}
+              </motion.button>
+            </form>
 
-            <p style={styles.text}>
+            <p style={styles.bottomText}>
               Don’t have an account?{' '}
               <Link to="/signup" style={styles.link}>Join as Devotee</Link>
             </p>
-            <p style={styles.text}>
+            <p style={styles.bottomText}>
               Are you a Pandit?{' '}
               <Link to="/signup/pandit" style={styles.link}>Register as Pandit</Link>
             </p>
-          </form>
+          </div>
         </motion.div>
       </div>
     </div>
@@ -113,97 +114,93 @@ const Login = () => {
 
 export default Login;
 
+// CSS-in-JS styles
 const styles = {
-  container: {
-    display: 'flex',
+  wrapper: {
+    width: '100vw',
     height: '100vh',
-    width: '100%',
-    fontFamily: 'Segoe UI, sans-serif',
-  },
-  left: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-  right: {
-    flex: 1,
-    background: '#f9f5f0',
+    background: '#f6efe7',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  bgImage: {
+  container: {
+    width: '90%',
+    maxWidth: '1100px',
+    height: '90%',
+    display: 'flex',
+    boxShadow: '0 15px 30px rgba(0,0,0,0.2)',
+    borderRadius: '15px',
+    overflow: 'hidden',
+    background: '#fff',
+  },
+  left: {
+    flex: 1,
+    background: '#fff',
+  },
+  image: {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
   },
+  right: {
+    flex: 1,
+    backgroundColor: '#fff8f0',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   card: {
-    background: 'rgba(255, 255, 255, 0.92)', // Semi-transparent white
-    borderRadius: '20px',
-    border: '3px solid #d2691e',
-    padding: '40px',
     width: '90%',
     maxWidth: '400px',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
     textAlign: 'center',
-    backdropFilter: 'blur(4px)',
   },
   logo: {
-    width: '100px',
-    height: '100px',
+    width: '80px',
+    height: '80px',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: '4px solid #FFD700',
+    border: '3px solid #FFD700',
     marginBottom: '10px',
-    boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+  },
+  title: {
+    margin: '10px 0 5px',
+    fontSize: '24px',
+    fontWeight: 'bold',
+    color: '#333',
   },
   subtitle: {
-    fontSize: '16px',
-    color: '#333',
+    fontSize: '14px',
     fontStyle: 'italic',
+    color: '#555',
     marginBottom: '20px',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    gap: '15px',
   },
   label: {
+    textAlign: 'left',
     fontWeight: 'bold',
-    fontSize: '16px',
+    fontSize: '14px',
     color: '#8B0000',
-    marginBottom: '5px',
   },
   input: {
-    padding: '12px 16px',
-    borderRadius: '10px',
+    padding: '10px 14px',
+    borderRadius: '8px',
     border: '1px solid #ccc',
-    fontSize: '16px',
-    width: '100%',
-    outline: 'none',
+    fontSize: '15px',
   },
   button: {
-    padding: '14px',
+    padding: '12px',
     background: 'linear-gradient(to right, #e94e77, #f2709c)',
     border: 'none',
-    borderRadius: '30px',
+    borderRadius: '25px',
     color: '#fff',
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
-  },
-  text: {
-    fontSize: '14px',
-    color: '#333',
-  },
-  link: {
-    color: '#8B0000',
-    fontWeight: 'bold',
-    textDecoration: 'none',
   },
   error: {
     backgroundColor: '#ffe6e6',
@@ -211,5 +208,16 @@ const styles = {
     padding: '10px',
     borderRadius: '8px',
     fontWeight: 'bold',
+    marginBottom: '10px',
+  },
+  bottomText: {
+    fontSize: '14px',
+    color: '#333',
+    marginTop: '10px',
+  },
+  link: {
+    color: '#8B0000',
+    fontWeight: 'bold',
+    textDecoration: 'none',
   },
 };
