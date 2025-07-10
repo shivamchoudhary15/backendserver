@@ -4,7 +4,7 @@ import { login } from '../api/api';
 import { motion } from 'framer-motion';
 
 const BACKGROUND_IMAGE = '/images/background.jpg';
-const LOGO_IMAGE = '/images/shubh.png';
+const LOGO_IMAGE = '/images/subh.png';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
