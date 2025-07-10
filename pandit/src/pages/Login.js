@@ -11,7 +11,7 @@ const SPIRITUAL_BACKGROUND_IMAGE = 'https://plus.unsplash.com/premium_photo-1716
 // --- YOUR SHUBHKARYA LOGO IMAGE PATH ---
 // Make sure you have placed your logo file (e.g., 'shubhkaraya-logo.png')
 // inside your 'public/images/' folder.
-const SHUBHKARYA_LOGO_PATH = '/images/logo_shubh.png'; // <--- IMPORTANT: Verify this path and filename!
+const SHUBHKARYA_LOGO_PATH = '/images/subh.png'; 
 
 // --- Custom gradient for the submit button ---
 const PRIMARY_BUTTON_GRADIENT = 'linear-gradient(145deg, #CD5C5C 0%, #FF6347 100%)'; // IndianRed to Tomato
