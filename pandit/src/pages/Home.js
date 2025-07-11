@@ -71,7 +71,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navigation Wrapper with Bhagwa background */}
+      {/* Outer Saffron Background */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="logo-with-img">
@@ -82,8 +82,8 @@ const Home = () => {
             <a href="#about">About</a>
             <a href="#services">Pooja</a>
             <a href="#pandits">Pandits</a>
-            <Link to="/signup">Join</Link>
-            <Link to="/signup/pandit">Register</Link>
+            <Link to="/signup">Signup Devotee</Link>
+            <Link to="/signup/pandit">Signup Pandit</Link>
             <Link to="/login">Login</Link>
           </div>
         </nav>
