@@ -1,0 +1,133 @@
+.home-container {
+  font-family: 'Segoe UI', sans-serif;
+  background: #fffefb;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: #e2fbe9;
+  align-items: center;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: #b30059;
+}
+
+.nav-links a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background: linear-gradient(to right, #fff7f0, #fefefe);
+}
+
+.hero-text h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #b30059;
+}
+
+.hero-text p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.hero-text button {
+  background: #ff9900;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero-img {
+  width: 400px;
+  border-radius: 15px;
+}
+
+/* About Section */
+.about {
+  padding: 40px;
+  text-align: center;
+}
+
+/* Services Section */
+.services {
+  padding: 40px;
+}
+
+.card-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-top: 20px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  text-align: center;
+}
+
+.service-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.service-description {
+  margin-top: 30px;
+  text-align: center;
+  background: #fff0dc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Pandits Section */
+.pandits {
+  padding: 40px;
+  background: #f5f5f5;
+}
+
+.pandit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.pandit-card {
+  background: white;
+  padding: 15px;
+  width: 250px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.pandit-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
