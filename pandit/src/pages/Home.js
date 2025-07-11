@@ -71,24 +71,23 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navigation */}
-      <nav className="navbar white-header">
-        <div className="logo-with-img">
-          <img src="/images/subh.png" alt="logo" className="logo-img" />
-          <div className="logo">Shubhkarya</div>
-        </div>
-        <div className="search-bar">
-          <input type="text" placeholder="Search pooja or pandit..." />
-        </div>
-        <div className="nav-links">
-          <a href="#about">About</a>
-          <a href="#services">Pooja</a>
-          <a href="#pandits">Pandits</a>
-          <Link to="/signup">Join</Link>
-          <Link to="/signup/pandit">Register</Link>
-          <Link to="/login">Login</Link>
-        </div>
-      </nav>
+      {/* Navigation Wrapper with Bhagwa background */}
+      <div className="navbar-wrapper">
+        <nav className="navbar">
+          <div className="logo-with-img">
+            <img src="/images/subh.png" alt="logo" className="logo-img" />
+            <div className="logo">Shubhkarya</div>
+          </div>
+          <div className="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Pooja</a>
+            <a href="#pandits">Pandits</a>
+            <Link to="/signup">Join</Link>
+            <Link to="/signup/pandit">Register</Link>
+            <Link to="/login">Login</Link>
+          </div>
+        </nav>
+      </div>
 
       {/* Hero Section */}
       <header className="hero">
