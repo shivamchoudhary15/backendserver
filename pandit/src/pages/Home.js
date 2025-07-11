@@ -81,7 +81,7 @@ const Home = () => {
             </div>
             <div className="navbar-center">Your Spiritual Partner</div>
             <div className="navbar-right nav-links">
-              <a href="#about">About</a>
+              <a href="#about">About us</a>
               <a href="#services">Pooja</a>
               <a href="#pandits">Pandits</a>
               <Link to="/login">Login</Link>
