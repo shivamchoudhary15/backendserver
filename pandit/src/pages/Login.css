@@ -5,12 +5,10 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left side - style from JS */
 .login-left {
   flex: 1;
 }
 
-/* Right side */
 .login-right {
   flex: 1;
   display: flex;
@@ -87,14 +85,13 @@
   font-weight: bold;
 }
 
-/* Link section under the form */
 .login-link {
   font-size: 14px;
   margin-top: 25px;
   color: #333;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px; /* Increased space between the two lines */
   align-items: center;
 }
 
