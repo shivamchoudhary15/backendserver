@@ -71,7 +71,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Header */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="navbar-content">
@@ -86,33 +85,30 @@ const Home = () => {
               <a href="#about">About</a>
               <a href="#services">Pooja</a>
               <a href="#pandits">Pandits</a>
-              <Link to="/signup">Join</Link>
-              <Link to="/signup/pandit">Register</Link>
               <Link to="/login">Login</Link>
             </div>
           </div>
         </nav>
       </div>
 
-      {/* Hero Section */}
       <header className="hero">
         <div className="hero-text">
           <h1>Welcome to Shubhkarya</h1>
           <p>Find Your Trusted Pandit Online</p>
           <button onClick={handleBooking}>Explore Services</button>
+          <div className="hero-buttons">
+            <Link to="/signup" className="hero-btn">Join as Devotee</Link>
+            <Link to="/signup/pandit" className="hero-btn">Register for Pandit</Link>
+          </div>
         </div>
         <img src="/images/download.jpeg" alt="hero" className="hero-img" />
       </header>
 
-      {/* About */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
-        <p>
-          Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.
-        </p>
+        <p>Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.</p>
       </section>
 
-      {/* Services */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
         <div className="card-grid">
@@ -132,7 +128,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         <div className="pandit-grid">
@@ -148,7 +143,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-left">
           <h2>Shubhkarya</h2>
