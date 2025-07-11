@@ -71,20 +71,25 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Outer Saffron Background */}
+      {/* Header */}
       <div className="navbar-wrapper">
         <nav className="navbar">
-          <div className="logo-with-img">
-            <img src="/images/subh.png" alt="logo" className="logo-img" />
-            <div className="logo">Shubhkarya</div>
-          </div>
-          <div className="nav-links">
-            <a href="#about">About</a>
-            <a href="#services">Pooja</a>
-            <a href="#pandits">Pandits</a>
-            <Link to="/signup">Join as devotee</Link>
-            <Link to="/signup/pandit">Register for Pandit</Link>
-            <Link to="/login">Login</Link>
+          <div className="navbar-content">
+            <div className="navbar-left">
+              <img src="/images/subh.png" alt="logo" className="logo-img" />
+              <div className="logo">Shubhkarya</div>
+            </div>
+            <div className="navbar-center">
+              Your Spiritual Partner
+            </div>
+            <div className="navbar-right nav-links">
+              <a href="#about">About</a>
+              <a href="#services">Pooja</a>
+              <a href="#pandits">Pandits</a>
+              <Link to="/signup">Join</Link>
+              <Link to="/signup/pandit">Register</Link>
+              <Link to="/login">Login</Link>
+            </div>
           </div>
         </nav>
       </div>
@@ -99,12 +104,11 @@ const Home = () => {
         <img src="/images/download.jpeg" alt="hero" className="hero-img" />
       </header>
 
-      {/* About Section */}
+      {/* About */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
         <p>
-          Your one-stop spiritual platform to book experienced Pandits for
-          all Hindu rituals and poojas.
+          Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.
         </p>
       </section>
 
@@ -113,20 +117,12 @@ const Home = () => {
         <h2>Pooja Provided</h2>
         <div className="card-grid">
           {(services.length ? services : dummyServices).map((service, idx) => (
-            <div
-              className="service-card"
-              key={idx}
-              onClick={() => setSelectedService(service)}
-            >
-              <img
-                src={poojaImageMap[service.name] || dummyImages[idx % dummyImages.length]}
-                alt={service.name}
-              />
+            <div className="service-card" key={idx} onClick={() => setSelectedService(service)}>
+              <img src={poojaImageMap[service.name] || dummyImages[idx % dummyImages.length]} alt={service.name} />
               <h3>{service.name}</h3>
             </div>
           ))}
         </div>
-
         {selectedService && (
           <div className="service-description">
             <h3>{selectedService.name}</h3>
@@ -175,3 +171,4 @@ const Home = () => {
 };
 
 export default Home;
+
