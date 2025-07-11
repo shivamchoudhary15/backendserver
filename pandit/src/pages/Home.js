@@ -94,7 +94,7 @@ const Home = () => {
       <header
         className="hero"
         style={{
-          backgroundImage: `url('/images/download.jpeg')`,
+          backgroundImage: `url('/images/babaji.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
