@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
-import './Login.css'; // make sure this path is correct
-import './Login.css'; // Assuming Login.css is in the same folder
+import './Login.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -42,31 +41,28 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-left"></div>
-      {/* Background image on left side */}
+      {/* Left side with background Buddha image */}
       <div
         className="login-left"
         style={{
-          backgroundImage: "url('/images/download.jpeg')", // ✅ From public/images
-          backgroundSize: 'cover',
+          backgroundImage: "linear-gradient(to right, rgba(91, 58, 41, 0.9), rgba(91, 58, 41, 0.6)), url('/images/download.jpeg')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
+          backgroundColor: '#5b3a29',
         }}
       />
 
-      {/* Login form */}
+      {/* Right side with login form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, type: 'spring' }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img src="/images/subh.png" alt="Logo" className="login-logo" />
           <img
-            src="/images/subh.png" // ✅ Logo from public/images
+            src="/images/subh.png"
             alt="Logo"
             className="login-logo"
           />
@@ -97,31 +93,21 @@ const Login = () => {
 
             <motion.button
               type="submit"
+              className="login-button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               disabled={loading}
             >
-            <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </motion.button>
-
-            <div className="login-link">
-              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
-            </div>
-            <div className="login-link">
-              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
-            </div>
-            </button>
           </form>
 
           <div className="login-link">
             <p>
-              Don’t have an account?{' '}
-              <Link to="/signup">Join as Devotee</Link>
+              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
             </p>
-            <p style={{ marginTop: '10px' }}>
-              Are you a Pandit?{' '}
-              <Link to="/signup/pandit">Register as Pandit</Link>
+            <p>
+              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
             </p>
           </div>
         </motion.div>
