@@ -82,8 +82,8 @@ const Home = () => {
             <a href="#about">About</a>
             <a href="#services">Pooja</a>
             <a href="#pandits">Pandits</a>
-            <Link to="/signup">Signup Devotee</Link>
-            <Link to="/signup/pandit">Signup Pandit</Link>
+            <Link to="/signup">Join as devotee</Link>
+            <Link to="/signup/pandit">Register for Pandit</Link>
             <Link to="/login">Login</Link>
           </div>
         </nav>
