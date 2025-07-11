@@ -1,3 +1,4 @@
+/* Container for the login page */
 .login-container {
   display: flex;
   height: 100vh;
@@ -6,7 +7,7 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left side image */
+/* Left side - image */
 .login-left {
   flex: 1;
   background-image: url('/images/download.jpeg');
@@ -15,23 +16,23 @@
   background-repeat: no-repeat;
 }
 
-/* Right side form */
+/* Right side - login form */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 248, 240, 0.8); /* Match left side slightly */
-  background-color: #fff8f0;
+  background-color: #fff8f0; /* Light beige for harmony with Buddha image */
 }
 
-/* Form box */
+/* Login form box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
   padding: 40px;
   background: rgba(255, 255, 255, 0.95);
   text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Logo */
@@ -40,7 +41,6 @@
   height: 130px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
   margin-bottom: 15px;
   border: 4px solid #ffd700;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -48,14 +48,13 @@
 
 /* Tagline */
 .login-tagline {
-  font-size: 16px;
   font-size: 15px;
   color: #333;
   font-style: italic;
   margin-bottom: 20px;
 }
 
-/* Form */
+/* Form styling */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -77,7 +76,9 @@
   outline: none;
 }
 
-.login-form button {
+/* Login button */
+.login-form button,
+.login-button {
   padding: 12px;
   background: linear-gradient(to right, #d2691e, #ff9900);
   color: white;
@@ -89,10 +90,18 @@
   transition: 0.3s;
 }
 
-.login-form button:hover {
+.login-form button:hover,
+.login-button:hover {
   opacity: 0.9;
 }
 
+.login-form button:disabled,
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error message */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -101,11 +110,15 @@
   font-weight: bold;
 }
 
+/* Links under the form */
 .login-link {
   font-size: 14px;
-  margin-top: 10px;
   margin-top: 15px;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
 .login-link a {
@@ -114,14 +127,12 @@
   text-decoration: none;
 }
 
-/* Responsive */
+/* Responsive layout */
 @media screen and (max-width: 768px) {
   .login-container {
-    flex-direction: column-reverse;
     flex-direction: column;
   }
 
-  .login-left, .login-right {
   .login-left,
   .login-right {
     flex: none;
