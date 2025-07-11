@@ -99,7 +99,7 @@ const Login = () => {
               Don’t have an account?{' '}
               <Link to="/signup">Join as Devotee</Link>
             </p>
-            <p style={{ marginTop: '10px' }}>
+            <p style={{ marginTop: '13px' }}>
               Are you a Pandit?{' '}
               <Link to="/signup/pandit">Register as Pandit</Link>
             </p>
