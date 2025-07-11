@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
+import './Login.css'; // Make sure this points correctly
 import './Login.css';
 
 const Login = () => {
@@ -41,6 +42,9 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {/* ✅ Image handled by CSS */}
+      <div className="login-left" />
+      {/* Background image on left side (JS-based) */}
       <div
         className="login-left"
         style={{
@@ -52,6 +56,7 @@ const Login = () => {
         }}
       />
 
+      {/* Login form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
@@ -96,9 +101,12 @@ const Login = () => {
 
           <div className="login-link">
             <p>
+              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
               Don’t have an account?{' '}
               <Link to="/signup">Join as Devotee</Link>
             </p>
+            <p style={{ marginTop: '13px' }}>
+              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
             <p>
               Are you a Pandit?{' '}
               <Link to="/signup/pandit">Register as Pandit</Link>
