@@ -151,6 +151,8 @@
 /* Services */
 .services {
   padding: 40px;
+  background-color: #b34e2f;
+  color: white;
 }
 
 .card-grid {
@@ -168,6 +170,7 @@
   cursor: pointer;
   text-align: center;
   transition: transform 0.2s ease;
+  color: black;
 }
 
 .service-card:hover {
@@ -187,12 +190,14 @@
   background: #fff0dc;
   padding: 20px;
   border-radius: 10px;
+  color: black;
 }
 
 /* Pandits */
 .pandits {
   padding: 40px;
-  background: #f5f5f5;
+  background-color: #b34e2f;
+  color: white;
 }
 
 .pandit-grid {
@@ -208,6 +213,7 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
 .pandit-card img {
@@ -220,7 +226,8 @@
 
 /* Footer */
 .footer {
-  background-color: #f3e8e8;
+  background-color: #b34e2f;
+  color: white;
   display: flex;
   justify-content: space-between;
   padding: 40px;
@@ -237,20 +244,29 @@
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
+  background-color: transparent;
+  color: white;
+}
+
+.footer-right label {
+  display: block;
+  margin: 10px 0;
 }
 
 .footer-right button {
-  background: #b30059;
-  color: white;
+  background: white;
+  color: #b34e2f;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .footer-links a {
+  color: white;
   margin-right: 10px;
-  color: #333;
   font-size: 14px;
+  text-decoration: underline;
 }
