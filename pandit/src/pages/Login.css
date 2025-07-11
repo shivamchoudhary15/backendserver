@@ -5,30 +5,17 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left side with Buddha image background and gradient overlay */
-/* Left side - style from JS */
+/* Left side layout only — background handled in JS */
 .login-left {
   flex: 1;
-  background-image: linear-gradient(
-      to right,
-      rgba(91, 58, 41, 0.9),
-      rgba(91, 58, 41, 0.6)
-    ),
-    url('/images/download.jpeg'); /* Make sure this is the correct path */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #5b3a29; /* Fallback background */
 }
 
 /* Right side login form box */
-/* Right side */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f3e3d3; /* Warm neutral beige tone */
   background-color: #f3e3d3;
 }
 
@@ -96,7 +83,7 @@
   opacity: 0.9;
 }
 
-/* Error message style */
+/* Error message */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -105,15 +92,14 @@
   font-weight: bold;
 }
 
-/* Link section under the form */
+/* Link section under form */
 .login-link {
   font-size: 14px;
-  margin-top: 15px;
   margin-top: 25px;
   color: #333;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px; /* Space between Devotee and Pandit lines */
   align-items: center;
 }
 
@@ -124,7 +110,6 @@
 }
 
 /* Responsive styling */
-/* Responsive */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
@@ -132,8 +117,6 @@
 
   .login-left {
     height: 35vh;
-    background-size: cover;
-    background-position: center;
   }
 
   .login-right {
