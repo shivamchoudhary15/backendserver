@@ -41,7 +41,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Background image on left side (JS-based) */}
       <div
         className="login-left"
         style={{
@@ -53,7 +52,6 @@ const Login = () => {
         }}
       />
 
-      {/* Login form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
