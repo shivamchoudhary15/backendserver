@@ -14,7 +14,7 @@
       rgba(91, 58, 41, 0.9),
       rgba(91, 58, 41, 0.6)
     ),
-    url('/images/buddha.png'); /* Make sure this is the correct path */
+    url('/images/download.jpeg'); /* Make sure this is the correct path */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
