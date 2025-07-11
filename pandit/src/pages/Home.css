@@ -4,16 +4,18 @@
   color: #333;
 }
 
+/* Navbar wrapper adds Bhagwa color behind white navbar */
+.navbar-wrapper {
+  background-color: #ffcc80;
+}
+
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 15px 30px;
   background-color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -21,11 +23,14 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-right: 40px;
 }
 
 .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .logo {
@@ -34,21 +39,14 @@
   color: #b30059;
 }
 
-.search-bar input {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-  width: 200px;
-}
-
 .nav-links {
   display: flex;
   gap: 15px;
   align-items: center;
 }
 
-.nav-links a, .nav-links a:visited {
+.nav-links a,
+.nav-links a:visited {
   text-decoration: none;
   color: #333;
   font-weight: 600;
