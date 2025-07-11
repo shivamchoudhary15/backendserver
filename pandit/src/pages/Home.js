@@ -74,7 +74,7 @@ const Home = () => {
       {/* Navigation */}
       <nav className="navbar white-header">
         <div className="logo-with-img">
-          <img src="/images/logo.png" alt="logo" className="logo-img" />
+          <img src="/images/subh.png" alt="logo" className="logo-img" />
           <div className="logo">Shubhkarya</div>
         </div>
         <div className="search-bar">
