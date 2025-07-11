@@ -1,4 +1,3 @@
-/* Container for the entire login page */
 .login-container {
   display: flex;
   height: 100vh;
@@ -6,34 +5,18 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left side with Buddha image background and gradient overlay */
-/* Left side - style from JS */
 .login-left {
   flex: 1;
-  background-image: linear-gradient(
-      to right,
-      rgba(91, 58, 41, 0.9),
-      rgba(91, 58, 41, 0.6)
-    ),
-    url('/images/download.jpeg'); /* Make sure this is the correct path */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #5b3a29; /* Fallback background */
 }
 
-/* Right side login form box */
-/* Right side */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f3e3d3; /* Warm neutral beige tone */
   background-color: #f3e3d3;
 }
 
-/* Inner box for form content */
 .login-form-box {
   width: 100%;
   max-width: 400px;
@@ -41,7 +24,6 @@
   text-align: center;
 }
 
-/* Logo style */
 .login-logo {
   width: 130px;
   height: 130px;
@@ -51,7 +33,6 @@
   border: 4px solid #ffd700;
 }
 
-/* Tagline under the logo */
 .login-tagline {
   font-size: 15px;
   color: #333;
@@ -59,7 +40,6 @@
   margin-bottom: 20px;
 }
 
-/* Form layout */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -97,7 +77,6 @@
   opacity: 0.9;
 }
 
-/* Error message style */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -106,10 +85,8 @@
   font-weight: bold;
 }
 
-/* Link section under the form */
 .login-link {
   font-size: 14px;
-  margin-top: 15px;
   margin-top: 25px;
   color: #333;
   display: flex;
@@ -124,8 +101,7 @@
   text-decoration: none;
 }
 
-/* Responsive styling */
-/* Responsive */
+/* Mobile styles */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
