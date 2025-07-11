@@ -71,8 +71,15 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <nav className="navbar">
-        <div className="logo">BookMyPandit</div>
+      {/* Navigation */}
+      <nav className="navbar white-header">
+        <div className="logo-with-img">
+          <img src="/images/logo.png" alt="logo" className="logo-img" />
+          <div className="logo">Shubhkarya</div>
+        </div>
+        <div className="search-bar">
+          <input type="text" placeholder="Search pooja or pandit..." />
+        </div>
         <div className="nav-links">
           <a href="#about">About</a>
           <a href="#services">Pooja</a>
@@ -83,23 +90,26 @@ const Home = () => {
         </div>
       </nav>
 
+      {/* Hero Section */}
       <header className="hero">
         <div className="hero-text">
-          <h1>Welcome to BookMyPandit</h1>
+          <h1>Welcome to Shubhkarya</h1>
           <p>Find Your Trusted Pandit Online</p>
           <button onClick={handleBooking}>Explore Services</button>
         </div>
         <img src="/images/download.jpeg" alt="hero" className="hero-img" />
       </header>
 
+      {/* About Section */}
       <section id="about" className="about">
-        <h2>About BookMyPandit</h2>
+        <h2>About Shubhkarya</h2>
         <p>
           Your one-stop spiritual platform to book experienced Pandits for
           all Hindu rituals and poojas.
         </p>
       </section>
 
+      {/* Services */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
         <div className="card-grid">
@@ -127,6 +137,7 @@ const Home = () => {
         )}
       </section>
 
+      {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         <div className="pandit-grid">
@@ -142,12 +153,13 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="footer">
         <div className="footer-left">
-          <h2>BookMyPandit</h2>
+          <h2>Shubhkarya</h2>
           <p>123-456-7890</p>
-          <p>info@bookmypandit.com</p>
-          <p>500 Terry Francine St,<br/> San Francisco, CA 94158</p>
+          <p>info@shubhkarya.com</p>
+          <p>500 Terry Francine St,<br />San Francisco, CA 94158</p>
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
