@@ -45,7 +45,7 @@ const Login = () => {
       <div
         className="login-left"
         style={{
-          backgroundImage: "url('/images/background.jpg')", // ✅ From public/images
+          backgroundImage: "url('/images/download.jpeg')", // ✅ From public/images
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
