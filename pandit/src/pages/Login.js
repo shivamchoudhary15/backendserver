@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
-import './Login.css';
+import './Login.css'; // make sure this path is correct
+import './Login.css'; // Assuming Login.css is in the same folder
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -41,27 +42,31 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* ✅ Background image handled only here via inline style */}
+      <div className="login-left"></div>
+      {/* Background image on left side */}
       <div
         className="login-left"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(91, 58, 41, 0.9), rgba(91, 58, 41, 0.6)), url('/images/download.jpeg')`,
+          backgroundImage: "url('/images/download.jpeg')", // ✅ From public/images
           backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
-          backgroundColor: '#5b3a29',
         }}
       />
 
+      {/* Login form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
+          <img src="/images/subh.png" alt="Logo" className="login-logo" />
           <img
-            src="/images/subh.png"
+            src="/images/subh.png" // ✅ Logo from public/images
             alt="Logo"
             className="login-logo"
           />
@@ -90,8 +95,22 @@ const Login = () => {
               placeholder="********"
             />
 
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={loading}
+            >
             <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
+            </motion.button>
+
+            <div className="login-link">
+              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
+            </div>
+            <div className="login-link">
+              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
+            </div>
             </button>
           </form>
 
@@ -100,7 +119,7 @@ const Login = () => {
               Don’t have an account?{' '}
               <Link to="/signup">Join as Devotee</Link>
             </p>
-            <p>
+            <p style={{ marginTop: '10px' }}>
               Are you a Pandit?{' '}
               <Link to="/signup/pandit">Register as Pandit</Link>
             </p>
