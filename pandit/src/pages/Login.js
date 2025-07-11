@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../api/api';
 import { motion } from 'framer-motion';
-import './Login.css'; // Assuming Login.css is in the same folder
+import './Login.css'; // Make sure this points correctly
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -41,15 +41,8 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Background image on left side */}
-      <div
-        className="login-left"
-        style={{
-          backgroundImage: "url('/images/download.jpeg')", // ✅ From public/images
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+      {/* ✅ Image handled by CSS */}
+      <div className="login-left" />
 
       {/* Login form */}
       <div className="login-right">
@@ -60,7 +53,7 @@ const Login = () => {
           transition={{ duration: 0.8 }}
         >
           <img
-            src="/images/subh.png" // ✅ Logo from public/images
+            src="/images/subh.png"
             alt="Logo"
             className="login-logo"
           />
@@ -96,12 +89,10 @@ const Login = () => {
 
           <div className="login-link">
             <p>
-              Don’t have an account?{' '}
-              <Link to="/signup">Join as Devotee</Link>
+              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
             </p>
             <p style={{ marginTop: '13px' }}>
-              Are you a Pandit?{' '}
-              <Link to="/signup/pandit">Register as Pandit</Link>
+              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
             </p>
           </div>
         </motion.div>
