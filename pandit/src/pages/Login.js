@@ -41,11 +41,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left side with background Buddha image */}
+      {/* ✅ Left side with dynamic image */}
       <div
         className="login-left"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(91, 58, 41, 0.9), rgba(91, 58, 41, 0.6)), url('/images/download.jpeg')",
+          backgroundImage: `linear-gradient(to right, rgba(91, 58, 41, 0.9), rgba(91, 58, 41, 0.6)), url('/images/download.jpeg')`,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
@@ -53,7 +53,7 @@ const Login = () => {
         }}
       />
 
-      {/* Right side with login form */}
+      {/* ✅ Right side with login form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
@@ -103,12 +103,8 @@ const Login = () => {
           </form>
 
           <div className="login-link">
-            <p>
-              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
-            </p>
-            <p>
-              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
-            </p>
+            <p>Don’t have an account? <Link to="/signup">Join as Devotee</Link></p>
+            <p>Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link></p>
           </div>
         </motion.div>
       </div>
