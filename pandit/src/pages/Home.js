@@ -79,7 +79,7 @@ const Home = () => {
               <img src="/images/subh.png" alt="logo" className="logo-img" />
               <div className="logo">Shubhkarya</div>
             </div>
-            <div className="navbar-center">Your Spiritual Partner</div>
+            <div className="navbar-center">Your Spiritual Partner: For Every Sacred Occasion</div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
               <a href="#services">Pooja</a>
