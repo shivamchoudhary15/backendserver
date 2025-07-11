@@ -1,4 +1,3 @@
-/* Container for the login page */
 .login-container {
   display: flex;
   height: 100vh;
@@ -7,25 +6,21 @@
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Left side - image */
+/* Left side image background (set via JS inline style) */
 .login-left {
   flex: 1;
-  background-image: url('/images/download.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
-/* Right side - login form */
+/* Right side form */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff8f0; /* Light beige for harmony with Buddha image */
+  background-color: #fff8f0;
 }
 
-/* Login form box */
+/* Form box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
@@ -35,7 +30,7 @@
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo */
+/* Logo image */
 .login-logo {
   width: 130px;
   height: 130px;
@@ -54,7 +49,7 @@
   margin-bottom: 20px;
 }
 
-/* Form styling */
+/* Form */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -76,8 +71,7 @@
   outline: none;
 }
 
-/* Login button */
-.login-form button,
+/* Button styling */
 .login-button {
   padding: 12px;
   background: linear-gradient(to right, #d2691e, #ff9900);
@@ -90,18 +84,16 @@
   transition: 0.3s;
 }
 
-.login-form button:hover,
-.login-button:hover {
-  opacity: 0.9;
-}
-
-.login-form button:disabled,
 .login-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* Error message */
+.login-button:hover {
+  opacity: 0.9;
+}
+
+/* Error */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
@@ -110,7 +102,7 @@
   font-weight: bold;
 }
 
-/* Links under the form */
+/* Links */
 .login-link {
   font-size: 14px;
   margin-top: 15px;
@@ -127,7 +119,7 @@
   text-decoration: none;
 }
 
-/* Responsive layout */
+/* Responsive */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
