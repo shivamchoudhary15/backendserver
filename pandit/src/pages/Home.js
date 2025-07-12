@@ -3,15 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
-const dummyImages = [
-  'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
-  'https://media.prayagpandits.com/media/2023/05/19161549/Satyanarayan-Pooja.webp',
-  'https://kashidham.in/wp-content/uploads/2024/03/navgrah-shanti.jpg',
-  'https://www.gharjunction.com/img/blog/68.jpg',
-  'https://shivology.com/img/article-image-589.jpg',
-  'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp',
-];
-
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
@@ -30,7 +21,6 @@ const Home = () => {
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
 
-        // Only show verified pandits
         const verifiedPandits = panditsData.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setPoojas(poojasData);
@@ -45,9 +35,8 @@ const Home = () => {
   }, []);
 
   const handleBooking = () => {
-    if (token) {
-      navigate('/booking');
-    } else {
+    if (token) navigate('/booking');
+    else {
       alert('Please login');
       navigate('/login');
     }
@@ -76,14 +65,13 @@ const Home = () => {
         </nav>
       </div>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <header
         className="hero"
         style={{
           backgroundImage: `url('/images/babaji.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
         }}
       >
         <div className="hero-overlay">
@@ -99,32 +87,23 @@ const Home = () => {
         </div>
       </header>
 
-      {/* About Section */}
+      {/* About */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
-        <p>
-          Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.
-        </p>
+        <p>Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.</p>
       </section>
 
-      {/* Services Section */}
+      {/* Pooja Section */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
         {loading ? (
           <p>Loading services...</p>
         ) : (
           <div className="card-grid">
-            {poojas.map((pooja, idx) => (
-              <div
-                className="service-card"
-                key={pooja._id || idx}
-                onClick={() => setSelectedService(pooja)}
-              >
-                <img
-                  src={pooja.imageUrl || dummyImages[idx % dummyImages.length]}
-                  alt={pooja.name}
-                />
-                <h3>{pooja.name || 'Untitled Pooja'}</h3>
+            {poojas.map(pooja => (
+              <div className="service-card" key={pooja._id} onClick={() => setSelectedService(pooja)}>
+                <img src={pooja.imageUrl || '/images/default-pooja.png'} alt={pooja.name} />
+                <h3>{pooja.name}</h3>
               </div>
             ))}
           </div>
@@ -138,7 +117,7 @@ const Home = () => {
         )}
       </section>
 
-      {/* Pandits Section */}
+      {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         {loading ? (
@@ -147,16 +126,16 @@ const Home = () => {
           <p>No verified pandits available.</p>
         ) : (
           <div className="pandit-grid">
-            {pandits.map((p, idx) => (
-              <div className="pandit-card" key={p._id || idx}>
+            {pandits.map(p => (
+              <div className="pandit-card" key={p._id}>
                 <img
                   src={p.profile_photo_url || '/images/default-pandit.png'}
-                  alt={`Photo of ${p.name || 'Pandit'}`}
+                  alt={`Photo of ${p.name}`}
                 />
-                <h4>{p.name || 'Unknown'}</h4>
-                <p>{p.city || 'Unknown City'} | {p.experienceYears || 0}+ yrs exp</p>
-                <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages || 'N/A'}</p>
-                <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties || 'N/A'}</p>
+                <h4>{p.name}</h4>
+                <p>{p.city} | {p.experienceYears}+ yrs</p>
+                <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
+                <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties}</p>
               </div>
             ))}
           </div>
@@ -169,15 +148,13 @@ const Home = () => {
           <h2>Shubhkarya</h2>
           <p>123-456-7890</p>
           <p>info@shubhkarya.com</p>
-          <p>500 Terry Francine St,<br />San Francisco, CA 94158</p>
+          <p>500 Terry Francine St, San Francisco, CA 94158</p>
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={e => e.preventDefault()}>
             <input type="email" placeholder="Your Email" />
-            <label>
-              <input type="checkbox" /> Subscribe to newsletter
-            </label>
+            <label><input type="checkbox" /> Subscribe to newsletter</label>
             <button type="submit">Subscribe</button>
           </form>
           <div className="footer-links">
