@@ -35,7 +35,7 @@ export default function PanditSignup() {
     };
 
     try {
-      const res = await axios.post('https://backendserver-auhk.onrender.com/api/pandits/signup', formData);
+      const res = await axios.post('https://backendserver-pf4h.onrender.com/api/pandits/signup', formData);
       alert('✅ Pandit registered successfully! Please wait for admin verification.');
       navigate('/login');
     } catch (err) {
