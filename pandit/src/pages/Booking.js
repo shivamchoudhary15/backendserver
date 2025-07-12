@@ -3,7 +3,7 @@ import { createBooking, getBookings } from '../api/api';
 import './Booking.css';
 
 const backgroundStyle = {
-  backgroundImage: `url('https://cdn.pixabay.com/photo/2017/01/04/09/44/hawan-1950496_960_720.jpg')`,
+  backgroundImage: `url('/images/images.jpeg')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
