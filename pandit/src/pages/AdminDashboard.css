@@ -1,1 +1,45 @@
 
+.admin-container {
+  padding: 40px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  min-height: 100vh;
+}
+
+.admin-container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.admin-subsection {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.admin-card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.admin-card button {
+  margin-top: 10px;
+}
+
+.pooja-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pooja-form input {
+  padding: 8px;
+  font-size: 15px;
+}
+
+.pooja-form button {
+  padding: 8px 12px;
+}
