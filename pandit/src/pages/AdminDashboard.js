@@ -1,3 +1,4 @@
+// src/pages/AdminDashboard.js
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
 
@@ -17,10 +18,12 @@ function AdminDashboard() {
     const res = await fetch('https://backendserver-6-yebf.onrender.com/api/pandits/admin-view');
     setPandits(await res.json());
   };
+
   const fetchDevotees = async () => {
-    const res = await fetch('https://backendserver-6-yebf.onrender.com/api/users/admin-view');
+    const res = await fetch('https://backendserver-6-yebf.onrender.com/api/users/view');
     setDevotees(await res.json());
   };
+
   const fetchPoojas = async () => {
     const res = await fetch('https://backendserver-6-yebf.onrender.com/api/poojas/view');
     setPoojas(await res.json());
@@ -46,7 +49,7 @@ function AdminDashboard() {
   };
 
   const createPooja = async () => {
-    await fetch('https://backendserver-6-yebf.onrender.com/api/poojas/add', {
+    await fetch(`https://backendserver-6-yebf.onrender.com/api/poojas/add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPooja),
@@ -58,28 +61,29 @@ function AdminDashboard() {
   return (
     <div className="admin-container">
       <h1>Admin Dashboard</h1>
+
       <section>
-        <h2>Registrations</h2>
-        <div className="admin-subsection">
-          <div>
-            <h3>Pandits</h3>
-            {pandits.map(p => (
-              <div key={p._id} className="admin-card">
-                <p><strong>{p.name}</strong> - {p.email}</p>
-                <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
-                {!p.is_verified && <button onClick={() => verifyPandit(p._id)}>Verify</button>}
-              </div>
-            ))}
+        <h2>Pandits</h2>
+        {pandits.map(p => (
+          <div key={p._id} className="admin-card">
+            <p><strong>{p.name}</strong> - {p.email}</p>
+            <p>{p.city} | {p.experienceYears} years</p>
+            <p>Languages: {p.languages?.join(', ')}</p>
+            <p>Specialties: {p.specialties?.join(', ')}</p>
+            <p>Bio: {p.bio}</p>
+            <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
+            {!p.is_verified && <button onClick={() => verifyPandit(p._id)}>Verify</button>}
           </div>
-          <div>
-            <h3>Devotees</h3>
-            {devotees.map(d => (
-              <div key={d._id} className="admin-card">
-                <p><strong>{d.name}</strong> - {d.email}</p>
-              </div>
-            ))}
+        ))}
+      </section>
+
+      <section>
+        <h2>Devotees</h2>
+        {devotees.map(d => (
+          <div key={d._id} className="admin-card">
+            <p><strong>{d.name}</strong> - {d.email}</p>
           </div>
-        </div>
+        ))}
       </section>
 
       <hr />
