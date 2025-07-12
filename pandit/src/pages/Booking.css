@@ -1,0 +1,89 @@
+:root {
+  --primary: #2b6cb0;
+  --bg: #f9fafb;
+  --fg: #2d3748;
+  --border: #cbd5e0;
+  --radius: 8px;
+  --transition: 0.3s;
+}
+
+.page-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  font-family: 'Inter', sans-serif;
+  color: var(--fg);
+}
+
+.page-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+  font-size: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-group input,
+.form-group select {
+  padding: 1rem 0.75rem 0.25rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  transition: border var(--transition);
+}
+
+.form-group label {
+  position: absolute;
+  top: 1rem;
+  left: 0.75rem;
+  font-size: 1rem;
+  color: var(--fg);
+  pointer-events: none;
+  background: white;
+  padding: 0 4px;
+  transform: translateY(0);
+  transition: all var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary);
+}
+
+.form-group input:focus + label,
+.form-group select:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  transform: translateY(-1.6rem) scale(0.85);
+  color: var(--primary);
+}
+
+.submit-btn {
+  grid-column: 1 / -1;
+  padding: 1rem 2rem;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.submit-btn:hover {
+  background: #2c5282;
+}
