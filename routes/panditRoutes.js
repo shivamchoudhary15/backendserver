@@ -101,7 +101,17 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ✅ Get single Pandit by ID
+// ✅ Admin: Get all Pandits (Verified + Unverified)
+router.get('/admin-view', async (req, res) => {
+  try {
+    const pandits = await Pandit.find();
+    res.json(pandits);
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to fetch all pandits.' });
+  }
+});
+
+// ✅ Get single Pandit by ID (keep this last!)
 router.get('/:id', async (req, res) => {
   try {
     const pandit = await Pandit.findById(req.params.id);
@@ -112,15 +122,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// ✅ Admin: View all Pandits (Verified + Unverified)
-router.get('/admin-view', async (req, res) => {
-  try {
-    const pandits = await Pandit.find();
-    res.json(pandits);
-  } catch (err) {
-    res.status(500).json({ error: err.message || 'Failed to fetch all pandits.' });
-  }
-});
 
 // ✅ Admin: Verify Pandit
 router.put('/verify/:id', async (req, res) => {
