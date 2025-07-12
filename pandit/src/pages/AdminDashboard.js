@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './AdminDashboard.css';
+
+const BASE_URL = 'https://backendserver-1-ffjl.onrender.com/api';
 
 function AdminDashboard() {
   const [pandits, setPandits] = useState([]);
@@ -8,62 +11,52 @@ function AdminDashboard() {
   const [newPooja, setNewPooja] = useState({ name: '', description: '', imageUrl: '' });
   const [panditImg, setPanditImg] = useState({});
 
-  useEffect(fetchAll, []);
+  useEffect(() => {
+    fetchAll();
+  }, []);
 
-  function fetchAll() {
-    fetchPandits(); fetchDevotees(); fetchPoojas();
-  }
-
-  async function fetchPandits() {
-    const res = await fetch('/api/pandits/admin-view');
-    setPandits(await res.json());
-  }
-
-  async function fetchDevotees() {
-    const res = await fetch('/api/users/view');
-    setDevotees(await res.json());
-  }
-
-  async function fetchPoojas() {
-    const res = await fetch('/api/poojas/view');
-    setPoojas(await res.json());
+  async function fetchAll() {
+    try {
+      const [pRes, dRes, poojaRes] = await Promise.all([
+        axios.get(`${BASE_URL}/pandits/admin-view`),
+        axios.get(`${BASE_URL}/users/view`),
+        axios.get(`${BASE_URL}/poojas/view`)
+      ]);
+      setPandits(pRes.data);
+      setDevotees(dRes.data);
+      setPoojas(poojaRes.data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+    }
   }
 
   async function verifyPandit(id) {
-    await fetch(`/api/pandits/verify/${id}`, { method: 'PUT' });
-    fetchPandits();
+    await axios.put(`${BASE_URL}/pandits/verify/${id}`);
+    fetchAll();
   }
 
   async function uploadPanditPhoto(id) {
     if (!panditImg[id]) return;
     const form = new FormData();
     form.append('photo', panditImg[id]);
-    await fetch(`/api/pandits/upload/${id}`, { method: 'POST', body: form });
-    fetchPandits();
+    await axios.post(`${BASE_URL}/pandits/upload/${id}`, form);
+    fetchAll();
   }
 
   async function createPooja() {
-    await fetch('/api/poojas/add', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPooja),
-    });
+    await axios.post(`${BASE_URL}/poojas/add`, newPooja);
     setNewPooja({ name: '', description: '', imageUrl: '' });
-    fetchPoojas();
+    fetchAll();
   }
 
   async function deletePooja(id) {
-    await fetch(`/api/poojas/delete/${id}`, { method: 'DELETE' });
-    fetchPoojas();
+    await axios.delete(`${BASE_URL}/poojas/delete/${id}`);
+    fetchAll();
   }
 
   async function editPooja(id, field, value) {
-    await fetch(`/api/poojas/update/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: value }),
-    });
-    fetchPoojas();
+    await axios.put(`${BASE_URL}/poojas/update/${id}`, { [field]: value });
+    fetchAll();
   }
 
   function logout() {
