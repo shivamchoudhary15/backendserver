@@ -1,15 +1,21 @@
-// ye unathorised user ko prevent karega or navigate kareya home page jab user ke pass token nahi hai 
+// src/components/ProtectedRoute.js
 import React from 'react';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-export default function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
 
-  if (!token) {
-    // yaa se redirect ho jayega 
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
     return <Navigate to="/home" replace />;
   }
 
- 
   return children;
-}
+};
+
+export default ProtectedRoute;
+
