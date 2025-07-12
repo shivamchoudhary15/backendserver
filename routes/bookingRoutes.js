@@ -2,14 +2,21 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
 
-// isse booking create hogi
-router.post('/create', async (req,res) => {
+// Create booking
+router.post('/create', async (req, res) => {
   try {
     const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList } = req.body;
-    
-    if (!userid || !panditid || !serviceid || !puja_date || !location) {
-      return res.status(400).json({ error: 'Missing required fields' });
+
+    const existing = await Booking.findOne({
+      panditid,
+      puja_date: new Date(puja_date),
+      status: { $in: ['Pending', 'Accepted'] }
+    });
+
+    if (existing) {
+      return res.status(409).json({ error: 'Pandit already booked on this date' });
     }
+
     const booking = new Booking({
       userid,
       panditid,
@@ -21,35 +28,44 @@ router.post('/create', async (req,res) => {
     });
 
     const savedBooking = await booking.save();
-    res.status(201).json({ message: 'Booking hogai', booking: savedBooking });
+    res.status(201).json({ message: 'Booking created', booking: savedBooking });
   } catch (err) {
     console.error('Booking creation error:', err);
-    res.status(500).json({ error: 'Booking nahi hui. Server error.' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-// ise ham sari bookings dekh sakte hai or hamne koi middleware nahi lagaya hua hai tu hai har koi access kar sakta hai
+// Get all or by user or pandit
 router.get('/view', async (req, res) => {
   try {
-    const {userid}=req.query;
+    const { userid, panditid } = req.query;
     let query = {};
-    if (userid){
-      query.userid = userid;
-    }
+    if (userid) query.userid = userid;
+    if (panditid) query.panditid = panditid;
 
     const bookings = await Booking.find(query).populate('panditid serviceid');
     res.status(200).json(bookings);
   } catch (err) {
-    console.error('Error fetching bookings:', err);
-    res.status(500).json({ error: 'Failed to retrieve bookings.' });
+    res.status(500).json({ error: 'Failed to retrieve bookings' });
+  }
+});
+
+// Update booking status (Pandit use)
+router.put('/status/:id', async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!['Accepted', 'Rejected'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+    const updated = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    res.json({ message: 'Status updated', booking: updated });
+  } catch (err) {
+    res.status(500).json({ error: 'Update failed' });
   }
 });
 
 module.exports = router;
-
-
-
-
-
-
-
