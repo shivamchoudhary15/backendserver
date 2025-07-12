@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../api/api';
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import './Login.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [role, setRole] = useState('devotee'); // 'devotee' or 'pandit'
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -20,28 +21,36 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await login(form);
+      // 👇 Call appropriate login endpoint
+      const response = await axios.post(
+        role === 'pandit'
+          ? 'https://backendserver-6-yebf.onrender.com/api/pandits/login'
+          : 'https://backendserver-6-yebf.onrender.com/api/users/login',
+        form
+      );
+
       const { token, user } = response.data;
 
       if (token && user?._id) {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
+
         alert('✅ Login successful!');
 
-        // 🔁 Redirect based on role
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else if (user.role === 'pandit') {
+        // 👇 Redirect based on role
+        if (role === 'pandit') {
           navigate('/pandit-dashboard');
+        } else if (user.role === 'admin') {
+          navigate('/admin');
         } else {
-          navigate('/dashboard'); // default to devotee
+          navigate('/dashboard');
         }
       } else {
         setError('Invalid login. Try again.');
       }
     } catch (err) {
       console.error(err);
-      setError('❌ Login failed. Check your credentials.');
+      setError(err.response?.data?.error || '❌ Login failed. Check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -49,7 +58,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* ✅ Left side with dynamic image */}
+      {/* Left side */}
       <div
         className="login-left"
         style={{
@@ -61,7 +70,7 @@ const Login = () => {
         }}
       />
 
-      {/* ✅ Right side with login form */}
+      {/* Right side with form */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
@@ -74,6 +83,16 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error">{error}</div>}
+
+            <label>Login As:</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              style={{ padding: '8px', marginBottom: '12px' }}
+            >
+              <option value="devotee">Devotee</option>
+              <option value="pandit">Pandit</option>
+            </select>
 
             <label>Email Address</label>
             <input
