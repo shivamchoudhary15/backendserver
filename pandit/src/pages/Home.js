@@ -1,35 +1,7 @@
+// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getServices } from '../api/api';
 import './Home.css';
-
-const dummyPandits = [
-  {
-    name: 'Pt. Ravi Shastri',
-    city: 'Varanasi',
-    experienceYears: 10,
-    languages: ['Hindi', 'Sanskrit'],
-    specialties: ['Griha Pravesh', 'Satyanarayan Puja'],
-    profile_photo_url: '/images/pandit1.png',
-  },
-  {
-    name: 'Pt. Manoj Tripathi',
-    city: 'Delhi',
-    experienceYears: 8,
-    languages: ['Hindi', 'English'],
-    specialties: ['Lakshmi Puja', 'Navagraha Shanti'],
-    profile_photo_url: '/images/pandit2.png',
-  },
-];
-
-const dummyServices = [
-  { name: 'Ganesh Puja', description: 'Removes obstacles and ensures success.' },
-  { name: 'Satyanarayan Katha', description: 'For prosperity and blessings in life.' },
-  { name: 'Navagraha Shanti', description: 'Balances planetary influences.' },
-  { name: 'Griha Pravesh', description: 'Performed before entering a new home.' },
-  { name: 'Rudra Abhishek', description: 'Puja of Lord Shiva for inner peace.' },
-  { name: 'Lakshmi Puja', description: 'Invokes wealth and abundance.' },
-];
 
 const dummyImages = [
   'https://pujabooking.com/wp-content/uploads/2017/07/ganesh-puja.jpg',
@@ -40,38 +12,48 @@ const dummyImages = [
   'https://resources.mypandit.com/wp-content/uploads/2024/11/Laxmi-Puja_3.webp',
 ];
 
-const poojaImageMap = {
-  'Ganesh Puja': dummyImages[0],
-  'Satyanarayan Katha': dummyImages[1],
-  'Navagraha Shanti': dummyImages[2],
-  'Griha Pravesh': dummyImages[3],
-  'Rudra Abhishek': dummyImages[4],
-  'Lakshmi Puja': dummyImages[5],
-};
-
 const Home = () => {
-  const [services, setServices] = useState([]);
+  const [pandits, setPandits] = useState([]);
+  const [poojas, setPoojas] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    getServices()
-      .then((res) => setServices(res.data))
-      .catch(() => setServices(dummyServices));
+    const fetchData = async () => {
+      try {
+        const [panditRes, poojaRes] = await Promise.all([
+          fetch('https://backendserver-auhk.onrender.com/api/pandits/view'),
+          fetch('https://backendserver-auhk.onrender.com/api/poojas/view'),
+        ]);
+        const panditsData = await panditRes.json();
+        const poojasData = await poojaRes.json();
+
+        setPandits(panditsData);
+        setPoojas(poojasData);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleBooking = () => {
-    if (token) navigate('/booking');
-    else {
-      alert('Please login first.');
+    if (token) {
+      navigate('/booking');
+    } else {
+      alert('Please login');
       navigate('/login');
     }
   };
 
   return (
     <div className="home-container">
-      {/* Header */}
+      {/* Navbar */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="navbar-content">
@@ -79,7 +61,6 @@ const Home = () => {
               <img src="/images/subh.png" alt="logo" className="logo-img" />
               <div className="logo">Shubhkarya</div>
             </div>
-            <div className="navbar-center">Your Spiritual Partner</div>
             <div className="navbar-center">Your Spiritual Partner: For Every Sacred Occasion</div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
@@ -125,14 +106,25 @@ const Home = () => {
       {/* Services Section */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
-        <div className="card-grid">
-          {(services.length ? services : dummyServices).map((service, idx) => (
-            <div className="service-card" key={idx} onClick={() => setSelectedService(service)}>
-              <img src={poojaImageMap[service.name] || dummyImages[idx % dummyImages.length]} alt={service.name} />
-              <h3>{service.name}</h3>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading services...</p>
+        ) : (
+          <div className="card-grid">
+            {poojas.map((pooja, idx) => (
+              <div
+                className="service-card"
+                key={pooja._id || idx}
+                onClick={() => setSelectedService(pooja)}
+              >
+                <img
+                  src={pooja.imageUrl || dummyImages[idx % dummyImages.length]}
+                  alt={pooja.name}
+                />
+                <h3>{pooja.name}</h3>
+              </div>
+            ))}
+          </div>
+        )}
         {selectedService && (
           <div className="service-description">
             <h3>{selectedService.name}</h3>
@@ -145,17 +137,24 @@ const Home = () => {
       {/* Pandits Section */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
-        <div className="pandit-grid">
-          {dummyPandits.map((pandit, idx) => (
-            <div className="pandit-card" key={idx}>
-              <img src={pandit.profile_photo_url} alt={pandit.name} />
-              <h4>{pandit.name}</h4>
-              <p>{pandit.city} | {pandit.experienceYears}+ yrs exp</p>
-              <p>🗣 {pandit.languages.join(', ')}</p>
-              <p>🎯 {pandit.specialties.join(', ')}</p>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading pandits...</p>
+        ) : (
+          <div className="pandit-grid">
+            {pandits.map((p, idx) => (
+              <div className="pandit-card" key={p._id || idx}>
+                <img
+                  src={p.profile_photo_url || '/images/default-pandit.png'}
+                  alt={`Photo of ${p.name}`}
+                />
+                <h4>{p.name}</h4>
+                <p>{p.city} | {p.experienceYears}+ yrs exp</p>
+                <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages || 'N/A'}</p>
+                <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties || 'N/A'}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}
@@ -168,9 +167,13 @@ const Home = () => {
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
-          <input type="email" placeholder="Your Email" />
-          <label><input type="checkbox" /> Subscribe to newsletter</label>
-          <button>Subscribe</button>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="Your Email" />
+            <label>
+              <input type="checkbox" /> Subscribe to newsletter
+            </label>
+            <button type="submit">Subscribe</button>
+          </form>
           <div className="footer-links">
             <a href="#">Privacy Policy</a> | <a href="#">Terms</a>
           </div>
