@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 const AdminProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
-  let user;
+  const [authorized, setAuthorized] = useState(null);
 
-  try {
-    user = JSON.parse(localStorage.getItem('user'));
-  } catch (err) {
-    user = null;
-  }
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (token && user && user.role === 'admin') {
+      setAuthorized(true);
+    } else {
+      setAuthorized(false);
+    }
+  }, []);
 
-  if (!token || !user || user.role !== 'admin') {
-    alert("You are not authorized to access the admin panel.");
-    return <Navigate to="/login" replace />;
-  }
+  if (authorized === null) return <div>Loading...</div>; // prevent flash redirect
+  if (authorized === false) return <Navigate to="/login" replace />;
 
   return children;
 };
 
 export default AdminProtectedRoute;
+
