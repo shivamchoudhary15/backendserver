@@ -38,6 +38,8 @@ export const getPoojas = () => API.get('/poojas/view');
 export const addPooja = poojaData => API.post('/poojas/add', poojaData);
 export const updatePooja = (id, data) => API.put(`/poojas/update/${id}`, data);
 export const deletePooja = id => API.delete(`/poojas/delete/${id}`);
+export const getAllPoojas = () => API.get('/poojas/view');
+
 
 // 🔹 Booking
 export const createBooking = bookingData => API.post('/bookings/create', bookingData);
