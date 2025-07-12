@@ -5,6 +5,9 @@ function PanditDashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
   const [bookings, setBookings] = useState([]);
+  const [filterDate, setFilterDate] = useState('');
+  const [searchName, setSearchName] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
 
   useEffect(() => {
     if (user?._id) {
@@ -24,10 +27,7 @@ function PanditDashboard() {
       });
 
       const data = await res.json();
-
-      setBookings(prev =>
-        prev.map(b => (b._id === id ? data.booking : b))
-      );
+      setBookings(prev => prev.map(b => (b._id === id ? data.booking : b)));
     } catch (err) {
       console.error('Error updating status:', err);
     }
@@ -35,8 +35,15 @@ function PanditDashboard() {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate('/login');
+    navigate('/');
   };
+
+  const filteredBookings = bookings.filter(b => {
+    const dateMatch = filterDate ? b.puja_date === filterDate : true;
+    const nameMatch = b.userid?.name?.toLowerCase().includes(searchName.toLowerCase());
+    const statusMatch = filterStatus ? b.status.toLowerCase() === filterStatus.toLowerCase() : true;
+    return dateMatch && nameMatch && statusMatch;
+  });
 
   return (
     <div style={styles.container}>
@@ -56,13 +63,38 @@ function PanditDashboard() {
         </div>
       </div>
 
-      {bookings.length > 0 && (
-        <div style={{ margin: '40px auto 0', maxWidth: 600 }}>
-          <h2>📅 Booking Requests</h2>
-          {bookings.map(b => (
+      <div style={styles.filters}>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={e => setFilterDate(e.target.value)}
+          placeholder="Filter by date"
+        />
+        <input
+          type="text"
+          placeholder="Search by devotee name"
+          value={searchName}
+          onChange={e => setSearchName(e.target.value)}
+        />
+        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+          <option value="">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      {filteredBookings.length > 0 ? (
+        <div style={{ marginTop: 30 }}>
+          {filteredBookings.map(b => (
             <div key={b._id} style={styles.bookingCard}>
+              <p><strong>Devotee:</strong> {b.userid?.name}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
+              <p><strong>Time:</strong> {b.puja_time}</p>
+              <p><strong>Pooja:</strong> {b.SamanList?.name || 'N/A'}</p>
+              <p><strong>Location:</strong> {b.location}</p>
               <p><strong>Status:</strong> {b.status}</p>
+
               {b.status === 'Pending' && (
                 <div style={styles.buttonGroup}>
                   <button onClick={() => updateStatus(b._id, 'Accepted')} style={styles.acceptBtn}>✅ Accept</button>
@@ -72,6 +104,8 @@ function PanditDashboard() {
             </div>
           ))}
         </div>
+      ) : (
+        <p style={{ textAlign: 'center', marginTop: 40 }}>No bookings found.</p>
       )}
 
       <div style={styles.actions}>
@@ -105,11 +139,19 @@ const styles = {
     margin: 'auto',
     lineHeight: '1.8',
   },
+  filters: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '16px',
+    marginTop: '40px',
+    flexWrap: 'wrap',
+  },
   bookingCard: {
     backgroundColor: '#fff',
     borderRadius: '10px',
     padding: '20px',
-    marginBottom: '15px',
+    margin: '20px auto',
+    maxWidth: '600px',
     boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
   },
   buttonGroup: {
