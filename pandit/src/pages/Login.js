@@ -29,7 +29,7 @@ const Login = () => {
 
         alert('✅ Login successful!');
 
-        // Redirect based on actual user.role from backend
+        // Redirect based on actual user.role
         if (user.role === 'admin') {
           navigate('/admin');
         } else if (user.role === 'pandit') {
@@ -108,6 +108,7 @@ const Login = () => {
           <div className="login-link">
             <p>Don’t have an account? <Link to="/signup">Join as Devotee</Link></p>
             <p>Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link></p>
+            <p><strong>Admin?</strong> <Link to="/admin-login">Login as Admin</Link></p>
           </div>
         </motion.div>
       </div>
