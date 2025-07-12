@@ -6,7 +6,7 @@ import './Login.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
-  const [role, setRole] = useState('devotee'); // 'devotee' or 'pandit'
+  const [roleType, setRoleType] = useState('devotee'); // only used for choosing endpoint
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        role === 'pandit'
+        roleType === 'pandit'
           ? 'https://backendserver-6-yebf.onrender.com/api/pandits/login'
           : 'https://backendserver-6-yebf.onrender.com/api/users/login',
         form
@@ -36,13 +36,13 @@ const Login = () => {
 
         alert('✅ Login successful!');
 
-        // ✅ Redirect purely based on backend role
+        // ✅ Redirect using user.role, NOT dropdown
         if (user.role === 'admin') {
           navigate('/admin');
         } else if (user.role === 'pandit') {
           navigate('/pandit-dashboard');
         } else {
-          navigate('/dashboard'); // default for devotee
+          navigate('/dashboard');
         }
       } else {
         setError('Invalid login. Try again.');
@@ -57,7 +57,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left Image */}
       <div
         className="login-left"
         style={{
@@ -69,7 +68,6 @@ const Login = () => {
         }}
       />
 
-      {/* Right Form Box */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
@@ -85,11 +83,11 @@ const Login = () => {
 
             <label>Login As:</label>
             <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+              value={roleType}
+              onChange={(e) => setRoleType(e.target.value)}
               style={{ padding: '8px', marginBottom: '12px' }}
             >
-              <option value="devotee">Devotee</option>
+              <option value="devotee">Devotee / Admin</option>
               <option value="pandit">Pandit</option>
             </select>
 
