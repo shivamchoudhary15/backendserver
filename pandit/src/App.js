@@ -1,3 +1,4 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -14,23 +15,34 @@ import PanditDashboard from './pages/PanditDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminProtectedRoute from './components/AdminProtectedRoute'; // <-- New import
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/signup/pandit" element={<PanditSignup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/pandit-dashboard" element={<PanditDashboard />} />
 
-        {/* Protected Routes */}
+        {/* Role-protected admin route */}
+        <Route
+          path="/admin"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          }
+        />
+
+        {/* Auth-protected routes */}
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute allowedRoles={['devotee']}>
+            <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -38,7 +50,7 @@ function App() {
         <Route
           path="/booking"
           element={
-            <ProtectedRoute allowedRoles={['devotee']}>
+            <ProtectedRoute>
               <Booking />
             </ProtectedRoute>
           }
@@ -46,7 +58,7 @@ function App() {
         <Route
           path="/reviews"
           element={
-            <ProtectedRoute allowedRoles={['devotee']}>
+            <ProtectedRoute>
               <ReviewForm />
             </ProtectedRoute>
           }
@@ -54,7 +66,7 @@ function App() {
         <Route
           path="/payment"
           element={
-            <ProtectedRoute allowedRoles={['devotee']}>
+            <ProtectedRoute>
               <Payment />
             </ProtectedRoute>
           }
@@ -62,28 +74,8 @@ function App() {
         <Route
           path="/notifications"
           element={
-            <ProtectedRoute allowedRoles={['devotee']}>
+            <ProtectedRoute>
               <Notifications />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Pandit Route */}
-        <Route
-          path="/pandit-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={['pandit']}>
-              <PanditDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Admin Route */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRoles={['admin']}>
-              <AdminDashboard />
             </ProtectedRoute>
           }
         />
