@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Serve static files from uploads folder (for images)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -40,12 +43,12 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
 
-// ✅ Default route
+// ✅ Root route
 app.get('/', (req, res) => {
   res.send('🕉️ Shubkarya API is running...');
 });
 
-// ✅ JSON error handling middleware
+// ✅ Error handling middleware (for invalid JSON)
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '❌ Invalid JSON' });
