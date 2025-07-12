@@ -6,59 +6,43 @@ function AdminDashboard() {
   const [devotees, setDevotees] = useState([]);
   const [poojas, setPoojas] = useState([]);
   const [newPooja, setNewPooja] = useState({ name: '', description: '', imageUrl: '' });
-  const [panditImg, setPanditImg] = useState({}); // { panditId: file }
+  const [panditImg, setPanditImg] = useState({});
 
-  useEffect(() => { fetchAll(); }, []);
+  useEffect(fetchAll, []);
 
-  const fetchAll = () => {
+  function fetchAll() {
     fetchPandits(); fetchDevotees(); fetchPoojas();
-  };
+  }
 
-  const fetchPandits = async () => {
+  async function fetchPandits() {
     const res = await fetch('/api/pandits/admin-view');
     setPandits(await res.json());
-  };
-  const fetchDevotees = async () => {
+  }
+
+  async function fetchDevotees() {
     const res = await fetch('/api/users/view');
     setDevotees(await res.json());
-  };
-  const fetchPoojas = async () => {
+  }
+
+  async function fetchPoojas() {
     const res = await fetch('/api/poojas/view');
     setPoojas(await res.json());
-  };
+  }
 
-  const verifyPandit = async id => {
+  async function verifyPandit(id) {
     await fetch(`/api/pandits/verify/${id}`, { method: 'PUT' });
     fetchPandits();
-  };
+  }
 
-  // Upload pandit photo
-  const uploadPanditPhoto = async (id) => {
+  async function uploadPanditPhoto(id) {
     if (!panditImg[id]) return;
     const form = new FormData();
     form.append('photo', panditImg[id]);
-    await fetch(`/api/pandits/upload/${id}`, {
-      method: 'POST',
-      body: form
-    });
+    await fetch(`/api/pandits/upload/${id}`, { method: 'POST', body: form });
     fetchPandits();
-  };
+  }
 
-  const deletePooja = async id => {
-    await fetch(`/api/poojas/delete/${id}`, { method: 'DELETE' });
-    fetchPoojas();
-  };
-
-  const editPooja = async (id, field, value) => {
-    await fetch(`/api/poojas/update/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: value }),
-    });
-    fetchPoojas();
-  };
-
-  const createPooja = async () => {
+  async function createPooja() {
     await fetch('/api/poojas/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,12 +50,26 @@ function AdminDashboard() {
     });
     setNewPooja({ name: '', description: '', imageUrl: '' });
     fetchPoojas();
-  };
+  }
 
-  const logout = () => {
+  async function deletePooja(id) {
+    await fetch(`/api/poojas/delete/${id}`, { method: 'DELETE' });
+    fetchPoojas();
+  }
+
+  async function editPooja(id, field, value) {
+    await fetch(`/api/poojas/update/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ [field]: value }),
+    });
+    fetchPoojas();
+  }
+
+  function logout() {
     localStorage.clear();
     window.location.href = '/';
-  };
+  }
 
   return (
     <div className="admin-container">
@@ -85,8 +83,8 @@ function AdminDashboard() {
             {p.profile_photo_url && <img src={p.profile_photo_url} alt={p.name} />}
             <p><strong>{p.name}</strong> – {p.email}</p>
             <p>{p.city} | {p.experienceYears} yrs</p>
-            <p>Languages: {p.languages?.join(', ')}</p>
-            <p>Specialties: {p.specialties?.join(', ')}</p>
+            <p>Langs: {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
+            <p>Specs: {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties}</p>
             <p>Bio: {p.bio}</p>
             <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
 
@@ -119,19 +117,16 @@ function AdminDashboard() {
         <h2>Pooja Management</h2>
         <div className="pooja-form">
           <input
-            type="text"
             placeholder="Name"
             value={newPooja.name}
             onChange={e => setNewPooja({ ...newPooja, name: e.target.value })}
           />
           <input
-            type="text"
             placeholder="Description"
             value={newPooja.description}
             onChange={e => setNewPooja({ ...newPooja, description: e.target.value })}
           />
           <input
-            type="text"
             placeholder="Image URL"
             value={newPooja.imageUrl}
             onChange={e => setNewPooja({ ...newPooja, imageUrl: e.target.value })}
