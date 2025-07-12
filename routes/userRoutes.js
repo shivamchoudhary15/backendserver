@@ -29,7 +29,7 @@ router.post('/add', async (req, res) => {
       phone,
       city,
       address,
-      role: role || 'user',
+      role: role || 'devotee',
       password: hashedPassword,
     });
 
