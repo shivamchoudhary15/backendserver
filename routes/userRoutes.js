@@ -5,7 +5,7 @@ const Pandit = require('../models/pandit');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// Signup for users
+// Signup
 router.post('/add', async (req, res) => {
   try {
     const { name, email, phone, city, address, password, role } = req.body;
@@ -15,14 +15,13 @@ router.post('/add', async (req, res) => {
     }
 
     const normalizedEmail = email.toLowerCase();
-
     const existing = await User.findOne({ email: normalizedEmail });
+
     if (existing) {
       return res.status(400).json({ error: 'Email already registered.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new User({
       name,
       email: normalizedEmail,
@@ -49,8 +48,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-
-// ✅ Login for both users and pandits
+// Login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -92,24 +90,24 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-
-// ✅ View all users (optional)
+// View all users
 router.get('/view', async (req, res) => {
   try {
     const users = await User.find().select('-password -__v');
     res.status(200).json(users);
   } catch (err) {
-    console.error('Get users error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Admin: View all users
+router.get('/admin-view', async (req, res) => {
+  try {
+    const users = await User.find().select('-password -__v');
+    res.status(200).json(users);
+  } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
 });
 
 module.exports = router;
-
-
-
-
-
-
-
