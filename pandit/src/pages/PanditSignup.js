@@ -27,8 +27,8 @@ export default function PanditSignup() {
     e.preventDefault();
     setError('');
     try {
-      const res = await axios.post('http://localhost:5000/api/pandits/signup', form);
-      alert('✅ Pandit registered successfully!');
+      const res = await axios.post('https://backendserver-6-yebf.onrender.com/api/pandits/signup', form);
+      alert('✅ Pandit registered successfully! Please wait for admin verification.');
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.error || 'Something went wrong');
