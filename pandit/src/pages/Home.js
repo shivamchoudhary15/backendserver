@@ -30,7 +30,9 @@ const Home = () => {
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
 
-        setPandits(panditsData);
+        // Only show verified pandits
+        const verifiedPandits = panditsData.filter(p => p.is_verified);
+        setPandits(verifiedPandits);
         setPoojas(poojasData);
       } catch (error) {
         console.error('Failed to fetch data:', error);
@@ -61,7 +63,9 @@ const Home = () => {
               <img src="/images/subh.png" alt="logo" className="logo-img" />
               <div className="logo">Shubhkarya</div>
             </div>
-            <div className="navbar-center">Your Spiritual Partner: For Every Sacred Occasion</div>
+            <div className="navbar-center">
+              Your Spiritual Partner: For Every Sacred Occasion
+            </div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
               <a href="#services">Pooja</a>
@@ -120,7 +124,7 @@ const Home = () => {
                   src={pooja.imageUrl || dummyImages[idx % dummyImages.length]}
                   alt={pooja.name}
                 />
-                <h3>{pooja.name}</h3>
+                <h3>{pooja.name || 'Untitled Pooja'}</h3>
               </div>
             ))}
           </div>
@@ -139,16 +143,18 @@ const Home = () => {
         <h2>Meet Our Pandits</h2>
         {loading ? (
           <p>Loading pandits...</p>
+        ) : pandits.length === 0 ? (
+          <p>No verified pandits available.</p>
         ) : (
           <div className="pandit-grid">
             {pandits.map((p, idx) => (
               <div className="pandit-card" key={p._id || idx}>
                 <img
                   src={p.profile_photo_url || '/images/default-pandit.png'}
-                  alt={`Photo of ${p.name}`}
+                  alt={`Photo of ${p.name || 'Pandit'}`}
                 />
-                <h4>{p.name}</h4>
-                <p>{p.city} | {p.experienceYears}+ yrs exp</p>
+                <h4>{p.name || 'Unknown'}</h4>
+                <p>{p.city || 'Unknown City'} | {p.experienceYears || 0}+ yrs exp</p>
                 <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages || 'N/A'}</p>
                 <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties || 'N/A'}</p>
               </div>
