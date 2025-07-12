@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://backendserver-6-yebf.onrender.com/api', // ye backend render ki url hai 
+  baseURL: 'https://backendserver-auhk.onrender.com/api', // ye backend render ki url hai 
 });
 
 API.interceptors.request.use(config => {
