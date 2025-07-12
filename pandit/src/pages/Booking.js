@@ -1,159 +1,101 @@
+// src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
 import { createBooking, getBookings } from '../api/api';
 
 function Booking() {
-  const [details, setDetails] = useState({
-    serviceid: '',
-    panditid: '',
-    poojaId: '',
-    puja_date: '',
-    puja_time: '',
-    location: '',
-  });
-
+  const [details, setDetails] = useState({});
   const [bookings, setBookings] = useState([]);
   const [services, setServices] = useState([]);
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
-
+  const [search, setSearch] = useState('');
   const user = JSON.parse(localStorage.getItem('user'));
-  const token = localStorage.getItem('token');
   const userid = user?._id;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [serviceRes, panditRes, poojaRes] = await Promise.all([
-          fetch('http://localhost:5000/api/services/view'),
-          fetch('http://localhost:5000/api/pandits/view'),
-          fetch('http://localhost:5000/api/poojas/view'),
-        ]);
-
-        const [servicesData, panditsData, poojasData] = await Promise.all([
-          serviceRes.json(),
-          panditRes.json(),
-          poojaRes.json(),
-        ]);
-
-        setServices(servicesData);
-        setPandits(panditsData);
-        setPoojas(poojasData);
-      } catch (err) {
-        console.error('Error loading data:', err);
-      }
-    };
-    fetchData();
+    async function load() {
+      const [sv, pd, pj] = await Promise.all([
+        fetch('/api/services/view'),
+        fetch('/api/pandits/view'),
+        fetch('/api/poojas/view'),
+      ]);
+      setServices(await sv.json());
+      setPandits(await pd.json());
+      setPoojas(await pj.json());
+    }
+    load();
   }, []);
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      if (!userid) return;
-      try {
-        const res = await getBookings(userid);
-        setBookings(res.data);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      }
-    };
-    fetchBookings();
+    if (!userid) return;
+    getBookings(userid).then(r => setBookings(r.data));
   }, [userid]);
 
-  const handleChange = (e) => {
-    setDetails({ ...details, [e.target.name]: e.target.value });
-  };
+  const filteredPandits = pandits.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const filteredPoojas = poojas.filter(pj =>
+    pj.name.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
-
     if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-      alert('Please fill all fields');
-      return;
+      alert('Please fill all fields'); return;
     }
+    const exists = bookings.some(b =>
+      b.panditid === panditid && b.puja_date === puja_date && b.status === 'accepted'
+    );
+    if (exists) { alert('Pandit already booked that day'); return; }
 
-    if (!token || !userid) {
-      alert('You must be logged in to book a service.');
-      return;
-    }
-
-    const bookingData = {
-      userid,
-      serviceid,
-      panditid,
-      puja_date,
-      puja_time,
-      location,
-      SamanList: poojaId,
-    };
-
-    try {
-      await createBooking(bookingData);
-      alert('✅ Booking created successfully!');
-      setDetails({
-        serviceid: '',
-        panditid: '',
-        poojaId: '',
-        puja_date: '',
-        puja_time: '',
-        location: '',
-      });
-      const updated = await getBookings(userid);
-      setBookings(updated.data);
-    } catch (error) {
-      console.error('Booking API error:', error.response?.data || error.message);
-      alert(error.response?.data?.error || 'Booking failed. Please try again.');
-    }
+    await createBooking({ ...details, userid });
+    alert('✅ Booking created!');
+    getBookings(userid).then(r => setBookings(r.data));
   };
 
   return (
-    <div style={{ padding: '40px 10%' }}>
+    <div className="booking-form">
+      <h2>Book Pooja</h2>
+      <input
+        type="text"
+        placeholder="Search Pandit or Pooja"
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
       <form onSubmit={handleSubmit}>
-        {/* Service */}
-        <select name="serviceid" value={details.serviceid} onChange={handleChange} required style={inputStyle}>
-          <option value="">-- Select Service --</option>
-          {services.map((s) => (
-            <option key={s._id} value={s._id}>{s.name}</option>
-          ))}
+        <select name="serviceid" onChange={e => setDetails({...details, serviceid: e.target.value})}>
+          <option value="">-- Service --</option>
+          {services.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
         </select>
 
-        {/* Pandit */}
-        <select name="panditid" value={details.panditid} onChange={handleChange} required style={inputStyle}>
-          <option value="">-- Select Pandit --</option>
-          {pandits.map((p) => (
-            <option key={p._id} value={p._id}>{p.name}</option>
-          ))}
+        <select name="panditid" onChange={e => setDetails({...details, panditid: e.target.value})}>
+          <option value="">-- Pandit --</option>
+          {filteredPandits.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
         </select>
 
-        {/* Pooja */}
-        <select name="poojaId" value={details.poojaId} onChange={handleChange} required style={inputStyle}>
-          <option value="">-- Select Pooja --</option>
-          {poojas.map((pooja) => (
-            <option key={pooja._id} value={pooja._id}>{pooja.name}</option>
-          ))}
+        <select name="poojaId" onChange={e => setDetails({...details, poojaId: e.target.value})}>
+          <option value="">-- Pooja --</option>
+          {filteredPoojas.map(pj => <option key={pj._id} value={pj._id}>{pj.name}</option>)}
         </select>
 
-        {/* Date, Time, Location */}
-        <input type="date" name="puja_date" value={details.puja_date} onChange={handleChange} required style={inputStyle} />
-        <input type="time" name="puja_time" value={details.puja_time} onChange={handleChange} required style={inputStyle} />
-        <input type="text" name="location" placeholder="Location" value={details.location} onChange={handleChange} required style={inputStyle} />
+        <input type="date" name="puja_date" onChange={e => setDetails({...details, puja_date: e.target.value})}/>
+        <input type="time" name="puja_time" onChange={e => setDetails({...details, puja_time: e.target.value})}/>
+        <input type="text" name="location" placeholder="Location" onChange={e => setDetails({...details, location: e.target.value})} />
 
         <button type="submit">Book Now</button>
       </form>
+
+      <h2>Your Bookings</h2>
+      <ul>
+        {bookings.map(b => (
+          <li key={b._id}>
+            {b.puja_date} - {b.puja_time} with {b.panditid.name} - <strong>{b.status}</strong>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-const inputStyle = {
-  display: 'block',
-  marginBottom: '16px',
-  width: '100%',
-  padding: '12px',
-  fontSize: '16px',
-};
-
 export default Booking;
-
-
-
-
-
