@@ -2,22 +2,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+const path = require('path');
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
+// ✅ Middlewares
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection ke liye 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('DB connection error:', err));
+// ✅ MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ DB connection error:', err));
 
-// ham import kara rahe hai routes ko
+// ✅ Import all routes
 const userRoutes = require('./routes/userRoutes');
 const panditRoutes = require('./routes/panditRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
@@ -27,7 +30,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const poojaRoutes = require('./routes/poojaRoutes');
 
-// yaa pe use kar rahe hai 
+// ✅ Mount routes
 app.use('/api/users', userRoutes);
 app.use('/api/pandits', panditRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -37,25 +40,21 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
 
-// ye default route jisme ye likha hoga 
+// ✅ Default route
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('🕉️ Shubkarya API is running...');
 });
 
-// JSON syntax error handle
+// ✅ JSON error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    return res.status(400).json({ error: 'Invalid JSON' });
+    return res.status(400).json({ error: '❌ Invalid JSON' });
   }
   next();
 });
 
-// yaha pe server start hoga port 5000 pe 
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-
- 
-
-
