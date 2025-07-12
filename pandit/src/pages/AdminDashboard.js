@@ -17,6 +17,7 @@ function AdminDashboard() {
   const [poojas, setPoojas] = useState([]);
   const [newPooja, setNewPooja] = useState({ name: '', description: '', imageUrl: '' });
   const [panditImg, setPanditImg] = useState({});
+  const [imgPreview, setImgPreview] = useState({});
 
   useEffect(() => {
     fetchAll();
@@ -47,6 +48,8 @@ function AdminDashboard() {
     const form = new FormData();
     form.append('photo', panditImg[id]);
     await uploadPanditPhoto(id, form);
+    setPanditImg(prev => ({ ...prev, [id]: null }));
+    setImgPreview(prev => ({ ...prev, [id]: null }));
     fetchAll();
   }
 
@@ -80,7 +83,17 @@ function AdminDashboard() {
         <h2>Pandits</h2>
         {pandits.map(p => (
           <div key={p._id} className="admin-card">
-            {p.profile_photo_url && <img src={p.profile_photo_url} alt={p.name} />}
+            <img
+              src={
+                imgPreview[p._id]
+                  ? imgPreview[p._id]
+                  : p.profile_photo_url
+                  ? p.profile_photo_url
+                  : '/default.jpg'
+              }
+              alt={p.name}
+              className="pandit-photo"
+            />
             <p><strong>{p.name}</strong> – {p.email}</p>
             <p>{p.city} | {p.experienceYears} yrs</p>
             <p>Langs: {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
@@ -88,13 +101,25 @@ function AdminDashboard() {
             <p>Bio: {p.bio}</p>
             <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
 
-            {!p.is_verified && <button onClick={() => handleVerify(p._id)}>Verify</button>}
+            {!p.is_verified && (
+              <button onClick={() => handleVerify(p._id)}>Verify</button>
+            )}
 
             <div className="upload-photo">
               <input
                 type="file"
                 accept="image/*"
-                onChange={e => setPanditImg({ ...panditImg, [p._id]: e.target.files[0] })}
+                onChange={e => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    setPanditImg(prev => ({ ...prev, [p._id]: file }));
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setImgPreview(prev => ({ ...prev, [p._id]: reader.result }));
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
               />
               <button onClick={() => handlePhotoUpload(p._id)}>Upload Photo</button>
             </div>
@@ -136,9 +161,27 @@ function AdminDashboard() {
 
         {poojas.map(pj => (
           <div key={pj._id} className="admin-card">
-            <p>Name: <input defaultValue={pj.name} onBlur={e => handlePoojaEdit(pj._id, 'name', e.target.value)} /></p>
-            <p>Description: <input defaultValue={pj.description} onBlur={e => handlePoojaEdit(pj._id, 'description', e.target.value)} /></p>
-            <p>Image: <input defaultValue={pj.imageUrl || ''} onBlur={e => handlePoojaEdit(pj._id, 'imageUrl', e.target.value)} /></p>
+            <p>
+              Name:{" "}
+              <input
+                defaultValue={pj.name}
+                onBlur={e => handlePoojaEdit(pj._id, 'name', e.target.value)}
+              />
+            </p>
+            <p>
+              Description:{" "}
+              <input
+                defaultValue={pj.description}
+                onBlur={e => handlePoojaEdit(pj._id, 'description', e.target.value)}
+              />
+            </p>
+            <p>
+              Image:{" "}
+              <input
+                defaultValue={pj.imageUrl || ''}
+                onBlur={e => handlePoojaEdit(pj._id, 'imageUrl', e.target.value)}
+              />
+            </p>
             <button onClick={() => handlePoojaDelete(pj._id)}>Delete</button>
           </div>
         ))}
