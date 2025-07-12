@@ -14,6 +14,8 @@ API.interceptors.request.use(config => {
 // 🔹 Devotee Auth
 export const signup = userData => API.post('/users/add', userData);
 export const login = userData => API.post('/users/login', userData);
+export const getAllDevotees = () => API.get('/users/view');
+
 
 // 🔹 Pandit Auth
 export const panditSignup = data => API.post('/pandits/signup', data);
