@@ -51,8 +51,6 @@ const poojaImageMap = {
 
 const Home = () => {
   const [services, setServices] = useState([]);
-  const [pandits, setPandits] = useState([]);
-  const [poojas, setPoojas] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -61,15 +59,6 @@ const Home = () => {
     getServices()
       .then((res) => setServices(res.data))
       .catch(() => setServices(dummyServices));
-
-    fetch('https://backendserver-6-yebf.onrender.com/api/pandits/view')
-      .then(res => res.json())
-      .then(data => setPandits(data))
-      .catch(() => setPandits(dummyPandits));
-
-    fetch('https://backendserver-6-yebf.onrender.com/api/poojas/view')
-      .then(res => res.json())
-      .then(data => setPoojas(data));
   }, []);
 
   const handleBooking = () => {
@@ -82,7 +71,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navbar */}
+      {/* Header */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="navbar-content">
@@ -90,6 +79,7 @@ const Home = () => {
               <img src="/images/subh.png" alt="logo" className="logo-img" />
               <div className="logo">Shubhkarya</div>
             </div>
+            <div className="navbar-center">Your Spiritual Partner</div>
             <div className="navbar-center">Your Spiritual Partner: For Every Sacred Occasion</div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
@@ -127,7 +117,9 @@ const Home = () => {
       {/* About Section */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
-        <p>Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.</p>
+        <p>
+          Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.
+        </p>
       </section>
 
       {/* Services Section */}
@@ -154,13 +146,13 @@ const Home = () => {
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         <div className="pandit-grid">
-          {(pandits.length ? pandits : dummyPandits).map((p, idx) => (
+          {dummyPandits.map((pandit, idx) => (
             <div className="pandit-card" key={idx}>
-              <img src={p.profile_photo_url} alt={p.name} />
-              <h4>{p.name}</h4>
-              <p>{p.city} | {p.experienceYears}+ yrs exp</p>
-              <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
-              <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties}</p>
+              <img src={pandit.profile_photo_url} alt={pandit.name} />
+              <h4>{pandit.name}</h4>
+              <p>{pandit.city} | {pandit.experienceYears}+ yrs exp</p>
+              <p>🗣 {pandit.languages.join(', ')}</p>
+              <p>🎯 {pandit.specialties.join(', ')}</p>
             </div>
           ))}
         </div>
