@@ -1,13 +1,12 @@
-// config/multer.js
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Storage configuration for Pandit profile photo uploads
+// 🔧 Configure disk storage for Pandit photo uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = path.join(__dirname, '../uploads/pandits');
-    fs.mkdirSync(dir, { recursive: true }); // Ensure uploads/pandits exists
+    fs.mkdirSync(dir, { recursive: true }); // ensure directory exists
     cb(null, dir);
   },
   filename: function (req, file, cb) {
