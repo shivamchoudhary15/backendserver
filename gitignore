@@ -4,8 +4,12 @@ node_modules/
 # Environment variables
 .env
 
-# Uploads folder (user-generated files)
-uploads/
+# Ignore all contents of uploads
+/uploads/*
+# Except .gitkeep
+!/uploads/.gitkeep
+!/uploads/pandits/.gitkeep
+
 
 # Logs
 logs/
