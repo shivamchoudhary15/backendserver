@@ -17,7 +17,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const res = await axios.post('https://backendserver-6-yebf.onrender.com/api/users/login', form);
+      const res = await axios.post('https://backendserver-auhk.onrender.com/api/users/login', form);
       const { token, user } = res.data;
 
       if (user?.role !== 'admin') {
