@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Pooja = require('../models/pooja');
 
-// Add a new pooja
+// Add pooja
 router.post('/add', async (req, res) => {
   try {
-    const pooja = new Pooja(req.body);
+    const { name, description, itemsRequired, imageUrl } = req.body;
+    const pooja = new Pooja({ name, description, itemsRequired, imageUrl });
     await pooja.save();
     res.status(201).json(pooja);
   } catch (err) {
@@ -13,11 +14,31 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// View all poojas
+// Get all
 router.get('/view', async (req, res) => {
   try {
     const poojas = await Pooja.find();
-    res.status(200).json(poojas);
+    res.json(pooojas);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update pooja
+router.put('/update/:id', async (req, res) => {
+  try {
+    const updated = await Pooja.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ message: 'Updated successfully', pooja: updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete pooja
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    await Pooja.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
