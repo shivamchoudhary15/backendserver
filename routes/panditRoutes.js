@@ -2,21 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const path = require('path');
 const Pandit = require('../models/pandit');
-
-// Multer setup for photo upload (admin upload from dashboard)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/pandits/');
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `pandit-${Date.now()}${ext}`);
-  },
-});
-const upload = multer({ storage });
 
 // ✅ Pandit Signup
 router.post('/signup', async (req, res) => {
@@ -105,7 +91,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Get all verified Pandits (Public)
+// ✅ Get all verified Pandits (Public - for Home page)
 router.get('/view', async (req, res) => {
   try {
     const pandits = await Pandit.find({ is_verified: true });
@@ -115,7 +101,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ✅ Get single Pandit by ID (optional)
+// ✅ Get single Pandit by ID
 router.get('/:id', async (req, res) => {
   try {
     const pandit = await Pandit.findById(req.params.id);
@@ -126,7 +112,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// ✅ Admin: Get all Pandits (Verified + Unverified)
+// ✅ Admin: View all Pandits (Verified + Unverified)
 router.get('/admin-view', async (req, res) => {
   try {
     const pandits = await Pandit.find();
@@ -136,7 +122,7 @@ router.get('/admin-view', async (req, res) => {
   }
 });
 
-// ✅ Admin: Verify Pandit by ID
+// ✅ Admin: Verify Pandit
 router.put('/verify/:id', async (req, res) => {
   try {
     const updated = await Pandit.findByIdAndUpdate(
@@ -150,23 +136,6 @@ router.put('/verify/:id', async (req, res) => {
     res.json({ message: 'Pandit verified successfully.', pandit: updated });
   } catch (err) {
     res.status(500).json({ error: 'Verification failed.' });
-  }
-});
-
-// ✅ Admin: Upload Pandit Photo
-router.post('/upload/:id', upload.single('photo'), async (req, res) => {
-  try {
-    const imagePath = `/uploads/pandits/${req.file.filename}`;
-    const updated = await Pandit.findByIdAndUpdate(
-      req.params.id,
-      { profile_photo_url: imagePath },
-      { new: true }
-    );
-    if (!updated) return res.status(404).json({ error: 'Pandit not found.' });
-    res.json({ message: 'Profile photo uploaded.', pandit: updated });
-  } catch (err) {
-    console.error('Photo upload error:', err);
-    res.status(500).json({ error: 'Upload failed.' });
   }
 });
 
