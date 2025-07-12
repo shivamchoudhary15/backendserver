@@ -12,27 +12,81 @@ import Dashboard from './pages/Dashboard';
 import PanditSignup from './pages/PanditSignup';
 import PanditDashboard from './pages/PanditDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup/pandit" element={<PanditSignup />} />
-        <Route path="/pandit-dashboard" element={<PanditDashboard />} />
 
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['devotee']}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/booking"
+          element={
+            <ProtectedRoute allowedRoles={['devotee']}>
+              <Booking />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reviews"
+          element={
+            <ProtectedRoute allowedRoles={['devotee']}>
+              <ReviewForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute allowedRoles={['devotee']}>
+              <Payment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute allowedRoles={['devotee']}>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
-        <Route path="/reviews" element={<ProtectedRoute><ReviewForm /></ProtectedRoute>} />
-        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+        {/* Pandit Route */}
+        <Route
+          path="/pandit-dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['pandit']}>
+              <PanditDashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/" element={<Home />} />
+        {/* Admin Route */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
