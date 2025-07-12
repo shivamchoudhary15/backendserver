@@ -1,6 +1,6 @@
-// src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
 import { createBooking, getBookings } from '../api/api';
+import './Booking.css';
 
 function Booking() {
   const [details, setDetails] = useState({});
@@ -55,38 +55,59 @@ function Booking() {
   };
 
   return (
-    <div className="booking-form">
-      <h2>Book Pooja</h2>
+    <div className="page-container">
+      <h2>📘 Book Pandit Ji for Your Puja</h2>
       <input
         type="text"
         placeholder="Search Pandit or Pooja"
         value={search}
         onChange={e => setSearch(e.target.value)}
+        className="search-bar"
       />
-      <form onSubmit={handleSubmit}>
-        <select name="serviceid" onChange={e => setDetails({...details, serviceid: e.target.value})}>
-          <option value="">-- Service --</option>
-          {services.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
-        </select>
+      <form className="form-grid" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <select name="serviceid" onChange={e => setDetails({...details, serviceid: e.target.value})} required>
+            <option value="">-- Service --</option>
+            {services.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
+          </select>
+          <label>Service</label>
+        </div>
 
-        <select name="panditid" onChange={e => setDetails({...details, panditid: e.target.value})}>
-          <option value="">-- Pandit --</option>
-          {filteredPandits.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
-        </select>
+        <div className="form-group">
+          <select name="panditid" onChange={e => setDetails({...details, panditid: e.target.value})} required>
+            <option value="">-- Pandit --</option>
+            {filteredPandits.map(p => <option key={p._id} value={p._id}>{p.name}</option>)}
+          </select>
+          <label>Select Pandit</label>
+        </div>
 
-        <select name="poojaId" onChange={e => setDetails({...details, poojaId: e.target.value})}>
-          <option value="">-- Pooja --</option>
-          {filteredPoojas.map(pj => <option key={pj._id} value={pj._id}>{pj.name}</option>)}
-        </select>
+        <div className="form-group">
+          <select name="poojaId" onChange={e => setDetails({...details, poojaId: e.target.value})} required>
+            <option value="">-- Pooja --</option>
+            {filteredPoojas.map(pj => <option key={pj._id} value={pj._id}>{pj.name}</option>)}
+          </select>
+          <label>Select Pooja</label>
+        </div>
 
-        <input type="date" name="puja_date" onChange={e => setDetails({...details, puja_date: e.target.value})}/>
-        <input type="time" name="puja_time" onChange={e => setDetails({...details, puja_time: e.target.value})}/>
-        <input type="text" name="location" placeholder="Location" onChange={e => setDetails({...details, location: e.target.value})} />
+        <div className="form-group">
+          <input type="date" name="puja_date" onChange={e => setDetails({...details, puja_date: e.target.value})} required />
+          <label>Puja Date</label>
+        </div>
 
-        <button type="submit">Book Now</button>
+        <div className="form-group">
+          <input type="time" name="puja_time" onChange={e => setDetails({...details, puja_time: e.target.value})} required />
+          <label>Puja Time</label>
+        </div>
+
+        <div className="form-group">
+          <input type="text" name="location" placeholder=" " onChange={e => setDetails({...details, location: e.target.value})} required />
+          <label>Location</label>
+        </div>
+
+        <button type="submit" className="submit-btn">📿 Book Pandit Ji</button>
       </form>
 
-      <h2>Your Bookings</h2>
+      <h2 style={{ marginTop: '2rem' }}>Your Bookings</h2>
       <ul>
         {bookings.map(b => (
           <li key={b._id}>
