@@ -1,62 +1,84 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://backendserver-pf4h.onrender.com/api', // your Render backend URL
+  baseURL: 'https://backendserver-pf4h.onrender.com/api', // Update with your backend URL
 });
 
-// Attach token to all requests if available
+// 🔐 Automatically attach token
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
+//
 // 🔹 Devotee Auth
+//
 export const signup = userData => API.post('/users/add', userData);
 export const login = userData => API.post('/users/login', userData);
 export const getAllDevotees = () => API.get('/users/view');
 
-
+//
 // 🔹 Pandit Auth
+//
 export const panditSignup = data => API.post('/pandits/signup', data);
 export const panditLogin = data => API.post('/pandits/login', data);
 
-// 🔹 Admin: View All
+//
+// 🔹 Admin: View
+//
 export const getUsers = () => API.get('/users/view');
 export const getAllPandits = () => API.get('/pandits/admin-view');
+export const getAllPoojas = () => API.get('/poojas/view');
 
+//
 // 🔹 Admin: Pandit Management
+//
 export const verifyPandit = id => API.put(`/pandits/verify/${id}`);
 export const uploadPanditPhoto = (id, formData) =>
-  API.post(`/pandits/upload/${id}`, formData);
+  API.post(`/pandits/upload/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 
+//
 // 🔹 Pandit (Public)
+//
 export const getVerifiedPandits = () => API.get('/pandits/view');
 
+//
 // 🔹 Pooja Management
+//
 export const getPoojas = () => API.get('/poojas/view');
 export const addPooja = poojaData => API.post('/poojas/add', poojaData);
 export const updatePooja = (id, data) => API.put(`/poojas/update/${id}`, data);
 export const deletePooja = id => API.delete(`/poojas/delete/${id}`);
-export const getAllPoojas = () => API.get('/poojas/view');
 
-
+//
 // 🔹 Booking
+//
 export const createBooking = bookingData => API.post('/bookings/create', bookingData);
-export const getBookings = userid => API.get(`/bookings/view?userid=${userid}`);
+export const getBookings = userId => API.get(`/bookings/view?userid=${userId}`);
 
+//
 // 🔹 Services
+//
 export const getServices = () => API.get('/services');
 
+//
 // 🔹 Notifications
+//
 export const getNotifications = () => API.get('/notifications');
 export const markNotificationAsRead = id => API.put(`/notifications/${id}`);
 
+//
 // 🔹 Payments
+//
 export const createPayment = paymentData => API.post('/payments', paymentData);
 export const getPayments = () => API.get('/payments');
 
+//
 // 🔹 Reviews
+//
 export const createReview = reviewData => API.post('/reviews/submit', reviewData);
 export const getReviews = () => API.get('/reviews/view');
 export const deleteReview = id => API.delete(`/reviews/${id}`);
