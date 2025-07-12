@@ -6,7 +6,6 @@ import './Login.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
-  const [roleType, setRoleType] = useState('devotee'); // only used for choosing endpoint
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -21,13 +20,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post(
-        roleType === 'pandit'
-          ? 'https://backendserver-6-yebf.onrender.com/api/pandits/login'
-          : 'https://backendserver-6-yebf.onrender.com/api/users/login',
-        form
-      );
-
+      const response = await axios.post('https://backendserver-6-yebf.onrender.com/api/users/login', form);
       const { token, user } = response.data;
 
       if (token && user?._id) {
@@ -36,7 +29,7 @@ const Login = () => {
 
         alert('✅ Login successful!');
 
-        // ✅ Redirect using user.role, NOT dropdown
+        // Redirect based on actual user.role from backend
         if (user.role === 'admin') {
           navigate('/admin');
         } else if (user.role === 'pandit') {
@@ -80,16 +73,6 @@ const Login = () => {
 
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error">{error}</div>}
-
-            <label>Login As:</label>
-            <select
-              value={roleType}
-              onChange={(e) => setRoleType(e.target.value)}
-              style={{ padding: '8px', marginBottom: '12px' }}
-            >
-              <option value="devotee">Devotee / Admin</option>
-              <option value="pandit">Pandit</option>
-            </select>
 
             <label>Email Address</label>
             <input
