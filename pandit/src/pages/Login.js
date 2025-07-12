@@ -21,7 +21,6 @@ const Login = () => {
     setError('');
 
     try {
-      // 👇 Call appropriate login endpoint
       const response = await axios.post(
         role === 'pandit'
           ? 'https://backendserver-6-yebf.onrender.com/api/pandits/login'
@@ -37,13 +36,13 @@ const Login = () => {
 
         alert('✅ Login successful!');
 
-        // 👇 Redirect based on role
-        if (role === 'pandit') {
-          navigate('/pandit-dashboard');
-        } else if (user.role === 'admin') {
+        // ✅ Redirect purely based on backend role
+        if (user.role === 'admin') {
           navigate('/admin');
+        } else if (user.role === 'pandit') {
+          navigate('/pandit-dashboard');
         } else {
-          navigate('/dashboard');
+          navigate('/dashboard'); // default for devotee
         }
       } else {
         setError('Invalid login. Try again.');
@@ -58,7 +57,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left side */}
+      {/* Left Image */}
       <div
         className="login-left"
         style={{
@@ -70,7 +69,7 @@ const Login = () => {
         }}
       />
 
-      {/* Right side with form */}
+      {/* Right Form Box */}
       <div className="login-right">
         <motion.div
           className="login-form-box"
