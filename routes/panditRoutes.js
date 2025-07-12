@@ -53,6 +53,38 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// ✅ Pandit Login Route
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const pandit = await Pandit.findOne({ email: email.toLowerCase() });
+
+    if (!pandit) {
+      return res.status(401).json({ error: 'Pandit not found.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, pandit.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid password.' });
+    }
+
+    if (!pandit.is_verified) {
+      return res.status(403).json({ error: 'Pandit not verified by admin.' });
+    }
+
+    const token = jwt.sign({ id: pandit._id, role: 'pandit' }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    res.status(200).json({ token, user: pandit });
+  } catch (err) {
+    console.error('Pandit login error:', err);
+    res.status(500).json({ error: 'Login failed. Try again.' });
+  }
+});
+
 // ✅ Get all verified Pandits
 router.get('/view', async (req, res) => {
   try {
