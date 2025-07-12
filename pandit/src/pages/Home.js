@@ -124,8 +124,8 @@ const Home = () => {
               <img src={p.profile_photo_url} alt={p.name} />
               <h4>{p.name}</h4>
               <p>{p.city} | {p.experienceYears}+ yrs exp</p>
-              <p>🗣 {p.languages?.join(', ')}</p>
-              <p>🎯 {p.specialties?.join(', ')}</p>
+              <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages || 'N/A'}</p>
+              <p>🎯 {Array.isArray(p.specialties) ? p.specialties.join(', ') : p.specialties || 'N/A'}</p>
             </div>
           ))}
         </div>
