@@ -3,9 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Pandit = require('../models/pandit');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const upload = require('../config/multer');
+
 
 // ✅ Multer config for Pandit profile image
 const storage = multer.diskStorage({
