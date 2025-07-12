@@ -27,7 +27,15 @@ const Login = () => {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
         alert('✅ Login successful!');
-        navigate('/dashboard');
+
+        // 🔁 Redirect based on role
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else if (user.role === 'pandit') {
+          navigate('/pandit-dashboard');
+        } else {
+          navigate('/dashboard'); // default to devotee
+        }
       } else {
         setError('Invalid login. Try again.');
       }
@@ -61,11 +69,7 @@ const Login = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img
-            src="/images/subh.png"
-            alt="Logo"
-            className="login-logo"
-          />
+          <img src="/images/subh.png" alt="Logo" className="login-logo" />
           <p className="login-tagline">Your Path to Sacred Beginnings</p>
 
           <form onSubmit={handleSubmit} className="login-form">
