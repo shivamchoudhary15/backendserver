@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import {
+  getAllPandits,
+  verifyPandit,
+  uploadPanditPhoto,
+  getAllDevotees,
+  getAllPoojas,
+  addPooja,
+  deletePooja,
+  updatePooja
+} from '../api/api';
 import './AdminDashboard.css';
-
-const BASE_URL = 'https://backendserver-1-ffjl.onrender.com/api';
 
 function AdminDashboard() {
   const [pandits, setPandits] = useState([]);
@@ -17,45 +24,45 @@ function AdminDashboard() {
 
   async function fetchAll() {
     try {
-      const [pRes, dRes, poojaRes] = await Promise.all([
-        axios.get(`${BASE_URL}/pandits/admin-view`),
-        axios.get(`${BASE_URL}/users/view`),
-        axios.get(`${BASE_URL}/poojas/view`)
+      const [p, d, pj] = await Promise.all([
+        getAllPandits(),
+        getAllDevotees(),
+        getAllPoojas()
       ]);
-      setPandits(pRes.data);
-      setDevotees(dRes.data);
-      setPoojas(poojaRes.data);
+      setPandits(p.data);
+      setDevotees(d.data);
+      setPoojas(pj.data);
     } catch (err) {
-      console.error('Fetch error:', err);
+      console.error('Error loading data', err);
     }
   }
 
-  async function verifyPandit(id) {
-    await axios.put(`${BASE_URL}/pandits/verify/${id}`);
+  async function handleVerify(id) {
+    await verifyPandit(id);
     fetchAll();
   }
 
-  async function uploadPanditPhoto(id) {
+  async function handlePhotoUpload(id) {
     if (!panditImg[id]) return;
     const form = new FormData();
     form.append('photo', panditImg[id]);
-    await axios.post(`${BASE_URL}/pandits/upload/${id}`, form);
+    await uploadPanditPhoto(id, form);
     fetchAll();
   }
 
-  async function createPooja() {
-    await axios.post(`${BASE_URL}/poojas/add`, newPooja);
+  async function handlePoojaCreate() {
+    await addPooja(newPooja);
     setNewPooja({ name: '', description: '', imageUrl: '' });
     fetchAll();
   }
 
-  async function deletePooja(id) {
-    await axios.delete(`${BASE_URL}/poojas/delete/${id}`);
+  async function handlePoojaDelete(id) {
+    await deletePooja(id);
     fetchAll();
   }
 
-  async function editPooja(id, field, value) {
-    await axios.put(`${BASE_URL}/poojas/update/${id}`, { [field]: value });
+  async function handlePoojaEdit(id, field, value) {
+    await updatePooja(id, { [field]: value });
     fetchAll();
   }
 
@@ -81,7 +88,7 @@ function AdminDashboard() {
             <p>Bio: {p.bio}</p>
             <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
 
-            {!p.is_verified && <button onClick={() => verifyPandit(p._id)}>Verify</button>}
+            {!p.is_verified && <button onClick={() => handleVerify(p._id)}>Verify</button>}
 
             <div className="upload-photo">
               <input
@@ -89,7 +96,7 @@ function AdminDashboard() {
                 accept="image/*"
                 onChange={e => setPanditImg({ ...panditImg, [p._id]: e.target.files[0] })}
               />
-              <button onClick={() => uploadPanditPhoto(p._id)}>Upload Photo</button>
+              <button onClick={() => handlePhotoUpload(p._id)}>Upload Photo</button>
             </div>
           </div>
         ))}
@@ -124,15 +131,15 @@ function AdminDashboard() {
             value={newPooja.imageUrl}
             onChange={e => setNewPooja({ ...newPooja, imageUrl: e.target.value })}
           />
-          <button onClick={createPooja}>Add Pooja</button>
+          <button onClick={handlePoojaCreate}>Add Pooja</button>
         </div>
 
         {poojas.map(pj => (
           <div key={pj._id} className="admin-card">
-            <p>Name: <input defaultValue={pj.name} onBlur={e => editPooja(pj._id, 'name', e.target.value)} /></p>
-            <p>Description: <input defaultValue={pj.description} onBlur={e => editPooja(pj._id, 'description', e.target.value)} /></p>
-            <p>Image: <input defaultValue={pj.imageUrl || ''} onBlur={e => editPooja(pj._id, 'imageUrl', e.target.value)} /></p>
-            <button onClick={() => deletePooja(pj._id)}>Delete</button>
+            <p>Name: <input defaultValue={pj.name} onBlur={e => handlePoojaEdit(pj._id, 'name', e.target.value)} /></p>
+            <p>Description: <input defaultValue={pj.description} onBlur={e => handlePoojaEdit(pj._id, 'description', e.target.value)} /></p>
+            <p>Image: <input defaultValue={pj.imageUrl || ''} onBlur={e => handlePoojaEdit(pj._id, 'imageUrl', e.target.value)} /></p>
+            <button onClick={() => handlePoojaDelete(pj._id)}>Delete</button>
           </div>
         ))}
       </section>
