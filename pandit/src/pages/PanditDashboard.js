@@ -25,7 +25,6 @@ function PanditDashboard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
-
       const data = await res.json();
       setBookings(prev => prev.map(b => (b._id === id ? data.booking : b)));
     } catch (err) {
@@ -54,11 +53,11 @@ function PanditDashboard() {
           <img
             src={user.profile_photo_url}
             alt="profile"
-            style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: '50%', marginRight: 20 }}
+            style={styles.avatar}
           />
         )}
         <div>
-          <h2>🙏 {user?.name}</h2>
+          <h2>🙏 {user?.name || 'Pandit Ji'}</h2>
           <p><strong>Verified:</strong> {user?.is_verified ? '✅ Yes' : '❌ No'}</p>
         </div>
       </div>
@@ -68,7 +67,6 @@ function PanditDashboard() {
           type="date"
           value={filterDate}
           onChange={e => setFilterDate(e.target.value)}
-          placeholder="Filter by date"
         />
         <input
           type="text"
@@ -84,16 +82,25 @@ function PanditDashboard() {
         </select>
       </div>
 
+      <p style={styles.countText}>
+        Showing {filteredBookings.length} booking{filteredBookings.length !== 1 ? 's' : ''}
+      </p>
+
       {filteredBookings.length > 0 ? (
         <div style={{ marginTop: 30 }}>
           {filteredBookings.map(b => (
             <div key={b._id} style={styles.bookingCard}>
-              <p><strong>Devotee:</strong> {b.userid?.name}</p>
+              <p><strong>Devotee:</strong> {b.userid?.name || 'N/A'}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
               <p><strong>Pooja:</strong> {b.SamanList?.name || 'N/A'}</p>
-              <p><strong>Location:</strong> {b.location}</p>
-              <p><strong>Status:</strong> {b.status}</p>
+              <p><strong>Location:</strong> {b.location || 'N/A'}</p>
+              <p>
+                <strong>Status:</strong>
+                <span style={{ ...styles.status, ...styles[b.status.toLowerCase()] }}>
+                  {b.status}
+                </span>
+              </p>
 
               {b.status === 'Pending' && (
                 <div style={styles.buttonGroup}>
@@ -128,6 +135,13 @@ const styles = {
     marginBottom: '30px',
     color: '#2c3e50',
   },
+  avatar: {
+    width: 80,
+    height: 80,
+    objectFit: 'cover',
+    borderRadius: '50%',
+    marginRight: 20,
+  },
   card: {
     display: 'flex',
     alignItems: 'center',
@@ -145,6 +159,12 @@ const styles = {
     gap: '16px',
     marginTop: '40px',
     flexWrap: 'wrap',
+  },
+  countText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontWeight: 'bold',
+    color: '#555',
   },
   bookingCard: {
     backgroundColor: '#fff',
@@ -188,6 +208,25 @@ const styles = {
     fontSize: '16px',
     cursor: 'pointer',
   },
+  status: {
+    marginLeft: 10,
+    padding: '4px 10px',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+  },
+  pending: {
+    backgroundColor: '#f1c40f',
+    color: '#fff',
+  },
+  accepted: {
+    backgroundColor: '#2ecc71',
+    color: '#fff',
+  },
+  rejected: {
+    backgroundColor: '#e74c3c',
+    color: '#fff',
+  },
 };
 
 export default PanditDashboard;
+
