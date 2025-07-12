@@ -24,8 +24,8 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const [panditRes, poojaRes] = await Promise.all([
-          fetch('https://backendserver-auhk.onrender.com/api/pandits/view'),
-          fetch('https://backendserver-auhk.onrender.com/api/poojas/view'),
+          fetch('https://backendserver-pf4h.onrender.com/api/pandits/view'),
+          fetch('https://backendserver-pf4h.onrender.com/api/poojas/view'),
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
