@@ -3,6 +3,25 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Pandit = require('../models/pandit');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// ✅ Multer config for Pandit profile image
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = path.join(__dirname, '../uploads/pandits');
+    fs.mkdirSync(dir, { recursive: true }); // ensure directory exists
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({ storage });
 
 // ✅ Pandit Signup
 router.post('/signup', async (req, res) => {
@@ -38,12 +57,8 @@ router.post('/signup', async (req, res) => {
       password: hashedPassword,
       city: city?.trim() || '',
       experienceYears: experienceYears || 0,
-      languages: Array.isArray(languages)
-        ? languages.map(l => l.trim().toLowerCase())
-        : [],
-      specialties: Array.isArray(specialties)
-        ? specialties.map(s => s.trim())
-        : [],
+      languages: Array.isArray(languages) ? languages.map(l => l.trim()) : [],
+      specialties: Array.isArray(specialties) ? specialties.map(s => s.trim()) : [],
       bio: bio?.trim() || '',
       profile_photo_url: profile_photo_url || '',
     });
@@ -53,6 +68,31 @@ router.post('/signup', async (req, res) => {
   } catch (err) {
     console.error('Pandit signup error:', err);
     res.status(500).json({ error: 'Server error. Please try again.' });
+  }
+});
+
+// ✅ Upload Pandit Profile Photo
+router.post('/upload/:id', upload.single('photo'), async (req, res) => {
+  try {
+    const filePath = `/uploads/pandits/${req.file.filename}`;
+    const pandit = await Pandit.findByIdAndUpdate(
+      req.params.id,
+      { profile_photo_url: filePath },
+      { new: true }
+    );
+
+    if (!pandit) {
+      return res.status(404).json({ error: 'Pandit not found' });
+    }
+
+    res.json({
+      message: 'Profile photo uploaded successfully',
+      profile_photo_url: filePath,
+      pandit,
+    });
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ error: 'Failed to upload image' });
   }
 });
 
@@ -91,39 +131,27 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Get all verified Pandits (Public - for Home page)
+// ✅ Get all verified Pandits (for public/home)
 router.get('/view', async (req, res) => {
   try {
     const pandits = await Pandit.find({ is_verified: true });
     res.json(pandits);
   } catch (err) {
-    res.status(500).json({ error: err.message || 'Failed to fetch pandits.' });
+    res.status(500).json({ error: 'Failed to fetch pandits.' });
   }
 });
 
-// ✅ Admin: Get all Pandits (Verified + Unverified)
+// ✅ Admin: Get all Pandits (verified + unverified)
 router.get('/admin-view', async (req, res) => {
   try {
     const pandits = await Pandit.find();
     res.json(pandits);
   } catch (err) {
-    res.status(500).json({ error: err.message || 'Failed to fetch all pandits.' });
+    res.status(500).json({ error: 'Failed to fetch all pandits.' });
   }
 });
 
-// ✅ Get single Pandit by ID (keep this last!)
-router.get('/:id', async (req, res) => {
-  try {
-    const pandit = await Pandit.findById(req.params.id);
-    if (!pandit) return res.status(404).json({ error: 'Pandit not found.' });
-    res.json(pandit);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch pandit.' });
-  }
-});
-
-
-// ✅ Admin: Verify Pandit
+// ✅ Admin: Verify a Pandit
 router.put('/verify/:id', async (req, res) => {
   try {
     const updated = await Pandit.findByIdAndUpdate(
@@ -137,6 +165,17 @@ router.put('/verify/:id', async (req, res) => {
     res.json({ message: 'Pandit verified successfully.', pandit: updated });
   } catch (err) {
     res.status(500).json({ error: 'Verification failed.' });
+  }
+});
+
+// ✅ Get single Pandit by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const pandit = await Pandit.findById(req.params.id);
+    if (!pandit) return res.status(404).json({ error: 'Pandit not found.' });
+    res.json(pandit);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch pandit.' });
   }
 });
 
