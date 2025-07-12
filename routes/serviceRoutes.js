@@ -13,7 +13,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// 🔥 View all services
+// View all services
 router.get('/view', async (req, res) => {
   try {
     const services = await Service.find();
@@ -24,4 +24,3 @@ router.get('/view', async (req, res) => {
 });
 
 module.exports = router;
-
