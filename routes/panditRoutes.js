@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Pandit = require('../models/pandit');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Pandit = require('../models/pandit');
 
-// ✅ Pandit Signup Route
+// ✅ Pandit Signup
 router.post('/signup', async (req, res) => {
   try {
     const {
@@ -17,14 +17,14 @@ router.post('/signup', async (req, res) => {
       languages,
       specialties,
       bio,
-      profile_photo_url
+      profile_photo_url,
     } = req.body;
 
     if (!name || !phone || !email || !password) {
       return res.status(400).json({ error: 'Please fill all required fields.' });
     }
 
-    const existing = await Pandit.findOne({ email: email.toLowerCase() });
+    const existing = await Pandit.findOne({ email: email.toLowerCase().trim() });
     if (existing) {
       return res.status(400).json({ error: 'Email already registered.' });
     }
@@ -32,20 +32,23 @@ router.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newPandit = new Pandit({
-      name,
-      phone,
-      email: email.toLowerCase(),
+      name: name.trim(),
+      phone: phone.trim(),
+      email: email.toLowerCase().trim(),
       password: hashedPassword,
-      city,
-      experienceYears,
-      languages,
-      specialties,
-      bio,
-      profile_photo_url
+      city: city?.trim() || '',
+      experienceYears: experienceYears || 0,
+      languages: Array.isArray(languages)
+        ? languages.map(l => l.trim().toLowerCase())
+        : [],
+      specialties: Array.isArray(specialties)
+        ? specialties.map(s => s.trim())
+        : [],
+      bio: bio?.trim() || '',
+      profile_photo_url: profile_photo_url || '',
     });
 
     await newPandit.save();
-
     res.status(201).json({ message: 'Pandit registered. Awaiting admin verification.' });
   } catch (err) {
     console.error('Pandit signup error:', err);
@@ -53,12 +56,15 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// ✅ Pandit Login Route
+// ✅ Pandit Login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const pandit = await Pandit.findOne({ email: email.toLowerCase() });
+    if (!email || !password)
+      return res.status(400).json({ error: 'Email and password are required.' });
+
+    const pandit = await Pandit.findOne({ email: email.toLowerCase().trim() });
 
     if (!pandit) {
       return res.status(401).json({ error: 'Pandit not found.' });
@@ -85,23 +91,23 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Get all verified Pandits
+// ✅ Get all verified Pandits (Public)
 router.get('/view', async (req, res) => {
   try {
     const pandits = await Pandit.find({ is_verified: true });
     res.json(pandits);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message || 'Failed to fetch pandits.' });
   }
 });
 
-// ✅ Admin: Get all Pandits (verified + unverified)
+// ✅ Admin: Get all Pandits (Verified + Unverified)
 router.get('/admin-view', async (req, res) => {
   try {
     const pandits = await Pandit.find();
     res.json(pandits);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message || 'Failed to fetch all pandits.' });
   }
 });
 
@@ -113,9 +119,12 @@ router.put('/verify/:id', async (req, res) => {
       { is_verified: true },
       { new: true }
     );
-    res.json({ message: 'Pandit verified', pandit: updated });
+    if (!updated) {
+      return res.status(404).json({ error: 'Pandit not found.' });
+    }
+    res.json({ message: 'Pandit verified successfully.', pandit: updated });
   } catch (err) {
-    res.status(500).json({ error: 'Verification failed' });
+    res.status(500).json({ error: 'Verification failed.' });
   }
 });
 
