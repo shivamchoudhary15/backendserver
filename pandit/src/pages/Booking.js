@@ -55,7 +55,7 @@ function Booking() {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container background-havan">
       <h2>📘 Book Pandit Ji for Your Puja</h2>
       <input
         type="text"
@@ -108,7 +108,7 @@ function Booking() {
       </form>
 
       <h2 style={{ marginTop: '2rem' }}>Your Bookings</h2>
-      <ul>
+      <ul className="booking-list">
         {bookings.map(b => (
           <li key={b._id}>
             {b.puja_date} - {b.puja_time} with {b.panditid.name} - <strong>{b.status}</strong>
