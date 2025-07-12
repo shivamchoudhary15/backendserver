@@ -3,7 +3,7 @@ import { createBooking, getBookings } from '../api/api';
 import './Booking.css';
 
 const backgroundStyle = {
-  backgroundImage: `url('images/images.jpeg')`,
+  backgroundImage: `url('/images/images.jpeg')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
@@ -33,7 +33,7 @@ function Booking() {
         setPandits(await pd.json());
         setPoojas(await pj.json());
       } catch (err) {
-        console.error('Error loading data:', err);
+        console.error('Error fetching data:', err);
       }
     }
     load();
@@ -54,13 +54,17 @@ function Booking() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
+
     if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
       alert('Please fill all fields');
       return;
     }
 
     const exists = bookings.some(
-      (b) => b.panditid === panditid && b.puja_date === puja_date && b.status === 'accepted'
+      (b) =>
+        b.panditid === panditid &&
+        b.puja_date === puja_date &&
+        b.status === 'accepted'
     );
     if (exists) {
       alert('Pandit already booked that day');
@@ -76,6 +80,7 @@ function Booking() {
     <div style={backgroundStyle}>
       <div className="page-container">
         <h2>📘 Book Pandit Ji for Your Puja</h2>
+
         <input
           type="text"
           placeholder="Search Pandit or Pooja"
@@ -83,6 +88,7 @@ function Booking() {
           onChange={(e) => setSearch(e.target.value)}
           className="search-bar"
         />
+
         <form className="form-grid" onSubmit={handleSubmit}>
           <div className="form-group">
             <select
