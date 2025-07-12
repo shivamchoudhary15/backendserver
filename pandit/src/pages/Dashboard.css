@@ -1,6 +1,5 @@
 /* Dashboard.css */
 
-/* === Custom Button Styles === */
 .custom-btn {
   flex: 1;
   padding: 12px 20px;
@@ -14,7 +13,6 @@
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(44, 123, 229, 0.4);
-  transform: scale(1);
 }
 
 .custom-btn:hover {
@@ -27,7 +25,6 @@
   transform: scale(0.97);
 }
 
-/* === Message Feedback === */
 .success-message {
   color: #27ae60;
   font-weight: bold;
@@ -40,26 +37,37 @@
   animation: shake 0.4s ease;
 }
 
-/* === Animation Keyframes === */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  20%, 60% {
-    transform: translateX(-5px);
-  }
-  40%, 80% {
-    transform: translateX(5px);
-  }
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.review-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.review-form input,
+.review-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.bookings-section {
+  margin-top: 30px;
+}
+
+.booking-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
 }
