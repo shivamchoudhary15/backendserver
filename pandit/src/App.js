@@ -13,6 +13,8 @@ import Dashboard from './pages/Dashboard';
 import PanditSignup from './pages/PanditSignup';
 import PanditDashboard from './pages/PanditDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminProtectedRoute from './components/AdminProtectedRoute'; // <-- New import
@@ -27,6 +29,8 @@ function App() {
         <Route path="/signup/pandit" element={<PanditSignup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/pandit-dashboard" element={<PanditDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+
 
         {/* Role-protected admin route */}
         <Route
