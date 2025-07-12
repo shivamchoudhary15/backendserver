@@ -3,24 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Pandit = require('../models/pandit');
-const upload = require('../config/multer');
-
-
-// ✅ Multer config for Pandit profile image
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const dir = path.join(__dirname, '../uploads/pandits');
-    fs.mkdirSync(dir, { recursive: true }); // ensure directory exists
-    cb(null, dir);
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-    cb(null, uniqueName);
-  }
-});
-
-const upload = multer({ storage });
+const upload = require('../config/multer'); // ✅ Import multer from config
 
 // ✅ Pandit Signup
 router.post('/signup', async (req, res) => {
@@ -110,7 +93,6 @@ router.post('/login', async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, pandit.password);
-
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid password.' });
     }
