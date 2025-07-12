@@ -56,9 +56,11 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     let account = await User.findOne({ email: email.toLowerCase() });
-    let role = 'user';
+    let role;
 
-    if (!account) {
+    if (account) {
+      role = account.role; // could be 'admin' or 'devotee'
+    } else {
       account = await Pandit.findOne({ email: email.toLowerCase() });
       role = 'pandit';
     }
@@ -72,7 +74,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid email or password' });
     }
 
-    // ❌ Block unverified pandits
     if (role === 'pandit' && !account.is_verified) {
       return res.status(403).json({ error: 'Pandit is not verified by admin yet' });
     }
@@ -90,6 +91,7 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Login failed. Server error.' });
   }
 });
+
 
 
 // ✅ View all users (optional)
