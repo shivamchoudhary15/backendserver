@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route,} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Signup from './pages/Signup';
@@ -9,70 +9,31 @@ import Payment from './pages/Payment';
 import Booking from './pages/Booking';
 import Notifications from './pages/Notifications';
 import Dashboard from './pages/Dashboard';
-import PanditSignup from './pages/PanditSignup'; 
+import PanditSignup from './pages/PanditSignup';
 import PanditDashboard from './pages/PanditDashboard';
-
-import ProtectedRoute from './components/ProtectedRoute'; //  yaha pe ham import kara rahe protected routes ko
+import AdminDashboard from './pages/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
-      <div>
-  
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup/pandit" element={<PanditSignup />} />
-          <Route path="/pandit-dashboard" element={<PanditDashboard />} />
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup/pandit" element={<PanditSignup />} />
+        <Route path="/pandit-dashboard" element={<PanditDashboard />} />
 
+        <Route path="/admin" element={<AdminDashboard />} />
 
-          {/*Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/booking"
-            element={
-              <ProtectedRoute>
-                <Booking />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reviews"
-            element={
-              <ProtectedRoute>
-                <ReviewForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/payment"
-            element={
-              <ProtectedRoute>
-                <Payment />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/notifications"
-            element={
-              <ProtectedRoute>
-                <Notifications />
-              </ProtectedRoute>
-            }
-          />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+        <Route path="/reviews" element={<ProtectedRoute><ReviewForm /></ProtectedRoute>} />
+        <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
 
-          {/* Redirect unknown routes to home */}
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </div>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </Router>
   );
 }
