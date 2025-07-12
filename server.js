@@ -7,10 +7,12 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
+
+// ✅ Middlewares
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB connection
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -18,36 +20,38 @@ mongoose.connect(process.env.MONGODB_URI, {
   .then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ DB connection error:', err));
 
-// ✅ Routes
-app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/pandits', require('./routes/panditRoutes'));
-app.use('/api/bookings', require('./routes/bookingRoutes'));
-app.use('/api/services', require('./routes/serviceRoutes'));
-app.use('/api/notifications', require('./routes/notificationRoutes'));
-app.use('/api/reviews', require('./routes/reviewRoutes'));
-app.use('/api/payments', require('./routes/paymentRoutes'));
-app.use('/api/poojas', require('./routes/poojaRoutes'));
+// ✅ Import all routes
+const userRoutes = require('./routes/userRoutes');
+const panditRoutes = require('./routes/panditRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const poojaRoutes = require('./routes/poojaRoutes');
 
-// ✅ JSON error handler
+// ✅ Mount routes
+app.use('/api/users', userRoutes);
+app.use('/api/pandits', panditRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/poojas', poojaRoutes);
+
+// ✅ Default route
+app.get('/', (req, res) => {
+  res.send('🕉️ Shubkarya API is running...');
+});
+
+// ✅ JSON error handling middleware
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '❌ Invalid JSON' });
   }
   next();
 });
-
-// ✅ Serve React frontend (for production)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
-
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  );
-} else {
-  app.get('/', (req, res) => {
-    res.send('🕉️ Shubkarya API is running...');
-  });
-}
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
