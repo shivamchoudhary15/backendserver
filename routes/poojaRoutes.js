@@ -14,11 +14,11 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Get all
+// Get all poojas
 router.get('/view', async (req, res) => {
   try {
     const poojas = await Pooja.find();
-    res.json(pooojas);
+    res.json(poojas);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
