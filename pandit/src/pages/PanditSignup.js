@@ -26,8 +26,16 @@ export default function PanditSignup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Convert comma-separated fields into arrays
+    const formData = {
+      ...form,
+      languages: form.languages.split(',').map(item => item.trim()),
+      specialties: form.specialties.split(',').map(item => item.trim())
+    };
+
     try {
-      const res = await axios.post('https://backendserver-6-yebf.onrender.com/api/pandits/signup', form);
+      const res = await axios.post('https://backendserver-6-yebf.onrender.com/api/pandits/signup', formData);
       alert('✅ Pandit registered successfully! Please wait for admin verification.');
       navigate('/login');
     } catch (err) {
@@ -101,4 +109,3 @@ const styles = {
     fontSize: '14px',
   },
 };
-
