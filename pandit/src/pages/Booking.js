@@ -1,3 +1,5 @@
+// src/pages/Booking.js
+
 import React, { useState, useEffect } from 'react';
 import { createBooking, getBookings } from '../api/api';
 import './Booking.css';
@@ -68,12 +70,7 @@ function Booking() {
   };
 
   return (
-    <div
-      className="page-wrapper"
-      style={{
-        backgroundImage: `url('/images/images.jpeg')`,
-      }}
-    >
+    <div className="page-wrapper">
       <div className="page-container">
         <h2>📘 Book Pandit Ji for Your Puja</h2>
 
@@ -181,7 +178,13 @@ function Booking() {
         </ul>
       </div>
 
-      <div className="right-side" />
+      <div className="right-side">
+        <img
+          src="https://github.com/shivamchoudhary15/backendserver/blob/main/pandit/public/images/images.jpeg?raw=true"
+          alt="Puja Background"
+          className="side-image"
+        />
+      </div>
     </div>
   );
 }
