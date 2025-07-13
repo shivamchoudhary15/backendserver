@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -65,9 +64,9 @@ const Home = () => {
             </div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
+              <a href="#order">Order Services</a>
               <a href="#services">Pooja</a>
               <a href="#pandits">Pandits</a>
-              <a href="#order">Order Services</a>
               <Link to="/login">Login</Link>
             </div>
           </div>
@@ -77,7 +76,11 @@ const Home = () => {
       {/* Hero */}
       <header
         className="hero"
-        style={{ backgroundImage: `url('/images/babaji.png')` }}
+        style={{
+          backgroundImage: `url('/images/babaji.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
         <div className="hero-overlay">
           <div className="hero-text">
@@ -96,26 +99,40 @@ const Home = () => {
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
         <p>
-          Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
-          Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
-          Pandits and Shastris who can perform pujas at your home or online.<br/>
-          Our services also include puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah,<br/>
-          from Naamkaran to Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
+          Shubhkarya is India's first and most trusted platform for Hindu rituals, Vedic ceremonies,
+          and astrology services. We connect you with highly qualified and experienced Pandits and Shastris who
+          perform pujas at your home or online.<br />
+          Our services include puja samagri kits, temple bookings, online consultations, and more.<br />
+          From Griha Pravesh to Naamkaran, and from Shradh to Shubh Vivah — we offer a comprehensive platform for all your spiritual needs.
         </p>
       </section>
 
-      {/* Custom Service Cards Below About */}
-      <section className="service-boxes">
+      {/* Order Services Section */}
+      <section id="order" className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
-          {[{
-            title: 'Puja Services', subtitle: 'Upto 10% Instant Discount', img: '/images/kalash.jpeg'
-          }, {
-            title: 'Temple Services', subtitle: 'Upto 10% Instant Discount', img: '/images/temple.jpeg'
-          }, {
-            title: 'Astrology Services', subtitle: 'Upto 10% Instant Discount', img: '/images/astro.jpeg'
-          }].map((item, index) => (
-            <div className="highlight-card" key={index} style={{ backgroundImage: `url(${item.img})` }}>
+          {[
+            {
+              title: 'Puja Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/kalash.jpeg',
+            },
+            {
+              title: 'Temple Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/temple.jpeg',
+            },
+            {
+              title: 'Astrology Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/astro.jpeg',
+            },
+          ].map((item, index) => (
+            <div
+              className="highlight-card"
+              key={index}
+              style={{ backgroundImage: `url(${item.img})` }}
+            >
               <div className="highlight-overlay">
                 <h3>{item.title}</h3>
                 <p>{item.subtitle}</p>
