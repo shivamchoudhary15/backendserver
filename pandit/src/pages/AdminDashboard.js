@@ -74,6 +74,15 @@ function AdminDashboard() {
     window.location.href = '/';
   }
 
+  // ✅ Helper to get full image URL or fallback
+  function getPanditImage(pandit) {
+    if (imgPreview[pandit._id]) return imgPreview[pandit._id];
+    if (pandit.profile_photo_url) return pandit.profile_photo_url.startsWith('/uploads')
+      ? `https://backendserver-6-yebf.onrender.com${pandit.profile_photo_url}`
+      : pandit.profile_photo_url;
+    return '/images/default-pandit.png'; // fallback
+  }
+
   return (
     <div className="admin-container">
       <button className="logout-btn" onClick={logout}>Logout</button>
@@ -84,13 +93,7 @@ function AdminDashboard() {
         {pandits.map(p => (
           <div key={p._id} className="admin-card">
             <img
-              src={
-                imgPreview[p._id]
-                  ? imgPreview[p._id]
-                  : p.profile_photo_url
-                  ? p.profile_photo_url
-                  : '/default.jpg'
-              }
+              src={getPanditImage(p)}
               alt={p.name}
               className="pandit-photo"
             />
