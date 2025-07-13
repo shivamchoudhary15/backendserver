@@ -96,19 +96,19 @@ const Home = () => {
       </header>
 
       {/* About Section */}
-      <section id="about" className="about">
+      <section id="about" className="about section-light-bg">
         <h2>About Shubhkarya</h2>
-        <p>
-          Shubhkarya is India's first and most trusted platform for Hindu rituals, Vedic ceremonies,
-          and astrology services. We connect you with highly qualified and experienced Pandits and Shastris who
-          perform pujas at your home or online.<br />
-          Our services include puja samagri kits, temple bookings, online consultations, and more.<br />
-          From Griha Pravesh to Naamkaran, and from Shradh to Shubh Vivah — we offer a comprehensive platform for all your spiritual needs.
+        <p className="about-text">
+          Shubhkarya is India’s most trusted spiritual service platform.<br />
+          We connect you with qualified Pandits for Vedic rituals, online puja, temple darshan, and astrological guidance.<br />
+          From Griha Pravesh to Shradh Vidhi and Katha Paath to Vivah Sanskar,<br />
+          everything is covered in a few clicks—both offline and virtual.<br />
+          Book your ritual with confidence and convenience.
         </p>
       </section>
 
       {/* Order Services Section */}
-      <section id="order" className="service-boxes">
+      <section id="order" className="service-boxes section-light-bg">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
           {[
@@ -144,7 +144,7 @@ const Home = () => {
       </section>
 
       {/* Pooja Section */}
-      <section id="services" className="services">
+      <section id="services" className="services section-light-bg">
         <h2>Pooja Provided</h2>
         {loading ? (
           <p>Loading services...</p>
@@ -168,7 +168,7 @@ const Home = () => {
       </section>
 
       {/* Pandits */}
-      <section id="pandits" className="pandits">
+      <section id="pandits" className="pandits section-light-bg">
         <h2>Meet Our Pandits</h2>
         {loading ? (
           <p>Loading pandits...</p>
