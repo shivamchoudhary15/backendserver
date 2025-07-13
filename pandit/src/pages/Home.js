@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -40,6 +39,16 @@ const Home = () => {
       alert('Please login');
       navigate('/login');
     }
+  };
+
+  // ✅ Helper for Pandit image logic
+  const getPanditImage = (pandit) => {
+    if (pandit.profile_photo_url) {
+      return pandit.profile_photo_url.startsWith('/uploads')
+        ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
+        : pandit.profile_photo_url;
+    }
+    return '/images/default-pandit.png';
   };
 
   return (
@@ -129,7 +138,7 @@ const Home = () => {
             {pandits.map(p => (
               <div className="pandit-card" key={p._id}>
                 <img
-                  src={p.profile_photo_url || '/images/default-pandit.png'}
+                  src={getPanditImage(p)}
                   alt={`Photo of ${p.name}`}
                 />
                 <h4>{p.name}</h4>
