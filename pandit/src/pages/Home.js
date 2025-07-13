@@ -19,7 +19,6 @@ const Home = () => {
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
-
         const verifiedPandits = panditsData.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setPoojas(poojasData);
@@ -41,7 +40,6 @@ const Home = () => {
     }
   };
 
-  // ✅ Helper for Pandit image logic
   const getPanditImage = (pandit) => {
     if (pandit.profile_photo_url) {
       return pandit.profile_photo_url.startsWith('/uploads')
@@ -96,10 +94,47 @@ const Home = () => {
         </div>
       </header>
 
-      {/* About */}
+      {/* About Section */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
-        <p>Your one-stop spiritual platform to book experienced Pandits for all Hindu rituals and poojas.</p>
+        <p>
+          Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
+          Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
+          Pandits and Shastris who can perform pujas at your home or online. Our services also include
+          puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah, from Naamkaran to
+          Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
+        </p>
+      </section>
+
+      {/* Custom Service Cards Below About */}
+      <section className="service-boxes">
+        <h2 className="section-title">Our Services</h2>
+        <div className="card-section">
+          {[
+            {
+              title: 'Puja Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/puja-icon.png',
+            },
+            {
+              title: 'Temple Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/temple-icon.png',
+            },
+            {
+              title: 'Astrology Services',
+              subtitle: 'Upto 10% Instant Discount',
+              img: '/images/astrology-icon.png',
+            },
+          ].map((item, index) => (
+            <div className="highlight-card" key={index}>
+              <img src={item.img} alt={item.title} />
+              <h3>{item.title}</h3>
+              <p>{item.subtitle}</p>
+              <button onClick={() => navigate('/login')}>Book Now</button>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Pooja Section */}
@@ -137,10 +172,7 @@ const Home = () => {
           <div className="pandit-grid">
             {pandits.map(p => (
               <div className="pandit-card" key={p._id}>
-                <img
-                  src={getPanditImage(p)}
-                  alt={`Photo of ${p.name}`}
-                />
+                <img src={getPanditImage(p)} alt={`Photo of ${p.name}`} />
                 <h4>{p.name}</h4>
                 <p>{p.city} | {p.experienceYears}+ yrs</p>
                 <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
