@@ -20,7 +20,7 @@
 
 .signup-container {
   width: 100%;
-  max-width: 420px;
+  max-width: 360px; /* Compressed size */
   border-radius: 12px;
   animation: fadeInLeft 1.2s ease-out;
 }
@@ -28,21 +28,22 @@
 .light-yellow-bg {
   background-color: rgba(255, 248, 220, 0.96);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 40px;
+  padding: 30px;
   border-radius: 12px;
+  border: 2px solid #c59000; /* Dark yellow border */
 }
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .signup-heading {
   text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   color: #b1450c;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-weight: 700;
 }
 
@@ -52,7 +53,7 @@
 }
 
 .signup-input {
-  padding: 12px;
+  padding: 10px;
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -66,7 +67,7 @@
 }
 
 .signup-button {
-  margin-top: 20px;
+  margin-top: 16px;
   padding: 12px;
   font-size: 18px;
   background-color: #d35400;
@@ -85,21 +86,22 @@
 .signup-message {
   max-width: 400px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 25px;
   border-radius: 12px;
   animation: fadeInRight 1.2s ease-out;
+  margin-top: -80px; /* Move caption up */
 }
 
 .signup-message h1 {
-  font-size: 36px;
-  margin-bottom: 15px;
+  font-size: 34px;
+  margin-bottom: 12px;
   color: #ffd700;
 }
 
 .signup-message p {
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.5;
   color: #333;
 }
 
@@ -138,10 +140,10 @@
   }
 
   .signup-heading {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .signup-message h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
