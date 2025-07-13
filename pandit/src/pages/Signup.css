@@ -10,16 +10,20 @@
   justify-content: center;
   font-family: 'Segoe UI', sans-serif;
   padding: 20px;
+  animation: zoomIn 10s ease-in-out infinite alternate;
+  background-blend-mode: overlay;
+  background-color: rgba(255, 241, 224, 0.4);
 }
 
 .signup-container {
   background-color: rgba(255, 255, 255, 0.94);
   padding: 40px;
-  border-radius: 12px;
-  max-width: 500px;
+  border-radius: 16px;
+  max-width: 520px;
   width: 100%;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(3px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(5px);
+  animation: fadeInUp 1s ease-out;
 }
 
 .signup-form {
@@ -30,21 +34,23 @@
 
 .signup-heading {
   text-align: center;
-  font-size: 28px;
-  color: #b1450c;
+  font-size: 30px;
+  color: #a03900;
   margin-bottom: 25px;
   font-weight: 700;
+  animation: fadeIn 1.5s ease-out;
 }
 
 .signup-label {
   font-weight: 600;
   color: #333;
+  font-size: 15px;
 }
 
 .signup-input {
-  padding: 10px 12px;
+  padding: 12px 14px;
   font-size: 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #ccc;
   outline: none;
   transition: border 0.3s, box-shadow 0.3s;
@@ -57,32 +63,62 @@
 
 .signup-button {
   margin-top: 20px;
-  padding: 12px;
+  padding: 14px;
   font-size: 18px;
   background-color: #d35400;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .signup-button:hover {
   background-color: #a33c00;
+  transform: scale(1.03);
 }
 
-/* Optional: Make form responsive on smaller devices */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    background-size: 105%;
+  }
+  100% {
+    background-size: 115%;
+  }
+}
+
+/* Responsive Styling */
 @media screen and (max-width: 600px) {
   .signup-container {
     padding: 25px;
   }
 
   .signup-heading {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .signup-input {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .signup-button {
