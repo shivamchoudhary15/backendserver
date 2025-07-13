@@ -160,4 +160,14 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    await Pandit.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Pandit deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Error deleting pandit' });
+  }
+});
+
+
 module.exports = router;
