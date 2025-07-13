@@ -1,19 +1,23 @@
 /* src/pages/Signup.css */
 
-body {
-  margin: 0;
-  padding: 0;
-  background: url('/images/signup-bg.jpg') no-repeat center center fixed;
+.signup-page {
+  min-height: 100vh;
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Segoe UI', sans-serif;
+  padding: 20px;
 }
 
 .signup-container {
+  background-color: rgba(255, 255, 255, 0.94);
   padding: 40px;
-  max-width: 500px;
-  margin: 60px auto;
-  background-color: rgba(255, 255, 255, 0.92); /* Slight transparency */
   border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(3px);
 }
@@ -27,14 +31,14 @@ body {
 .signup-heading {
   text-align: center;
   font-size: 28px;
-  color: #b1450c; /* Matches orange tones */
+  color: #b1450c;
   margin-bottom: 25px;
   font-weight: 700;
 }
 
 .signup-label {
   font-weight: 600;
-  color: #444;
+  color: #333;
 }
 
 .signup-input {
