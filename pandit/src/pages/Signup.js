@@ -36,7 +36,7 @@ export default function Signup() {
     <div
       className="signup-page-split"
       style={{
-        backgroundImage: `url('/images/4add6d8d-9cc6-4b55-957b-e150ba640a47.jpg')`
+        backgroundImage: `url('/images/signup-bg.jpg')`
       }}
     >
       <div className="signup-left">
