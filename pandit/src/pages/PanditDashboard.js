@@ -49,13 +49,17 @@ function PanditDashboard() {
       <h1 style={styles.heading}>🧘 Pandit Dashboard</h1>
 
       <div style={styles.card}>
-        {user?.profile_photo_url && (
-          <img
-            src={user.profile_photo_url}
-            alt="profile"
-            style={styles.avatar}
-          />
-        )}
+        <img
+          src={
+            user?.profile_photo_url
+              ? user.profile_photo_url.startsWith('/uploads')
+                ? `https://backendserver-pf4h.onrender.com${user.profile_photo_url}`
+                : user.profile_photo_url
+              : '/images/default-pandit.png'
+          }
+          alt="profile"
+          style={styles.avatar}
+        />
         <div>
           <h2>🙏 {user?.name || 'Pandit Ji'}</h2>
           <p><strong>Verified:</strong> {user?.is_verified ? '✅ Yes' : '❌ No'}</p>
@@ -229,4 +233,3 @@ const styles = {
 };
 
 export default PanditDashboard;
-
