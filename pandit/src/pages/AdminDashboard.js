@@ -70,18 +70,28 @@ function AdminDashboard() {
     fetchAll();
   }
 
+  async function handleDeletePandit(id) {
+    if (window.confirm('Are you sure you want to delete this pandit?')) {
+      try {
+        await deletePandit(id);
+        fetchAll();
+      } catch (err) {
+        console.error('Error deleting pandit:', err);
+      }
+    }
+  }
+
   function logout() {
     localStorage.clear();
     window.location.href = '/';
   }
 
-  // ✅ Helper to get full image URL or fallback
   function getPanditImage(pandit) {
     if (imgPreview[pandit._id]) return imgPreview[pandit._id];
     if (pandit.profile_photo_url) return pandit.profile_photo_url.startsWith('/uploads')
       ? `https://backendserver-6-yebf.onrender.com${pandit.profile_photo_url}`
       : pandit.profile_photo_url;
-    return '/images/default-pandit.png'; // fallback
+    return '/images/default-pandit.png';
   }
 
   return (
@@ -105,9 +115,25 @@ function AdminDashboard() {
             <p>Bio: {p.bio}</p>
             <p>Status: {p.is_verified ? '✅ Verified' : '❌ Not Verified'}</p>
 
-            {!p.is_verified && (
-              <button onClick={() => handleVerify(p._id)}>Verify</button>
-            )}
+            <div style={{ marginTop: '10px' }}>
+              {!p.is_verified && (
+                <button onClick={() => handleVerify(p._id)}>Verify</button>
+              )}
+              <button
+                onClick={() => handleDeletePandit(p._id)}
+                style={{
+                  marginLeft: '10px',
+                  backgroundColor: '#e74c3c',
+                  color: 'white',
+                  border: 'none',
+                  padding: '6px 12px',
+                  borderRadius: '6px',
+                  cursor: 'pointer'
+                }}
+              >
+                Delete
+              </button>
+            </div>
 
             <div className="upload-photo">
               <input
