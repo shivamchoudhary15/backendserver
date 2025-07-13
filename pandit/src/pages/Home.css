@@ -143,15 +143,19 @@
   padding: 50px 30px;
   background-color: #f9f9f9;
   color: #444;
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 18px;
+  line-height: 1.8;
   text-align: center;
+  font-family: 'Georgia', serif;
+  font-style: italic;
 }
 
 .about h2 {
   font-size: 30px;
   color: #b30059;
   margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  font-style: normal;
 }
 
 .services {
@@ -291,7 +295,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
+  gap: 35px;
   margin-top: 30px;
 }
 
