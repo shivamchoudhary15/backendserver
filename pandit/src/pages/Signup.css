@@ -2,25 +2,53 @@
 
 .signup-page-split {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-size: cover;
   background-position: center;
   font-family: 'Segoe UI', sans-serif;
   position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 30px;
+}
+
+.signup-message {
+  max-width: 480px;
+  text-align: center;
+  background-color: rgba(255, 255, 240, 0.85); /* Lighter, soft color */
+  padding: 25px;
+  border-radius: 12px;
+  animation: fadeInDown 1.2s ease-out;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.signup-message h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  color: #ffd700;
+}
+
+.signup-message p {
+  font-size: 17px;
+  line-height: 1.5;
+  color: #333;
 }
 
 .signup-left,
 .signup-right {
-  flex: 1;
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 20px;
+  width: 100%;
 }
 
 .signup-container {
   width: 100%;
-  max-width: 360px; /* Compressed size */
+  max-width: 320px; /* More compressed */
   border-radius: 12px;
   animation: fadeInLeft 1.2s ease-out;
 }
@@ -83,28 +111,6 @@
   transform: scale(1.03);
 }
 
-.signup-message {
-  max-width: 400px;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 25px;
-  border-radius: 12px;
-  animation: fadeInRight 1.2s ease-out;
-  margin-top: -80px; /* Move caption up */
-}
-
-.signup-message h1 {
-  font-size: 34px;
-  margin-bottom: 12px;
-  color: #ffd700;
-}
-
-.signup-message p {
-  font-size: 17px;
-  line-height: 1.5;
-  color: #333;
-}
-
 @keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -116,27 +122,20 @@
   }
 }
 
-@keyframes fadeInRight {
+@keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateY(-30px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 768px) {
   .signup-page-split {
-    flex-direction: column;
-  }
-
-  .signup-left,
-  .signup-right {
-    flex: none;
-    width: 100%;
-    padding: 30px 20px;
+    padding-top: 20px;
   }
 
   .signup-heading {
@@ -145,5 +144,9 @@
 
   .signup-message h1 {
     font-size: 26px;
+  }
+
+  .signup-container {
+    max-width: 90%;
   }
 }
