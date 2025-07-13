@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/api';
-import './Signup.css';
+import backgroundImage from '../images/signup-bg.jpg'; // Import the background image
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -32,73 +32,151 @@ export default function Signup() {
     }
   };
 
+  // Styles
+  const pageStyle = {
+    minHeight: '100vh',
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'Segoe UI, sans-serif',
+    padding: '20px',
+  };
+
+  const formContainer = {
+    backgroundColor: 'rgba(255, 255, 255, 0.94)',
+    padding: '40px',
+    borderRadius: '12px',
+    maxWidth: '500px',
+    width: '100%',
+    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.15)',
+    backdropFilter: 'blur(3px)',
+  };
+
+  const formStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '18px',
+  };
+
+  const headingStyle = {
+    textAlign: 'center',
+    fontSize: '28px',
+    color: '#b1450c',
+    marginBottom: '25px',
+    fontWeight: '700',
+  };
+
+  const labelStyle = {
+    fontWeight: '600',
+    color: '#333',
+  };
+
+  const inputStyle = {
+    padding: '10px 12px',
+    fontSize: '16px',
+    borderRadius: '6px',
+    border: '1px solid #ccc',
+    outline: 'none',
+    transition: 'border 0.3s, box-shadow 0.3s',
+  };
+
+  const buttonStyle = {
+    marginTop: '20px',
+    padding: '12px',
+    fontSize: '18px',
+    backgroundColor: '#d35400',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s',
+  };
+
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: '#a33c00',
+  };
+
   return (
-    <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <h2 className="signup-heading">📝 Create Your Account</h2>
+    <div style={pageStyle}>
+      <div style={formContainer}>
+        <form onSubmit={handleSubmit} style={formStyle}>
+          <h2 style={headingStyle}>📝 Create Your Account</h2>
 
-        <label className="signup-label">Name</label>
-        <input
-          name="name"
-          placeholder="Enter your full name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          className="signup-input"
-        />
+          <label style={labelStyle}>Name</label>
+          <input
+            name="name"
+            placeholder="Enter your full name"
+            value={form.name}
+            onChange={handleChange}
+            required
+            style={inputStyle}
+          />
 
-        <label className="signup-label">Email</label>
-        <input
-          name="email"
-          placeholder="Enter your email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="signup-input"
-        />
+          <label style={labelStyle}>Email</label>
+          <input
+            name="email"
+            placeholder="Enter your email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            style={inputStyle}
+          />
 
-        <label className="signup-label">Phone</label>
-        <input
-          name="phone"
-          placeholder="Enter your phone number"
-          value={form.phone}
-          onChange={handleChange}
-          required
-          className="signup-input"
-        />
+          <label style={labelStyle}>Phone</label>
+          <input
+            name="phone"
+            placeholder="Enter your phone number"
+            value={form.phone}
+            onChange={handleChange}
+            required
+            style={inputStyle}
+          />
 
-        <label className="signup-label">Password</label>
-        <input
-          name="password"
-          type="password"
-          placeholder="Create a password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          className="signup-input"
-        />
+          <label style={labelStyle}>Password</label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Create a password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            style={inputStyle}
+          />
 
-        <label className="signup-label">City (optional)</label>
-        <input
-          name="city"
-          placeholder="City"
-          value={form.city}
-          onChange={handleChange}
-          className="signup-input"
-        />
+          <label style={labelStyle}>City (optional)</label>
+          <input
+            name="city"
+            placeholder="City"
+            value={form.city}
+            onChange={handleChange}
+            style={inputStyle}
+          />
 
-        <label className="signup-label">Address (optional)</label>
-        <input
-          name="address"
-          placeholder="Complete address"
-          value={form.address}
-          onChange={handleChange}
-          className="signup-input"
-        />
+          <label style={labelStyle}>Address (optional)</label>
+          <input
+            name="address"
+            placeholder="Complete address"
+            value={form.address}
+            onChange={handleChange}
+            style={inputStyle}
+          />
 
-        <button type="submit" className="signup-button">🚀 Signup</button>
-      </form>
+          <button
+            type="submit"
+            style={buttonStyle}
+            onMouseOver={(e) => (e.target.style.backgroundColor = '#a33c00')}
+            onMouseOut={(e) => (e.target.style.backgroundColor = '#d35400')}
+          >
+            🚀 Signup
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
