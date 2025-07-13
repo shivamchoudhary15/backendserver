@@ -36,17 +36,10 @@ export default function Signup() {
     <div
       className="signup-page-split"
       style={{
-        backgroundImage: `url('/images/signup-bg.jpg')`
+        backgroundImage: `url('/images/4add6d8d-9cc6-4b55-957b-e150ba640a47.jpg')`
       }}
     >
       <div className="signup-left">
-        <div className="signup-message">
-          <h1>Book Pujas Online</h1>
-          <p>Connect with trusted Pandits for all your religious needs from anywhere in India.</p>
-        </div>
-      </div>
-
-      <div className="signup-right">
         <div className="signup-container">
           <form onSubmit={handleSubmit} className="signup-form">
             <h2 className="signup-heading">📝 Create Your Account</h2>
@@ -115,6 +108,13 @@ export default function Signup() {
               🚀 Signup
             </button>
           </form>
+        </div>
+      </div>
+
+      <div className="signup-right">
+        <div className="signup-message">
+          <h1>Book Pujas Online</h1>
+          <p>Connect with trusted Pandits for all your religious needs from anywhere in India.</p>
         </div>
       </div>
     </div>
