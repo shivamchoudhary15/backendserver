@@ -2,15 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { createBooking, getBookings } from '../api/api';
 import './Booking.css';
 
-const backgroundStyle = {
-  backgroundImage: `url('/images/images.jpeg')`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  minHeight: '100vh',
-  padding: '3rem 1rem',
-};
-
 function Booking() {
   const [details, setDetails] = useState({});
   const [bookings, setBookings] = useState([]);
@@ -77,7 +68,12 @@ function Booking() {
   };
 
   return (
-    <div style={backgroundStyle}>
+    <div
+      className="page-wrapper"
+      style={{
+        backgroundImage: `url('/images/images.jpeg')`,
+      }}
+    >
       <div className="page-container">
         <h2>📘 Book Pandit Ji for Your Puja</h2>
 
@@ -184,6 +180,8 @@ function Booking() {
           ))}
         </ul>
       </div>
+
+      <div className="right-side" />
     </div>
   );
 }
