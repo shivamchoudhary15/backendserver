@@ -1,3 +1,4 @@
+// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -28,7 +29,6 @@ const Home = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -38,15 +38,6 @@ const Home = () => {
       alert('Please login');
       navigate('/login');
     }
-  };
-
-  const getPanditImage = (pandit) => {
-    if (pandit.profile_photo_url) {
-      return pandit.profile_photo_url.startsWith('/uploads')
-        ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
-        : pandit.profile_photo_url;
-    }
-    return '/images/default-pandit.png';
   };
 
   return (
@@ -75,6 +66,8 @@ const Home = () => {
         className="hero"
         style={{
           backgroundImage: `url('/images/babaji.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
         <div className="hero-overlay">
@@ -93,11 +86,11 @@ const Home = () => {
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
         <p>
-          Shubhkarya is India's premier online platform dedicated to simplifying your spiritual journey.<br /><br />
-          Whether you are planning a Griha Pravesh, Satyanarayan Katha, or need astrology consultation, we have you covered.<br /><br />
-          Our certified and experienced Pandits are available for both in-person and online puja services across cities.<br /><br />
-          From providing authentic puja samagri to temple bookings and astrologer consultations, we offer complete end-to-end spiritual services.<br /><br />
-          Join thousands of families who trust us for their auspicious ceremonies.
+          Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
+          Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
+          Pandits and Shastris who can perform pujas at your home or online. Our services also include
+          puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah, from Naamkaran to
+          Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
         </p>
       </section>
 
@@ -122,7 +115,7 @@ const Home = () => {
             },
           ].map((item, index) => (
             <div
-              className="highlight-card animated-card"
+              className="highlight-card"
               key={index}
               style={{ backgroundImage: `url(${item.img})` }}
             >
@@ -173,7 +166,14 @@ const Home = () => {
           <div className="pandit-grid">
             {pandits.map(p => (
               <div className="pandit-card" key={p._id}>
-                <img src={getPanditImage(p)} alt={`Photo of ${p.name}`} />
+                <img
+                  src={
+                    p.profile_photo_url?.startsWith('/uploads')
+                      ? `https://backendserver-pf4h.onrender.com${p.profile_photo_url}`
+                      : p.profile_photo_url || '/images/default-pandit.png'
+                  }
+                  alt={`Photo of ${p.name}`}
+                />
                 <h4>{p.name}</h4>
                 <p>{p.city} | {p.experienceYears}+ yrs</p>
                 <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
