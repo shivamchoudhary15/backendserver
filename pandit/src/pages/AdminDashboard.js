@@ -7,7 +7,8 @@ import {
   getAllPoojas,
   addPooja,
   deletePooja,
-  updatePooja
+  updatePooja,
+  deletePandit
 } from '../api/api';
 import './AdminDashboard.css';
 
