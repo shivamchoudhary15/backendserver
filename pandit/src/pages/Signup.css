@@ -70,3 +70,22 @@
 .signup-button:hover {
   background-color: #a33c00;
 }
+
+/* Optional: Make form responsive on smaller devices */
+@media screen and (max-width: 600px) {
+  .signup-container {
+    padding: 25px;
+  }
+
+  .signup-heading {
+    font-size: 22px;
+  }
+
+  .signup-input {
+    font-size: 14px;
+  }
+
+  .signup-button {
+    font-size: 16px;
+  }
+}
