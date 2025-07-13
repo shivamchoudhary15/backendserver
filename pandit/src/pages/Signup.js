@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/api';
-import backgroundImage from '../images/signup-bg.jpg'; // Background image in JS
 import './Signup.css'; // External CSS file
 
 export default function Signup() {
@@ -37,7 +36,7 @@ export default function Signup() {
     <div
       className="signup-page"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url('/images/signup-bg.jpg')`,
       }}
     >
       <div className="signup-container">
