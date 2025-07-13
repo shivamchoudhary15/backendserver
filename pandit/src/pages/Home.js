@@ -1,3 +1,4 @@
+// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -96,19 +97,24 @@ const Home = () => {
       </header>
 
       {/* About Section */}
-      <section id="about" className="about section-light-bg">
+      <section id="about" className="about">
         <h2>About Shubhkarya</h2>
-        <p className="about-text">
-          Shubhkarya is India’s most trusted spiritual service platform.<br />
-          We connect you with qualified Pandits for Vedic rituals, online puja, temple darshan, and astrological guidance.<br />
-          From Griha Pravesh to Shradh Vidhi and Katha Paath to Vivah Sanskar,<br />
-          everything is covered in a few clicks—both offline and virtual.<br />
-          Book your ritual with confidence and convenience.
+        <p>
+          Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
+          Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
+          Pandits and Shastris who can perform pujas at your home or online.<br />
+          Our services also include puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah,<br />
+          from Naamkaran to Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.<br />
+          Shubhkarya is India's first and most trusted platform for Hindu rituals, Vedic ceremonies,
+          and astrology services. We connect you with highly qualified and experienced Pandits and Shastris who
+          perform pujas at your home or online.<br />
+          Our services include puja samagri kits, temple bookings, online consultations, and more.<br />
+          From Griha Pravesh to Naamkaran, and from Shradh to Shubh Vivah — we offer a comprehensive platform for all your spiritual needs.
         </p>
       </section>
 
       {/* Order Services Section */}
-      <section id="order" className="service-boxes section-light-bg">
+      <section id="order" className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
           {[
@@ -144,7 +150,7 @@ const Home = () => {
       </section>
 
       {/* Pooja Section */}
-      <section id="services" className="services section-light-bg">
+      <section id="services" className="services">
         <h2>Pooja Provided</h2>
         {loading ? (
           <p>Loading services...</p>
@@ -168,7 +174,7 @@ const Home = () => {
       </section>
 
       {/* Pandits */}
-      <section id="pandits" className="pandits section-light-bg">
+      <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         {loading ? (
           <p>Loading pandits...</p>
