@@ -114,17 +114,17 @@ const Home = () => {
             {
               title: 'Puja Services',
               subtitle: 'Upto 10% Instant Discount',
-              img: '/images/puja-icon.png',
+              img: '/images/kalash.jpeg',
             },
             {
               title: 'Temple Services',
               subtitle: 'Upto 10% Instant Discount',
-              img: '/images/temple-icon.png',
+              img: '/images/temple.jpeg',
             },
             {
               title: 'Astrology Services',
               subtitle: 'Upto 10% Instant Discount',
-              img: '/images/astrology-icon.png',
+              img: '/images/astro.jpeg',
             },
           ].map((item, index) => (
             <div className="highlight-card" key={index}>
