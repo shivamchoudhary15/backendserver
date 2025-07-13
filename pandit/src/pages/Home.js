@@ -29,6 +29,7 @@ const Home = () => {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
@@ -40,8 +41,18 @@ const Home = () => {
     }
   };
 
+  const getPanditImage = (pandit) => {
+    if (pandit.profile_photo_url) {
+      return pandit.profile_photo_url.startsWith('/uploads')
+        ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
+        : pandit.profile_photo_url;
+    }
+    return '/images/default-pandit.png';
+  };
+
   return (
     <div className="home-container">
+      {/* Navbar */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="navbar-content">
@@ -56,19 +67,17 @@ const Home = () => {
               <a href="#about">About us</a>
               <a href="#services">Pooja</a>
               <a href="#pandits">Pandits</a>
+              <a href="#order">Order Services</a>
               <Link to="/login">Login</Link>
             </div>
           </div>
         </nav>
       </div>
 
+      {/* Hero */}
       <header
         className="hero"
-        style={{
-          backgroundImage: `url('/images/babaji.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        style={{ backgroundImage: `url('/images/babaji.png')` }}
       >
         <div className="hero-overlay">
           <div className="hero-text">
@@ -83,42 +92,30 @@ const Home = () => {
         </div>
       </header>
 
+      {/* About Section */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
         <p>
           Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
           Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
-          Pandits and Shastris who can perform pujas at your home or online. Our services also include
-          puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah, from Naamkaran to
-          Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
+          Pandits and Shastris who can perform pujas at your home or online.<br/>
+          Our services also include puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah,<br/>
+          from Naamkaran to Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
         </p>
       </section>
 
+      {/* Custom Service Cards Below About */}
       <section className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
-          {[
-            {
-              title: 'Puja Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/kalash.jpeg',
-            },
-            {
-              title: 'Temple Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/temple.jpeg',
-            },
-            {
-              title: 'Astrology Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/astro.jpeg',
-            },
-          ].map((item, index) => (
-            <div
-              className="highlight-card"
-              key={index}
-              style={{ backgroundImage: `url(${item.img})` }}
-            >
+          {[{
+            title: 'Puja Services', subtitle: 'Upto 10% Instant Discount', img: '/images/kalash.jpeg'
+          }, {
+            title: 'Temple Services', subtitle: 'Upto 10% Instant Discount', img: '/images/temple.jpeg'
+          }, {
+            title: 'Astrology Services', subtitle: 'Upto 10% Instant Discount', img: '/images/astro.jpeg'
+          }].map((item, index) => (
+            <div className="highlight-card" key={index} style={{ backgroundImage: `url(${item.img})` }}>
               <div className="highlight-overlay">
                 <h3>{item.title}</h3>
                 <p>{item.subtitle}</p>
@@ -129,6 +126,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Pooja Section */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
         {loading ? (
@@ -136,11 +134,7 @@ const Home = () => {
         ) : (
           <div className="card-grid">
             {poojas.map(pooja => (
-              <div
-                className="service-card"
-                key={pooja._id}
-                onClick={() => setSelectedService(pooja)}
-              >
+              <div className="service-card" key={pooja._id} onClick={() => setSelectedService(pooja)}>
                 <img src={pooja.imageUrl || '/images/default-pooja.png'} alt={pooja.name} />
                 <h3>{pooja.name}</h3>
               </div>
@@ -156,6 +150,7 @@ const Home = () => {
         )}
       </section>
 
+      {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         {loading ? (
@@ -166,14 +161,7 @@ const Home = () => {
           <div className="pandit-grid">
             {pandits.map(p => (
               <div className="pandit-card" key={p._id}>
-                <img
-                  src={
-                    p.profile_photo_url?.startsWith('/uploads')
-                      ? `https://backendserver-pf4h.onrender.com${p.profile_photo_url}`
-                      : p.profile_photo_url || '/images/default-pandit.png'
-                  }
-                  alt={`Photo of ${p.name}`}
-                />
+                <img src={getPanditImage(p)} alt={`Photo of ${p.name}`} />
                 <h4>{p.name}</h4>
                 <p>{p.city} | {p.experienceYears}+ yrs</p>
                 <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
@@ -184,6 +172,7 @@ const Home = () => {
         )}
       </section>
 
+      {/* Footer */}
       <footer className="footer">
         <div className="footer-left">
           <h2>Shubhkarya</h2>
