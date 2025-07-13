@@ -40,9 +40,9 @@ export default function Signup() {
       }}
     >
       <div className="signup-left">
-        <div className="signup-container">
+        <div className="signup-container light-yellow-bg">
           <form onSubmit={handleSubmit} className="signup-form">
-            <h2 className="signup-heading">📝 Create Your Account</h2>
+            <h2 className="signup-heading">🛕 Create Your Account</h2>
 
             <label className="signup-label">Name</label>
             <input
