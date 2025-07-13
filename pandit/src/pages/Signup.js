@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/api';
-import './Signup.css'; // External CSS file
+import './Signup.css'; // Link to the updated CSS with animation
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -34,12 +34,12 @@ export default function Signup() {
 
   return (
     <div
-      className="signup-page"
+      className="signup-page animated-bg"
       style={{
         backgroundImage: `url('/images/signup-bg.jpg')`,
       }}
     >
-      <div className="signup-container">
+      <div className="signup-container fade-in">
         <form onSubmit={handleSubmit} className="signup-form">
           <h2 className="signup-heading">📝 Create Your Account</h2>
 
@@ -56,8 +56,8 @@ export default function Signup() {
           <label className="signup-label">Email</label>
           <input
             name="email"
-            placeholder="Enter your email"
             type="email"
+            placeholder="Enter your email"
             value={form.email}
             onChange={handleChange}
             required
