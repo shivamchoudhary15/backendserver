@@ -1,3 +1,4 @@
+/* Home.css */
 .home-container {
   font-family: 'Segoe UI', sans-serif;
   background: #fffefb;
@@ -136,9 +137,17 @@
 
 /* About */
 .about {
-  padding: 40px;
+  padding: 50px 30px;
   text-align: center;
   background-color: #f9f9f9;
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+.about h2 {
+  font-size: 32px;
+  color: #b30059;
+  margin-bottom: 20px;
 }
 
 /* Services (Pooja) */
@@ -263,6 +272,7 @@
   font-size: 14px;
   text-decoration: underline;
 }
+
 /* New Service Boxes Section */
 .service-boxes {
   background-color: #fdf4e7;
@@ -285,39 +295,43 @@
 }
 
 .highlight-card {
-  background: white;
-  border-radius: 10px;
-  padding: 25px 20px;
   width: 280px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-  text-align: center;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
 
 .highlight-card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.03);
 }
 
-.highlight-card img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 15px;
-  object-fit: contain;
+.highlight-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-align: center;
 }
 
-.highlight-card h3 {
-  font-size: 20px;
-  color: #b34e2f;
-  margin-bottom: 10px;
+.highlight-overlay h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
 }
 
-.highlight-card p {
+.highlight-overlay p {
+  margin-bottom: 12px;
   font-size: 16px;
-  color: #444;
-  margin-bottom: 15px;
 }
 
-.highlight-card button {
+.highlight-overlay button {
   background-color: #28a745;
   color: white;
   border: none;
@@ -328,7 +342,6 @@
   transition: background 0.3s ease;
 }
 
-.highlight-card button:hover {
+.highlight-overlay button:hover {
   background-color: #218838;
 }
-
