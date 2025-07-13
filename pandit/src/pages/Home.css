@@ -5,7 +5,7 @@
   padding-top: 90px;
 }
 
-/* Header */
+/* Navbar */
 .navbar-wrapper {
   position: fixed;
   top: 0;
@@ -24,13 +24,6 @@
 .navbar-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-.navbar-left,
-.navbar-center,
-.navbar-right {
-  display: flex;
   align-items: center;
 }
 
@@ -70,7 +63,7 @@
   color: #b30059;
 }
 
-/* Hero Section */
+/* Hero */
 .hero {
   height: 90vh;
   background-size: cover;
@@ -148,11 +141,11 @@
   background-color: #f9f9f9;
 }
 
-/* Services */
+/* Services (Pooja) */
 .services {
   padding: 40px;
-  background-color: #b34e2f;
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .card-grid {
@@ -196,8 +189,8 @@
 /* Pandits */
 .pandits {
   padding: 40px;
-  background-color: #b34e2f;
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .pandit-grid {
@@ -226,8 +219,8 @@
 
 /* Footer */
 .footer {
-  background-color: #b34e2f;
-  color: white;
+  background-color: white;
+  color: #333;
   display: flex;
   justify-content: space-between;
   padding: 40px;
@@ -244,9 +237,9 @@
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
-  border: 1px solid #fff;
-  background-color: transparent;
-  color: white;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 .footer-right label {
@@ -255,8 +248,8 @@
 }
 
 .footer-right button {
-  background: white;
-  color: #b34e2f;
+  background: #b30059;
+  color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -265,7 +258,7 @@
 }
 
 .footer-links a {
-  color: white;
+  color: #b30059;
   margin-right: 10px;
   font-size: 14px;
   text-decoration: underline;
