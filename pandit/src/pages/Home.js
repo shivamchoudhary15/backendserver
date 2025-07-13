@@ -51,7 +51,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Navbar */}
       <div className="navbar-wrapper">
         <nav className="navbar">
           <div className="navbar-content">
@@ -72,13 +71,10 @@ const Home = () => {
         </nav>
       </div>
 
-      {/* Hero */}
       <header
         className="hero"
         style={{
           backgroundImage: `url('/images/babaji.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
         }}
       >
         <div className="hero-overlay">
@@ -94,19 +90,17 @@ const Home = () => {
         </div>
       </header>
 
-      {/* About Section */}
       <section id="about" className="about">
         <h2>About Shubhkarya</h2>
         <p>
-          Shubhkarya is India's 1st and most trusted online puja booking platform for Hindu rituals,
-          Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
-          Pandits and Shastris who can perform pujas at your home or online. Our services also include
-          puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah, from Naamkaran to
-          Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
+          Shubhkarya is India's premier online platform dedicated to simplifying your spiritual journey.<br /><br />
+          Whether you are planning a Griha Pravesh, Satyanarayan Katha, or need astrology consultation, we have you covered.<br /><br />
+          Our certified and experienced Pandits are available for both in-person and online puja services across cities.<br /><br />
+          From providing authentic puja samagri to temple bookings and astrologer consultations, we offer complete end-to-end spiritual services.<br /><br />
+          Join thousands of families who trust us for their auspicious ceremonies.
         </p>
       </section>
 
-      {/* Custom Service Cards Below About */}
       <section className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
@@ -127,17 +121,21 @@ const Home = () => {
               img: '/images/astro.jpeg',
             },
           ].map((item, index) => (
-            <div className="highlight-card" key={index}>
-              <img src={item.img} alt={item.title} />
-              <h3>{item.title}</h3>
-              <p>{item.subtitle}</p>
-              <button onClick={() => navigate('/login')}>Book Now</button>
+            <div
+              className="highlight-card animated-card"
+              key={index}
+              style={{ backgroundImage: `url(${item.img})` }}
+            >
+              <div className="highlight-overlay">
+                <h3>{item.title}</h3>
+                <p>{item.subtitle}</p>
+                <button onClick={() => navigate('/login')}>Book Now</button>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Pooja Section */}
       <section id="services" className="services">
         <h2>Pooja Provided</h2>
         {loading ? (
@@ -145,7 +143,11 @@ const Home = () => {
         ) : (
           <div className="card-grid">
             {poojas.map(pooja => (
-              <div className="service-card" key={pooja._id} onClick={() => setSelectedService(pooja)}>
+              <div
+                className="service-card"
+                key={pooja._id}
+                onClick={() => setSelectedService(pooja)}
+              >
                 <img src={pooja.imageUrl || '/images/default-pooja.png'} alt={pooja.name} />
                 <h3>{pooja.name}</h3>
               </div>
@@ -161,7 +163,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         {loading ? (
@@ -183,7 +184,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-left">
           <h2>Shubhkarya</h2>
