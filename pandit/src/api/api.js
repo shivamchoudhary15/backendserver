@@ -44,6 +44,12 @@ export const uploadPanditPhoto = (id, formData) =>
 // 🔹 Pandit (Public)
 //
 export const getVerifiedPandits = () => API.get('/pandits/view');
+export const deletePandit = async (id) => {
+  return await fetch(`https://backendserver-pf4h.onrender.com/api/pandits/delete/${id}`, {
+    method: 'DELETE',
+  });
+};
+
 
 //
 // 🔹 Pooja Management
