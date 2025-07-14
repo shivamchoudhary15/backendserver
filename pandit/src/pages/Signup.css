@@ -1,164 +1,77 @@
-/* Signup.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-.signup-page-split {
-display: flex;
-min-height: 100vh;
-background-size: cover;
-background-position: center;
-font-family: 'Segoe UI', sans-serif;
-position: relative;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
 }
 
-.signup-left,
-.signup-right {
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 40px;
-}
-
-.signup-container {
-width: 100%;
-  max-width: 420px;
-  max-width: 360px; /* Compressed size */
-border-radius: 12px;
-animation: fadeInLeft 1.2s ease-out;
-}
-
-.light-yellow-bg {
-background-color: rgba(255, 248, 220, 0.96);
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 40px;
-  padding: 30px;
-border-radius: 12px;
-  border: 2px solid #c59000; /* Dark yellow border */
-}
-
-.signup-form {
-display: flex;
-flex-direction: column;
-  gap: 18px;
+.glass-form {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
   gap: 16px;
+  color: white;
 }
 
-.signup-heading {
-text-align: center;
+.glass-form h2 {
+  text-align: center;
   font-size: 28px;
-  font-size: 26px;
-color: #b1450c;
-  margin-bottom: 25px;
-  margin-bottom: 20px;
-font-weight: 700;
+  font-weight: 600;
 }
 
-.signup-label {
-font-weight: 600;
-color: #333;
+.step-indicator {
+  text-align: center;
+  font-size: 14px;
+  color: #e0e0e0;
 }
 
-.signup-input {
-  padding: 12px;
-  padding: 10px;
-font-size: 16px;
-border-radius: 6px;
-border: 1px solid #ccc;
-outline: none;
-transition: border 0.3s, box-shadow 0.3s;
+.glass-form input {
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  backdrop-filter: blur(8px);
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-.signup-input:focus {
-border-color: #d35400;
-box-shadow: 0 0 6px rgba(211, 84, 0, 0.3);
+.glass-form input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.signup-button {
-  margin-top: 20px;
-  margin-top: 16px;
-padding: 12px;
-font-size: 18px;
-background-color: #d35400;
-color: white;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-transition: background-color 0.3s ease, transform 0.2s ease;
+.glass-form input:focus {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
 }
 
-.signup-button:hover {
-background-color: #a33c00;
-transform: scale(1.03);
+.primary-btn {
+  padding: 14px;
+  font-size: 16px;
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.signup-message {
-max-width: 400px;
-text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.85);
-  padding: 25px;
-border-radius: 12px;
-animation: fadeInRight 1.2s ease-out;
-  margin-top: -80px; /* Move caption up */
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(40, 167, 69, 0.4);
 }
 
-.signup-message h1 {
-  font-size: 36px;
-  margin-bottom: 15px;
-  font-size: 34px;
-  margin-bottom: 12px;
-color: #ffd700;
-}
-
-.signup-message p {
-  font-size: 18px;
-  line-height: 1.6;
-  font-size: 17px;
-  line-height: 1.5;
-color: #333;
-}
-
-@keyframes fadeInLeft {
-from {
-opacity: 0;
-transform: translateX(-30px);
-}
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
-
-@keyframes fadeInRight {
-from {
-opacity: 0;
-transform: translateX(30px);
-}
-to {
-opacity: 1;
-transform: translateX(0);
-}
-}
-
-@media (max-width: 768px) {
-.signup-page-split {
-flex-direction: column;
-}
-
-.signup-left,
-.signup-right {
-flex: none;
-width: 100%;
-padding: 30px 20px;
-}
-
-.signup-heading {
-    font-size: 24px;
-    font-size: 22px;
-}
-
-.signup-message h1 {
-    font-size: 28px;
-    font-size: 26px;
-}
-}
+.secondary-btn {
+  padding: 14px;
+  font-size: 16px;
+  background: linear-gradient(135deg, #ffc107, #e0a800);
