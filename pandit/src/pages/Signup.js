@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/api';
 import './Signup.css';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -15,11 +16,15 @@ export default function Signup() {
     address: ''
   });
 
+  const [step, setStep] = useState(1);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,91 +37,111 @@ export default function Signup() {
     }
   };
 
-  return (
-    <div
-      className="signup-page-split"
-      style={{
-        backgroundImage: `url('/images/signup-bg.jpg')`
-      }}
-    >
-      <div className="signup-left">
-        <div className="signup-container light-yellow-bg">
-          <form onSubmit={handleSubmit} className="signup-form">
-            <h2 className="signup-heading">🛕 Create Your Account</h2>
-
-            <label className="signup-label">Name</label>
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
             <input
               name="name"
-              placeholder="Enter your full name"
+              placeholder="Full Name"
               value={form.name}
               onChange={handleChange}
               required
-              className="signup-input"
             />
-
-            <label className="signup-label">Email</label>
-            <input
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="signup-input"
-            />
-
-            <label className="signup-label">Phone</label>
             <input
               name="phone"
-              placeholder="Enter your phone number"
+              placeholder="Phone Number"
               value={form.phone}
               onChange={handleChange}
               required
-              className="signup-input"
             />
-
-            <label className="signup-label">Password</label>
+            <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <input
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
             <input
               name="password"
               type="password"
-              placeholder="Create a password"
+              placeholder="Password (8 characters)"
               value={form.password}
               onChange={handleChange}
               required
-              className="signup-input"
+              minLength={8}
+              maxLength={8}
             />
-
-            <label className="signup-label">City (optional)</label>
+            <div className="step-buttons">
+              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
+              <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+            </div>
+          </>
+        );
+      case 3:
+        return (
+          <>
             <input
               name="city"
               placeholder="City"
               value={form.city}
               onChange={handleChange}
-              className="signup-input"
             />
-
-            <label className="signup-label">Address (optional)</label>
             <input
               name="address"
-              placeholder="Complete address"
+              placeholder="Complete Address"
               value={form.address}
               onChange={handleChange}
-              className="signup-input"
             />
+            <div className="step-buttons">
+              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
+              <button type="submit" className="primary-btn">Register</button>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
 
-            <button type="submit" className="signup-button">
-              🚀 Signup
-            </button>
-          </form>
-        </div>
-      </div>
+  const backgroundStyle = {
+    minHeight: '100vh',
+    backgroundImage: `url('/images/signup-bg.jpg')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '40px'
+  };
 
-      <div className="signup-right">
-        <div className="signup-message">
-          <h1>Book Pujas Online</h1>
-          <p>Connect with trusted Pandits for all your religious needs from anywhere in India.</p>
-        </div>
-      </div>
+  return (
+    <div style={backgroundStyle}>
+      <form onSubmit={handleSubmit} className="glass-form">
+        <h2>Create Your Account</h2>
+        <p className="step-indicator">Step {step} of 3</p>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.4 }}
+            className="animated-step"
+          >
+            {renderStep()}
+          </motion.div>
+        </AnimatePresence>
+      </form>
     </div>
   );
 }
