@@ -114,7 +114,7 @@ export default function Signup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `url('/images/signup-bg.jpg')`,
+    backgroundImage: `url('/images/b2.jpg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
