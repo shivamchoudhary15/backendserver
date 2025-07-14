@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import './PanditSignup.css';
-import backgroundImg from '../images/back1.jpeg'; // ✅ your local image
+import './PanditSignup.css'; // CSS file for styling
 
 export default function PanditSignup() {
   const navigate = useNavigate();
@@ -92,7 +91,7 @@ export default function PanditSignup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `url(${backgroundImg})`,
+    backgroundImage: `url('/images/back1.jpeg')`, // ✅ From public/images
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
