@@ -1,3 +1,5 @@
+// src/pages/Dashboard.js
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings } from '../api/api';
@@ -50,7 +52,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <h2>📊 Dashboard</h2>
+      <h2>Dashboard</h2>
 
       {user && (
         <div className="user-info">
@@ -59,30 +61,49 @@ function Dashboard() {
       )}
 
       <div className="button-group">
-        <button className="custom-btn" onClick={handleBookingRedirect}>📅 Book a Service</button>
-        <button className="custom-btn" onClick={handleLogout}>🚪 Logout</button>
+        <button className="custom-btn" onClick={handleBookingRedirect}>Book a Service</button>
+        <button className="custom-btn" onClick={handleLogout}>Logout</button>
       </div>
 
       <hr />
 
-      <h3>✍️ Submit a Review</h3>
+      <h3>Submit a Review</h3>
       {reviewMessage && (
         <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
       )}
       <form onSubmit={handleReviewSubmit} className="review-form">
         <label>Name:
-          <input type="text" name="name" value={review.name} disabled/>
+          <input type="text" name="name" value={review.name} disabled />
         </label>
         <label>Rating (1–5):
           <input type="number" name="rating" value={review.rating}
-            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))} min="1" max="5" required/>
+            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))} min="1" max="5" required />
         </label>
         <label>Comment:
           <textarea name="comment" value={review.comment}
-            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))} required/>
+            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))} required />
         </label>
-        <button type="submit" className="custom-btn">📝 Submit Review</button>
+        <button type="submit" className="custom-btn">Submit Review</button>
       </form>
+
+      {/* ✅ Added Section */}
+      <div className="highlight-section">
+        <div className="highlight-card">
+          <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
+          <h4>4000+ Spiritual Guide</h4>
+          <p>Priests, Pandits, Religious Experts & Consultants</p>
+        </div>
+        <div className="highlight-card">
+          <img src="/images/kalash.jpeg" alt="Types of Puja" />
+          <h4>500+ Types of Puja</h4>
+          <p>500+ Types of Religious Services</p>
+        </div>
+        <div className="highlight-card">
+          <img src="/images/havan.jpeg" alt="Puja Performed" />
+          <h4>100000+ Puja Performed</h4>
+          <p>4000+ Spiritual Guides performed more than 100000+ Puja</p>
+        </div>
+      </div>
 
       {bookings.length > 0 && (
         <div className="bookings-section">
