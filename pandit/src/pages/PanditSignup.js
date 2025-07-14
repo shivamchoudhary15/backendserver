@@ -1,9 +1,9 @@
-// src/pages/PanditSignup.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import './PanditSignup.css';
+import backgroundImg from '../images/back1.jpeg'; // ✅ your local image
 
 export default function PanditSignup() {
   const navigate = useNavigate();
@@ -90,8 +90,20 @@ export default function PanditSignup() {
     }
   };
 
+  const backgroundStyle = {
+    minHeight: '100vh',
+    backgroundImage: `url(${backgroundImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '40px',
+  };
+
   return (
-    <div className="signup-container">
+    <div style={backgroundStyle}>
       <form onSubmit={handleSubmit} className="signup-form">
         <h2>🧘 Pandit Signup</h2>
         <p className="step-indicator">Step {step} of 3</p>
