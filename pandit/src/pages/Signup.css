@@ -75,3 +75,26 @@ body {
   padding: 14px;
   font-size: 16px;
   background: linear-gradient(135deg, #ffc107, #e0a800);
+  color: black;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.secondary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 193, 7, 0.4);
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.animated-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
