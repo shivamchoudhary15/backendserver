@@ -114,7 +114,7 @@ export default function Signup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `url('/images/b2.jpg')`,
+    backgroundImage: `url('/images/b1.jpg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -127,7 +127,7 @@ export default function Signup() {
   return (
     <div style={backgroundStyle}>
       <form onSubmit={handleSubmit} className="glass-form">
-        <h2>Create Your Account</h2>
+        <h2 style={{ color: 'white' }}>Create Your Account</h2>
         <p className="step-indicator">Step {step} of 3</p>
         <AnimatePresence mode="wait">
           <motion.div
