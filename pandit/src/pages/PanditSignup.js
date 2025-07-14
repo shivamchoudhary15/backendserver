@@ -91,7 +91,7 @@ export default function PanditSignup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `url('/images/back1.jpeg')`, // ✅ From public/images
+    backgroundImage: `url('/images/back2.jpeg')`, // ✅ From public/images
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
