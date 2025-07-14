@@ -1,8 +1,15 @@
+// src/pages/PanditSignup.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+import './PanditSignup.css';
 
 export default function PanditSignup() {
+  const navigate = useNavigate();
+  const [step, setStep] = useState(1);
+  const [error, setError] = useState('');
+
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -16,26 +23,25 @@ export default function PanditSignup() {
     profile_photo_url: '',
   });
 
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Convert comma-separated fields into arrays
     const formData = {
       ...form,
-      languages: form.languages.split(',').map(item => item.trim()),
-      specialties: form.specialties.split(',').map(item => item.trim())
+      languages: form.languages.split(',').map((item) => item.trim()),
+      specialties: form.specialties.split(',').map((item) => item.trim()),
     };
 
     try {
-      const res = await axios.post('https://backendserver-pf4h.onrender.com/api/pandits/signup', formData);
+      await axios.post('https://backendserver-pf4h.onrender.com/api/pandits/signup', formData);
       alert('✅ Pandit registered successfully! Please wait for admin verification.');
       navigate('/login');
     } catch (err) {
@@ -43,69 +49,66 @@ export default function PanditSignup() {
     }
   };
 
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <input name="name" placeholder="🧑 Full Name" value={form.name} onChange={handleChange} required />
+            <input name="phone" placeholder="📞 Phone Number" value={form.phone} onChange={handleChange} required />
+            <button type="button" onClick={nextStep} className="primary-btn">Next ➡️</button>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <input name="email" placeholder="📧 Email Address" type="email" value={form.email} onChange={handleChange} required />
+            <input name="password" placeholder="🔐 Password (8 chars)" type="password" value={form.password} onChange={handleChange} required minLength={8} maxLength={8} />
+            <div className="step-buttons">
+              <button type="button" onClick={prevStep} className="secondary-btn">⬅️ Back</button>
+              <button type="button" onClick={nextStep} className="primary-btn">Next ➡️</button>
+            </div>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <input name="city" placeholder="🏙️ City" value={form.city} onChange={handleChange} />
+            <input name="experienceYears" placeholder="⌛ Years of Experience" type="number" value={form.experienceYears} onChange={handleChange} />
+            <input name="languages" placeholder="🗣️ Languages (comma-separated)" value={form.languages} onChange={handleChange} />
+            <input name="specialties" placeholder="🛕 Specialties (comma-separated)" value={form.specialties} onChange={handleChange} />
+            <textarea name="bio" placeholder="📜 Short Bio" value={form.bio} onChange={handleChange} rows={3}></textarea>
+            <input name="profile_photo_url" placeholder="🖼️ Profile Photo URL" value={form.profile_photo_url} onChange={handleChange} />
+            <div className="step-buttons">
+              <button type="button" onClick={prevStep} className="secondary-btn">⬅️ Back</button>
+              <button type="submit" className="primary-btn">📩 Register</button>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h2 style={styles.title}>🧘 Pandit Signup</h2>
-
-        {error && <p style={styles.error}>{error}</p>}
-
-        <input name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required style={styles.input} />
-        <input name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange} required style={styles.input} />
-        <input name="email" placeholder="Email Address" type="email" value={form.email} onChange={handleChange} required style={styles.input} />
-        <input name="password" placeholder="Password (8 chars)" type="password" value={form.password} onChange={handleChange} required minLength={8} maxLength={8} style={styles.input} />
-        <input name="city" placeholder="City" value={form.city} onChange={handleChange} style={styles.input} />
-        <input name="experienceYears" placeholder="Years of Experience" type="number" value={form.experienceYears} onChange={handleChange} style={styles.input} />
-        <input name="languages" placeholder="Languages (comma-separated)" value={form.languages} onChange={handleChange} style={styles.input} />
-        <input name="specialties" placeholder="Specialties (comma-separated)" value={form.specialties} onChange={handleChange} style={styles.input} />
-        <textarea name="bio" placeholder="Short Bio" value={form.bio} onChange={handleChange} rows={3} style={styles.input}></textarea>
-        <input name="profile_photo_url" placeholder="Profile Photo URL" value={form.profile_photo_url} onChange={handleChange} style={styles.input} />
-
-        <button type="submit" style={styles.button}>📩 Register</button>
+    <div className="signup-container">
+      <form onSubmit={handleSubmit} className="signup-form">
+        <h2>🧘 Pandit Signup</h2>
+        <p className="step-indicator">Step {step} of 3</p>
+        {error && <p className="error">{error}</p>}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.4 }}
+            className="animated-step"
+          >
+            {renderStep()}
+          </motion.div>
+        </AnimatePresence>
       </form>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: '40px',
-    maxWidth: '500px',
-    margin: '80px auto',
-    fontFamily: 'Segoe UI, sans-serif',
-    backgroundColor: '#fdfdfd',
-    borderRadius: '10px',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-  },
-  title: {
-    textAlign: 'center',
-    fontSize: '24px',
-    marginBottom: '10px',
-    color: '#333',
-  },
-  input: {
-    padding: '10px',
-    fontSize: '16px',
-    borderRadius: '6px',
-    border: '1px solid #ccc',
-  },
-  button: {
-    padding: '12px',
-    fontSize: '16px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    fontSize: '14px',
-  },
-};
