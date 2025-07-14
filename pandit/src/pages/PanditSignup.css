@@ -7,51 +7,58 @@ body {
 }
 
 .signup-form {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 32px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .signup-form h2 {
   text-align: center;
-  font-size: 26px;
-  color: #222;
+  font-size: 28px;
+  color: #ffffff;
   font-weight: 600;
-  margin-bottom: 8px;
 }
 
 .step-indicator {
   text-align: center;
   font-size: 14px;
-  color: #666;
+  color: #dddddd;
 }
 
 .signup-form input,
 .signup-form textarea {
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
   outline: none;
+  transition: all 0.3s ease;
+}
+
+.signup-form input::placeholder,
+.signup-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .signup-form input:focus,
 .signup-form textarea:focus {
-  border-color: #28a745;
-  background-color: #fff;
-  box-shadow: 0 0 6px rgba(40, 167, 69, 0.3);
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
 }
 
 .primary-btn {
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
   background: linear-gradient(135deg, #28a745, #218838);
   color: white;
@@ -68,7 +75,7 @@ body {
 }
 
 .secondary-btn {
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
   background: linear-gradient(135deg, #ffc107, #e0a800);
   color: #000;
@@ -90,7 +97,7 @@ body {
 }
 
 .error {
-  color: red;
+  color: #ff8080;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
@@ -99,5 +106,5 @@ body {
 .animated-step {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
