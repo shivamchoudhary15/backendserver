@@ -42,32 +42,35 @@ function Booking() {
           getServices(),
           getBookings({ userid })
         ]);
-        const verifiedPandits = pdRes.data.filter(p => p.is_verified);
+
+        const verifiedPandits = pdRes.data?.filter(p => p.is_verified) || [];
         setPandits(verifiedPandits);
         setFilteredPandits(verifiedPandits);
+
         setPoojas(pjRes.data || []);
         setServices(srvRes.data || []);
         setBookings(bookingsRes.data || []);
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error('❌ Error loading booking data:', err);
+        alert('Failed to load pandits, poojas, or services. Try again later.');
       }
     }
+
     if (userid) load();
   }, [userid]);
 
   useEffect(() => {
     setFilteredPandits(
-      pandits.filter((p) =>
+      pandits.filter(p =>
         p.name.toLowerCase().includes(search.toLowerCase())
       )
     );
   }, [search, pandits]);
 
   const selectedServiceName = services.find(s => s._id === details.serviceid)?.name;
-  const filteredPoojas =
-    selectedServiceName === 'Astrological Service'
-      ? astrologicalPoojas
-      : poojas;
+  const filteredPoojas = selectedServiceName === 'Astrological Service'
+    ? astrologicalPoojas
+    : poojas;
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -120,23 +123,35 @@ function Booking() {
               className="signup-input"
             >
               <option value="">-- Select Service --</option>
-              {services.map((s) => (
-                <option key={s._id} value={s._id}>{s.name}</option>
-              ))}
+              {services.length > 0 ? (
+                services.map((s) => (
+                  <option key={s._id} value={s._id}>{s.name}</option>
+                ))
+              ) : (
+                <option disabled>Loading services...</option>
+              )}
             </select>
 
             <select name="panditid" onChange={handleChange} required className="signup-input">
-              <option value="">-- Pandit --</option>
-              {filteredPandits.map((p) => (
-                <option key={p._id} value={p._id}>{p.name}</option>
-              ))}
+              <option value="">-- Select Pandit --</option>
+              {filteredPandits.length > 0 ? (
+                filteredPandits.map((p) => (
+                  <option key={p._id} value={p._id}>{p.name}</option>
+                ))
+              ) : (
+                <option disabled>No verified pandits available</option>
+              )}
             </select>
 
             <select name="poojaId" onChange={handleChange} required className="signup-input">
-              <option value="">-- Pooja --</option>
-              {filteredPoojas.map((pj) => (
-                <option key={pj._id} value={pj._id}>{pj.name}</option>
-              ))}
+              <option value="">-- Select Pooja --</option>
+              {filteredPoojas.length > 0 ? (
+                filteredPoojas.map((pj) => (
+                  <option key={pj._id} value={pj._id}>{pj.name}</option>
+                ))
+              ) : (
+                <option disabled>No poojas found</option>
+              )}
             </select>
 
             <button type="button" onClick={nextStep} className="primary-btn">Next</button>
