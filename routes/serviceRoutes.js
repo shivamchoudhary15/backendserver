@@ -29,19 +29,19 @@ router.get('/seed', async (req, res) => {
     {
       name: 'Home Service',
       description: 'Pandit visits your home for pooja',
-      price: 500,
+      price: 'starting from 5000',
       image: '/images/kalash.jpeg'
     },
     {
       name: 'Temple Service',
       description: 'Pooja performed at temple with pandit',
-      price: 300,
+      price: 'starting from 3000',
       image: '/images/temple.jpeg'
     },
     {
       name: 'Astrological Service',
       description: 'Get horoscope and astrology consultation',
-      price: 400,
+      price: 'starting from 1000',
       image: '/images/astro.jpeg'
     },
   ];
