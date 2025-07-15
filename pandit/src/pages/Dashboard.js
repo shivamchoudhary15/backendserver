@@ -1,7 +1,7 @@
 // src/pages/Dashboard.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createReview, getBookings } from '../api/api';
+import { createReview, getBookings, getVerifiedPandits } from '../api/api';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -11,6 +11,8 @@ function Dashboard() {
   const [reviewMessage, setReviewMessage] = useState('');
   const [bookings, setBookings] = useState([]);
   const [search, setSearch] = useState('');
+  const [pandits, setPandits] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,18 +31,22 @@ function Dashboard() {
       getBookings({ userid: parsedUser._id })
         .then(res => setBookings(res.data))
         .catch(err => console.error('Failed to fetch bookings:', err));
+
+      getVerifiedPandits()
+        .then(res => setPandits(res.data))
+        .catch(err => console.error('Failed to fetch pandits:', err));
     } catch (err) {
       console.error('User parse error:', err);
       navigate('/login');
     }
   }, [navigate]);
 
-  const handleBookingRedirect = () => navigate('/booking');
-
   const handleLogout = () => {
     localStorage.clear();
     navigate('/home');
   };
+
+  const handleBookingRedirect = () => navigate('/booking');
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -75,20 +81,23 @@ function Dashboard() {
     );
   });
 
+  const filteredPandits = pandits.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    p.city?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="dashboard-container">
-      <h2>Dashboard</h2>
+      <div className="top-bar">
+        <button className="custom-btn logout" onClick={handleLogout}>Logout</button>
+        <h2>Dashboard</h2>
+      </div>
 
       {user && (
         <div className="user-info">
           <p>Welcome, <strong>{user.name}</strong> ({user.email})</p>
         </div>
       )}
-
-      <div className="button-group">
-        <button className="custom-btn" onClick={handleBookingRedirect}>Book a Service</button>
-        <button className="custom-btn logout" onClick={handleLogout}>Logout</button>
-      </div>
 
       <hr />
 
@@ -108,6 +117,40 @@ function Dashboard() {
           <h4>100000+ Puja Performed</h4>
           <p>4000+ Spiritual Guides performed more than 100000+ Puja</p>
         </div>
+      </div>
+
+      <div className="pandit-section">
+        <h3>Verified Pandits</h3>
+        <input
+          type="text"
+          placeholder="Search pandits by name or city..."
+          className="booking-search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="pandit-list">
+          {filteredPandits.slice(0, visibleCount).map(p => (
+            <div key={p._id} className="pandit-card">
+              <img src={p.profile_photo_url || '/images/default.jpg'} alt={p.name} />
+              <h4>{p.name}</h4>
+              <p><strong>City:</strong> {p.city}</p>
+              <p><strong>Experience:</strong> {p.experienceYears} years</p>
+              <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
+              <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
+            </div>
+          ))}
+        </div>
+        {filteredPandits.length > 3 && (
+          <div className="toggle-btn">
+            <button onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)} className="custom-btn">
+              {visibleCount === 3 ? 'Show More' : 'Show Less'}
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="button-group bottom-button">
+        <button className="custom-btn" onClick={handleBookingRedirect}>Book a Service</button>
       </div>
 
       {bookings.length > 0 && (
