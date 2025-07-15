@@ -95,9 +95,11 @@ function PanditDashboard() {
           {filteredBookings.map(b => (
             <div key={b._id} style={styles.bookingCard}>
               <p><strong>Devotee:</strong> {b.userid?.name || 'N/A'}</p>
+              <p><strong>Phone:</strong> {b.userid?.phone || 'N/A'}</p>
+              <p><strong>Service:</strong> {b.serviceid?.name || 'N/A'}</p>
+              <p><strong>Pooja:</strong> {b.poojaId?.name || 'N/A'}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
-              <p><strong>Pooja:</strong> {b.SamanList?.name || 'N/A'}</p>
               <p><strong>Location:</strong> {b.location || 'N/A'}</p>
               <p>
                 <strong>Status:</strong>
