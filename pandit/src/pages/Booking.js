@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createBooking, getBookings } from '../api/api';
+import { createBooking } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,7 +12,6 @@ const astrologicalPoojas = [
 
 function Booking() {
   const [details, setDetails] = useState({});
-  const [bookings, setBookings] = useState([]);
   const [services, setServices] = useState([]);
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
@@ -47,10 +46,10 @@ function Booking() {
 
   const filteredPoojas =
     details.serviceid === 'Astrological Service'
-      ? astrologicalPoojas
-      : poojas.filter((pj) =>
-          pj.name.toLowerCase().includes(search.toLowerCase())
-        );
+      ? astrologicalPoojas.filter(pj =>
+          pj.name.toLowerCase().includes(search.toLowerCase()))
+      : poojas.filter(pj =>
+          pj.name.toLowerCase().includes(search.toLowerCase()));
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
