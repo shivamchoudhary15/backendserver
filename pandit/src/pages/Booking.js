@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createBooking } from '../api/api';
+import { createBooking, getVerifiedPandits, getPoojas, getServices } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -23,16 +23,14 @@ function Booking() {
   useEffect(() => {
     async function load() {
       try {
-        const [sv, pd, pj] = await Promise.all([
-          fetch('/api/services/view'),
-          fetch('/api/pandits/view'),
-          fetch('/api/poojas/view'),
+        const [svRes, pdRes, pjRes] = await Promise.all([
+          getServices(),
+          getVerifiedPandits(),
+          getPoojas(),
         ]);
-        setServices(await sv.json());
-        const verifiedPandits = await pd.json();
-        const adminPoojas = await pj.json();
-        setPandits(verifiedPandits.filter(p => p.is_verified));
-        setPoojas(adminPoojas);
+        setServices(svRes.data || []);
+        setPandits(pdRes.data.filter(p => p.is_verified));
+        setPoojas(pjRes.data || []);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -87,8 +85,8 @@ function Booking() {
 
             <select name="serviceid" onChange={handleChange} required>
               <option value="">-- Service --</option>
-              {['Home Service', 'Temple Service', 'Astrological Service'].map((s) => (
-                <option key={s} value={s}>{s}</option>
+              {services.map((s) => (
+                <option key={s._id || s.name} value={s.name}>{s.name}</option>
               ))}
             </select>
 
