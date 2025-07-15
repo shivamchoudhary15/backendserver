@@ -26,16 +26,34 @@ router.get('/view', async (req, res) => {
 // ✅ Seed services in bulk (default)
 router.get('/seed', async (req, res) => {
   const services = [
-    { name: 'Home Service' },
-    { name: 'Temple Service' },
-    { name: 'Astrological Service' },
+    {
+      name: 'Home Service',
+      description: 'Pandit visits your home for pooja',
+      price: 500,
+      image: '/images/home-service.jpg'
+    },
+    {
+      name: 'Temple Service',
+      description: 'Pooja performed at temple with pandit',
+      price: 300,
+      image: '/images/temple-service.jpg'
+    },
+    {
+      name: 'Astrological Service',
+      description: 'Get horoscope and astrology consultation',
+      price: 400,
+      image: '/images/astrology.jpg'
+    },
   ];
+
   try {
     await Service.insertMany(services);
-    res.send('Services seeded');
+    res.send('✅ Services seeded');
   } catch (err) {
+    console.error('Seeding error:', err.message);
     res.status(500).send('Error seeding');
   }
 });
+
 
 module.exports = router;
