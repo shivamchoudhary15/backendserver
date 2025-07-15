@@ -171,6 +171,7 @@ function Dashboard() {
                 <div key={b._id} className="booking-card">
                   <p><strong>Devotee:</strong> {user.name}</p>
                   <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid || 'N/A'}</p>
+                  <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
                   <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
                   <p><strong>Time:</strong> {b.puja_time}</p>
                   <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId || 'N/A'}</p>
