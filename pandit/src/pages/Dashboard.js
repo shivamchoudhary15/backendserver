@@ -1,3 +1,4 @@
+// Dashboard.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
@@ -51,16 +52,16 @@ function Dashboard() {
     e.preventDefault();
     const ratingValue = Number(review.rating);
     if (!review.name || !review.comment || isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
-      setReviewMessage('❌ Please fill all fields with a rating between 1 and 5.');
+      setReviewMessage('Please fill all fields with a rating between 1 and 5.');
       return;
     }
 
     try {
       await createReview(review);
-      setReviewMessage('✅ Review submitted!');
+      setReviewMessage('Review submitted!');
       setReview({ name: review.name, rating: '', comment: '' });
     } catch {
-      setReviewMessage('❌ Failed to submit review.');
+      setReviewMessage('Failed to submit review.');
     }
   };
 
@@ -87,35 +88,22 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
-        <h2>🔱 Shubhkarya</h2>
-        <button onClick={scrollToBookings}>📅 Bookings</button>
-        <button onClick={scrollToReviews}>⭐ Reviews</button>
-        <button onClick={handleBookingRedirect}>🙏 Book a Service</button>
-        <button className="logout-btn" onClick={handleLogout}>🚪 Logout</button>
+        <h2>Shubhkarya</h2>
+        <button onClick={scrollToBookings} className="animated-btn">Bookings</button>
+        <button onClick={scrollToReviews} className="animated-btn">Reviews</button>
+        <button onClick={handleBookingRedirect} className="animated-btn">Book a Service</button>
+        <button className="logout-btn animated-btn" onClick={handleLogout}>Logout</button>
       </aside>
 
       <main className="main-content">
-        {user && <h2 className="welcome-msg">Welcome, {user.name} 🙏</h2>}
+        {user && (
+          <div className="welcome-section">
+            <h2>Welcome, {user.name}</h2>
+            <p>Explore spiritual guidance, book pujas, and connect with verified pandits across India.</p>
+          </div>
+        )}
 
-        <section className="highlight-section">
-          <div className="highlight-card">
-            <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
-            <h4>4000+ Spiritual Guides</h4>
-            <p>Pandits & Consultants across India</p>
-          </div>
-          <div className="highlight-card">
-            <img src="/images/kalash.jpeg" alt="Pujas" />
-            <h4>500+ Pujas</h4>
-            <p>Wide variety of spiritual services</p>
-          </div>
-          <div className="highlight-card">
-            <img src="/images/havan.jpeg" alt="Performed Pujas" />
-            <h4>1,00,000+ Pujas Done</h4>
-            <p>By verified pandits</p>
-          </div>
-        </section>
-
-        <section>
+        <section className="pandit-section">
           <h3>Verified Pandits</h3>
           <input
             type="text"
@@ -136,13 +124,6 @@ function Dashboard() {
               </div>
             ))}
           </div>
-          {filteredPandits.length > 3 && (
-            <div className="toggle-btn">
-              <button onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)} className="custom-btn">
-                {visibleCount === 3 ? 'Show More' : 'Show Less'}
-              </button>
-            </div>
-          )}
         </section>
 
         <section ref={bookingsRef} className="bookings-section">
@@ -168,7 +149,7 @@ function Dashboard() {
         <section ref={reviewsRef} className="review-section">
           <h3>Submit a Review</h3>
           {reviewMessage && (
-            <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
+            <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
           )}
           <form onSubmit={handleReviewSubmit} className="review-form">
             <input type="text" value={review.name} disabled />
@@ -187,7 +168,7 @@ function Dashboard() {
               onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
               required
             />
-            <button type="submit" className="custom-btn">Submit Review</button>
+            <button type="submit" className="custom-btn animated-btn">Submit Review</button>
           </form>
         </section>
       </main>
