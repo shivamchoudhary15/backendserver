@@ -63,8 +63,8 @@ router.get('/view', async (req, res) => {
     const bookings = await Booking.find(query)
       .populate('panditid', 'name')
       .populate('poojaId', 'name')
-      .populate('serviceid', 'name')   // ✅ added
-      .populate('userid', 'name');
+      .populate('serviceid', 'name')
+      .populate('userid', 'name email phone');  // ✅ include phone here
 
     res.status(200).json(bookings);
   } catch (err) {
@@ -101,8 +101,8 @@ router.get('/user/:userid', async (req, res) => {
     const bookings = await Booking.find({ userid: userObjId })
       .populate('poojaId', 'name')
       .populate('panditid', 'name')
-      .populate('serviceid', 'name')   // ✅ added
-      .populate('userid', 'name');
+      .populate('serviceid', 'name')
+      .populate('userid', 'name email phone'); // ✅ also include phone here
 
     res.json(bookings);
   } catch (err) {
