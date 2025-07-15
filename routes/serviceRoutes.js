@@ -42,7 +42,7 @@ router.get('/seed', async (req, res) => {
       name: 'Astrological Service',
       description: 'Get horoscope and astrology consultation',
       price: 400,
-      image: '/images/astro.jpg'
+      image: '/images/astro.jpeg'
     },
   ];
 
