@@ -103,6 +103,24 @@ function Dashboard() {
           </div>
         )}
 
+        <section className="highlight-section">
+          <div className="highlight-card">
+            <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
+            <h4>4000+ Spiritual Guides</h4>
+            <p>Pandits & Consultants across India</p>
+          </div>
+          <div className="highlight-card">
+            <img src="/images/kalash.jpeg" alt="Pujas" />
+            <h4>500+ Pujas</h4>
+            <p>Wide variety of spiritual services</p>
+          </div>
+          <div className="highlight-card">
+            <img src="/images/havan.jpeg" alt="Performed Pujas" />
+            <h4>1,00,000+ Pujas Done</h4>
+            <p>By verified pandits</p>
+          </div>
+        </section>
+
         <section className="pandit-section">
           <h3>Verified Pandits</h3>
           <input
@@ -124,6 +142,16 @@ function Dashboard() {
               </div>
             ))}
           </div>
+          {filteredPandits.length > 3 && (
+            <div className="toggle-btn">
+              <button
+                onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)}
+                className="custom-btn animated-btn"
+              >
+                {visibleCount === 3 ? 'Show More' : 'Show Less'}
+              </button>
+            </div>
+          )}
         </section>
 
         <section ref={bookingsRef} className="bookings-section">
