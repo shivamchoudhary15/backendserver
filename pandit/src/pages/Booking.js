@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { createBooking, getVerifiedPandits, getPoojas } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const astrologicalPoojas = [
   { _id: 'kundli', name: 'Kundli Analysis' },
@@ -17,8 +18,10 @@ function Booking() {
   const [poojas, setPoojas] = useState([]);
   const [search, setSearch] = useState('');
   const [step, setStep] = useState(1);
+  const [filteredPandits, setFilteredPandits] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
   const userid = user?._id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function load() {
@@ -27,7 +30,9 @@ function Booking() {
           getVerifiedPandits(),
           getPoojas(),
         ]);
-        setPandits(pdRes.data.filter(p => p.is_verified));
+        const verifiedPandits = pdRes.data.filter(p => p.is_verified);
+        setPandits(verifiedPandits);
+        setFilteredPandits(verifiedPandits);
         setPoojas(pjRes.data || []);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -36,13 +41,18 @@ function Booking() {
     load();
   }, []);
 
-  const filteredPandits = pandits.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    setFilteredPandits(
+      pandits.filter((p) =>
+        p.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, pandits]);
 
-  const filteredPoojas = poojas.filter((pj) =>
-    pj.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredPoojas =
+    details.serviceid === 'Astrological Service'
+      ? astrologicalPoojas
+      : poojas;
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -53,15 +63,15 @@ function Booking() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { panditid, poojaId, puja_date, puja_time, location } = details;
-    if (!panditid || !poojaId || !puja_date || !puja_time || !location) {
+    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
+    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
       alert('Please fill all fields');
       return;
     }
 
     await createBooking({ ...details, userid });
     alert('✅ Booking created!');
-    setStep(1);
+    navigate('/dashboard');
   };
 
   const renderStep = () => {
@@ -71,11 +81,23 @@ function Booking() {
           <>
             <input
               type="text"
-              placeholder="Search Pandit or Pooja"
+              placeholder="Search Pandit"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="signup-input"
             />
+
+            <select
+              name="serviceid"
+              onChange={handleChange}
+              required
+              className="signup-input"
+            >
+              <option value="">-- Select Service --</option>
+              <option value="Home Service">Home Service</option>
+              <option value="Temple Service">Temple Service</option>
+              <option value="Astrological Service">Astrological Service</option>
+            </select>
 
             <select name="panditid" onChange={handleChange} required className="signup-input">
               <option value="">-- Pandit --</option>
@@ -132,8 +154,11 @@ function Booking() {
           <>
             <h3 style={{ color: 'white' }}>Review your details</h3>
             <ul className="review-list">
+              <li>Service: {details.serviceid}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {poojas.find(pj => pj._id === details.poojaId)?.name}</li>
+              <li>Pooja: {(details.serviceid === 'Astrological Service'
+                ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
+                : poojas.find(pj => pj._id === details.poojaId))?.name}</li>
               <li>Date: {details.puja_date}</li>
               <li>Time: {details.puja_time}</li>
               <li>Location: {details.location}</li>
