@@ -4,7 +4,9 @@ import {
   createBooking,
   getVerifiedPandits,
   getPoojas,
-  getServices
+  getServices,
+  getBookingsByUser,
+  createReview
 } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,6 +24,8 @@ function Booking() {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
   const [services, setServices] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [review, setReview] = useState({ rating: '', comment: '' });
   const [search, setSearch] = useState('');
   const [step, setStep] = useState(1);
   const [filteredPandits, setFilteredPandits] = useState([]);
@@ -32,22 +36,24 @@ function Booking() {
   useEffect(() => {
     async function load() {
       try {
-        const [pdRes, pjRes, srvRes] = await Promise.all([
+        const [pdRes, pjRes, srvRes, bookingsRes] = await Promise.all([
           getVerifiedPandits(),
           getPoojas(),
-          getServices()
+          getServices(),
+          getBookingsByUser(userid)
         ]);
         const verifiedPandits = pdRes.data.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setFilteredPandits(verifiedPandits);
         setPoojas(pjRes.data || []);
         setServices(srvRes.data || []);
+        setBookings(bookingsRes.data || []);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
     }
     load();
-  }, []);
+  }, [userid]);
 
   useEffect(() => {
     setFilteredPandits(
@@ -65,6 +71,17 @@ function Booking() {
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const handleReviewChange = (e) => {
+    setReview({ ...review, [e.target.name]: e.target.value });
+  };
+
+  const handleReviewSubmit = async (bookingId) => {
+    if (!review.rating || !review.comment) return alert('Fill all review fields');
+    await createReview({ ...review, bookingId, name: user.name });
+    alert('✅ Review submitted');
+    setReview({ rating: '', comment: '' });
   };
 
   const nextStep = () => setStep(step + 1);
@@ -202,6 +219,28 @@ function Booking() {
           </motion.div>
         </AnimatePresence>
       </form>
+
+      {/* My Bookings Section */}
+      <div className="booking-history">
+        <h2>My Bookings</h2>
+        {bookings.length === 0 ? <p>No bookings found.</p> : (
+          bookings.map(b => (
+            <div key={b._id} className="booking-item">
+              <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId}</p>
+              <p><strong>Pandit:</strong> {b.panditid?.name || b.panditid}</p>
+              <p><strong>Date:</strong> {b.puja_date}</p>
+              <p><strong>Time:</strong> {b.puja_time}</p>
+              <p><strong>Status:</strong> {b.status}</p>
+
+              <div className="review-form">
+                <input type="number" name="rating" value={review.rating} onChange={handleReviewChange} placeholder="Rating (1-5)" />
+                <textarea name="comment" value={review.comment} onChange={handleReviewChange} placeholder="Write your review..." />
+                <button onClick={() => handleReviewSubmit(b._id)}>Submit Review</button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
