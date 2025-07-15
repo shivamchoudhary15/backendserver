@@ -165,7 +165,7 @@ function Booking() {
   };
 
   return (
-    <div className="booking-page" style={{ backgroundImage: `url('/images/signup-bg.jpg')` }}>
+    <div className="booking-page" style={{ backgroundImage: `url('/images/b2.jpg')` }}>
       <form className="glass-form" onSubmit={handleSubmit}>
         <h2 style={{ color: 'white' }}>Book Pandit Ji for Your Puja</h2>
         <p className="step-indicator">Step {step} of 3</p>
