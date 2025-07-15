@@ -3,6 +3,13 @@ import { createBooking, getBookings } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const astrologicalPoojas = [
+  { _id: 'kundli', name: 'Kundli Analysis' },
+  { _id: 'horoscope', name: 'Horoscope Matching' },
+  { _id: 'career', name: 'Career and Business Guidance' },
+  { _id: 'health', name: 'Health Analysis' }
+];
+
 function Booking() {
   const [details, setDetails] = useState({});
   const [bookings, setBookings] = useState([]);
@@ -23,8 +30,10 @@ function Booking() {
           fetch('/api/poojas/view'),
         ]);
         setServices(await sv.json());
-        setPandits(await pd.json());
-        setPoojas(await pj.json());
+        const verifiedPandits = await pd.json();
+        const adminPoojas = await pj.json();
+        setPandits(verifiedPandits.filter(p => p.is_verified));
+        setPoojas(adminPoojas);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -32,17 +41,16 @@ function Booking() {
     load();
   }, []);
 
-  useEffect(() => {
-    if (!userid) return;
-    getBookings(userid).then((r) => setBookings(r.data));
-  }, [userid]);
-
   const filteredPandits = pandits.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
-  const filteredPoojas = poojas.filter((pj) =>
-    pj.name.toLowerCase().includes(search.toLowerCase())
-  );
+
+  const filteredPoojas =
+    details.serviceid === 'Astrological Service'
+      ? astrologicalPoojas
+      : poojas.filter((pj) =>
+          pj.name.toLowerCase().includes(search.toLowerCase())
+        );
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -60,20 +68,8 @@ function Booking() {
       return;
     }
 
-    const exists = bookings.some(
-      (b) =>
-        b.panditid === panditid &&
-        b.puja_date === puja_date &&
-        b.status === 'accepted'
-    );
-    if (exists) {
-      alert('Pandit already booked that day');
-      return;
-    }
-
     await createBooking({ ...details, userid });
     alert('✅ Booking created!');
-    getBookings(userid).then((r) => setBookings(r.data));
     setStep(1);
   };
 
@@ -92,8 +88,8 @@ function Booking() {
 
             <select name="serviceid" onChange={handleChange} required>
               <option value="">-- Service --</option>
-              {services.map((s) => (
-                <option key={s._id} value={s._id}>{s.name}</option>
+              {['Home Service', 'Temple Service', 'Astrological Service'].map((s) => (
+                <option key={s} value={s}>{s}</option>
               ))}
             </select>
 
@@ -124,14 +120,12 @@ function Booking() {
               onChange={handleChange}
               required
             />
-
             <input
               type="time"
               name="puja_time"
               onChange={handleChange}
               required
             />
-
             <input
               type="text"
               name="location"
@@ -139,7 +133,6 @@ function Booking() {
               onChange={handleChange}
               required
             />
-
             <div className="step-buttons">
               <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
               <button type="button" onClick={nextStep} className="primary-btn">Next</button>
@@ -152,9 +145,9 @@ function Booking() {
           <>
             <h3 style={{ color: 'white' }}>Review your details</h3>
             <ul className="review-list">
-              <li>Service: {services.find(s => s._id === details.serviceid)?.name}</li>
+              <li>Service: {details.serviceid}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {poojas.find(pj => pj._id === details.poojaId)?.name}</li>
+              <li>Pooja: {filteredPoojas.find(pj => pj._id === details.poojaId)?.name}</li>
               <li>Date: {details.puja_date}</li>
               <li>Time: {details.puja_time}</li>
               <li>Location: {details.location}</li>
@@ -172,7 +165,7 @@ function Booking() {
   };
 
   return (
-    <div className="booking-page" style={{ backgroundImage: `url('/images/b2.jpg')` }}>
+    <div className="booking-page" style={{ backgroundImage: `url('/images/signup-bg.jpg')` }}>
       <form className="glass-form" onSubmit={handleSubmit}>
         <h2 style={{ color: 'white' }}>Book Pandit Ji for Your Puja</h2>
         <p className="step-indicator">Step {step} of 3</p>
@@ -189,17 +182,6 @@ function Booking() {
           </motion.div>
         </AnimatePresence>
       </form>
-
-      <div className="glass-bookings">
-        <h2 style={{ color: 'white' }}>Your Bookings</h2>
-        <ul className="booking-list">
-          {bookings.map((b) => (
-            <li key={b._id}>
-              {b.puja_date} - {b.puja_time} with {b.panditid?.name || 'Pandit'} - <strong>{b.status}</strong>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
