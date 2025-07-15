@@ -10,6 +10,7 @@ function Dashboard() {
   const [review, setReview] = useState({ name: '', rating: '', comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
   const [bookings, setBookings] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -26,10 +27,7 @@ function Dashboard() {
       setReview(prev => ({ ...prev, name: parsedUser.name }));
 
       getBookings({ userid: parsedUser._id })
-        .then(res => {
-          console.log('Bookings fetched:', res.data);
-          setBookings(res.data);
-        })
+        .then(res => setBookings(res.data))
         .catch(err => console.error('Failed to fetch bookings:', err));
     } catch (err) {
       console.error('User parse error:', err);
@@ -61,6 +59,21 @@ function Dashboard() {
       setReviewMessage('❌ Failed to submit review.');
     }
   };
+
+  const getStatusClass = (status) => {
+    if (status === 'accepted') return 'status-accepted';
+    if (status === 'rejected') return 'status-rejected';
+    return 'status-pending';
+  };
+
+  const filteredBookings = bookings.filter(b => {
+    const query = search.toLowerCase();
+    return (
+      (b.panditid?.name?.toLowerCase().includes(query) ||
+      b.serviceid?.name?.toLowerCase().includes(query) ||
+      new Date(b.puja_date).toLocaleDateString().includes(query))
+    );
+  });
 
   return (
     <div className="dashboard-container">
@@ -98,21 +111,32 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Bookings */}
+      {/* Bookings with Search */}
       {bookings.length > 0 && (
         <div className="bookings-section">
           <h3>Your Bookings</h3>
-          {bookings.map(b => (
-            <div key={b._id} className="booking-card">
-              <p><strong>Service:</strong> {b.serviceid && typeof b.serviceid === 'object' ? b.serviceid.name : b.serviceid || 'N/A'}</p>
-              <p><strong>Pandit:</strong> {b.panditid && typeof b.panditid === 'object' ? b.panditid.name : b.panditid || 'Not Assigned'}</p>
-              <p><strong>Pooja:</strong> {b.poojaId && typeof b.poojaId === 'object' ? b.poojaId.name : b.poojaId || 'N/A'}</p>
-              <p><strong>Date:</strong> {new Date(b.puja_date).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {b.puja_time}</p>
-              <p><strong>Location:</strong> {b.location}</p>
-              <p><strong>Status:</strong> {b.status}</p>
-            </div>
-          ))}
+          <input
+            type="text"
+            className="booking-search"
+            placeholder="Search by Pandit, Service or Date..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {filteredBookings.length === 0 ? (
+            <p>No matching bookings found.</p>
+          ) : (
+            filteredBookings.map(b => (
+              <div key={b._id} className="booking-card">
+                <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid || 'N/A'}</p>
+                <p><strong>Pandit:</strong> {b.panditid?.name || b.panditid || 'Not Assigned'}</p>
+                <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId || 'N/A'}</p>
+                <p><strong>Date:</strong> {new Date(b.puja_date).toLocaleDateString()}</p>
+                <p><strong>Time:</strong> {b.puja_time}</p>
+                <p><strong>Location:</strong> {b.location}</p>
+                <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+              </div>
+            ))
+          )}
         </div>
       )}
 
