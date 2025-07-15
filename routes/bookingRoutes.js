@@ -17,12 +17,11 @@ router.post('/create', async (req, res) => {
       poojaId
     } = req.body;
 
-    // ✅ Convert IDs to ObjectId
     const userObjId = new mongoose.Types.ObjectId(userid);
     const panditObjId = new mongoose.Types.ObjectId(panditid);
     const poojaObjId = poojaId ? new mongoose.Types.ObjectId(poojaId) : undefined;
 
-    // ✅ Check for booking conflict
+    // ✅ Prevent double booking on same date
     const existing = await Booking.findOne({
       panditid: panditObjId,
       puja_date: new Date(puja_date),
@@ -33,7 +32,6 @@ router.post('/create', async (req, res) => {
       return res.status(409).json({ error: 'Pandit already booked on this date' });
     }
 
-    // ✅ Save booking
     const booking = new Booking({
       userid: userObjId,
       panditid: panditObjId,
@@ -65,6 +63,7 @@ router.get('/view', async (req, res) => {
     const bookings = await Booking.find(query)
       .populate('panditid', 'name')
       .populate('poojaId', 'name')
+      .populate('serviceid', 'name')   // ✅ added
       .populate('userid', 'name');
 
     res.status(200).json(bookings);
@@ -102,6 +101,7 @@ router.get('/user/:userid', async (req, res) => {
     const bookings = await Booking.find({ userid: userObjId })
       .populate('poojaId', 'name')
       .populate('panditid', 'name')
+      .populate('serviceid', 'name')   // ✅ added
       .populate('userid', 'name');
 
     res.json(bookings);
