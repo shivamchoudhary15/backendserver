@@ -79,4 +79,17 @@ router.put('/status/:id', async (req, res) => {
   }
 });
 
+// GET all bookings for a specific user
+router.get('/user/:userid', async (req, res) => {
+  try {
+    const bookings = await Booking.find({ userid: req.params.userid })
+      .populate('poojaId')
+      .populate('panditid');
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch user bookings' });
+  }
+});
+
+
 module.exports = router;
