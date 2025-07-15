@@ -64,6 +64,8 @@ export const deletePooja = id => API.delete(`/poojas/delete/${id}`);
 //
 export const createBooking = bookingData => API.post('/bookings/create', bookingData);
 export const getBookings = (params = {}) => API.get('/bookings/view', { params });
+export const getBookingsByUser = (userid) => API.get(`/bookings/user/${userid}`);
+
 
 
 //
