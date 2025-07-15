@@ -1,5 +1,3 @@
-// src/pages/Dashboard.js
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings } from '../api/api';
@@ -26,7 +24,8 @@ function Dashboard() {
       setUser(parsedUser);
       setReview(prev => ({ ...prev, name: parsedUser.name }));
 
-      getBookings(parsedUser._id)
+      // ✅ fetch bookings by userid
+      getBookings({ userid: parsedUser._id })
         .then(res => setBookings(res.data))
         .catch(err => console.error('Failed to fetch bookings:', err));
     } catch (err) {
@@ -138,8 +137,8 @@ function Dashboard() {
           <h3>Your Bookings</h3>
           {bookings.map(b => (
             <div key={b._id} className="booking-card">
-              <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
-              <p><strong>Pandit:</strong> {b.panditid?.name}</p>
+              <p><strong>Service:</strong> {b.serviceid?.name || 'N/A'}</p>
+              <p><strong>Pandit:</strong> {b.panditid?.name || 'Not Assigned'}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
               <p><strong>Location:</strong> {b.location}</p>
@@ -153,4 +152,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
