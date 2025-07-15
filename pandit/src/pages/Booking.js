@@ -1,5 +1,6 @@
+// src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
-import { createBooking, getVerifiedPandits, getPoojas, getServices } from '../api/api';
+import { createBooking, getVerifiedPandits, getPoojas } from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,7 +13,6 @@ const astrologicalPoojas = [
 
 function Booking() {
   const [details, setDetails] = useState({});
-  const [services, setServices] = useState([]);
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
   const [search, setSearch] = useState('');
@@ -23,12 +23,10 @@ function Booking() {
   useEffect(() => {
     async function load() {
       try {
-        const [svRes, pdRes, pjRes] = await Promise.all([
-          getServices(),
+        const [pdRes, pjRes] = await Promise.all([
           getVerifiedPandits(),
           getPoojas(),
         ]);
-        setServices(svRes.data || []);
         setPandits(pdRes.data.filter(p => p.is_verified));
         setPoojas(pjRes.data || []);
       } catch (err) {
@@ -42,12 +40,9 @@ function Booking() {
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredPoojas =
-    details.serviceid === 'Astrological Service'
-      ? astrologicalPoojas.filter(pj =>
-          pj.name.toLowerCase().includes(search.toLowerCase()))
-      : poojas.filter(pj =>
-          pj.name.toLowerCase().includes(search.toLowerCase()));
+  const filteredPoojas = poojas.filter((pj) =>
+    pj.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -58,9 +53,8 @@ function Booking() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
-
-    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
+    const { panditid, poojaId, puja_date, puja_time, location } = details;
+    if (!panditid || !poojaId || !puja_date || !puja_time || !location) {
       alert('Please fill all fields');
       return;
     }
@@ -80,24 +74,17 @@ function Booking() {
               placeholder="Search Pandit or Pooja"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="search-bar"
+              className="signup-input"
             />
 
-            <select name="serviceid" onChange={handleChange} required>
-              <option value="">-- Service --</option>
-              {services.map((s) => (
-                <option key={s._id || s.name} value={s.name}>{s.name}</option>
-              ))}
-            </select>
-
-            <select name="panditid" onChange={handleChange} required>
+            <select name="panditid" onChange={handleChange} required className="signup-input">
               <option value="">-- Pandit --</option>
               {filteredPandits.map((p) => (
                 <option key={p._id} value={p._id}>{p.name}</option>
               ))}
             </select>
 
-            <select name="poojaId" onChange={handleChange} required>
+            <select name="poojaId" onChange={handleChange} required className="signup-input">
               <option value="">-- Pooja --</option>
               {filteredPoojas.map((pj) => (
                 <option key={pj._id} value={pj._id}>{pj.name}</option>
@@ -116,12 +103,14 @@ function Booking() {
               name="puja_date"
               onChange={handleChange}
               required
+              className="signup-input"
             />
             <input
               type="time"
               name="puja_time"
               onChange={handleChange}
               required
+              className="signup-input"
             />
             <input
               type="text"
@@ -129,6 +118,7 @@ function Booking() {
               placeholder="Location"
               onChange={handleChange}
               required
+              className="signup-input"
             />
             <div className="step-buttons">
               <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
@@ -142,9 +132,8 @@ function Booking() {
           <>
             <h3 style={{ color: 'white' }}>Review your details</h3>
             <ul className="review-list">
-              <li>Service: {details.serviceid}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {filteredPoojas.find(pj => pj._id === details.poojaId)?.name}</li>
+              <li>Pooja: {poojas.find(pj => pj._id === details.poojaId)?.name}</li>
               <li>Date: {details.puja_date}</li>
               <li>Time: {details.puja_time}</li>
               <li>Location: {details.location}</li>
