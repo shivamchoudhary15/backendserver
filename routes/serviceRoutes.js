@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Service = require('../models/service');
 
-// Add new service
+// ✅ Add new service manually
 router.post('/add', async (req, res) => {
   try {
     const service = new Service(req.body);
@@ -13,13 +13,28 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// View all services
+// ✅ View all services
 router.get('/view', async (req, res) => {
   try {
     const services = await Service.find();
     res.json(services);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ Seed services in bulk (default)
+router.post('/seed', async (req, res) => {
+  const services = [
+    { name: 'Home Service' },
+    { name: 'Temple Service' },
+    { name: 'Astrological Service' },
+  ];
+  try {
+    await Service.insertMany(services);
+    res.send('Services seeded');
+  } catch (err) {
+    res.status(500).send('Error seeding');
   }
 });
 
