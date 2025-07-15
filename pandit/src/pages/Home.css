@@ -143,8 +143,6 @@
   padding: 50px 30px;
   background-color: #f9f9f9;
   color: #444;
-  font-size: 17px;
-  line-height: 1.7;
   font-size: 18px;
   line-height: 1.8;
   text-align: center;
@@ -213,7 +211,8 @@
 .pandit-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
+  justify-content: center;
 }
 
 .pandit-card {
@@ -224,6 +223,11 @@
   text-align: center;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   color: black;
+  transition: transform 0.2s ease;
+}
+
+.pandit-card:hover {
+  transform: scale(1.02);
 }
 
 .pandit-card img {
@@ -297,7 +301,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
   gap: 35px;
   margin-top: 30px;
 }
