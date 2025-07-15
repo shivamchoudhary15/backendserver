@@ -140,9 +140,9 @@ function Dashboard() {
           <h3>Your Bookings</h3>
           {bookings.map(b => (
             <div key={b._id} className="booking-card">
-              <p><strong>Service:</strong> {typeof b.serviceid === 'object' ? b.serviceid.name : b.serviceid || 'N/A'}</p>
-              <p><strong>Pandit:</strong> {typeof b.panditid === 'object' ? b.panditid.name : b.panditid || 'Not Assigned'}</p>
-              <p><strong>Pooja:</strong> {typeof b.poojaId === 'object' ? b.poojaId.name : b.poojaId || 'N/A'}</p>
+              <p><strong>Service:</strong> {b.serviceid && typeof b.serviceid === 'object' ? b.serviceid.name : b.serviceid || 'N/A'}</p>
+              <p><strong>Pandit:</strong> {b.panditid && typeof b.panditid === 'object' ? b.panditid.name : b.panditid || 'Not Assigned'}</p>
+              <p><strong>Pooja:</strong> {b.poojaId && typeof b.poojaId === 'object' ? b.poojaId.name : b.poojaId || 'N/A'}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toLocaleDateString()}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
               <p><strong>Location:</strong> {b.location}</p>
