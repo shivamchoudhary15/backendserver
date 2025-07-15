@@ -195,7 +195,7 @@ const Home = () => {
           <h2>Shubhkarya</h2>
           <p>7983078609</p>
           <p>info@shubhkarya.com</p>
-          <p>500 32, Bhagwati Nagar, Chandrapuri Colony, Mathura 281001</p>
+          <p>32, Bhagwati Nagar, Chandrapuri Colony, Mathura 281001</p>
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
