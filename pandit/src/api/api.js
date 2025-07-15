@@ -63,7 +63,8 @@ export const deletePooja = id => API.delete(`/poojas/delete/${id}`);
 // 🔹 Booking
 //
 export const createBooking = bookingData => API.post('/bookings/create', bookingData);
-export const getBookings = userId => API.get(`/bookings/view?userid=${userId}`);
+export const getBookings = (params = {}) => API.get('/bookings/view', { params });
+
 
 //
 // 🔹 Services
