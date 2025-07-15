@@ -1,35 +1,39 @@
-// src/pages/Dashboard.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
 import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
+  const bookingsRef = useRef(null);
+  const reviewsRef = useRef(null);
+
   const [user, setUser] = useState(null);
   const [review, setReview] = useState({ name: '', rating: '', comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
   const [bookings, setBookings] = useState([]);
-  const [pandits, setPandits] = useState([]);
   const [search, setSearch] = useState('');
+  const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
+
     if (!token || !userData) return navigate('/login');
 
     try {
       const parsedUser = JSON.parse(userData);
       if (parsedUser.role === 'admin') return navigate('/admin');
       if (parsedUser.role === 'pandit') return navigate('/pandit/dashboard');
+
       setUser(parsedUser);
       setReview(prev => ({ ...prev, name: parsedUser.name }));
 
       getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data));
       getVerifiedPandits().then(res => setPandits(res.data));
     } catch (err) {
-      console.error('Error loading user:', err);
+      console.error('User parse error:', err);
       navigate('/login');
     }
   }, [navigate]);
@@ -39,100 +43,153 @@ function Dashboard() {
     navigate('/home');
   };
 
+  const handleBookingRedirect = () => navigate('/booking');
+  const scrollToBookings = () => bookingsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToReviews = () => reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    const ratingVal = Number(review.rating);
-    if (!review.name || !review.comment || isNaN(ratingVal) || ratingVal < 1 || ratingVal > 5) {
-      return setReviewMessage('❌ Fill all fields. Rating must be 1–5.');
+    const ratingValue = Number(review.rating);
+    if (!review.name || !review.comment || isNaN(ratingValue) || ratingValue < 1 || ratingValue > 5) {
+      setReviewMessage('❌ Please fill all fields with a rating between 1 and 5.');
+      return;
     }
+
     try {
       await createReview(review);
       setReviewMessage('✅ Review submitted!');
       setReview({ name: review.name, rating: '', comment: '' });
-    } catch (err) {
+    } catch {
       setReviewMessage('❌ Failed to submit review.');
     }
   };
 
-  const filteredBookings = bookings.filter(b =>
-    b.panditid?.name?.toLowerCase().includes(search.toLowerCase()) ||
-    b.serviceid?.name?.toLowerCase().includes(search.toLowerCase()) ||
-    new Date(b.puja_date).toLocaleDateString().includes(search)
+  const getStatusClass = (status) => {
+    if (status === 'Accepted') return 'status accepted';
+    if (status === 'Rejected') return 'status rejected';
+    return 'status pending';
+  };
+
+  const filteredBookings = bookings.filter(b => {
+    const query = search.toLowerCase();
+    return (
+      (b.panditid?.name?.toLowerCase().includes(query) ||
+        b.serviceid?.name?.toLowerCase().includes(query) ||
+        new Date(b.puja_date).toLocaleDateString().includes(query))
+    );
+  });
+
+  const filteredPandits = pandits.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    p.city?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
-        <h2 className="logo">Shubhkarya</h2>
-        <ul>
-          <li><strong>Bookings</strong></li>
-          <li><strong>Reviews</strong></li>
-          <li className="highlighted">Book a Service</li>
-          <li onClick={handleLogout} className="logout-link">Logout</li>
-        </ul>
+        <h2>🔱 Shubhkarya</h2>
+        <button onClick={scrollToBookings}>📅 Bookings</button>
+        <button onClick={scrollToReviews}>⭐ Reviews</button>
+        <button onClick={handleBookingRedirect}>🙏 Book a Service</button>
+        <button className="logout-btn" onClick={handleLogout}>🚪 Logout</button>
       </aside>
 
       <main className="main-content">
-        {user && (
-          <div className="welcome-banner">
-            <h1>Welcome to Shubhkarya, <span>{user.name}</span></h1>
-            <p>Get ready to connect with spiritual guides and book services with ease.</p>
-          </div>
-        )}
+        {user && <h2 className="welcome-msg">Welcome, {user.name} 🙏</h2>}
 
-        <div className="card-section">
+        <section className="highlight-section">
           <div className="highlight-card">
             <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
             <h4>4000+ Spiritual Guides</h4>
-            <p>Pandits, Consultants & Religious Experts</p>
+            <p>Pandits & Consultants across India</p>
           </div>
           <div className="highlight-card">
-            <img src="/images/kalash.jpeg" alt="Types of Puja" />
-            <h4>500+ Types of Puja</h4>
-            <p>All types of Vedic & spiritual puja</p>
+            <img src="/images/kalash.jpeg" alt="Pujas" />
+            <h4>500+ Pujas</h4>
+            <p>Wide variety of spiritual services</p>
           </div>
           <div className="highlight-card">
-            <img src="/images/havan.jpeg" alt="Puja Count" />
-            <h4>100000+ Pujas Done</h4>
-            <p>By our verified community</p>
+            <img src="/images/havan.jpeg" alt="Performed Pujas" />
+            <h4>1,00,000+ Pujas Done</h4>
+            <p>By verified pandits</p>
           </div>
-        </div>
+        </section>
 
-        <div className="section-block">
-          <h3>Your Bookings</h3>
+        <section>
+          <h3>Verified Pandits</h3>
           <input
+            type="text"
             className="booking-search"
-            placeholder="Search by pandit, service or date"
+            placeholder="Search by name or city..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="booking-list">
-            {filteredBookings.map(b => (
-              <div className="booking-card" key={b._id}>
-                <p><strong>Service:</strong> {b.serviceid?.name || 'N/A'}</p>
-                <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
-                <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
-                <p><strong>Time:</strong> {b.puja_time}</p>
-                <p><strong>Location:</strong> {b.location}</p>
+          <div className="pandit-list">
+            {filteredPandits.slice(0, visibleCount).map(p => (
+              <div className="pandit-card" key={p._id}>
+                <img src={p.profile_photo_url || '/images/default.jpg'} alt={p.name} />
+                <h4>{p.name}</h4>
+                <p><strong>City:</strong> {p.city}</p>
+                <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
+                <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
+                <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
               </div>
             ))}
           </div>
-        </div>
+          {filteredPandits.length > 3 && (
+            <div className="toggle-btn">
+              <button onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)} className="custom-btn">
+                {visibleCount === 3 ? 'Show More' : 'Show Less'}
+              </button>
+            </div>
+          )}
+        </section>
 
-        <div className="section-block">
+        <section ref={bookingsRef} className="bookings-section">
+          <h3>Your Bookings</h3>
+          <div className="booking-list">
+            {filteredBookings.length === 0 ? (
+              <p>No matching bookings found.</p>
+            ) : (
+              filteredBookings.map(b => (
+                <div key={b._id} className="booking-card">
+                  <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
+                  <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
+                  <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
+                  <p><strong>Time:</strong> {b.puja_time}</p>
+                  <p><strong>Location:</strong> {b.location}</p>
+                  <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
+        <section ref={reviewsRef} className="review-section">
           <h3>Submit a Review</h3>
           {reviewMessage && (
-            <p className={reviewMessage.includes('✅') ? 'success-message' : 'error-message'}>
-              {reviewMessage}
-            </p>
+            <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
           )}
-          <form className="review-form" onSubmit={handleReviewSubmit}>
-            <label>Name: <input type="text" value={review.name} disabled /></label>
-            <label>Rating (1-5): <input type="number" value={review.rating} onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))} /></label>
-            <label>Comment: <textarea value={review.comment} onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))} /></label>
-            <button type="submit" className="custom-btn">Submit</button>
+          <form onSubmit={handleReviewSubmit} className="review-form">
+            <input type="text" value={review.name} disabled />
+            <input
+              type="number"
+              placeholder="Rating (1-5)"
+              value={review.rating}
+              onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
+              min="1"
+              max="5"
+              required
+            />
+            <textarea
+              placeholder="Write your feedback..."
+              value={review.comment}
+              onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+              required
+            />
+            <button type="submit" className="custom-btn">Submit Review</button>
           </form>
-        </div>
+        </section>
       </main>
     </div>
   );
