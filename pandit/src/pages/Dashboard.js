@@ -79,7 +79,7 @@ function Dashboard() {
 
       <hr />
 
-      {/* ✅ Review Section */}
+      {/* Review Section */}
       <h3>Submit a Review</h3>
       {reviewMessage && (
         <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>
@@ -115,7 +115,7 @@ function Dashboard() {
         <button type="submit" className="custom-btn">Submit Review</button>
       </form>
 
-      {/* ✅ Highlights */}
+      {/* Highlights */}
       <div className="highlight-section">
         <div className="highlight-card">
           <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
@@ -134,7 +134,7 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* ✅ Bookings */}
+      {/* Bookings */}
       {bookings.length > 0 && (
         <div className="bookings-section">
           <h3>Your Bookings</h3>
