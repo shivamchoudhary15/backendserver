@@ -1,158 +1,110 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f5f5;
-}
-
+/* src/pages/Dashboard.css */
 .dashboard-container {
-  max-width: 1000px;
-  margin: 0 auto;
   padding: 2rem;
-  background-color: #fffefc;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-h2, h3 {
-  color: #b15300;
-  text-align: center;
-}
-
-.user-info {
-  margin-bottom: 1.5rem;
-  text-align: center;
+  color: #333;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .button-group {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
 }
 
 .custom-btn {
-  background-color: #ff9933;
+  background-color: #4a90e2;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  margin-right: 1rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .custom-btn:hover {
-  background-color: #e68114;
+  background-color: #357acc;
 }
 
-.review-form {
+.user-info {
+  margin-bottom: 1rem;
+}
+
+.highlight-section {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 500px;
-  margin: 0 auto 2rem;
+  justify-content: space-around;
+  margin: 2rem 0;
 }
 
-.review-form label {
-  font-weight: 600;
-  color: #333;
-}
-
-.review-form input,
-.review-form textarea {
-  padding: 0.6rem 0.75rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  resize: vertical;
-}
-
-.success-message {
-  color: green;
+.highlight-card {
+  width: 30%;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
   text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.error-message {
-  color: red;
-  text-align: center;
+.highlight-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .bookings-section {
   margin-top: 2rem;
 }
 
+.booking-search {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
 .booking-card {
-  background-color: #fffaf0;
-  border-left: 4px solid #ff9933;
+  background: #f1f1f1;
   padding: 1rem;
-  border-radius: 8px;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid #ccc;
+  border-radius: 5px;
 }
 
-/* ✅ New Section: Highlight Feature Cards */
-.highlight-section {
+.status-accepted {
+  color: green;
+  font-weight: bold;
+}
+
+.status-rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.review-form {
+  margin-top: 2rem;
   display: flex;
-  justify-content: space-between;
-  margin: 2rem 0;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  background-color: #fff9e6;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-.highlight-card {
-  flex: 1;
-  min-width: 260px;
-  max-width: 300px;
-  text-align: center;
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #e2c68e;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease;
+.review-form input,
+.review-form textarea {
+  padding: 0.6rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-.highlight-card:hover {
-  transform: translateY(-6px);
+.success-message {
+  color: green;
+  font-weight: bold;
 }
 
-.highlight-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 1rem;
-}
-
-.highlight-card h4 {
-  font-size: 1.2rem;
-  color: #b15300;
-  margin-bottom: 0.5rem;
-}
-
-.highlight-card p {
-  font-size: 0.95rem;
-  color: #555;
-}
-
-/* ✅ Responsive Layout */
-@media (max-width: 768px) {
-  .highlight-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .button-group {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .custom-btn {
-    width: 100%;
-    max-width: 300px;
-  }
+.error-message {
+  color: red;
+  font-weight: bold;
 }
