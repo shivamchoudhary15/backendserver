@@ -1,3 +1,4 @@
+// src/pages/Dashboard.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings } from '../api/api';
@@ -24,9 +25,12 @@ function Dashboard() {
       setUser(parsedUser);
       setReview(prev => ({ ...prev, name: parsedUser.name }));
 
-      // ✅ fetch bookings by userid
+      // ✅ Correct way to fetch bookings using params
       getBookings({ userid: parsedUser._id })
-        .then(res => setBookings(res.data))
+        .then(res => {
+          console.log('Bookings fetched:', res.data);
+          setBookings(res.data);
+        })
         .catch(err => console.error('Failed to fetch bookings:', err));
     } catch (err) {
       console.error('User parse error:', err);
@@ -76,7 +80,7 @@ function Dashboard() {
 
       <hr />
 
-      {/* ✅ Review Submission */}
+      {/* ✅ Review Section */}
       <h3>Submit a Review</h3>
       {reviewMessage && (
         <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>
@@ -112,7 +116,7 @@ function Dashboard() {
         <button type="submit" className="custom-btn">Submit Review</button>
       </form>
 
-      {/* ✅ Highlight Section */}
+      {/* ✅ Highlights */}
       <div className="highlight-section">
         <div className="highlight-card">
           <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
@@ -131,7 +135,7 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* ✅ Bookings Section */}
+      {/* ✅ Bookings */}
       {bookings.length > 0 && (
         <div className="bookings-section">
           <h3>Your Bookings</h3>
