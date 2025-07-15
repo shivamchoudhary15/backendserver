@@ -73,18 +73,30 @@ function Booking() {
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
-    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-      alert('Please fill all fields');
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
 
+  if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
+    alert('Please fill all fields');
+    return;
+  }
+
+  try {
     await createBooking({ ...details, userid });
     alert('✅ Booking created!');
     navigate('/dashboard');
-  };
+  } catch (error) {
+    console.error('❌ Booking failed:', error);
+    // If backend sends a message, show it. Otherwise show fallback message.
+    if (error?.response?.data?.message) {
+      alert(`❌ ${error.response.data.message}`);
+    } else {
+      alert('❌ Booking not available for this Pandit on the selected date.');
+    }
+  }
+};
+
 
   const renderStep = () => {
     switch (step) {
