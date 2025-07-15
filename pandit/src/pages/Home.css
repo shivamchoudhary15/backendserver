@@ -309,11 +309,12 @@
   background-size: cover;
   background-position: center;
   border-radius: 10px;
-  width: 280px;
+  width: 300px;
   height: 250px;
   position: relative;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .highlight-overlay {
@@ -339,7 +340,10 @@
 
 .highlight-overlay p {
   font-size: 16px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .highlight-overlay button {
