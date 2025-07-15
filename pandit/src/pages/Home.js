@@ -16,16 +16,19 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [panditRes, poojaRes] = await Promise.all([
+        const [panditRes, poojaRes, serviceRes] = await Promise.all([
           fetch('https://backendserver-pf4h.onrender.com/api/pandits/view'),
           fetch('https://backendserver-pf4h.onrender.com/api/poojas/view'),
           fetch('https://backendserver-pf4h.onrender.com/api/services/view'),
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
+        const servicesData = await serviceRes.json();
+
         const verifiedPandits = panditsData.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setPoojas(poojasData);
+        setServices(servicesData);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
@@ -34,11 +37,6 @@ const Home = () => {
     };
 
     fetchData();
-
-    // Load services from API
-    getServices()
-      .then(res => setServices(res.data))
-      .catch(err => console.error('Failed to fetch services', err));
   }, []);
 
   const handleBooking = () => {
@@ -125,15 +123,18 @@ const Home = () => {
       <section id="order" className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
-          {services.length > 0 ? services.map((service, index) => (
+          {services.length > 0 ? services.map((service) => (
             <div
               className="highlight-card"
-              key={service._id || index}
-              style={{ backgroundImage: `url(/images/${service.name.toLowerCase().split(' ')[0]}.jpeg)` }}
+              key={service._id}
+              style={{
+                backgroundImage: `url(${service.image})`,
+              }}
             >
               <div className="highlight-overlay">
                 <h3>{service.name}</h3>
-                <p>Upto 10% Instant Discount</p>
+                <p>{service.description}</p>
+                <p>₹{service.price}</p>
                 <button onClick={() => navigate('/login')}>Book Now</button>
               </div>
             </div>
@@ -167,7 +168,7 @@ const Home = () => {
         )}
       </section>
 
-      {/* Pandits */}
+      {/* Pandits Section */}
       <section id="pandits" className="pandits">
         <h2>Meet Our Pandits</h2>
         {loading ? (
@@ -193,15 +194,15 @@ const Home = () => {
       <footer className="footer">
         <div className="footer-left">
           <h2>Shubhkarya</h2>
-          <p>123-456-7890</p>
+          <p>7983078609</p>
           <p>info@shubhkarya.com</p>
-          <p>500 Terry Francine St, San Francisco, CA 94158</p>
+          <p>500 32,bhagwati nagar ,chandrapuri colony Mathura 281001 </p>
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
           <form onSubmit={e => e.preventDefault()}>
             <input type="email" placeholder="Your Email" />
-            <label><input type="checkbox" /> Subscribe to newsletter</label>
+            <label><input type="checkbox" /> Subscribe to shubkarya</label>
             <button type="submit">Subscribe</button>
           </form>
           <div className="footer-links">
