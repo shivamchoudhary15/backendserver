@@ -1,3 +1,4 @@
+/* Dashboard.css */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -5,7 +6,7 @@
 }
 
 .sidebar {
-  background-color: #ffe6f0; /* Baby pink */
+  background-color: #e0f7fa; /* Light blue */
   padding: 1rem;
   width: 240px;
   display: flex;
@@ -17,7 +18,7 @@
 .sidebar h2 {
   margin-bottom: 1rem;
   font-size: 22px;
-  color: #c2185b;
+  color: #0277bd;
   text-align: center;
 }
 
@@ -28,12 +29,18 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   cursor: pointer;
-  text-align: left;
+  transition: all 0.3s ease;
 }
 
 .sidebar .logout-btn {
-  background-color: #ffcdd2;
-  color: #b71c1c;
+  background-color: #b3e5fc;
+  color: #01579b;
+}
+
+.sidebar button:hover {
+  background-color: #b2ebf2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .main-content {
@@ -42,11 +49,22 @@
   overflow-y: auto;
 }
 
-.welcome-msg {
-  font-size: 24px;
-  margin-bottom: 1.5rem;
-  color: #6a1b9a;
+.welcome-section {
   text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.welcome-section h2 {
+  font-size: 28px;
+  color: #006064;
+}
+
+.welcome-section p {
+  color: #555;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .highlight-section {
@@ -59,11 +77,16 @@
 
 .highlight-card {
   width: 30%;
-  background: #fff0f5;
+  background: #e0f2f1;
   border-radius: 10px;
   text-align: center;
   padding: 1rem;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.highlight-card:hover {
+  transform: scale(1.02);
 }
 
 .highlight-card img {
@@ -73,15 +96,30 @@
   border-radius: 8px;
 }
 
+.pandit-section h3,
+.bookings-section h3,
+.review-section h3 {
+  color: #00796b;
+  margin-bottom: 1rem;
+}
+
+.booking-search {
+  padding: 0.6rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
 .pandit-list {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .pandit-card {
-  background: #fff;
+  background: #ffffff;
   padding: 1rem;
   border-radius: 10px;
   width: 250px;
@@ -97,9 +135,9 @@
 }
 
 .booking-card {
-  background: #fff;
+  background: #ffffff;
   padding: 1rem;
-  border-left: 6px solid #ba68c8;
+  border-left: 6px solid #4db6ac;
   border-radius: 8px;
   margin-bottom: 1rem;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
@@ -122,8 +160,24 @@
 
 .success-message {
   color: green;
+  font-weight: 500;
 }
 
 .error-message {
   color: red;
+  font-weight: 500;
+}
+
+.animated-btn {
+  transition: all 0.3s ease;
+}
+
+.animated-btn:hover {
+  transform: scale(1.05);
+  background-color: #d0f0ff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
