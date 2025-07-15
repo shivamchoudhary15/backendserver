@@ -61,8 +61,8 @@ function Dashboard() {
   };
 
   const getStatusClass = (status) => {
-    if (status === 'accepted') return 'status accepted';
-    if (status === 'rejected') return 'status rejected';
+    if (status === 'Accepted') return 'status accepted';
+    if (status === 'Rejected') return 'status rejected';
     return 'status pending';
   };
 
