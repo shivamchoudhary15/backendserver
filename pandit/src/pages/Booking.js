@@ -1,6 +1,11 @@
 // src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
-import { createBooking, getVerifiedPandits, getPoojas } from '../api/api';
+import {
+  createBooking,
+  getVerifiedPandits,
+  getPoojas,
+  getServices
+} from '../api/api';
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +21,7 @@ function Booking() {
   const [details, setDetails] = useState({});
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
+  const [services, setServices] = useState([]);
   const [search, setSearch] = useState('');
   const [step, setStep] = useState(1);
   const [filteredPandits, setFilteredPandits] = useState([]);
@@ -26,14 +32,16 @@ function Booking() {
   useEffect(() => {
     async function load() {
       try {
-        const [pdRes, pjRes] = await Promise.all([
+        const [pdRes, pjRes, srvRes] = await Promise.all([
           getVerifiedPandits(),
           getPoojas(),
+          getServices()
         ]);
         const verifiedPandits = pdRes.data.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setFilteredPandits(verifiedPandits);
         setPoojas(pjRes.data || []);
+        setServices(srvRes.data || []);
       } catch (err) {
         console.error('Error fetching data:', err);
       }
@@ -49,8 +57,9 @@ function Booking() {
     );
   }, [search, pandits]);
 
+  const selectedServiceName = services.find(s => s._id === details.serviceid)?.name;
   const filteredPoojas =
-    details.serviceid === 'Astrological Service'
+    selectedServiceName === 'Astrological Service'
       ? astrologicalPoojas
       : poojas;
 
@@ -94,9 +103,9 @@ function Booking() {
               className="signup-input"
             >
               <option value="">-- Select Service --</option>
-              <option value="Home Service">Home Service</option>
-              <option value="Temple Service">Temple Service</option>
-              <option value="Astrological Service">Astrological Service</option>
+              {services.map((s) => (
+                <option key={s._id} value={s._id}>{s.name}</option>
+              ))}
             </select>
 
             <select name="panditid" onChange={handleChange} required className="signup-input">
@@ -154,9 +163,9 @@ function Booking() {
           <>
             <h3 style={{ color: 'white' }}>Review your details</h3>
             <ul className="review-list">
-              <li>Service: {details.serviceid}</li>
+              <li>Service: {selectedServiceName}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {(details.serviceid === 'Astrological Service'
+              <li>Pooja: {(selectedServiceName === 'Astrological Service'
                 ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
                 : poojas.find(pj => pj._id === details.poojaId))?.name}</li>
               <li>Date: {details.puja_date}</li>
