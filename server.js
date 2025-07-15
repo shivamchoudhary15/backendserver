@@ -4,26 +4,24 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-dotenv.config();
+// ✅ Load environment variables
+dotenv.config(); // If you want to suppress dotenv info logs, use dotenv@16.x
 
 const app = express();
 
-// ✅ Middlewares
+// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static files from uploads folder (for images)
+// ✅ Static folder for image uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// ✅ MongoDB Connection (removed deprecated options)
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ DB connection error:', err));
 
-// ✅ Import all routes
+// ✅ Import routes
 const userRoutes = require('./routes/userRoutes');
 const panditRoutes = require('./routes/panditRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
@@ -43,12 +41,12 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
 
-// ✅ Root route
+// ✅ Health check / root route
 app.get('/', (req, res) => {
   res.send('🕉️ Shubkarya API is running...');
 });
 
-// ✅ Error handling middleware (for invalid JSON)
+// ✅ Error handling for malformed JSON
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '❌ Invalid JSON' });
