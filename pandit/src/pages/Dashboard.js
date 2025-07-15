@@ -61,17 +61,17 @@ function Dashboard() {
   };
 
   const getStatusClass = (status) => {
-    if (status === 'accepted') return 'status-accepted';
-    if (status === 'rejected') return 'status-rejected';
-    return 'status-pending';
+    if (status === 'accepted') return 'status accepted';
+    if (status === 'rejected') return 'status rejected';
+    return 'status pending';
   };
 
   const filteredBookings = bookings.filter(b => {
     const query = search.toLowerCase();
     return (
       (b.panditid?.name?.toLowerCase().includes(query) ||
-      b.serviceid?.name?.toLowerCase().includes(query) ||
-      new Date(b.puja_date).toLocaleDateString().includes(query))
+        b.serviceid?.name?.toLowerCase().includes(query) ||
+        new Date(b.puja_date).toLocaleDateString().includes(query))
     );
   });
 
@@ -87,12 +87,11 @@ function Dashboard() {
 
       <div className="button-group">
         <button className="custom-btn" onClick={handleBookingRedirect}>Book a Service</button>
-        <button className="custom-btn" onClick={handleLogout}>Logout</button>
+        <button className="custom-btn logout" onClick={handleLogout}>Logout</button>
       </div>
 
       <hr />
 
-      {/* Highlights */}
       <div className="highlight-section">
         <div className="highlight-card">
           <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
@@ -111,7 +110,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Bookings with Search */}
       {bookings.length > 0 && (
         <div className="bookings-section">
           <h3>Your Bookings</h3>
@@ -122,27 +120,27 @@ function Dashboard() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {filteredBookings.length === 0 ? (
-            <p>No matching bookings found.</p>
-          ) : (
-            filteredBookings.map(b => (
-              <div key={b._id} className="booking-card">
-                <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid || 'N/A'}</p>
-                <p><strong>Pandit:</strong> {b.panditid?.name || b.panditid || 'Not Assigned'}</p>
-                <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId || 'N/A'}</p>
-                <p><strong>Date:</strong> {new Date(b.puja_date).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {b.puja_time}</p>
-                <p><strong>Location:</strong> {b.location}</p>
-                <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
-              </div>
-            ))
-          )}
+          <div className="booking-list">
+            {filteredBookings.length === 0 ? (
+              <p>No matching bookings found.</p>
+            ) : (
+              filteredBookings.map(b => (
+                <div key={b._id} className="booking-card">
+                  <p><strong>Devotee:</strong> {user.name}</p>
+                  <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
+                  <p><strong>Time:</strong> {b.puja_time}</p>
+                  <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId || 'N/A'}</p>
+                  <p><strong>Location:</strong> {b.location}</p>
+                  <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
 
       <hr />
 
-      {/* Review Section */}
       <h3>Submit a Review</h3>
       {reviewMessage && (
         <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>
