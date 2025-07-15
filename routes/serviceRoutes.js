@@ -56,14 +56,7 @@ router.get('/seed', async (req, res) => {
 });
 
 // DANGEROUS: Use only for cleanup
-router.delete('/delete-all', async (req, res) => {
-  try {
-    await Service.deleteMany({});
-    res.send('All services deleted');
-  } catch (err) {
-    res.status(500).send('Error deleting services');
-  }
-});
+
 
 
 
