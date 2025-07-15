@@ -24,7 +24,7 @@ router.get('/view', async (req, res) => {
 });
 
 // ✅ Seed services in bulk (default)
-router.post('/seed', async (req, res) => {
+router.get('/seed', async (req, res) => {
   const services = [
     { name: 'Home Service' },
     { name: 'Temple Service' },
