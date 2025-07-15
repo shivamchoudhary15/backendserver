@@ -108,7 +108,7 @@ const Login = () => {
           <div className="login-link">
             <p>Don’t have an account? <Link to="/signup">Join as Devotee</Link></p>
             <p>Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link></p>
-            <p><strong>Admin?</strong> <Link to="/admin-login">Login as Admin</Link></p>
+            //<p><strong>Admin?</strong> <Link to="/admin-login">Login as Admin</Link></p>
           </div>
         </motion.div>
       </div>
