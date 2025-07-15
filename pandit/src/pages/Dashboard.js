@@ -89,8 +89,8 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="top-bar">
-        <button className="custom-btn logout" onClick={handleLogout}>Logout</button>
         <h2>Dashboard</h2>
+        <button className="custom-btn logout" onClick={handleLogout}>Logout</button>
       </div>
 
       {user && (
