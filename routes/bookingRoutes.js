@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
 
-// Create booking
+// ✅ Create booking
 router.post('/create', async (req, res) => {
   try {
-    const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList } = req.body;
+    const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList, poojaId } = req.body;
 
+    // Check for booking conflict
     const existing = await Booking.findOne({
       panditid,
       puja_date: new Date(puja_date),
@@ -17,10 +18,12 @@ router.post('/create', async (req, res) => {
       return res.status(409).json({ error: 'Pandit already booked on this date' });
     }
 
+    // Save booking
     const booking = new Booking({
       userid,
       panditid,
       serviceid,
+      poojaId,        // Include poojaId if applicable
       puja_date,
       puja_time,
       location,
@@ -35,7 +38,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// Get all or by user or pandit
+// ✅ Get bookings by user or pandit, with populated references
 router.get('/view', async (req, res) => {
   try {
     const { userid, panditid } = req.query;
@@ -43,27 +46,35 @@ router.get('/view', async (req, res) => {
     if (userid) query.userid = userid;
     if (panditid) query.panditid = panditid;
 
-    const bookings = await Booking.find(query).populate('panditid serviceid');
+    const bookings = await Booking.find(query)
+      .populate('panditid', 'name')        // Only get pandit name
+      .populate('serviceid', 'name')       // Only get service name
+      .populate('poojaId', 'name');        // Optional: populate pooja name if using poojaId
+
     res.status(200).json(bookings);
   } catch (err) {
+    console.error('Booking fetch error:', err);
     res.status(500).json({ error: 'Failed to retrieve bookings' });
   }
 });
 
-// Update booking status (Pandit use)
+// ✅ Update booking status (Pandit use)
 router.put('/status/:id', async (req, res) => {
   try {
     const { status } = req.body;
     if (!['Accepted', 'Rejected'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
+
     const updated = await Booking.findByIdAndUpdate(
       req.params.id,
       { status },
       { new: true }
     );
+
     res.json({ message: 'Status updated', booking: updated });
   } catch (err) {
+    console.error('Booking status update error:', err);
     res.status(500).json({ error: 'Update failed' });
   }
 });
