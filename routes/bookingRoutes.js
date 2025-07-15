@@ -1,15 +1,30 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Booking = require('../models/booking');
 
 // ✅ Create booking
 router.post('/create', async (req, res) => {
   try {
-    const { userid, panditid, serviceid, puja_date, puja_time, location, SamanList, poojaId } = req.body;
-
-    // Check for booking conflict
-    const existing = await Booking.findOne({
+    const {
+      userid,
       panditid,
+      serviceid,
+      puja_date,
+      puja_time,
+      location,
+      SamanList,
+      poojaId
+    } = req.body;
+
+    // ✅ Convert IDs to ObjectId
+    const userObjId = new mongoose.Types.ObjectId(userid);
+    const panditObjId = new mongoose.Types.ObjectId(panditid);
+    const poojaObjId = poojaId ? new mongoose.Types.ObjectId(poojaId) : undefined;
+
+    // ✅ Check for booking conflict
+    const existing = await Booking.findOne({
+      panditid: panditObjId,
       puja_date: new Date(puja_date),
       status: { $in: ['Pending', 'Accepted'] }
     });
@@ -18,12 +33,12 @@ router.post('/create', async (req, res) => {
       return res.status(409).json({ error: 'Pandit already booked on this date' });
     }
 
-    // Save booking
+    // ✅ Save booking
     const booking = new Booking({
-      userid,
-      panditid,
+      userid: userObjId,
+      panditid: panditObjId,
       serviceid,
-      poojaId,        // Include poojaId if applicable
+      poojaId: poojaObjId,
       puja_date,
       puja_time,
       location,
@@ -38,18 +53,19 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// ✅ Get bookings by user or pandit, with populated references
+// ✅ Get bookings by user or pandit
 router.get('/view', async (req, res) => {
   try {
     const { userid, panditid } = req.query;
     let query = {};
-    if (userid) query.userid = userid;
-    if (panditid) query.panditid = panditid;
+
+    if (userid) query.userid = new mongoose.Types.ObjectId(userid);
+    if (panditid) query.panditid = new mongoose.Types.ObjectId(panditid);
 
     const bookings = await Booking.find(query)
-      .populate('panditid', 'name')        // Only get pandit name
-      .populate('serviceid', 'name')       // Only get service name
-      .populate('poojaId', 'name');        // Optional: populate pooja name if using poojaId
+      .populate('panditid', 'name')
+      .populate('poojaId', 'name')
+      .populate('userid', 'name');
 
     res.status(200).json(bookings);
   } catch (err) {
@@ -79,17 +95,20 @@ router.put('/status/:id', async (req, res) => {
   }
 });
 
-// GET all bookings for a specific user
+// ✅ Get all bookings for a specific user
 router.get('/user/:userid', async (req, res) => {
   try {
-    const bookings = await Booking.find({ userid: req.params.userid })
-      .populate('poojaId')
-      .populate('panditid');
+    const userObjId = new mongoose.Types.ObjectId(req.params.userid);
+    const bookings = await Booking.find({ userid: userObjId })
+      .populate('poojaId', 'name')
+      .populate('panditid', 'name')
+      .populate('userid', 'name');
+
     res.json(bookings);
   } catch (err) {
+    console.error('User booking fetch error:', err);
     res.status(500).json({ message: 'Failed to fetch user bookings' });
   }
 });
-
 
 module.exports = router;
