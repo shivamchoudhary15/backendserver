@@ -79,42 +79,6 @@ function Dashboard() {
 
       <hr />
 
-      {/* Review Section */}
-      <h3>Submit a Review</h3>
-      {reviewMessage && (
-        <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>
-          {reviewMessage}
-        </p>
-      )}
-      <form onSubmit={handleReviewSubmit} className="review-form">
-        <label>
-          Name:
-          <input type="text" name="name" value={review.name} disabled />
-        </label>
-        <label>
-          Rating (1–5):
-          <input
-            type="number"
-            name="rating"
-            value={review.rating}
-            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
-            min="1"
-            max="5"
-            required
-          />
-        </label>
-        <label>
-          Comment:
-          <textarea
-            name="comment"
-            value={review.comment}
-            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
-            required
-          />
-        </label>
-        <button type="submit" className="custom-btn">Submit Review</button>
-      </form>
-
       {/* Highlights */}
       <div className="highlight-section">
         <div className="highlight-card">
@@ -151,6 +115,44 @@ function Dashboard() {
           ))}
         </div>
       )}
+
+      <hr />
+
+      {/* Review Section */}
+      <h3>Submit a Review</h3>
+      {reviewMessage && (
+        <p className={reviewMessage.startsWith('✅') ? 'success-message' : 'error-message'}>
+          {reviewMessage}
+        </p>
+      )}
+      <form onSubmit={handleReviewSubmit} className="review-form">
+        <label>
+          Name:
+          <input type="text" name="name" value={review.name} disabled />
+        </label>
+        <label>
+          Rating (1–5):
+          <input
+            type="number"
+            name="rating"
+            value={review.rating}
+            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
+            min="1"
+            max="5"
+            required
+          />
+        </label>
+        <label>
+          Comment:
+          <textarea
+            name="comment"
+            value={review.comment}
+            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+            required
+          />
+        </label>
+        <button type="submit" className="custom-btn">Submit Review</button>
+      </form>
     </div>
   );
 }
