@@ -1,7 +1,6 @@
 // src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getServices } from '../api/api';
 import './Home.css';
 
 const Home = () => {
@@ -63,7 +62,7 @@ const Home = () => {
         <nav className="navbar">
           <div className="navbar-content">
             <div className="navbar-left">
-              <img src="/images/subh.png" alt="logo" className="logo-img" />
+              <img src="/images/subh.png" alt="Shubhkarya logo" className="logo-img" />
               <div className="logo">Shubhkarya</div>
             </div>
             <div className="navbar-center">
@@ -179,7 +178,7 @@ const Home = () => {
           <div className="pandit-grid">
             {pandits.map(p => (
               <div className="pandit-card" key={p._id}>
-                <img src={getPanditImage(p)} alt={`Photo of ${p.name}`} />
+                <img src={getPanditImage(p)} alt={p.name} />
                 <h4>{p.name}</h4>
                 <p>{p.city} | {p.experienceYears}+ yrs</p>
                 <p>🗣 {Array.isArray(p.languages) ? p.languages.join(', ') : p.languages}</p>
@@ -196,17 +195,17 @@ const Home = () => {
           <h2>Shubhkarya</h2>
           <p>7983078609</p>
           <p>info@shubhkarya.com</p>
-          <p>500 32,bhagwati nagar ,chandrapuri colony Mathura 281001 </p>
+          <p>500 32, Bhagwati Nagar, Chandrapuri Colony, Mathura 281001</p>
         </div>
         <div className="footer-right">
           <h3>Connect with Us</h3>
           <form onSubmit={e => e.preventDefault()}>
             <input type="email" placeholder="Your Email" />
-            <label><input type="checkbox" /> Subscribe to shubkarya</label>
+            <label><input type="checkbox" /> Subscribe to Shubhkarya</label>
             <button type="submit">Subscribe</button>
           </form>
           <div className="footer-links">
-            <a href="#">Privacy Policy</a> | <a href="#">Terms</a>
+            <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms">Terms</Link>
           </div>
         </div>
       </footer>
