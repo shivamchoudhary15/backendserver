@@ -19,6 +19,7 @@ const Home = () => {
         const [panditRes, poojaRes] = await Promise.all([
           fetch('https://backendserver-pf4h.onrender.com/api/pandits/view'),
           fetch('https://backendserver-pf4h.onrender.com/api/poojas/view'),
+          fetch('https://backendserver-pf4h.onrender.com/api/services/view'),
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
