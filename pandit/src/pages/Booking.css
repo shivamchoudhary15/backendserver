@@ -22,22 +22,26 @@
   animation: fadeIn 0.8s ease-in-out;
 }
 
-.glass-form h2 {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: white;
-}
-
-.glass-form input,
-.glass-form select {
-  width: 100%;
+/* Shared input style like pandit signup */
+.signup-input {
+  background: #ffffff;
+  color: #000000;
   padding: 12px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
-  background: rgba(255,255,255,0.8);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-input::placeholder {
+  color: #666;
+}
+
+.signup-input:focus {
+  border-color: #d35400;
+  box-shadow: 0 0 6px rgba(211, 84, 0, 0.3);
 }
 
 .primary-btn,
@@ -51,13 +55,13 @@
 }
 
 .primary-btn {
-  background-color: #007bff;
+  background-color: #d35400;
   color: white;
   margin-top: 10px;
 }
 
 .primary-btn:hover {
-  background-color: #0056b3;
+  background-color: #a33c00;
 }
 
 .secondary-btn {
@@ -77,36 +81,11 @@
   font-weight: 500;
 }
 
-.glass-bookings {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  padding: 20px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.booking-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-.booking-list li {
-  background: rgba(255,255,255,0.9);
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  color: #333;
-  font-size: 15px;
-}
-
 .review-list {
   color: white;
-  margin: 0 0 20px;
   list-style: none;
-  padding: 0;
+  padding-left: 0;
+  margin-bottom: 20px;
 }
 
 @keyframes fadeIn {
