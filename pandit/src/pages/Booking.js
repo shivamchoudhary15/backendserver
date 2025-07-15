@@ -5,7 +5,7 @@ import {
   getVerifiedPandits,
   getPoojas,
   getServices,
-  getBookingsByUser,
+  getBookings,
   createReview
 } from '../api/api';
 import './Booking.css';
@@ -40,7 +40,7 @@ function Booking() {
           getVerifiedPandits(),
           getPoojas(),
           getServices(),
-          getBookingsByUser(userid)
+          getBookings({ userid })
         ]);
         const verifiedPandits = pdRes.data.filter(p => p.is_verified);
         setPandits(verifiedPandits);
@@ -52,7 +52,7 @@ function Booking() {
         console.error('Error fetching data:', err);
       }
     }
-    load();
+    if (userid) load();
   }, [userid]);
 
   useEffect(() => {
@@ -228,7 +228,7 @@ function Booking() {
             <div key={b._id} className="booking-item">
               <p><strong>Pooja:</strong> {b.poojaId?.name || b.poojaId}</p>
               <p><strong>Pandit:</strong> {b.panditid?.name || b.panditid}</p>
-              <p><strong>Date:</strong> {b.puja_date}</p>
+              <p><strong>Date:</strong> {b.puja_date?.slice(0, 10)}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
               <p><strong>Status:</strong> {b.status}</p>
 
