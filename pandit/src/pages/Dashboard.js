@@ -141,8 +141,8 @@ function Dashboard() {
           <h3>Your Bookings</h3>
           {bookings.map(b => (
             <div key={b._id} className="booking-card">
-              <p><strong>Service:</strong> {b.serviceid?.name || 'N/A'}</p>
-              <p><strong>Pandit:</strong> {b.panditid?.name || 'Not Assigned'}</p>
+              <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
+              <p><strong>Pandit:</strong> {typeof b.panditid === 'object' ? b.panditid.name : b.panditid || 'Not Assigned'}</p>
               <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
               <p><strong>Time:</strong> {b.puja_time}</p>
               <p><strong>Location:</strong> {b.location}</p>
