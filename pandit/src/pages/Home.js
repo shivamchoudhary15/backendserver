@@ -1,11 +1,13 @@
 // src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getServices } from '../api/api';
 import './Home.css';
 
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
+  const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -31,6 +33,11 @@ const Home = () => {
     };
 
     fetchData();
+
+    // Load services from API
+    getServices()
+      .then(res => setServices(res.data))
+      .catch(err => console.error('Failed to fetch services', err));
   }, []);
 
   const handleBooking = () => {
@@ -117,35 +124,21 @@ const Home = () => {
       <section id="order" className="service-boxes">
         <h2 className="section-title">Our Services</h2>
         <div className="card-section">
-          {[
-            {
-              title: 'Puja Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/kalash.jpeg',
-            },
-            {
-              title: 'Temple Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/temple.jpeg',
-            },
-            {
-              title: 'Astrology Services',
-              subtitle: 'Upto 10% Instant Discount',
-              img: '/images/astro.jpeg',
-            },
-          ].map((item, index) => (
+          {services.length > 0 ? services.map((service, index) => (
             <div
               className="highlight-card"
-              key={index}
-              style={{ backgroundImage: `url(${item.img})` }}
+              key={service._id || index}
+              style={{ backgroundImage: `url(/images/${service.name.toLowerCase().split(' ')[0]}.jpeg)` }}
             >
               <div className="highlight-overlay">
-                <h3>{item.title}</h3>
-                <p>{item.subtitle}</p>
+                <h3>{service.name}</h3>
+                <p>Upto 10% Instant Discount</p>
                 <button onClick={() => navigate('/login')}>Book Now</button>
               </div>
             </div>
-          ))}
+          )) : (
+            <p>No services available.</p>
+          )}
         </div>
       </section>
 
