@@ -71,7 +71,7 @@ export const getBookingsByUser = (userid) => API.get(`/bookings/user/${userid}`)
 //
 // 🔹 Services
 //
-export const getServices = () => API.get('/services');
+export const getServices = () => API.get('/services/view');
 
 //
 // 🔹 Notifications
