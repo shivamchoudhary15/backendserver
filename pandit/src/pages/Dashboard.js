@@ -116,21 +116,21 @@ function Dashboard() {
             <div className="highlight-content">
               <h4>Spiritual Guides</h4>
               <p>Pandits & Consultants across India</p>
-              <p>4000+ Experts</p>
+              <p>250+ Experts</p>
             </div>
           </div>
           <div className="highlight-card" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
             <div className="highlight-content">
-              <h4>Home Service</h4>
-              <p>Pandit visits your home for pooja</p>
-              <p>₹Starting from 500</p>
+              <h4>Religious Services</h4>
+              <p>Wide variety of pujas</p>
+              <p>100+ Pujas</p>
             </div>
           </div>
           <div className="highlight-card" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
             <div className="highlight-content">
               <h4>Pujas Done</h4>
               <p>Performed by verified pandits</p>
-              <p>1,00,000+ Completed</p>
+              <p>1,000+ Completed</p>
             </div>
           </div>
         </section>
