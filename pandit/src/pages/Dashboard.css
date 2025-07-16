@@ -1,9 +1,11 @@
+/* Container setup */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* Sidebar */
 .sidebar {
   background-color: #e0f7fa;
   padding: 1rem;
@@ -42,6 +44,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Main content */
 .main-content {
   flex: 1;
   padding: 2rem;
@@ -64,71 +67,69 @@
   font-size: 17px;
   margin-top: 0.5rem;
   max-width: 700px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* HIGHLIGHT CARDS */
+/* HIGHLIGHT SECTION */
 .highlight-section {
   display: flex;
-  gap: 1rem;
-  justify-content: space-between;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-bottom: 2rem;
-  flex-wrap: nowrap;
 }
 
+/* Highlight Card */
 .highlight-card {
-  flex: 1;
-  max-width: 300px;
-  border-radius: 10px;
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease;
-}
-
-.highlight-card:hover {
-  transform: scale(1.02);
-}
-
-.highlight-content {
-  padding: 1rem;
-  background-color: #e0f2f1;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
   text-align: center;
 }
 
+.highlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.highlight-content {
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+}
+
 .highlight-content h4 {
-  margin: 0;
-  font-size: 18px;
-  color: #004d40;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .highlight-content p {
-  font-size: 14px;
-  margin-top: 0.3rem;
-  color: #444;
+  font-size: 16px;
+  margin: 0.3rem 0;
 }
 
-.highlight-img {
-  height: 160px;
-  background-size: cover;
-  background-position: center;
-}
-
-/* Responsive fallback */
-@media (max-width: 900px) {
-  .highlight-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
+/* Responsive */
+@media (max-width: 768px) {
   .highlight-card {
     width: 90%;
-    max-width: 400px;
   }
 }
 
-/* Other Styles */
+/* Other Sections */
 .pandit-section h3,
 .bookings-section h3,
 .review-section h3 {
