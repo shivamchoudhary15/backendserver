@@ -106,7 +106,7 @@ function Dashboard() {
         <section className="highlight-section">
           <div
             className="highlight-card"
-            style={{ backgroundImage: "url('/images/pandit.jpeg')" }}
+            style={{ backgroundImage: "url('/images/india.jpeg')" }}
           >
             <div className="highlight-content">
               <h4>Spiritual Guides</h4>
