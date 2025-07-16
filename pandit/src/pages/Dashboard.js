@@ -15,6 +15,7 @@ function Dashboard() {
   const [search, setSearch] = useState('');
   const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [expandedPandits, setExpandedPandits] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -73,9 +74,9 @@ function Dashboard() {
   const filteredBookings = bookings.filter(b => {
     const query = search.toLowerCase();
     return (
-      (b.panditid?.name?.toLowerCase().includes(query) ||
-        b.serviceid?.name?.toLowerCase().includes(query) ||
-        new Date(b.puja_date).toLocaleDateString().includes(query))
+      b.panditid?.name?.toLowerCase().includes(query) ||
+      b.serviceid?.name?.toLowerCase().includes(query) ||
+      new Date(b.puja_date).toLocaleDateString().includes(query)
     );
   });
 
@@ -83,6 +84,13 @@ function Dashboard() {
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.city?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const toggleExpand = (id) => {
+    setExpandedPandits(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div className="dashboard-container">
@@ -102,34 +110,23 @@ function Dashboard() {
           </div>
         )}
 
-        {/* Updated Highlight Cards */}
+        {/* Highlight Section */}
         <section className="highlight-section">
-          <div
-            className="highlight-card"
-            style={{ backgroundImage: "url('/images/india.jpeg')" }}
-          >
+          <div className="highlight-card" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
             <div className="highlight-content">
               <h4>Spiritual Guides</h4>
               <p>Pandits & Consultants across India</p>
               <p>4000+ Experts</p>
             </div>
           </div>
-
-          <div
-            className="highlight-card"
-            style={{ backgroundImage: "url('/images/kalash.jpeg')" }}
-          >
+          <div className="highlight-card" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
             <div className="highlight-content">
-              <h4>Various services</h4>
-              <p>Wide variety of spiritual services</p>
-              <p>500+ pujas</p>
+              <h4>Home Service</h4>
+              <p>Pandit visits your home for pooja</p>
+              <p>₹Starting from 500</p>
             </div>
           </div>
-
-          <div
-            className="highlight-card"
-            style={{ backgroundImage: "url('/images/havan.jpeg')" }}
-          >
+          <div className="highlight-card" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
             <div className="highlight-content">
               <h4>Pujas Done</h4>
               <p>Performed by verified pandits</p>
@@ -138,7 +135,7 @@ function Dashboard() {
           </div>
         </section>
 
-        {/* Verified Pandits */}
+        {/* Pandit Section */}
         <section className="pandit-section">
           <h3>Verified Pandits</h3>
           <input
@@ -150,13 +147,17 @@ function Dashboard() {
           />
           <div className="pandit-list">
             {filteredPandits.slice(0, visibleCount).map(p => (
-              <div className="pandit-card" key={p._id}>
-                <img src={p.profile_photo_url || '/images/default.jpg'} alt={p.name} />
-                <h4>{p.name}</h4>
-                <p><strong>City:</strong> {p.city}</p>
-                <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
-                <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
-                <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
+              <div key={p._id} className="pandit-card">
+                <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>{p.name}</h4>
+                {expandedPandits[p._id] && (
+                  <div className="pandit-details">
+                    <img src={p.profile_photo_url || '/images/default.jpg'} alt={p.name} />
+                    <p><strong>City:</strong> {p.city}</p>
+                    <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
+                    <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
+                    <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
