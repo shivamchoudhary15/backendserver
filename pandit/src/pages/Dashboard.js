@@ -120,9 +120,9 @@ function Dashboard() {
             style={{ backgroundImage: "url('/images/kalash.jpeg')" }}
           >
             <div className="highlight-content">
-              <h4>Home Service</h4>
-              <p>Pandit visits your home for pooja</p>
-              <p>₹Starting from 500</p>
+              <h4>Various services</h4>
+              <p>Wide variety of spiritual services</p>
+              <p>500+ pujas</p>
             </div>
           </div>
 
