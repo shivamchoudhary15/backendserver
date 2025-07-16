@@ -1,13 +1,11 @@
-/* Container setup */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Sidebar */
 .sidebar {
-  background-color: #e0f7fa; /* Light blue */
+  background-color: #e0f7fa;
   padding: 1rem;
   width: 240px;
   display: flex;
@@ -44,14 +42,12 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Main section */
 .main-content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
 }
 
-/* Welcome section */
 .welcome-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -72,17 +68,18 @@
   margin-right: auto;
 }
 
-/* Highlight cards */
+/* HIGHLIGHT CARDS */
 .highlight-section {
   display: flex;
   gap: 1rem;
   justify-content: space-between;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Don't wrap cards */
 }
 
 .highlight-card {
-  width: 30%;
+  flex: 1;
+  max-width: 300px;
   background: #e0f2f1;
   border-radius: 10px;
   text-align: center;
@@ -102,7 +99,19 @@
   border-radius: 8px;
 }
 
-/* Section titles */
+/* Responsive fallback */
+@media (max-width: 900px) {
+  .highlight-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .highlight-card {
+    width: 90%;
+    max-width: 400px;
+  }
+}
+
 .pandit-section h3,
 .bookings-section h3,
 .review-section h3 {
@@ -110,7 +119,6 @@
   margin-bottom: 1rem;
 }
 
-/* Search input */
 .booking-search {
   padding: 0.6rem;
   width: 100%;
@@ -119,7 +127,6 @@
   border: 1px solid #ccc;
 }
 
-/* Pandit list */
 .pandit-list {
   display: flex;
   flex-wrap: wrap;
@@ -148,7 +155,6 @@
   border-radius: 8px;
 }
 
-/* Booking section */
 .booking-card {
   background: #ffffff;
   padding: 1rem;
@@ -158,7 +164,6 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Review form */
 .review-form {
   display: flex;
   flex-direction: column;
@@ -199,7 +204,6 @@
   transform: scale(1.04);
 }
 
-/* Show more/less button */
 .toggle-btn {
   text-align: center;
   margin-bottom: 2rem;
@@ -210,25 +214,4 @@
 }
 
 .success-message {
-  color: #2e7d32;
-  font-weight: 600;
-  text-align: center;
-}
-
-.error-message {
-  color: #c62828;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* Fade animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+  color: #2e7d3
