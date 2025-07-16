@@ -88,10 +88,10 @@ function Dashboard() {
     <div className="dashboard-container">
       <aside className="sidebar">
         <h2>Shubhkarya</h2>
-        <button onClick={scrollToBookings} className="animated-btn">Bookings</button>
-        <button onClick={scrollToReviews} className="animated-btn">Reviews</button>
-        <button onClick={handleBookingRedirect} className="animated-btn">Book a Service</button>
-        <button className="logout-btn animated-btn" onClick={handleLogout}>Logout</button>
+        <button onClick={scrollToBookings}>Bookings</button>
+        <button onClick={scrollToReviews}>Reviews</button>
+        <button onClick={handleBookingRedirect}>Book a Service</button>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </aside>
 
       <main className="main-content">
@@ -102,32 +102,43 @@ function Dashboard() {
           </div>
         )}
 
-        {/* Highlight Cards */}
+        {/* Updated Highlight Cards */}
         <section className="highlight-section">
-          <div className="highlight-card">
+          <div
+            className="highlight-card"
+            style={{ backgroundImage: "url('/images/pandit.jpeg')" }}
+          >
             <div className="highlight-content">
-              <h4>4000+ Spiritual Guides</h4>
+              <h4>Spiritual Guides</h4>
               <p>Pandits & Consultants across India</p>
+              <p>4000+ Experts</p>
             </div>
-            <div className="highlight-img" style={{ backgroundImage: "url('/images/pandit.jpeg')" }} />
           </div>
-          <div className="highlight-card">
+
+          <div
+            className="highlight-card"
+            style={{ backgroundImage: "url('/images/kalash.jpeg')" }}
+          >
             <div className="highlight-content">
-              <h4>500+ Pujas</h4>
-              <p>Wide variety of spiritual services</p>
+              <h4>Home Service</h4>
+              <p>Pandit visits your home for pooja</p>
+              <p>₹Starting from 500</p>
             </div>
-            <div className="highlight-img" style={{ backgroundImage: "url('/images/kalash.jpeg')" }} />
           </div>
-          <div className="highlight-card">
+
+          <div
+            className="highlight-card"
+            style={{ backgroundImage: "url('/images/havan.jpeg')" }}
+          >
             <div className="highlight-content">
-              <h4>1,00,000+ Pujas Done</h4>
-              <p>By verified pandits</p>
+              <h4>Pujas Done</h4>
+              <p>Performed by verified pandits</p>
+              <p>1,00,000+ Completed</p>
             </div>
-            <div className="highlight-img" style={{ backgroundImage: "url('/images/havan.jpeg')" }} />
           </div>
         </section>
 
-        {/* Pandit Section */}
+        {/* Verified Pandits */}
         <section className="pandit-section">
           <h3>Verified Pandits</h3>
           <input
@@ -153,7 +164,7 @@ function Dashboard() {
             <div className="toggle-btn">
               <button
                 onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)}
-                className="custom-btn animated-btn"
+                className="custom-btn"
               >
                 {visibleCount === 3 ? 'Show More' : 'Show Less'}
               </button>
@@ -182,7 +193,7 @@ function Dashboard() {
           </div>
         </section>
 
-        {/* Reviews Section */}
+        {/* Review Section */}
         <section ref={reviewsRef} className="review-section">
           <h3>Submit a Review</h3>
           {reviewMessage && (
@@ -205,7 +216,7 @@ function Dashboard() {
               onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
               required
             />
-            <button type="submit" className="custom-btn animated-btn">Submit Review</button>
+            <button type="submit" className="custom-btn">Submit Review</button>
           </form>
         </section>
       </main>
