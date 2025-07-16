@@ -1,4 +1,3 @@
-// Dashboard.js
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
@@ -103,24 +102,32 @@ function Dashboard() {
           </div>
         )}
 
+        {/* Highlight Cards */}
         <section className="highlight-section">
           <div className="highlight-card">
-            <img src="/images/pandit.jpeg" alt="Spiritual Guide" />
-            <h4>4000+ Spiritual Guides</h4>
-            <p>Pandits & Consultants across India</p>
+            <div className="highlight-content">
+              <h4>4000+ Spiritual Guides</h4>
+              <p>Pandits & Consultants across India</p>
+            </div>
+            <div className="highlight-img" style={{ backgroundImage: "url('/images/pandit.jpeg')" }} />
           </div>
           <div className="highlight-card">
-            <img src="/images/kalash.jpeg" alt="Pujas" />
-            <h4>500+ Pujas</h4>
-            <p>Wide variety of spiritual services</p>
+            <div className="highlight-content">
+              <h4>500+ Pujas</h4>
+              <p>Wide variety of spiritual services</p>
+            </div>
+            <div className="highlight-img" style={{ backgroundImage: "url('/images/kalash.jpeg')" }} />
           </div>
           <div className="highlight-card">
-            <img src="/images/havan.jpeg" alt="Performed Pujas" />
-            <h4>1,00,000+ Pujas Done</h4>
-            <p>By verified pandits</p>
+            <div className="highlight-content">
+              <h4>1,00,000+ Pujas Done</h4>
+              <p>By verified pandits</p>
+            </div>
+            <div className="highlight-img" style={{ backgroundImage: "url('/images/havan.jpeg')" }} />
           </div>
         </section>
 
+        {/* Pandit Section */}
         <section className="pandit-section">
           <h3>Verified Pandits</h3>
           <input
@@ -154,6 +161,7 @@ function Dashboard() {
           )}
         </section>
 
+        {/* Bookings Section */}
         <section ref={bookingsRef} className="bookings-section">
           <h3>Your Bookings</h3>
           <div className="booking-list">
@@ -174,6 +182,7 @@ function Dashboard() {
           </div>
         </section>
 
+        {/* Reviews Section */}
         <section ref={reviewsRef} className="review-section">
           <h3>Submit a Review</h3>
           {reviewMessage && (
