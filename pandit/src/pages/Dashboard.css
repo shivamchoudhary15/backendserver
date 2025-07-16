@@ -214,4 +214,24 @@
 }
 
 .success-message {
-  color: #2e7d3
+  color: #2e7d32;
+  font-weight: 600;
+  text-align: center;
+}
+
+.error-message {
+  color: #c62828;
+  font-weight: 600;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
