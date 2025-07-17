@@ -108,15 +108,15 @@ body, html {
 
 .book-btn,
 .meet-btn {
-  padding: 12px 24px;
+  background: none;
+  padding: 0;
   border: none;
-  background-color: #ff6f00;
-  color: white;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  color: #333;
+  font-weight: normal;
+  font-size: 20px;
+  cursor: default;
 }
+
 
 .book-btn:hover,
 .meet-btn:hover {
