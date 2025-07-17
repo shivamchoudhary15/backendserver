@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
 
-// Submit a new review
+// review sbumit hoga 
 router.post('/submit', async (req, res) => {
   try {
     const { name, rating, comment } = req.body;
@@ -20,7 +20,7 @@ router.post('/submit', async (req, res) => {
   }
 });
 
-// Get all reviews
+// all review deknege 
 router.get('/view', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ review_date: -1 });
