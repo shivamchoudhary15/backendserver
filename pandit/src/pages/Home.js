@@ -11,7 +11,7 @@ const Home = () => {
   const footerRef = useRef(null);
 
   useEffect(() => {
-    fetch('https://backendserver-6-yebf.onrender.com/api/pandits/verified')
+    fetch('https://backendserver-6-yebf.onrender.com/api/pandits/view')
       .then((res) => res.json())
       .then((data) => setPandits(data))
       .catch((err) => console.error('Error fetching pandits:', err));
