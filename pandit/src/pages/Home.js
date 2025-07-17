@@ -3,11 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +53,7 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
         <div className="hero-overlay">
           <div className="hero-content">
@@ -68,46 +74,47 @@ const Home = () => {
       </header>
 
       {/* About Section */}
-      <section id="about" className="about-section">
+      <section id="about" className="about-section" data-aos="fade-up">
         <h2>About Shubhkarya</h2>
         <p>Discover the power of personalized puja services with Shubhkarya.</p>
-        <div className="about-features">
-          <div className="about-card">
-            <img src="/images/subh.png" alt="Elegant Presentation" />
-            <h3>Elegant Presentation</h3>
-            <p>Our pandits present themselves with the utmost care and tradition.</p>
+        <div className="about-layout">
+          <div className="feature-circle">
+            <div className="feature" data-aos="zoom-in">
+              <img src="/images/subh.png" alt="Elegant" />
+              <h4>Elegant Presentation</h4>
+            </div>
+            <div className="feature" data-aos="zoom-in" data-aos-delay="100">
+              <img src="/images/subh.png" alt="Tradition" />
+              <h4>Timeless Tradition</h4>
+            </div>
+            <div className="feature" data-aos="zoom-in" data-aos-delay="200">
+              <img src="/images/subh.png" alt="Expertise" />
+              <h4>Spiritual Expertise</h4>
+            </div>
+            <div className="feature" data-aos="zoom-in" data-aos-delay="300">
+              <img src="/images/subh.png" alt="Personalized" />
+              <h4>Personalized Service</h4>
+            </div>
           </div>
-          <div className="about-card">
-            <img src="/images/subh.png" alt="Timeless Tradition" />
-            <h3>Timeless Tradition</h3>
-            <p>Preserving the rich heritage of Indian spirituality for generations.</p>
-          </div>
-          <div className="about-card">
-            <img src="/images/subh.png" alt="Spiritual Expertise" />
-            <h3>Spiritual Expertise</h3>
-            <p>Our pandits possess deep knowledge of Vedic rituals and scriptures.</p>
-          </div>
-          <div className="about-card">
-            <img src="/images/subh.png" alt="Personalized Service" />
-            <h3>Personalized Service</h3>
-            <p>Tailored pujas to suit your family’s unique religious needs.</p>
+          <div className="about-center-logo" data-aos="zoom-in">
+            <img src="/images/subh.png" alt="Main Logo" />
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="services-section">
+      {/* Services */}
+      <section id="services" className="services-section" data-aos="fade-up">
         <h2>Explore Our Services</h2>
         <p>Discover the wide range of puja services available on Shubhkarya.</p>
         <div className="services-grid">
           {services.map(service => (
-            <div key={service._id} className="service-card" onClick={() => navigate('/login')}>
+            <div key={service._id} className="service-card" onClick={() => navigate('/login')} data-aos="fade-up">
               <div className="image-wrapper">
                 <img src={service.image} alt={service.name} />
                 <div className="overlay">
                   <h3>{service.name}</h3>
                   <p>{service.description}</p>
-                  <button className="book-button">Book Now</button>
+                  <button className="book-button-small">Book Now</button>
                 </div>
               </div>
             </div>
@@ -116,12 +123,12 @@ const Home = () => {
         <button className="explore-more" onClick={() => navigate('/login')}>Explore More</button>
       </section>
 
-      {/* Pandits Section */}
-      <section id="pandits" className="pandits">
+      {/* Pandits */}
+      <section id="pandits" className="pandits" data-aos="fade-up">
         <h2>Our Verified Pandits</h2>
         <div className="card-section">
           {pandits.map(pandit => (
-            <div key={pandit._id} className="pandit-card">
+            <div key={pandit._id} className="pandit-card" data-aos="zoom-in">
               <img
                 src={pandit.profile_photo_url.startsWith('/uploads')
                   ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
