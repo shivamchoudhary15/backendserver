@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Booking = require('../models/booking');
 
-// ✅ Create booking
+// yaha pe booking create hogi
 router.post('/create', async (req, res) => {
   try {
     const {
@@ -21,7 +21,7 @@ router.post('/create', async (req, res) => {
     const panditObjId = new mongoose.Types.ObjectId(panditid);
     const poojaObjId = poojaId ? new mongoose.Types.ObjectId(poojaId) : undefined;
 
-    // ✅ Prevent double booking on same date
+    // ise double booking prevent hogi 
     const existing = await Booking.findOne({
       panditid: panditObjId,
       puja_date: new Date(puja_date),
@@ -51,7 +51,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// ✅ Get bookings by user or pandit
+// booking get hogi 
 router.get('/view', async (req, res) => {
   try {
     const { userid, panditid } = req.query;
@@ -73,7 +73,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ✅ Update booking status (Pandit use)
+// ye optoinal ye booking update ke liye
 router.put('/status/:id', async (req, res) => {
   try {
     const { status } = req.body;
@@ -94,7 +94,7 @@ router.put('/status/:id', async (req, res) => {
   }
 });
 
-// ✅ Get all bookings for a specific user
+// ek particular user ki sari bookings aa jayegi 
 router.get('/user/:userid', async (req, res) => {
   try {
     const userObjId = new mongoose.Types.ObjectId(req.params.userid);
@@ -102,7 +102,7 @@ router.get('/user/:userid', async (req, res) => {
       .populate('poojaId', 'name')
       .populate('panditid', 'name')
       .populate('serviceid', 'name')
-      .populate('userid', 'name email phone'); // ✅ also include phone here
+      .populate('userid', 'name email phone'); 
 
     res.json(bookings);
   } catch (err) {
