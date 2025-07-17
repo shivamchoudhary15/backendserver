@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Payment = require('../models/payment');
 
-// Create a new payment
+// abhi use  nahi kar rahe ye payment create karne ke liye use hoga 
 router.post('/pay', async (req, res) => {
   try {
     const payment = new Payment(req.body);
@@ -13,7 +13,7 @@ router.post('/pay', async (req, res) => {
   }
 });
 
-// Get all payments
+
 router.get('/view', async (req, res) => {
   try {
     const payments = await Payment.find();
