@@ -48,6 +48,7 @@ const Home = () => {
         <div className="navbar-right">
           <a href="#about">About Us</a>
           <a href="#services">Explore Services</a>
+          <a href="#pandits">Meet Our Pandits</a>
           <a href="#footer">Contact</a>
           <Link to="/login" className="login-box">Login</Link>
         </div>
@@ -66,7 +67,7 @@ const Home = () => {
               <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
               <div className="hero-buttons">
                 <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
-                <button className="meet-btn" onClick={() => document.getElementById('pandits').scrollIntoView({ behavior: 'smooth' })}>Meet Our Pandits</button>
+                <button className="get-started-btn" onClick={() => navigate('/signup')}>Get Started</button>
               </div>
             </div>
           </div>
@@ -76,28 +77,34 @@ const Home = () => {
       {/* About Section */}
       <section id="about" className="about-section" data-aos="fade-up">
         <h2>About Shubhkarya</h2>
-        <p>Discover the power of personalized puja services with Shubhkarya.</p>
-        <div className="about-layout">
-          <div className="feature-circle">
-            <div className="feature" data-aos="zoom-in">
-              <img src="/images/subh.png" alt="Elegant" />
-              <h4>Elegant Presentation</h4>
-            </div>
-            <div className="feature" data-aos="zoom-in" data-aos-delay="100">
-              <img src="/images/subh.png" alt="Tradition" />
-              <h4>Timeless Tradition</h4>
-            </div>
-            <div className="feature" data-aos="zoom-in" data-aos-delay="200">
-              <img src="/images/subh.png" alt="Expertise" />
-              <h4>Spiritual Expertise</h4>
-            </div>
-            <div className="feature" data-aos="zoom-in" data-aos-delay="300">
-              <img src="/images/subh.png" alt="Personalized" />
-              <h4>Personalized Service</h4>
-            </div>
+        <p>Discover the power of personalized puja services with Shubhkarya</p>
+        <div className="flower-container">
+          <div className="petal top">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Exclusive Gifts</span>
           </div>
-          <div className="about-center-logo" data-aos="zoom-in">
-            <img src="/images/subh.png" alt="Main Logo" />
+          <div className="petal top-right">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Serene Offerings</span>
+          </div>
+          <div className="petal bottom-right">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Timeless Tradition</span>
+          </div>
+          <div className="petal bottom">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Trusted Partners</span>
+          </div>
+          <div className="petal bottom-left">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Inspiring Profiles</span>
+          </div>
+          <div className="petal top-left">
+            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
+            <span>Personalized</span>
+          </div>
+          <div className="center-logo">
+            <img src="/images/subh.png" alt="center logo" />
           </div>
         </div>
       </section>
