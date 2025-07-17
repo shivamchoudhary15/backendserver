@@ -62,86 +62,91 @@ const Home = () => {
               <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
               <div className="hero-buttons">
                 <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
-                <button className="meet-btn" onClick={() => navigate('#pandits')}>Meet Our Pandits</button>
+                <button className="meet-btn" onClick={() => document.getElementById('pandits').scrollIntoView({ behavior: 'smooth' })}>Meet Our Pandits</button>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-<section id="about" className="about-section">
-  <h2>About Shubhkarya</h2>
-  <p>Discover the power of personalized puja services with Shubhkarya.</p>
-  <div className="about-columns">
-    <div className="about-column">
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Exclusive Gifts</h4>
-          <p>Treat your loved ones with carefully curated spiritual gifts.</p>
-        </div>
-      </div>
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Serene Offerings</h4>
-          <p>Immerse yourself in peaceful Vedic rituals guided by experts.</p>
-        </div>
-      </div>
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Timeless Traditions</h4>
-          <p>Embrace centuries of wisdom and sacred practice.</p>
-        </div>
-      </div>
-    </div>
+      <section id="about" className="about-section">
+        <h2>About Shubhkarya</h2>
+        <p>Discover the power of personalized puja services with Shubhkarya.</p>
+        <div className="about-columns">
+          <div className="about-column">
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Exclusive Gifts</h4>
+                <p>Treat your loved ones with carefully curated spiritual gifts.</p>
+              </div>
+            </div>
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Serene Offerings</h4>
+                <p>Immerse yourself in peaceful Vedic rituals guided by experts.</p>
+              </div>
+            </div>
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Timeless Traditions</h4>
+                <p>Embrace centuries of wisdom and sacred practice.</p>
+              </div>
+            </div>
+          </div>
 
-    <div className="portrait">
-      <img src="/images/subh.png" alt="Pandit Illustration" />
-    </div>
+          <div className="portrait">
+            <img src="/images/subh.png" alt="Pandit Illustration" />
+          </div>
 
-    <div className="about-column">
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Trusted Partners</h4>
-          <p>Collaborations with reputed spiritual organizations.</p>
+          <div className="about-column">
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Trusted Partners</h4>
+                <p>Collaborations with reputed spiritual organizations.</p>
+              </div>
+            </div>
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Inspiring Profiles</h4>
+                <p>Explore verified and experienced Pandits across regions.</p>
+              </div>
+            </div>
+            <div className="about-item">
+              <img src="/images/subh.png" alt="Icon" className="about-icon" />
+              <div>
+                <h4>Personalized</h4>
+                <p>Tailored rituals to meet your spiritual needs.</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Inspiring Profiles</h4>
-          <p>Explore verified and experienced Pandits across regions.</p>
-        </div>
-      </div>
-      <div className="about-item">
-        <img src="/images/subh.png" alt="Icon" className="about-icon" />
-        <div>
-          <h4>Personalized</h4>
-          <p>Tailored rituals to meet your spiritual needs.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+      </section>
 
       <section id="order" className="services-section">
-        <h2>Our Services</h2>
-        <div className="card-section">
+        <h2>Explore Our Services</h2>
+        <p>Discover the wide range of puja services available on Shubhkarya, catering to your unique spiritual needs.</p>
+        <div className="enhanced-services">
           {services.map(service => (
-            <div key={service._id} className="highlight-card" style={{ backgroundImage: `url(${service.image})` }}>
-              <div className="highlight-overlay">
+            <div
+              key={service._id}
+              className="enhanced-card"
+              onClick={() => navigate('/login')}
+            >
+              <img src={service.image} alt={service.name} className="enhanced-image" />
+              <div className="enhanced-content">
                 <h3>{service.name}</h3>
                 <p>{service.description}</p>
-                <p>₹{service.price}</p>
-                <button onClick={() => navigate('/login')}>Book Now</button>
+                <button className="book-button">Book Now</button>
               </div>
             </div>
           ))}
         </div>
+        <button className="explore-more" onClick={() => navigate('/login')}>Explore More</button>
       </section>
 
       <section id="pandits" className="pandits">
