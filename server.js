@@ -4,24 +4,23 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-// ✅ Load environment variables
-dotenv.config(); // If you want to suppress dotenv info logs, use dotenv@16.x
+dotenv.config(); 
 
 const app = express();
 
-// ✅ Middleware
+// ye miidleware hai 
 app.use(cors());
 app.use(express.json());
 
-// ✅ Static folder for image uploads
+// ✅ ye abhi use nahi kiya 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ MongoDB Connection (removed deprecated options)
+// ✅ MongoDB Connection haya se hoga 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ DB connection error:', err));
 
-// ✅ Import routes
+// yaha pe sare routes import ho rahe hai 
 const userRoutes = require('./routes/userRoutes');
 const panditRoutes = require('./routes/panditRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
@@ -31,7 +30,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const poojaRoutes = require('./routes/poojaRoutes');
 
-// ✅ Mount routes
+// yaha pe routes ko mount kara raha hai 
 app.use('/api/users', userRoutes);
 app.use('/api/pandits', panditRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -41,12 +40,12 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
 
-// ✅ Health check / root route
+//  default 
 app.get('/', (req, res) => {
-  res.send('🕉️ Shubkarya API is running...');
+  res.send(' Shubkarya API is running...');
 });
 
-// ✅ Error handling for malformed JSON
+// ✅ Error  handle hoga 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '❌ Invalid JSON' });
@@ -54,7 +53,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// ✅ Start server
+//  server started 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
