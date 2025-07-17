@@ -82,7 +82,7 @@ const Home = () => {
             <p>Embrace centuries of wisdom and sacred practice.</p>
           </div>
           <div className="portrait">
-            <img src="/images/shub.png" alt="Pandit Illustration" />
+            <img src="/images/subh.png" alt="Pandit Illustration" />
           </div>
           <div className="about-column">
             <h4>Trusted Partners</h4>
