@@ -74,46 +74,51 @@ const Home = () => {
         </div>
       </header>
 
-      {/* About Section */}
-      <section id="about" className="about-section" data-aos="fade-up">
-        <h2>About Shubhkarya</h2>
-        <p>Discover the power of personalized puja services with Shubhkarya</p>
-        <div className="flower-container">
-          <div className="petal top">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Exclusive Gifts</span>
-            <p>Treat yourself or your loved ones with our carefully curated</p>
-          </div>
-          <div className="petal top-right">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Serene Offerings</span>
-            <p>Immerse yourself in the beauty of nature's blessings</p>
-          </div>
-          <div className="petal bottom-right">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Timeless Tradition</span>
-            <p>Embrace the timeless wisdom of Vedic practices with Shubhkarya</p>
-          </div>
-          <div className="petal bottom">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Trusted Partners</span>
-             <p>Shubhkarya collaborates with renowned organizations </p>
-          </div>
-          <div className="petal bottom-left">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Inspiring Profiles</span>
-            <p>Discover the remarkable stories and expertise of our Shubhkarya</p>
-          </div>
-          <div className="petal top-left">
-            <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
-            <span>Personalized</span>
-            <p>Let our experienced pandits be your trusted companions</p>
-          </div>
-          <div className="center-logo">
-            <img src="/images/subh.png" alt="center logo" />
-          </div>
-        </div>
-      </section>
+      <section className="about-section" id="about">
+  <h2 className="section-title">About Shubkarya</h2>
+  <div className="about-content">
+    <div className="about-column">
+      <div className="feature">
+        <img src="/images/pooja.png" alt="Pooja Icon" />
+        <h3><b>Vedic Poojas</b></h3>
+        <p>Performed by experienced and certified Pandits.</p>
+      </div>
+      <div className="feature">
+        <img src="/images/calendar.png" alt="Calendar Icon" />
+        <h3><b>Easy Booking</b></h3>
+        <p>Book your pooja in just a few clicks.</p>
+      </div>
+      <div className="feature">
+        <img src="/images/verified.png" alt="Verified Icon" />
+        <h3><b>Verified Pandits</b></h3>
+        <p>Only trusted and background-checked Pandits.</p>
+      </div>
+    </div>
+
+    <div className="logo-center">
+      <img src="/images/subh.png" alt="Shubkarya Logo" />
+    </div>
+
+    <div className="about-column">
+      <div className="feature">
+        <img src="/images/blessings.png" alt="Blessing Icon" />
+        <h3><b>Traditional Rituals</b></h3>
+        <p>Authentic practices as per Hindu scriptures.</p>
+      </div>
+      <div className="feature">
+        <img src="/images/service.png" alt="Service Icon" />
+        <h3><b>Multiple Services</b></h3>
+        <p>Choose from a wide range of spiritual services.</p>
+      </div>
+      <div className="feature">
+        <img src="/images/support.png" alt="Support Icon" />
+        <h3><b>24x7 Support</b></h3>
+        <p>Assistance available at every step of your journey.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Services */}
       <section id="services" className="services-section" data-aos="fade-up">
