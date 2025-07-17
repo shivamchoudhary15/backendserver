@@ -82,26 +82,32 @@ const Home = () => {
           <div className="petal top">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Exclusive Gifts</span>
+            <p>Treat yourself or your loved ones with our carefully curated</p>
           </div>
           <div className="petal top-right">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Serene Offerings</span>
+            <p>Immerse yourself in the beauty of nature's blessings</p>
           </div>
           <div className="petal bottom-right">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Timeless Tradition</span>
+            <p>Embrace the timeless wisdom of Vedic practices with Shubhkarya</p>
           </div>
           <div className="petal bottom">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Trusted Partners</span>
+             <p>Shubhkarya collaborates with renowned organizations </p>
           </div>
           <div className="petal bottom-left">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Inspiring Profiles</span>
+            <p>Discover the remarkable stories and expertise of our Shubhkarya</p>
           </div>
           <div className="petal top-left">
             <div className="icon-circle"><img src="/images/subh.png" alt="icon" /></div>
             <span>Personalized</span>
+            <p>Let our experienced pandits be your trusted companions</p>
           </div>
           <div className="center-logo">
             <img src="/images/subh.png" alt="center logo" />
