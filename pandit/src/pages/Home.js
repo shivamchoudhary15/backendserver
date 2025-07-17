@@ -6,8 +6,6 @@ import './Home.css';
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
-  const [services, setServices] = useState([]);
-  const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
@@ -15,19 +13,16 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [panditRes, poojaRes, serviceRes] = await Promise.all([
+        const [panditRes, poojaRes] = await Promise.all([
           fetch('https://backendserver-pf4h.onrender.com/api/pandits/view'),
           fetch('https://backendserver-pf4h.onrender.com/api/poojas/view'),
-          fetch('https://backendserver-pf4h.onrender.com/api/services/view'),
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
-        const servicesData = await serviceRes.json();
 
         const verifiedPandits = panditsData.filter(p => p.is_verified);
         setPandits(verifiedPandits);
         setPoojas(poojasData);
-        setServices(servicesData);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
@@ -70,7 +65,6 @@ const Home = () => {
             </div>
             <div className="navbar-right nav-links">
               <a href="#about">About us</a>
-              <a href="#order">Order Services</a>
               <a href="#services">Pooja</a>
               <a href="#pandits">Pandits</a>
               <Link to="/login">Login</Link>
@@ -79,27 +73,44 @@ const Home = () => {
         </nav>
       </div>
 
-      {/* Hero */}
-      <header
-        className="hero"
-        style={{
-          backgroundImage: `url('/images/ho1.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="hero-overlay">
-          <div className="hero-text">
-            <h1>Welcome to Shubhkarya</h1>
-            <p>Find Your Trusted Pandit Online</p>
-            <button onClick={handleBooking}>Explore Services</button>
-            <div className="hero-buttons">
-              <Link to="/signup" className="hero-btn">Join as Devotee</Link>
-              <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
+      {/* Hero Carousel */}
+      <section className="hero-carousel">
+        <div className="carousel-slide">
+          <div className="slide" style={{ backgroundImage: `url('/images/ho1.png')` }}>
+            <div className="slide-overlay">
+              <h1>Book Panditji Online All Kinds of Pooja!!</h1>
+              <p>We provide highly qualified Panditjee for all communities like Gujarati, Marathi, Sindhi, Bihari, Bengali and more.</p>
+              <div className="slide-buttons">
+                <button onClick={handleBooking}>Book Pandit</button>
+                <Link to="/signup" className="hero-btn">Join as Devotee</Link>
+                <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
+              </div>
+            </div>
+          </div>
+          <div className="slide" style={{ backgroundImage: `url('/images/ho2.png')` }}>
+            <div className="slide-overlay">
+              <h1>Your Spiritual Partner</h1>
+              <p>Perform Pujas with ease, authenticity, and devotion — from your home or online.</p>
+              <div className="slide-buttons">
+                <button onClick={handleBooking}>Book Pandit</button>
+                <Link to="/signup" className="hero-btn">Join as Devotee</Link>
+                <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
+              </div>
+            </div>
+          </div>
+          <div className="slide" style={{ backgroundImage: `url('/images/ho3.png')` }}>
+            <div className="slide-overlay">
+              <h1>Trusted Vedic Rituals Across India</h1>
+              <p>From Griha Pravesh to Navagraha — we’ve got every ritual covered with verified Pandits.</p>
+              <div className="slide-buttons">
+                <button onClick={handleBooking}>Book Pandit</button>
+                <Link to="/signup" className="hero-btn">Join as Devotee</Link>
+                <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
+              </div>
             </div>
           </div>
         </div>
-      </header>
+      </section>
 
       {/* About Section */}
       <section id="about" className="about">
@@ -109,38 +120,8 @@ const Home = () => {
           Vedic ceremonies, and astrology services. We connect you with highly qualified and experienced
           Pandits and Shastris who can perform pujas at your home or online.<br />
           Our services also include puja samagri kits and temple bookings. From Shanti Vidhi to Shubh Vivah,<br />
-          from Naamkaran to Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.<br />
-          Shubhkarya is India's first and most trusted platform for Hindu rituals, Vedic ceremonies,
-          and astrology services. We connect you with highly qualified and experienced Pandits and Shastris who
-          perform pujas at your home or online.<br />
-          Our services include puja samagri kits, temple bookings, online consultations, and more.<br />
-          From Griha Pravesh to Naamkaran, and from Shradh to Shubh Vivah — we offer a comprehensive platform for all your spiritual needs.
+          from Naamkaran to Navagraha Puja — we cover all major rituals and make your spiritual journey hassle-free.
         </p>
-      </section>
-
-      {/* Order Services Section */}
-      <section id="order" className="service-boxes">
-        <h2 className="section-title">Our Services</h2>
-        <div className="card-section">
-          {services.length > 0 ? services.map((service) => (
-            <div
-              className="highlight-card"
-              key={service._id}
-              style={{
-                backgroundImage: `url(${service.image})`,
-              }}
-            >
-              <div className="highlight-overlay">
-                <h3>{service.name}</h3>
-                <p>{service.description}</p>
-                <p>₹{service.price}</p>
-                <button onClick={() => navigate('/login')}>Book Now</button>
-              </div>
-            </div>
-          )) : (
-            <p>No services available.</p>
-          )}
-        </div>
       </section>
 
       {/* Pooja Section */}
@@ -151,18 +132,11 @@ const Home = () => {
         ) : (
           <div className="card-grid">
             {poojas.map(pooja => (
-              <div className="service-card" key={pooja._id} onClick={() => setSelectedService(pooja)}>
+              <div className="service-card" key={pooja._id}>
                 <img src={pooja.imageUrl || '/images/default-pooja.png'} alt={pooja.name} />
                 <h3>{pooja.name}</h3>
               </div>
             ))}
-          </div>
-        )}
-        {selectedService && (
-          <div className="service-description">
-            <h3>{selectedService.name}</h3>
-            <p>{selectedService.description}</p>
-            <button onClick={() => setSelectedService(null)}>Close</button>
           </div>
         )}
       </section>
