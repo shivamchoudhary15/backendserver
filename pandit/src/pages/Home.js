@@ -95,7 +95,7 @@ const Home = () => {
             <button onClick={handleBooking}>Explore Services</button>
             <div className="hero-buttons">
               <Link to="/signup" className="hero-btn">Join as Devotee</Link>
-              <Link to="/signup/pandit" className="hero-btn">Register for Pandit</Link>
+              <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
             </div>
           </div>
         </div>
