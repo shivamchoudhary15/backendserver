@@ -1,135 +1,136 @@
 /* src/pages/Home.css */
-
-.home-container {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
+body, html {
+  margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  color: white;
-  padding-top: 120px;
-  position: relative;
 }
 
-.navbar-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ff9933;
-  z-index: 1000;
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
+  padding: 15px 40px;
+  background-color: #fff;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-image {
-  height: 50px;
-  width: 50px;
+.logo-img-circle {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  margin-right: 10px;
 }
 
-.site-title h1 {
-  margin: 0;
+.logo-text {
   font-size: 24px;
   font-weight: bold;
   color: #222;
 }
 
-.subtitle {
-  margin: 0;
-  font-size: 14px;
+.navbar-right a,
+.login-box {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #000;
   font-weight: 500;
+}
+
+.hero {
+  background-size: cover;
+  background-position: center;
   color: white;
-  line-height: 1.2;
-}
-
-.nav-links {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.nav-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.login-btn {
-  padding: 6px 16px;
-  background-color: orange;
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.header-tagline {
+  padding: 100px 40px 80px;
   text-align: center;
-  margin-top: 10px;
+  position: relative;
 }
 
-.header-tagline h2 {
-  font-size: 28px;
-  color: #fff;
-  font-weight: bold;
+.hero-content {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.hero-section {
-  text-align: center;
-  margin-top: 80px;
+.main-title {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  line-height: 1.4;
 }
 
-.hero-title {
-  font-size: 36px;
-  font-weight: bold;
-  color: #fff;
+.tagline {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #f5d7a4;
 }
 
 .hero-buttons {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
 .book-btn {
-  padding: 12px 24px;
-  background-color: #ff6600;
+  background-color: orange;
   border: none;
+  padding: 12px 24px;
   color: white;
   font-weight: bold;
-  border-radius: 5px;
-  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
-.meet-link {
-  font-size: 16px;
-  font-weight: bold;
+.meet-btn {
+  background-color: transparent;
+  border: none;
   color: black;
-  text-decoration: none;
-  align-self: center;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.about, .services-section, .services, .pandits {
+  padding: 40px;
+  text-align: center;
+}
+
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.pandit-card, .pooja-card, .highlight-card {
+  background: #fff;
+  padding: 20px;
+  width: 250px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.highlight-card {
+  background-size: cover;
+  background-position: center;
+  color: white;
+  position: relative;
+}
+
+.highlight-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .footer {
-  background-color: #222;
-  padding: 30px;
   text-align: center;
-  color: white;
-  margin-top: 100px;
+  padding: 20px;
+  background-color: #222;
+  color: #ccc;
+  margin-top: auto;
 }
