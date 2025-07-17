@@ -74,24 +74,30 @@ const Home = () => {
         </div>
       </header>
 
-      <section className="about-section" id="about">
+  <section className="about-section" id="about">
   <h2 className="section-title">About Shubkarya</h2>
   <div className="about-content">
     <div className="about-column">
-      <div className="feature">
+      <div className="feature-row">
         <img src="/images/pooja.png" alt="Pooja Icon" />
-        <h3><b>Vedic Poojas</b></h3>
-        <p>Performed by experienced and certified Pandits.</p>
+        <div>
+          <h3>Vedic Poojas</h3>
+          <p>Performed by experienced Pandits with authentic rituals.</p>
+        </div>
       </div>
-      <div className="feature">
+      <div className="feature-row">
         <img src="/images/calendar.png" alt="Calendar Icon" />
-        <h3><b>Easy Booking</b></h3>
-        <p>Book your pooja in just a few clicks.</p>
+        <div>
+          <h3>Easy Booking</h3>
+          <p>Book poojas anytime with a few simple clicks.</p>
+        </div>
       </div>
-      <div className="feature">
+      <div className="feature-row">
         <img src="/images/verified.png" alt="Verified Icon" />
-        <h3><b>Verified Pandits</b></h3>
-        <p>Only trusted and background-checked Pandits.</p>
+        <div>
+          <h3>Verified Pandits</h3>
+          <p>Only trusted and verified professionals available.</p>
+        </div>
       </div>
     </div>
 
@@ -100,24 +106,31 @@ const Home = () => {
     </div>
 
     <div className="about-column">
-      <div className="feature">
-        <img src="/images/blessings.png" alt="Blessing Icon" />
-        <h3><b>Traditional Rituals</b></h3>
-        <p>Authentic practices as per Hindu scriptures.</p>
+      <div className="feature-row">
+        <img src="/images/blessings.png" alt="Blessings Icon" />
+        <div>
+          <h3>Traditional Rituals</h3>
+          <p>Rooted in ancient Vedic traditions and customs.</p>
+        </div>
       </div>
-      <div className="feature">
-        <img src="/images/service.png" alt="Service Icon" />
-        <h3><b>Multiple Services</b></h3>
-        <p>Choose from a wide range of spiritual services.</p>
+      <div className="feature-row">
+        <img src="/images/service.png" alt="Services Icon" />
+        <div>
+          <h3>Multiple Services</h3>
+          <p>From Griha Pravesh to Wedding, all covered.</p>
+        </div>
       </div>
-      <div className="feature">
+      <div className="feature-row">
         <img src="/images/support.png" alt="Support Icon" />
-        <h3><b>24x7 Support</b></h3>
-        <p>Assistance available at every step of your journey.</p>
+        <div>
+          <h3>24x7 Support</h3>
+          <p>We’re here to help you anytime, anywhere.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
       {/* Services */}
