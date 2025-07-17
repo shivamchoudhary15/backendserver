@@ -1,3 +1,5 @@
+// src/pages/Home.js
+
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -39,29 +41,33 @@ const Home = () => {
           <span className="logo-text">Shubhkarya</span>
         </div>
         <div className="navbar-center">
-          Your Spiritual Partner: For Every Sacred Occasion
+          <span className="tagline">Your Spiritual Partner: For Every Sacred Occasion</span>
         </div>
         <div className="navbar-right">
           <a href="#about">About Us</a>
-          <a href="#order">Order Services</a>
+          <a href="#order">Explore Services</a>
           <a href="#services">Pooja</a>
           <a href="#pandits">Pandits</a>
-          <Link to="/login">Login</Link>
+          <a href="#footer" className="contact-link">Contact</a>
+          <Link to="/login" className="login-box">Login</Link>
         </div>
       </nav>
 
       <header className="hero">
         <div className="hero-content">
           <div className="hero-left">
-            <h1>Shubhkarya: Your Trusted Online Pandit Booking</h1>
+            <h1>
+              Shubkarya:<br />
+              Your Trusted Online<br />
+              Pandit Booking
+            </h1>
             <p>
               Welcome to Shubhkarya, where you can easily book puja services, explore a wide range
               of pandit profiles, and enjoy a seamless booking experience.
             </p>
             <div className="hero-buttons">
-              <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
-              <Link to="/signup" className="hero-btn">Join as Devotee</Link>
-              <Link to="/signup/pandit" className="hero-btn">Register as Pandit</Link>
+              <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
+              <button className="meet-btn" onClick={() => navigate('#pandits')}>Meet Our Pandits</button>
             </div>
           </div>
           <div className="hero-right">
@@ -121,7 +127,7 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="footer">
+      <footer className="footer" id="footer">
         <p>&copy; 2025 Shubhkarya. All rights reserved.</p>
       </footer>
     </div>
