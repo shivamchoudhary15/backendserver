@@ -1,362 +1,127 @@
-/* src/pages/Home.css */
-.home-container {
+/* Home.css */
+
+/* Reset & Base Styles */
+body, html {
+  margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #fffefb;
-  color: #333;
-  padding-top: 90px;
+  scroll-behavior: smooth;
 }
 
-.navbar-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ff9933;
-  z-index: 1000;
-}
-
-.navbar {
-  background-color: white;
-  padding: 15px 40px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.logo-img {
-  height: 45px;
-  object-fit: contain;
-  border-radius: 5px;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #b30059;
-  margin-left: 10px;
-}
-
-.navbar-center {
-  flex: 1;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #003366;
-  padding-left: 100px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
+a {
   text-decoration: none;
-  color: #333;
-  font-weight: 600;
 }
 
-.nav-links a:hover {
-  color: #b30059;
-}
-
-.hero {
+/* Hero Carousel Section */
+.hero-carousel {
+  position: relative;
   height: 90vh;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.hero-overlay {
-  background-color: rgba(0, 0, 0, 0.4);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-text {
-  text-align: center;
-  max-width: 700px;
-  padding: 0 20px;
-  color: white;
-}
-
-.hero-text h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.hero-text p {
-  font-size: 20px;
-  margin-bottom: 25px;
-}
-
-.hero-text button {
-  background: white;
-  color: #b4492b;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.hero-btn {
-  padding: 10px 20px;
-  background: #b30059;
-  color: white;
-  text-decoration: none;
-  border-radius: 20px;
-  font-weight: 600;
-  transition: background 0.3s ease;
-}
-
-.hero-btn:hover {
-  background: #8f0045;
-}
-
-.about {
-  padding: 50px 30px;
-  background-color: #f9f9f9;
-  color: #444;
-  font-size: 18px;
-  line-height: 1.8;
-  text-align: center;
-  font-family: 'Georgia', serif;
-  font-style: italic;
-}
-
-.about h2 {
-  font-size: 30px;
-  color: #b30059;
-  margin-bottom: 20px;
-  font-family: 'Segoe UI', sans-serif;
-  font-style: normal;
-}
-
-.services {
-  padding: 40px;
-  background-color: white;
-  color: black;
-}
-
-.card-grid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  margin-top: 20px;
-}
-
-.service-card {
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  text-align: center;
-  transition: transform 0.2s ease;
-  color: black;
-}
-
-.service-card:hover {
-  transform: scale(1.03);
-}
-
-.service-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.service-description {
-  margin-top: 30px;
-  text-align: center;
-  background: #fff0dc;
-  padding: 20px;
-  border-radius: 10px;
-  color: black;
-}
-
-.pandits {
-  padding: 40px;
-  background-color: white;
-  color: black;
-}
-
-.pandit-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-}
-
-.pandit-card {
-  background: white;
-  padding: 15px;
-  width: 250px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  color: black;
-  transition: transform 0.2s ease;
-}
-
-.pandit-card:hover {
-  transform: scale(1.02);
-}
-
-.pandit-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.footer {
-  background-color: white;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  padding: 40px;
-  flex-wrap: wrap;
-}
-
-.footer-left,
-.footer-right {
-  max-width: 300px;
-}
-
-.footer-right input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #f5f5f5;
-  color: #333;
-}
-
-.footer-right label {
-  display: block;
-  margin: 10px 0;
-}
-
-.footer-right button {
-  background: #b30059;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.footer-links a {
-  color: #b30059;
-  margin-right: 10px;
-  font-size: 14px;
-  text-decoration: underline;
-}
-
-.service-boxes {
-  background-color: #fdf4e7;
-  padding: 50px 20px;
-  text-align: center;
-}
-
-.section-title {
-  font-size: 28px;
-  margin-bottom: 30px;
-  color: #b30059;
-  font-weight: bold;
-}
-
-.card-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 35px;
-  margin-top: 30px;
-}
-
-.highlight-card {
-  background-size: cover;
-  background-position: center;
-  border-radius: 10px;
-  width: 300px;
-  height: 250px;
-  position: relative;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   overflow: hidden;
-  flex-shrink: 0;
 }
 
-.highlight-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+.carousel-slide {
+  display: flex;
+  width: 300%;
+  height: 100%;
+  animation: slide 30s infinite;
+}
+
+.slide {
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.slide-overlay {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.55);
   color: white;
+  width: 100%;
+  height: 100%;
+  padding: 60px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 15px;
+  align-items: flex-start;
 }
 
-.highlight-overlay h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
+.slide-overlay h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
-.highlight-overlay p {
-  font-size: 16px;
-  margin-bottom: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.slide-overlay p {
+  font-size: 1.3rem;
+  max-width: 600px;
+  margin-bottom: 25px;
+  line-height: 1.6;
 }
 
-.highlight-overlay button {
-  background-color: #28a745;
-  color: white;
+.slide-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.slide-buttons button,
+.slide-buttons .hero-btn {
+  padding: 12px 25px;
   border: none;
-  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 1rem;
   font-weight: bold;
-  border-radius: 25px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
-.highlight-overlay button:hover {
-  background-color: #218838;
+/* Primary CTA Button */
+.slide-buttons button {
+  background-color: #ffffff;
+  color: #b30059;
+}
+
+.slide-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Devotee / Pandit Register Buttons */
+.slide-buttons .hero-btn {
+  background-color: #b30059;
+  color: white;
+}
+
+.slide-buttons .hero-btn:hover {
+  background-color: #8f0045;
+}
+
+/* Slide Animation */
+@keyframes slide {
+  0% { transform: translateX(0%); }
+  33.33% { transform: translateX(-100%); }
+  66.66% { transform: translateX(-200%); }
+  100% { transform: translateX(0%); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide-overlay {
+    padding: 40px 20px;
+  }
+
+  .slide-overlay h1 {
+    font-size: 2rem;
+  }
+
+  .slide-overlay p {
+    font-size: 1rem;
+  }
+
+  .slide-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
