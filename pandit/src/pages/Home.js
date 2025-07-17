@@ -39,7 +39,7 @@ const Home = () => {
     <div className="home-container">
       <nav className="navbar">
         <div className="navbar-left">
-          <img src="/images/shub.png" alt="Logo" className="logo-circle" />
+          <img src="/images/subh.png" alt="Logo" className="logo-circle" />
           <span className="logo-text">Shubhkarya</span>
         </div>
         <div className="navbar-right">
