@@ -3,9 +3,9 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Pandit = require('../models/pandit');
-const upload = require('../config/multer'); // ✅ Import multer from config
+const upload = require('../config/multer'); //  ise abhi  use nahi kiya hai
 
-// ✅ Pandit Signup
+//  Pandit Signup karega
 router.post('/signup', async (req, res) => {
   try {
     const {
@@ -53,7 +53,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// ✅ Upload Pandit Profile Photo
+// yaha se pandit profile photo upload hogi 
 router.post('/upload/:id', upload.single('photo'), async (req, res) => {
   try {
     const filePath = `/uploads/pandits/${req.file.filename}`;
@@ -78,7 +78,7 @@ router.post('/upload/:id', upload.single('photo'), async (req, res) => {
   }
 });
 
-// ✅ Pandit Login
+// pandit login  karega 
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -112,7 +112,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ✅ Get all verified Pandits (for public/home)
+// yaa se verfied pandits dikhagi 
 router.get('/view', async (req, res) => {
   try {
     const pandits = await Pandit.find({ is_verified: true });
@@ -122,7 +122,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ✅ Admin: Get all Pandits (verified + unverified)
+// admin sare verfied and non-verfied pandit dekega 
 router.get('/admin-view', async (req, res) => {
   try {
     const pandits = await Pandit.find();
@@ -132,7 +132,7 @@ router.get('/admin-view', async (req, res) => {
   }
 });
 
-// ✅ Admin: Verify a Pandit
+// yaha se admin verfiey karega pandit ko 
 router.put('/verify/:id', async (req, res) => {
   try {
     const updated = await Pandit.findByIdAndUpdate(
@@ -149,7 +149,7 @@ router.put('/verify/:id', async (req, res) => {
   }
 });
 
-// ✅ Get single Pandit by ID
+// pandit get hoga by id
 router.get('/:id', async (req, res) => {
   try {
     const pandit = await Pandit.findById(req.params.id);
