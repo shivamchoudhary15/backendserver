@@ -9,6 +9,7 @@
     "test": "node scripts/test.js"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "framer-motion": "^12.23.0",
