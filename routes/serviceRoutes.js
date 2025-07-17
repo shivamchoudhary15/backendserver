@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Service = require('../models/service');
 
-// ✅ Add new service manually
+// service add yaha se hoga 
 router.post('/add', async (req, res) => {
   try {
     const service = new Service(req.body);
@@ -13,7 +13,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// ✅ View all services
+// view karenge sari services 
 router.get('/view', async (req, res) => {
   try {
     const services = await Service.find();
@@ -23,7 +23,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ✅ Seed services in bulk (default)
+// by default services hai
 router.get('/seed', async (req, res) => {
   const services = [
     {
