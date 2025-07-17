@@ -141,28 +141,42 @@ body {
   margin-bottom: 40px;
 }
 
-.about-features {
+.about-layout {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
+  align-items: center;
+  gap: 30px;
+  flex-direction: column;
 }
 
-.about-card {
-  width: 250px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  padding: 20px;
+.feature-circle {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
   text-align: center;
 }
 
-.about-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+.feature img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.about-center-logo img {
+  width: 120px;
+  height: 120px;
+  margin-top: 20px;
   border-radius: 50%;
-  margin-bottom: 15px;
 }
 
 /* Services */
@@ -176,7 +190,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 40px;
   margin-top: 30px;
 }
 
@@ -229,6 +243,16 @@ body {
 .overlay p {
   font-size: 14px;
   margin-bottom: 12px;
+}
+
+.book-button-small {
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #ff944d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Pandits */
