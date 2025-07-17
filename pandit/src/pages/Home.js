@@ -1,138 +1,137 @@
 // src/pages/Home.js
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
-  const footerRef = useRef(null);
 
   useEffect(() => {
-    fetch('https://backendserver-6-yebf.onrender.com/api/pandits/view')
-      .then((res) => res.json())
-      .then((data) => setPandits(data))
-      .catch((err) => console.error('Error fetching pandits:', err));
+    const fetchData = async () => {
+      try {
+        const [panditRes, poojaRes, serviceRes] = await Promise.all([
+          fetch('https://backendserver-pf4h.onrender.com/api/pandits/view'),
+          fetch('https://backendserver-pf4h.onrender.com/api/poojas/view'),
+          fetch('https://backendserver-pf4h.onrender.com/api/services/view'),
+        ]);
 
-    fetch('https://backendserver-6-yebf.onrender.com/api/poojas/view')
-      .then((res) => res.json())
-      .then((data) => setPoojas(data))
-      .catch((err) => console.error('Error fetching poojas:', err));
+        const panditsData = await panditRes.json();
+        const poojasData = await poojaRes.json();
+        const servicesData = await serviceRes.json();
+
+        setPandits(panditsData.filter(p => p.is_verified));
+        setPoojas(poojasData);
+        setServices(servicesData);
+      } catch (err) {
+        console.error('Failed to fetch data:', err);
+      }
+    };
+    fetchData();
   }, []);
 
-  const scrollToFooter = () => {
-    footerRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const heroBackground = process.env.PUBLIC_URL + '/images/ho1.png';
 
   return (
     <div className="home-container">
-      {/* Header Section */}
-      <div
-        className="hero-section"
-        style={{
-          backgroundImage: "url('/images/ho1.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="navbar-wrapper">
-          <nav className="navbar">
-            <div className="logo">
-              <img src="/images/subh.png" alt="Subh Logo" className="logo-img" />
-              <span className="logo-text">Shubhkarya</span>
-            </div>
-            <div className="nav-links">
-              <a href="#about">About Us</a>
-              <a href="#pandits">Pandits</a>
-              <a href="#poojas">Pooja</a>
-              <span onClick={scrollToFooter} style={{ cursor: 'pointer' }}>Contact</span>
-              <Link to="/login" className="login-btn">Login</Link>
-            </div>
-          </nav>
+      <nav className="navbar">
+        <div className="navbar-left">
+          <img src="/images/shub.png" alt="Logo" className="logo-circle" />
+          <span className="logo-text">Shubhkarya</span>
         </div>
+        <div className="navbar-right">
+          <a href="#about">About Us</a>
+          <a href="#order">Explore Services</a>
+          <a href="#footer" className="contact-link">Contact</a>
+          <Link to="/login" className="login-box">Login</Link>
+        </div>
+      </nav>
 
-        <div className="hero-content">
-          <h1 className="main-heading">Shubhkarya:<br />Your Trusted Online Pandit Booking</h1>
-          <p className="sub-heading">Your Spiritual Partner: For Every Sacred Occasion</p>
-          <div className="hero-buttons">
-            <button onClick={() => navigate('/login')} className="book-btn">Book Now</button>
-            <span className="meet-text">Meet Our Pandits</span>
+      <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <div className="hero-left">
+              <h1 className="main-heading">
+                Shubhkarya:<br />
+                Your Trusted Online<br />
+                Pandit Booking
+              </h1>
+              <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
+              <div className="hero-buttons">
+                <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
+                <button className="meet-btn" onClick={() => navigate('#pandits')}>Meet Our Pandits</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* About Shubhkarya Section */}
       <section id="about" className="about-section">
         <h2>About Shubhkarya</h2>
-        <p>Discover the power of personalized puja services with Shubhkarya</p>
-        <div className="about-icons">
-          <div className="about-item">
-            <img src="/icons/exclusive-gifts.png" alt="Exclusive Gifts Icon" />
-            <h3>Exclusive Gifts</h3>
-            <p>Treat yourself or your loved ones with our carefully curated</p>
+        <p>Discover the power of personalized puja services with Shubhkarya.</p>
+        <div className="about-columns">
+          <div className="about-column">
+            <h4>Exclusive Gifts</h4>
+            <p>Treat your loved ones with carefully curated spiritual gifts.</p>
+            <h4>Serene Offerings</h4>
+            <p>Immerse yourself in peaceful Vedic rituals guided by experts.</p>
+            <h4>Timeless Traditions</h4>
+            <p>Embrace centuries of wisdom and sacred practice.</p>
           </div>
-          <div className="about-item">
-            <img src="/icons/serene-offerings.png" alt="Serene Offerings Icon" />
-            <h3>Serene Offerings</h3>
-            <p>Immerse yourself in the beauty of nature's blessings</p>
+          <div className="portrait">
+            <img src="/images/shub.png" alt="Pandit Illustration" />
           </div>
-          <div className="about-item">
-            <img src="/icons/timeless-tradition.png" alt="Timeless Tradition Icon" />
-            <h3>Timeless Tradition</h3>
-            <p>Embrace the timeless wisdom of Vedic practices with Shubhkarya</p>
-          </div>
-          <div className="about-item">
-            <img src="/icons/trusted-partners.png" alt="Trusted Partners Icon" />
-            <h3>Trusted Partners</h3>
-            <p>Shubhkarya collaborates with renowned organizations and</p>
-          </div>
-          <div className="about-item">
-            <img src="/icons/inspiring-profiles.png" alt="Inspiring Profiles Icon" />
-            <h3>Inspiring Profiles</h3>
-            <p>Discover the remarkable stories and expertise of our Shubhkarya</p>
-          </div>
-          <div className="about-item">
-            <img src="/icons/personalized.png" alt="Personalized Icon" />
-            <h3>Personalized</h3>
-            <p>Let our experienced pandits be your trusted companions</p>
+          <div className="about-column">
+            <h4>Trusted Partners</h4>
+            <p>Collaborations with reputed spiritual organizations.</p>
+            <h4>Inspiring Profiles</h4>
+            <p>Explore verified and experienced Pandits across regions.</p>
+            <h4>Personalized</h4>
+            <p>Tailored rituals to meet your spiritual needs.</p>
           </div>
         </div>
       </section>
 
-      {/* Pooja Section */}
-      <section id="poojas" className="pooja-section">
-        <h2>Explore Services</h2>
-        <div className="pooja-list">
-          {poojas.map((pooja) => (
-            <div key={pooja._id} className="pooja-card">
-              <img src={pooja.imageUrl} alt={pooja.name} />
-              <h3>{pooja.name}</h3>
-              <p>{pooja.description}</p>
+      <section id="order" className="services-section">
+        <h2>Our Services</h2>
+        <div className="card-section">
+          {services.map(service => (
+            <div key={service._id} className="highlight-card" style={{ backgroundImage: `url(${service.image})` }}>
+              <div className="highlight-overlay">
+                <h3>{service.name}</h3>
+                <p>{service.description}</p>
+                <p>₹{service.price}</p>
+                <button onClick={() => navigate('/login')}>Book Now</button>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Pandit Section */}
-      <section id="pandits" className="pandit-section">
-        <h2>Meet Our Verified Pandits</h2>
-        <div className="pandit-list">
-          {pandits.map((pandit) => (
+      <section id="pandits" className="pandits">
+        <h2>Our Verified Pandits</h2>
+        <div className="card-section">
+          {pandits.map(pandit => (
             <div key={pandit._id} className="pandit-card">
-              <img src={pandit.profile_photo_url} alt={pandit.name} />
+              <img
+                src={pandit.profile_photo_url.startsWith('/uploads')
+                  ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
+                  : pandit.profile_photo_url}
+                alt={pandit.name}
+              />
               <h3>{pandit.name}</h3>
-              <p>{pandit.city}</p>
+              <p>{pandit.experience} years experience</p>
+              <p>{pandit.language}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer ref={footerRef} id="footer" className="footer">
-        <p>Contact us at support@shubkarya.in</p>
-        <p>&copy; 2025 Shubkarya. All rights reserved.</p>
+      <footer className="footer" id="footer">
+        <p>&copy; 2025 Shubhkarya. All rights reserved.</p>
       </footer>
     </div>
   );
