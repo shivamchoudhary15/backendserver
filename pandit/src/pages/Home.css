@@ -52,6 +52,7 @@ body {
   border-radius: 4px;
 }
 
+/* Hero Section */
 .hero {
   height: 85vh;
   background-size: cover;
@@ -93,83 +94,144 @@ body {
   gap: 16px;
 }
 
-.book-btn {
+.book-btn,
+.meet-btn,
+.book-button,
+.explore-more {
   padding: 10px 24px;
-  background-color: #d67f2a;
-  color: white;
   font-weight: bold;
   border: none;
-  cursor: pointer;
   border-radius: 4px;
+  cursor: pointer;
+}
+
+.book-btn {
+  background-color: #d67f2a;
+  color: white;
 }
 
 .meet-btn {
-  padding: 10px 24px;
   background-color: transparent;
   color: black;
-  font-weight: bold;
   border: 2px solid black;
-  cursor: pointer;
-  border-radius: 4px;
 }
 
+.explore-more {
+  background-color: #ff4500;
+  color: white;
+  margin-top: 20px;
+}
+
+/* About Section */
 .about-section {
   padding: 60px 30px;
-  background: #fff8f0;
   text-align: center;
+  background-color: #fff8f0;
 }
 
 .about-section h2 {
-  font-size: 30px;
+  font-size: 32px;
+  color: #333;
   margin-bottom: 10px;
-  color: #444;
 }
 
-.about-columns {
+.about-section p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.about-features {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.about-card {
+  width: 250px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.about-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+/* Services */
+.services-section {
+  padding: 60px 30px;
+  text-align: center;
+  background-color: #f6f1e7;
+}
+
+.services-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
   margin-top: 30px;
 }
 
-.about-column {
-  max-width: 220px;
-  text-align: left;
+.service-card {
+  width: 260px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.about-column h4 {
-  color: #d67f2a;
-  margin-bottom: 5px;
+.service-card:hover {
+  transform: scale(1.05);
 }
 
-.about-item {
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.image-wrapper:hover img {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: white;
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 18px;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.about-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #d67f2a;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+.overlay h3 {
+  margin: 0 0 10px 0;
 }
 
-
-.portrait img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+.overlay p {
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
-.services-section,
+/* Pandits */
 .pandits {
   padding: 60px 30px;
   text-align: center;
@@ -182,34 +244,23 @@ body {
   justify-content: center;
 }
 
-.pandit-card,
-.pooja-card,
-.highlight-card {
+.pandit-card {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 260px;
+  width: 220px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.highlight-card {
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  height: 320px;
-  color: white;
-}
-
-.highlight-overlay {
-  background: rgba(0,0,0,0.6);
-  height: 100%;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+.pandit-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
   border-radius: 8px;
+  margin-bottom: 10px;
 }
 
+/* Footer */
 .footer {
   text-align: center;
   padding: 20px;
