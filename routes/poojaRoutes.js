@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Pooja = require('../models/pooja');
 
-// 🔹 Add Pooja
+// pooja add hogi 
 router.post('/add', async (req, res) => {
   try {
     const { name, description, itemsRequired = [], imageUrl = '' } = req.body;
@@ -25,7 +25,7 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// 🔹 Get All Poojas
+// get karenge sare poojas 
 router.get('/view', async (req, res) => {
   try {
     const poojas = await Pooja.find();
@@ -35,7 +35,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// 🔹 Update Pooja by ID
+// 🔹 Update karenge pooja ko by id 
 router.put('/update/:id', async (req, res) => {
   try {
     const updated = await Pooja.findByIdAndUpdate(
@@ -50,7 +50,7 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
-// 🔹 Delete Pooja by ID
+//  Delete karenge pooja by id
 router.delete('/delete/:id', async (req, res) => {
   try {
     const deleted = await Pooja.findByIdAndDelete(req.params.id);
