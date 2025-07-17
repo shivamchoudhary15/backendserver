@@ -6,7 +6,7 @@
 }
 
 body, html {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background-color: #fffefb;
   scroll-behavior: smooth;
 }
@@ -43,7 +43,7 @@ body, html {
 
 .tagline {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #d35400;
 }
 
