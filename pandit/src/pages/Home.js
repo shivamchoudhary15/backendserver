@@ -15,7 +15,7 @@ function Home() {
   return (
     <div
       className="home-container"
-      style={{ backgroundImage: "url('/images/homebg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: "url('/images/ho1.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <header className="navbar-wrapper">
         <div className="navbar">
