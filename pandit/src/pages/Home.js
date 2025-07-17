@@ -1,6 +1,6 @@
+// src/pages/Home.js
 
 import React, { useEffect, useState, useRef } from 'react';
-import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
@@ -24,47 +24,46 @@ const Home = () => {
 
   const scrollToFooter = () => {
     footerRef.current?.scrollIntoView({ behavior: 'smooth' });
-  const handleContactClick = () => {
-    document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <div className="home-container">
-    <div className="home-container" style={{ backgroundImage: `url('/images/ho1.png')`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
-      <div className="navbar-wrapper">
-        <nav className="navbar">
-          <h2 className="site-title">Shubkarya</h2>
-          <div className="nav-links">
-            <a href="#about">About Us</a>
-            <a href="#pandits">Meet Our Pandits</a>
-            <a href="#poojas">Pooja Provided</a>
-            <a onClick={scrollToFooter} style={{ cursor: 'pointer' }}>Contact</a>
-            <Link to="/login" className="login-btn">Login</Link>
-        <div className="navbar">
-          <div className="logo">
-            <span className="logo-text">Shubkarya</span>
+      {/* Header Section */}
+      <div
+        className="hero-section"
+        style={{
+          backgroundImage: "url('/images/ho1.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="navbar-wrapper">
+          <nav className="navbar">
+            <div className="logo">
+              <img src="/images/subh.png" alt="Subh Logo" className="logo-img" />
+              <span className="logo-text">Shubhkarya</span>
+            </div>
+            <div className="nav-links">
+              <a href="#about">About Us</a>
+              <a href="#pandits">Pandits</a>
+              <a href="#poojas">Pooja</a>
+              <span onClick={scrollToFooter} style={{ cursor: 'pointer' }}>Contact</span>
+              <Link to="/login" className="login-btn">Login</Link>
+            </div>
+          </nav>
+        </div>
+
+        <div className="hero-content">
+          <h1 className="main-heading">Shubhkarya:<br />Your Trusted Online Pandit Booking</h1>
+          <p className="sub-heading">Your Spiritual Partner: For Every Sacred Occasion</p>
+          <div className="hero-buttons">
+            <button onClick={() => navigate('/login')} className="book-btn">Book Now</button>
+            <span className="meet-text">Meet Our Pandits</span>
           </div>
-        </nav>
+        </div>
       </div>
 
-      <header className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">Shubhkarya:<br />Your Trusted Online Pandit Booking</h1>
-          <p className="hero-subtitle">Your Spiritual Partner: For Every Sacred Occasion</p>
-          <div className="hero-buttons">
-            <Link to="/login" className="book-btn">Book Now</Link>
-          <div className="nav-links">
-            <a onClick={handleContactClick}>Contact</a>
-            <Link to="/about">About Us</Link>
-            <Link to="/services">Explore Services</Link>
-            <Link to="/login">
-              <button className="login-btn">Login</button>
-            </Link>
-          </div>
-          <p className="meet-text">Meet Our Pandits</p>
-        </div>
-      </header>
-
+      {/* Pooja Section */}
       <section id="poojas" className="pooja-section">
         <h2>Explore Services</h2>
         <div className="pooja-list">
@@ -77,8 +76,8 @@ const Home = () => {
           ))}
         </div>
       </section>
-      </div>
 
+      {/* Pandit Section */}
       <section id="pandits" className="pandit-section">
         <h2>Meet Our Verified Pandits</h2>
         <div className="pandit-list">
@@ -89,22 +88,12 @@ const Home = () => {
               <p>{pandit.city}</p>
             </div>
           ))}
-      <div className="hero-section">
-        <h1 className="main-heading">
-          Shubhkarya:<br />Your Trusted Online Pandit Booking
-        </h1>
-        <p className="sub-heading">Your Spiritual Partner: For Every Sacred Occasion</p>
-        <div className="hero-buttons">
-          <button onClick={() => navigate('/booking')} className="book-btn">Book Now</button>
-          <span className="meet-text">Meet Our Pandits</span>
         </div>
       </section>
-      </div>
 
-      <footer ref={footerRef} className="footer">
-        <p>Contact us at support@shubkarya.in</p>
       {/* Footer */}
-      <footer id="footer" className="footer">
+      <footer ref={footerRef} id="footer" className="footer">
+        <p>Contact us at support@shubkarya.in</p>
         <p>&copy; 2025 Shubkarya. All rights reserved.</p>
       </footer>
     </div>
