@@ -1,98 +1,108 @@
 /* src/pages/Home.css */
 
 .home-container {
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: 'Segoe UI', sans-serif;
+  color: white;
+  padding-top: 120px;
+  position: relative;
 }
 
 .navbar-wrapper {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  background-color: #fffefb;
+  background-color: #ff9933;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 30px;
+  padding: 12px 24px;
 }
 
-.logo-title {
+.logo-container {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .logo-image {
-  width: 40px;
-  height: 40px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
-  margin-right: 10px;
 }
 
-.site-name {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #2c2c2c;
+.site-title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
 }
 
-.navbar ul {
-  list-style: none;
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  line-height: 1.2;
+}
+
+.nav-links {
   display: flex;
-  gap: 20px;
+  gap: 16px;
+  align-items: center;
 }
 
-.navbar li a,
-.link-button {
-  color: #333;
-  text-decoration: none;
-  font-weight: 600;
+.nav-button {
   background: none;
   border: none;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 1rem;
+  font-weight: bold;
 }
 
 .login-btn {
-  padding: 8px 16px;
+  padding: 6px 16px;
   background-color: orange;
+  border: none;
   border-radius: 20px;
   color: white;
   font-weight: bold;
-  text-decoration: none;
+  cursor: pointer;
 }
 
 .header-tagline {
-  margin-top: 80px;
-  padding: 20px 40px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .header-tagline h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #b22222;
+  font-size: 28px;
+  color: #fff;
+  font-weight: bold;
 }
 
-.hero-content {
+.hero-section {
   text-align: center;
-  margin-top: 200px;
+  margin-top: 80px;
 }
 
-.hero-heading {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.4;
+.hero-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
 }
 
-.cta-buttons {
-  margin-top: 30px;
+.hero-buttons {
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -100,27 +110,26 @@
 
 .book-btn {
   padding: 12px 24px;
-  background-color: #ffa500;
-  color: white;
+  background-color: #ff6600;
   border: none;
-  font-size: 1rem;
+  color: white;
   font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
 }
 
 .meet-link {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: bold;
   color: black;
   text-decoration: none;
-  padding: 12px 0;
+  align-self: center;
 }
 
 .footer {
-  margin-top: auto;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #222;
+  padding: 30px;
   text-align: center;
   color: white;
+  margin-top: 100px;
 }
