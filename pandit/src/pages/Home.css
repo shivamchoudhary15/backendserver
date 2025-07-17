@@ -86,7 +86,7 @@
   font-weight: bold;
   line-height: 1.4;
   margin-bottom: 10px;
-  color:black;
+  color: black;
 }
 
 .sub-heading {
@@ -122,6 +122,34 @@
   font-size: 16px;
   font-weight: bold;
   color: black;
+}
+
+.about-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.about-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.about-item {
+  background-color: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  text-align: center;
+}
+
+.about-item img {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
 }
 
 .pooja-section,
