@@ -122,84 +122,74 @@ body {
   margin-top: 20px;
 }
 
-/* Flower Layout - About Section */
 .about-section {
-  padding: 60px 20px;
+  padding: 80px 20px;
+  background-color: #fffefb;
   text-align: center;
-  background-color: #fff8f0;
 }
 
-.about-section h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.about-section p {
+.section-title {
+  font-size: 2.5rem;
+  color: #ff6600;
   margin-bottom: 40px;
-  color: #666;
+  font-weight: bold;
 }
 
-.flower-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  margin: 0 auto;
+.about-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
 }
 
-.petal {
-  position: absolute;
+.about-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1;
+  min-width: 250px;
+}
+
+.feature {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: 500;
-  font-size: 14px;
+  padding: 10px;
+}
+
+.feature img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.feature h3 {
+  font-size: 1.3rem;
   color: #333;
+  margin: 5px 0;
 }
 
-.petal span {
-  margin-top: 6px;
+.feature p {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  max-width: 200px;
 }
 
-.icon-circle {
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+.logo-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.icon-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.logo-center img {
+  width: 160px;
+  height: auto;
 }
 
-/* Positions */
-.petal.top        { top: 0; left: 50%; transform: translate(-50%, 0); }
-.petal.top-right  { top: 15%; left: 85%; transform: translate(-50%, -50%); }
-.petal.bottom-right { bottom: 15%; left: 85%; transform: translate(-50%, 50%); }
-.petal.bottom     { bottom: 0; left: 50%; transform: translate(-50%, 0); }
-.petal.bottom-left  { bottom: 15%; left: 15%; transform: translate(-50%, 50%); }
-.petal.top-left     { top: 15%; left: 15%; transform: translate(-50%, -50%); }
 
-.center-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
 
-.center-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* Get Started Button */
 .get-started-btn {
@@ -211,6 +201,9 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
+
+
+
 
 
 /* Services */
