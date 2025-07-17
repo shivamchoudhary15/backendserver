@@ -144,6 +144,23 @@ body {
   margin-bottom: 5px;
 }
 
+.about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.about-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d67f2a;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+
 .portrait img {
   width: 180px;
   height: 180px;
