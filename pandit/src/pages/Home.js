@@ -63,6 +63,44 @@ const Home = () => {
         </div>
       </div>
 
+      {/* About Shubhkarya Section */}
+      <section id="about" className="about-section">
+        <h2>About Shubhkarya</h2>
+        <p>Discover the power of personalized puja services with Shubhkarya</p>
+        <div className="about-icons">
+          <div className="about-item">
+            <img src="/icons/exclusive-gifts.png" alt="Exclusive Gifts Icon" />
+            <h3>Exclusive Gifts</h3>
+            <p>Treat yourself or your loved ones with our carefully curated</p>
+          </div>
+          <div className="about-item">
+            <img src="/icons/serene-offerings.png" alt="Serene Offerings Icon" />
+            <h3>Serene Offerings</h3>
+            <p>Immerse yourself in the beauty of nature's blessings</p>
+          </div>
+          <div className="about-item">
+            <img src="/icons/timeless-tradition.png" alt="Timeless Tradition Icon" />
+            <h3>Timeless Tradition</h3>
+            <p>Embrace the timeless wisdom of Vedic practices with Shubhkarya</p>
+          </div>
+          <div className="about-item">
+            <img src="/icons/trusted-partners.png" alt="Trusted Partners Icon" />
+            <h3>Trusted Partners</h3>
+            <p>Shubhkarya collaborates with renowned organizations and</p>
+          </div>
+          <div className="about-item">
+            <img src="/icons/inspiring-profiles.png" alt="Inspiring Profiles Icon" />
+            <h3>Inspiring Profiles</h3>
+            <p>Discover the remarkable stories and expertise of our Shubhkarya</p>
+          </div>
+          <div className="about-item">
+            <img src="/icons/personalized.png" alt="Personalized Icon" />
+            <h3>Personalized</h3>
+            <p>Let our experienced pandits be your trusted companions</p>
+          </div>
+        </div>
+      </section>
+
       {/* Pooja Section */}
       <section id="poojas" className="pooja-section">
         <h2>Explore Services</h2>
