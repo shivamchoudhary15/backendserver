@@ -69,31 +69,64 @@ const Home = () => {
         </div>
       </header>
 
-      <section id="about" className="about-section">
-        <h2>About Shubhkarya</h2>
-        <p>Discover the power of personalized puja services with Shubhkarya.</p>
-        <div className="about-columns">
-          <div className="about-column">
-            <h4>Exclusive Gifts</h4>
-            <p>Treat your loved ones with carefully curated spiritual gifts.</p>
-            <h4>Serene Offerings</h4>
-            <p>Immerse yourself in peaceful Vedic rituals guided by experts.</p>
-            <h4>Timeless Traditions</h4>
-            <p>Embrace centuries of wisdom and sacred practice.</p>
-          </div>
-          <div className="portrait">
-            <img src="/images/subh.png" alt="Pandit Illustration" />
-          </div>
-          <div className="about-column">
-            <h4>Trusted Partners</h4>
-            <p>Collaborations with reputed spiritual organizations.</p>
-            <h4>Inspiring Profiles</h4>
-            <p>Explore verified and experienced Pandits across regions.</p>
-            <h4>Personalized</h4>
-            <p>Tailored rituals to meet your spiritual needs.</p>
-          </div>
+<section id="about" className="about-section">
+  <h2>About Shubhkarya</h2>
+  <p>Discover the power of personalized puja services with Shubhkarya.</p>
+  <div className="about-columns">
+    <div className="about-column">
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Exclusive Gifts</h4>
+          <p>Treat your loved ones with carefully curated spiritual gifts.</p>
         </div>
-      </section>
+      </div>
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Serene Offerings</h4>
+          <p>Immerse yourself in peaceful Vedic rituals guided by experts.</p>
+        </div>
+      </div>
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Timeless Traditions</h4>
+          <p>Embrace centuries of wisdom and sacred practice.</p>
+        </div>
+      </div>
+    </div>
+
+    <div className="portrait">
+      <img src="/images/subh.png" alt="Pandit Illustration" />
+    </div>
+
+    <div className="about-column">
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Trusted Partners</h4>
+          <p>Collaborations with reputed spiritual organizations.</p>
+        </div>
+      </div>
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Inspiring Profiles</h4>
+          <p>Explore verified and experienced Pandits across regions.</p>
+        </div>
+      </div>
+      <div className="about-item">
+        <img src="/images/subh.png" alt="Icon" className="about-icon" />
+        <div>
+          <h4>Personalized</h4>
+          <p>Tailored rituals to meet your spiritual needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <section id="order" className="services-section">
         <h2>Our Services</h2>
