@@ -127,11 +127,11 @@ function Dashboard() {
     <div className="dashboard-root">
       {/* NAVBAR */}
       <nav
-        className={`navbar-main${isNavbarOpen ? ' open' : ''}`}
+        className={`navbar-main glass-navbar${isNavbarOpen ? ' open' : ''}`}
         onMouseEnter={handleNavMouseEnter}
         onMouseLeave={handleNavMouseLeave}
       >
-        <div className="navbar-brand">
+        <div className="navbar-brand neon-text">
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span>Shubhkarya</span>
           <span className="navbar-expand-icon">{isNavbarOpen ? '▲' : '▼'}</span>
@@ -164,7 +164,7 @@ function Dashboard() {
 
       {/* WELCOME BANNER */}
       {user && (
-        <div className="welcome-banner" data-aos="fade">
+        <div className="welcome-banner nice-glass" data-aos="fade">
           <h2>
             Welcome, <span>{user.name}</span>!
           </h2>
@@ -173,22 +173,22 @@ function Dashboard() {
       )}
 
       {/* HERO + SLIDER */}
-      <section className="dashboard-hero" id="dashboard" data-aos="fade-down">
+      <section className="dashboard-hero gradient-hero" id="dashboard" data-aos="fade-down">
         <div className="hero-main-row">
           <div>
-            <h1 className="hero-title">
+            <h1 className="hero-title hero-text-glow">
               Book Trusted Pandits with <span>Shubhkarya</span>
             </h1>
             <p className="hero-desc">
               Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
-            <button className="hero-book-btn" onClick={()=>navigate('/booking')}>
+            <button className="hero-book-btn glow-btn" onClick={()=>navigate('/booking')}>
               <span role="img" aria-label="puja">🛕</span> Book New Puja
             </button>
           </div>
           <div className="hero-slider slider-glow" data-aos="zoom-in">
-            <div className="slider-frame">
+            <div className="slider-frame shadow-pop">
               <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Shubhkarya slider" />
               <div className="slider-dots">
                 {sliderImages.map((_,i) => (
@@ -203,7 +203,7 @@ function Dashboard() {
       {/* HIGHLIGHTS */}
       <section id="highlight" className="highlight-section" data-aos="fade-up">
         <div
-          className="highlight-card improved-card theme1"
+          className="highlight-card improved-card glass-highlight theme1"
           style={{ backgroundImage: "url('/images/india.jpeg')" }}
         >
           <div className="highlight-overlay" />
@@ -214,7 +214,7 @@ function Dashboard() {
           </div>
         </div>
         <div
-          className="highlight-card improved-card theme2"
+          className="highlight-card improved-card glass-highlight theme2"
           style={{ backgroundImage: "url('/images/kalash.jpeg')" }}
         >
           <div className="highlight-overlay" />
@@ -225,7 +225,7 @@ function Dashboard() {
           </div>
         </div>
         <div
-          className="highlight-card improved-card theme3"
+          className="highlight-card improved-card glass-highlight theme3"
           style={{ backgroundImage: "url('/images/havan.jpeg')" }}
         >
           <div className="highlight-overlay" />
@@ -238,34 +238,34 @@ function Dashboard() {
       </section>
 
       {/* Why Choose Shubhkarya */}
-      <section className="why-shubhkarya-section" data-aos="fade-up">
+      <section className="why-shubhkarya-section nice-glass" data-aos="fade-up">
         <h3>
           Why Choose <span className="brand-accent">Shubhkarya?</span>
         </h3>
         <div className="why-cards-row">
-          <div className="why-card">
-            <div className="why-icon">✅</div>
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">✅</div>
             <div>
               <h5>Verified Pandits</h5>
               <p>Background-checked and reviewed experts at your service.</p>
             </div>
           </div>
-          <div className="why-card">
-            <div className="why-icon">🌏</div>
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">🌏</div>
             <div>
               <h5>Pan India Support</h5>
               <p>Metro & local experts available in all states.</p>
             </div>
           </div>
-          <div className="why-card">
-            <div className="why-icon">💰</div>
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">💰</div>
             <div>
               <h5>Transparent Pricing</h5>
               <p>No hidden charges, clear billing, and fair policies.</p>
             </div>
           </div>
-          <div className="why-card">
-            <div className="why-icon">🔆</div>
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">🔆</div>
             <div>
               <h5>Choose by Tradition</h5>
               <p>Select by tradition, date, or preferred language.</p>
@@ -273,7 +273,7 @@ function Dashboard() {
           </div>
         </div>
         {/* Festive Offer */}
-        <div className="promo-announcement improved-offer animated-pop-offer">
+        <div className="promo-announcement improved-offer animated-pop-offer shadow-pop offer-gradient-glass">
           <img src="/images/gift.png" alt="Offer" className="promo-gift" />
           <div className="offer-content">
             <b>Festive Offer!</b>
@@ -298,12 +298,12 @@ function Dashboard() {
           {filteredPandits.slice(0, visibleCount).map(p => (
             <motion.div
               key={p._id}
-              className="pandit-card improved-pandit-card glossy"
+              className="pandit-card improved-pandit-card glossy glass-highlight neon-card shadow-pop"
               data-aos="zoom-in"
               whileHover={{ y: -4, scale: 1.04 }}
             >
               <div
-                className="pandit-avatar"
+                className="pandit-avatar glass"
                 style={{
                   backgroundImage: `url(${p.profile_photo_url || '/images/i1.jpeg'})`
                 }}
@@ -313,7 +313,7 @@ function Dashboard() {
                 <span className="pandit-avatar-initial">{(p.name || '').slice(0,1)}</span>
               </div>
               <div className="pandit-main-info">
-                <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>
+                <h4 className="pandit-name hero-text-glow" onClick={() => toggleExpand(p._id)}>
                   <span className="pandit-emoji" aria-label="pandit">🧑‍🦳</span> {p.name}
                 </h4>
                 <div className="pandit-city">{p.city}</div>
@@ -341,7 +341,7 @@ function Dashboard() {
         </div>
         {filteredPandits.length > 3 && (
           <div className="toggle-btn">
-            <button onClick={() => setVisibleCount(v => v === 3 ? filteredPandits.length : 3)} className="custom-btn">
+            <button onClick={() => setVisibleCount(v => v === 3 ? filteredPandits.length : 3)} className="custom-btn glow-btn">
               {visibleCount === 3 ? 'Show More' : 'Show Less'}
             </button>
           </div>
@@ -349,7 +349,7 @@ function Dashboard() {
       </section>
 
       {/* --- Improved Bookings History --- */}
-      <section id="booking" ref={bookingsRef} className="bookings-section" data-aos="fade-up">
+      <section id="booking" ref={bookingsRef} className="bookings-section blur-bg" data-aos="fade-up">
         <h3 className="section-heading">Your Bookings</h3>
         <div className="booking-list">
           {filteredBookings.length === 0 ? (
@@ -358,8 +358,8 @@ function Dashboard() {
             filteredBookings.map(b => (
               <motion.div
                 key={b._id}
-                className="booking-card card-glossy"
-                whileHover={{ scale: 1.032, boxShadow: '0 6px 22px #5ec4ee51' }}
+                className="booking-card card-glossy glass neon-card shadow-pop"
+                whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
               >
                 <div className="booking-card-left">
                   <span className="booking-icon">📅</span>
@@ -384,12 +384,12 @@ function Dashboard() {
       </section>
 
       {/* --- Improved Reviews Section --- */}
-      <section id="review" ref={reviewsRef} className="review-section" data-aos="fade-up">
-        <h3 className="section-heading">Submit a Review</h3>
+      <section id="review" ref={reviewsRef} className="review-section glass-review" data-aos="fade-up">
+        <h3 className="section-heading neon-text">Submit a Review</h3>
         {reviewMessage && (
           <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
         )}
-        <form onSubmit={handleReviewSubmit} className="review-form card-glossy">
+        <form onSubmit={handleReviewSubmit} className="review-form card-glossy glass nice-glass">
           <div className="review-row">
             <input type="text" value={review.name} disabled className="review-input" />
             <input
@@ -410,7 +410,7 @@ function Dashboard() {
             className="review-input review-textarea"
             required
           />
-          <button type="submit" className="custom-btn">Submit Review 💬</button>
+          <button type="submit" className="custom-btn glow-btn">Submit Review 💬</button>
         </form>
       </section>
     </div>
