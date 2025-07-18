@@ -40,19 +40,24 @@ const Login = () => {
   return (
     <div className="pandit-login-bg">
       <div className="pandit-login-container">
-        {/* Left: Background/Imagery with optional mascot */}
+        {/* Left side with background image */}
         <div
           className="pandit-login-left"
           style={{
-            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url('/i3.jpeg')`,
+            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url('/images/i3.jpeg')`,
           }}
         >
           <div className="pandit-login-overlay">
             <img
-              src="/i1.jpeg"
+              src="/images/i1.jpeg"
               alt="Friendly Pandit Mascot"
               className="pandit-mascot-img"
-              style={{ width: 120, borderRadius: '50%', marginBottom: 18, boxShadow: '0 2px 12px #a97f55' }}
+              style={{
+                width: 120,
+                borderRadius: '50%',
+                marginBottom: 18,
+                boxShadow: '0 2px 12px #a97f55'
+              }}
             />
             <h2>Experience Sacred Service</h2>
             <p>
@@ -67,17 +72,17 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Right: Login Card */}
+        {/* Right side login form */}
         <div className="pandit-login-right">
           <div className="pandit-login-card">
-            {/* Logo */}
             <img
-              src="/subh.png"
+              src="/images/subh.png"
               alt="Pandit Booking Logo"
               className="pandit-login-logo"
             />
             <div className="pandit-login-tagline">Your Path to Sacred Beginnings</div>
             <h3 className="pandit-login-welcome">Welcome Back</h3>
+
             <button className="pandit-google-btn" disabled>
               <span className="google-icon">🔵</span> Sign in with Google
             </button>
@@ -115,12 +120,10 @@ const Login = () => {
 
             <div className="pandit-login-link">
               <span>
-                Don’t have an account?{' '}
-                <Link to="/signup">Join as Devotee</Link>
+                Don’t have an account? <Link to="/signup">Join as Devotee</Link>
               </span>
               <span>
-                Are you a Pandit?{' '}
-                <Link to="/signup/pandit">Register as Pandit</Link>
+                Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
               </span>
             </div>
           </div>
