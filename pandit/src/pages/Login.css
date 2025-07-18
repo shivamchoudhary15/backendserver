@@ -1,17 +1,21 @@
+/* Container: full screen split layout */
 .login-container {
   display: flex;
   height: 100vh;
   width: 100%;
-  margin: 0;
   font-family: 'Segoe UI', sans-serif;
+  margin: 0;
 }
 
-/* Left side image background (set via JS inline style) */
+/* Left background image section */
 .login-left {
   flex: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* Right side form */
+/* Right side: Form */
 .login-right {
   flex: 1;
   display: flex;
@@ -20,17 +24,18 @@
   background-color: #fff8f0;
 }
 
-/* Form box */
+/* Login form box */
 .login-form-box {
   width: 100%;
   max-width: 400px;
-  padding: 40px;
   background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
   text-align: center;
+  border-radius: 10px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo image */
+/* Logo */
 .login-logo {
   width: 130px;
   height: 130px;
@@ -49,7 +54,7 @@
   margin-bottom: 20px;
 }
 
-/* Form */
+/* Form layout */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -69,9 +74,14 @@
   border: 1px solid #ccc;
   font-size: 15px;
   outline: none;
+  transition: border 0.3s ease;
 }
 
-/* Button styling */
+.login-form input:focus {
+  border-color: #ff9900;
+}
+
+/* Submit button */
 .login-button {
   padding: 12px;
   background: linear-gradient(to right, #d2691e, #ff9900);
@@ -81,7 +91,7 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .login-button:disabled {
@@ -93,16 +103,17 @@
   opacity: 0.9;
 }
 
-/* Error */
+/* Error message box */
 .login-error {
   background: #ffe6e6;
   color: #d8000c;
   padding: 10px;
   border-radius: 6px;
   font-weight: bold;
+  font-size: 14px;
 }
 
-/* Links */
+/* Navigation links */
 .login-link {
   font-size: 14px;
   margin-top: 15px;
@@ -117,9 +128,14 @@
   color: #8B0000;
   font-weight: bold;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-/* Responsive */
+.login-link a:hover {
+  color: #d2691e;
+}
+
+/* Responsive design */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
