@@ -152,7 +152,7 @@ export default function PanditSignup() {
     <div style={backgroundStyle}>
       <form onSubmit={handleSubmit} className="signup-form-modern">
         <img src="/images/subh.png" className="signup-logo-modern" alt="Pandit Portal Logo" />
-        <h2>Pandit Signup <span role="img" aria-label="pandit">🕉️</span></h2>
+        <h2>Pandit ji Signup <span role="img" aria-label="pandit">🕉️</span></h2>
         <div className="step-indicator-modern">
           {[1, 2, 3].map(n => (
             <span key={n} className={`step-dot${step === n ? ' active' : ''}`}>{step === n ? '🔸' : '•'}</span>
