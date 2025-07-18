@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import './Login.css';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
