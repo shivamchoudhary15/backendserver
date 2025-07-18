@@ -9,7 +9,7 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const bgImage = "/images/i2.jpeg";
+const bgImage = "/images/sat.jpeg";
 
 const stepTitles = [
   "Choose Service & Pandit",
