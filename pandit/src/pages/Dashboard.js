@@ -28,7 +28,6 @@ function Dashboard() {
   const [search, setSearch] = useState('');
   const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
-  const [expandedPandits, setExpandedPandits] = useState({});
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const sliderImages = [
@@ -57,7 +56,6 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Carousel slide auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex(idx => (idx + 1) % sliderImages.length);
@@ -65,11 +63,9 @@ function Dashboard() {
     return () => clearInterval(interval);
   }, [sliderImages.length]);
 
-  // Navbar Hover
   const handleNavMouseEnter = () => setNavbarOpen(true);
   const handleNavMouseLeave = () => setNavbarOpen(false);
 
-  // Actions
   const handleNavClick = (item) => {
     if (item.logout) {
       localStorage.clear();
@@ -118,13 +114,6 @@ function Dashboard() {
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.city?.toLowerCase().includes(search.toLowerCase())
   );
-
-  const toggleExpand = (id) => {
-    setExpandedPandits(prev => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   return (
     <div className="dashboard-root">
@@ -240,6 +229,23 @@ function Dashboard() {
         </div>
       </section>
 
+      {/* FESTIVE OFFER BEAUTIFUL CARD */}
+      <div className="promo-offer-card">
+        <div className="offer-ribbon">Festival Special</div>
+        <div className="offer-icon">
+          <img src="/images/gift.png" alt="Festive Offer" />
+        </div>
+        <div className="offer-details">
+          <h4>Festive Offer!</h4>
+          <p>
+            <span className="offer-big">₹50 OFF</span> your first puja
+          </p>
+          <div className="offer-code-box">
+            Use code: <span>SHUBH50</span>
+          </div>
+        </div>
+      </div>
+
       {/* Why Choose Shubhkarya */}
       <section className="why-shubhkarya-section" data-aos="fade-up">
         <h3>
@@ -275,16 +281,6 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        {/* Festive Offer */}
-        <div className="promo-announcement improved-offer animated-pop-offer">
-          <img src="/images/gift.png" alt="Offer" className="promo-gift" />
-          <div className="offer-content">
-            <b>Festive Offer!</b>
-            <span>
-              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
-            </span>
-          </div>
-        </div>
       </section>
 
       {/* Pandit Showcase */}
@@ -297,26 +293,30 @@ function Dashboard() {
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-        <div className="pandit-list">
+        <div className="pandit-grid">
           {filteredPandits.slice(0, visibleCount).map(p => (
             <motion.div
               key={p._id}
-              className="pandit-card improved-pandit-card"
+              className="pandit-card fancy-pandit-card"
               data-aos="zoom-in"
-              whileHover={{ y: -4, scale: 1.03 }}
+              whileHover={{ y: -4, scale: 1.05 }}
             >
-              <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>
-                <span role="img" aria-label="pandit">🧑‍🦳</span> {p.name}
-              </h4>
-              {expandedPandits[p._id] && (
-                <div className="pandit-details">
-                  <img src={p.profile_photo_url || '/images/i1.jpeg'} alt={p.name} />
-                  <p><strong>City:</strong> {p.city}</p>
-                  <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
-                  <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
-                  <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
+              <img className="pandit-avatar" src={p.profile_photo_url || '/images/i1.jpeg'} alt={p.name} />
+              <div className="pandit-main">
+                <h4>{p.name}</h4>
+                <div className="pandit-tags">
+                  <span className="pandit-tag location">{p.city}</span>
+                  <span className="pandit-tag experience">{p.experienceYears} yrs</span>
                 </div>
-              )}
+                <div className="pandit-tags">
+                  {p.languages?.map((lang) => (
+                    <span key={lang} className="pandit-tag lang">{lang}</span>
+                  ))}
+                  {p.specialties?.slice(0,2).map((sp) => (
+                    <span key={sp} className="pandit-tag specialty">{sp}</span>
+                  ))}
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -332,22 +332,27 @@ function Dashboard() {
       {/* Bookings History */}
       <section id="booking" ref={bookingsRef} className="bookings-section" data-aos="fade-up">
         <h3>Your Bookings</h3>
-        <div className="booking-list">
+        <div className="booking-grid">
           {filteredBookings.length === 0 ? (
             <p>No matching bookings found.</p>
           ) : (
             filteredBookings.map(b => (
               <motion.div
                 key={b._id}
-                className="booking-card"
+                className="booking-card new-booking-card"
                 whileHover={{ scale: 1.025, boxShadow: '0 4px 24px #42a5f580' }}
               >
-                <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
-                <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
-                <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
-                <p><strong>Time:</strong> {b.puja_time}</p>
-                <p><strong>Location:</strong> {b.location}</p>
-                <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+                <div className="booking-header">
+                  <span className="booking-icon">📅</span>
+                  <span className={`status-badge ${getStatusClass(b.status)}`}>{b.status}</span>
+                </div>
+                <div className="booking-body">
+                  <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
+                  <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
+                  <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
+                  <p><strong>Time:</strong> {b.puja_time}</p>
+                  <p><strong>Location:</strong> {b.location}</p>
+                </div>
               </motion.div>
             ))
           )}
@@ -358,9 +363,9 @@ function Dashboard() {
       <section id="review" ref={reviewsRef} className="review-section" data-aos="fade-up">
         <h3>Submit a Review</h3>
         {reviewMessage && (
-          <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
+          <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message review-message'}>{reviewMessage}</p>
         )}
-        <form onSubmit={handleReviewSubmit} className="review-form">
+        <form onSubmit={handleReviewSubmit} className="review-form review-card">
           <input type="text" value={review.name} disabled />
           <input
             type="number"
