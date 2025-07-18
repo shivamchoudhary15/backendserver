@@ -9,7 +9,7 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const bgImage = "/images/luxi.jpeg";
+const bgImage = "/images/i2.jpeg";
 
 const stepTitles = [
   "Choose Service & Pandit",
@@ -220,17 +220,15 @@ function Booking() {
         >
           Book Pandit Ji for Your Puja
         </motion.h2>
-        <div className="steps-nav">
-          {[1,2,3].map((n, idx) => (
+        <div className="steps-nav only-box">
+          {stepTitles.map((title, idx) => (
             <motion.div
-              key={n}
-              className={`steps-circle ${step === n ? 'active' : ''} ${step > n ? 'done' : ''}`}
-              animate={{ scale: step === n ? 1.07 : 1 }}
+              key={title}
+              className={`steps-circle onlybox ${step === idx+1 ? 'active' : ''}`}
+              animate={{ scale: step === idx+1 ? 1.07 : 1 }}
               transition={{ type: "spring", stiffness: 220 }}
             >
-              <span className="step-index">{n < 10 ? `0${n}` : n}</span>
-              <span className="step-label">{stepTitles[idx]}</span>
-              {step > n && <span className="checkmark">&#10003;</span>}
+              <span className="step-label step-label-box">{title}</span>
             </motion.div>
           ))}
         </div>
