@@ -44,12 +44,12 @@ const Login = () => {
         <div
           className="pandit-login-left"
           style={{
-            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url('/pandit_bg.jpg')`,
+            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url('/i3.jpeg')`,
           }}
         >
           <div className="pandit-login-overlay">
             <img
-              src="/mascot_pandit.png"
+              src="/i1.jpeg"
               alt="Friendly Pandit Mascot"
               className="pandit-mascot-img"
               style={{ width: 120, borderRadius: '50%', marginBottom: 18, boxShadow: '0 2px 12px #a97f55' }}
@@ -72,7 +72,7 @@ const Login = () => {
           <div className="pandit-login-card">
             {/* Logo */}
             <img
-              src="/logo_pandit.png"
+              src="/subh.png"
               alt="Pandit Booking Logo"
               className="pandit-login-logo"
             />
