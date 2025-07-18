@@ -1,108 +1,63 @@
-.pandit-login-bg {
-  min-height: 100vh;
-  width: 100vw;
-  background: linear-gradient(120deg, #fae083 0%, #dfa657 40%, #fff4d0 100%);
-  display: flex; justify-content: center; align-items: center;
-}
-.pandit-login-container {
-  display: flex; width: 1000px; max-width: 98vw;
-  background: rgba(255,255,255,0.13); border-radius: 28px;
-  box-shadow: 0 17px 62px 0 #9e560726, 0 2.5px 12px #fffd18aa;
-  overflow: hidden; transform-style: preserve-3d;
-}
-.pandit-login-left {
-  flex: 1 1 50%; min-width: 330px; min-height: 500px;
-  background-size: cover; background-position: center;
-  display: flex; align-items: flex-end; position: relative;
-}
-.pandit-login-overlay {
-  background: rgba(232, 113, 38, 0.18); color: #faf7eb;
-  padding: 38px 26px; width: 100%; font-family: 'Segoe UI', 'Noto Serif', serif; box-sizing: border-box;
-  border-top-left-radius: 18px;
-  box-shadow: 0 1.5px 12px #8b4a0b39;
-  backdrop-filter: blur(1px);
-  transform: translateZ(20px);
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-.pandit-mascot-img {
-  display: block; margin: 0 auto 12px auto; border: 4px solid #fffbe9; z-index: 2;
+body {
+  margin: 0; padding: 0; font-family: 'Inter', sans-serif;
 }
-.pandit-login-overlay h2 {
-  font-size: 2.23rem; color: #fff8e0;
-  font-family: 'Noto Serif', serif; font-weight: bold;
-  margin-bottom: 0.56em;
+.glass-form {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 64px 0 #07021e44, 0 2px 10px #ffffff18;
+  backdrop-filter: blur(22px);
+  border-radius: 25px;
+  padding: 32px 32px 18px 32px;
+  max-width: 480px;
+  width: 100%;
+  display: flex; flex-direction: column; gap: 17px;
+  color: white;
+  border: 1.5px solid #fff3;
+  transform-style: preserve-3d;
 }
-.pandit-login-overlay p {
-  font-size: 1.08rem; color: #fae083; margin-bottom: 1em;
+.glass-form h2, .signup-success-title { text-align: center; font-size: 28px; font-weight: 700; }
+.step-indicator { text-align: center; font-size: 14px; color: #e0e0e0; }
+.glass-form input { padding: 14px; font-size: 16px; border-radius: 12px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28); color: #fff; outline: none; transition: all 0.3s; box-shadow: 0 1.5px 6px #11590116;}
+.glass-form input::placeholder { color: rgba(255,255,255,0.8); }
+.glass-form input:focus { border-color: #ffd369; background: rgba(255,255,255,0.24); box-shadow: 0 0 7px #ffd36985;}
+.primary-btn {
+  padding: 14px; font-size: 16px;
+  background: linear-gradient(120deg,#ffb43a,#ed7012 64%);
+  box-shadow: 0 2.5px 10px #ef910572, 0 1px 3px #fffd 16%;
+  color: #fff; border: none; border-radius: 10px; cursor: pointer;
+  font-weight: 600; transition: transform .2s, box-shadow .2s;
 }
-.pandit-login-usp {
-  font-size: 1rem; margin-top: 0.6em; color: #fff7d7;
-  list-style: none; padding: 0;
+.primary-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 9px 30px #e67d1ba8;}
+.secondary-btn {
+  padding: 14px; font-size: 16px;
+  background: linear-gradient(120deg,#f6e56a, #ffa73e 85%);
+  color: #471d05; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;
+  box-shadow: 0 2.5px 10px #ffec9082, 0 1px 3px #fff8 9%;
+  margin-right: 14px; transition: transform .18s;
 }
-.pandit-login-usp li {
-  margin-bottom: 0.5em; font-family: 'Segoe UI', sans-serif;
+.secondary-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: 0 9px 24px #ffc06086;}
+.step-buttons { display: flex; justify-content: space-between; width: 100%; margin-top: 3px;}
+.animated-step { display: flex; flex-direction: column; gap: 14px;}
+.signup-logo {
+  width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 10px auto; display: block;
+  background: #fff; padding: 8px; box-shadow: 0 2px 16px 0 #e9be5560;
+  border: 3.5px solid #fdda62;
+  transform: translateZ(18px);
 }
-
-/* Login Card Styling */
-.pandit-login-right { flex: 1 1 50%; display: flex; justify-content: center; align-items: center; background: #fff8f0; }
-.pandit-login-card {
-  width: 100%; max-width: 400px; padding: 38px 34px 34px 34px; background: rgba(255,255,255,0.99);
-  border-radius: 22px; box-shadow: 0 6px 48px 0 #f8c04226, 0 2px 10px #fec66155;
-  display: flex; flex-direction: column; align-items: center; transform: translateZ(17px);
+.signup-success-logo {
+  width: 94px; height: 94px; border-radius: 50%; background: #fff;
+  padding: 13px; box-shadow: 0 6px 22px 0 #fff9bb66; margin: 0 auto 1.2em;
 }
-.pandit-login-logo {
-  width: 87px; height: 87px; border-radius: 50%; border: 4px solid gold;
-  object-fit: cover; box-shadow: 0 3px 13px 0 #ffefb830; background: #fffdfa;
-  margin-bottom: 8px;
-}
-.pandit-login-tagline {
-  font-size: 1.09rem; color: #d2691e; margin-bottom: 20px;
-  font-style: italic; letter-spacing: .16px;
-}
-.pandit-login-welcome { font-size: 1.41rem; font-weight: 700; margin-bottom: 17px; color: #442b05;}
-.pandit-google-btn {
-  width: 100%; padding: 12px; border-radius: 23px; border: none;
-  background: #fffdfa; color: #444; font-weight: 600;
-  box-shadow: 0 2px 8px #ffb63317; margin-bottom: 18px; cursor: not-allowed; font-size: 1rem;
-  display: flex; gap: 6px; align-items: center; justify-content: center;
-  transition: background .18s;
-}
-.pandit-google-btn .google-icon { font-size: 1.19em; }
-.pandit-or-divider {
-  width: 90%; margin: 12px 0; text-align: center; color: #be7833; font-size: 13.5px; letter-spacing: .17em;
-  border-bottom: 1px dotted #faf1be; line-height: 0.1em; font-family: inherit;
-}
-.pandit-login-form { width: 100%; display: flex; flex-direction: column; gap: 13px; }
-.pandit-login-form label {
-  text-align: left; font-weight: 600; color: #ba5509; font-size: 14.4px; margin-bottom: 3px;
-}
-.pandit-login-form input {
-  padding: 10px 13px; border-radius: 7px; border: 1px solid #e1d7ca;
-  font-size: 1rem; background: #fffdfa; outline: none; transition: border 0.2s;
-  box-shadow: 0 1.5px 8px #eeca649c;
-}
-.pandit-login-form input:focus { border-color: #f5b343; background: #fff7ea;}
-.pandit-login-btn {
-  padding: 12px 0; margin-top: 11px; width: 100%; border: none; border-radius: 17px;
-  background: linear-gradient(97deg, #d2691e 10%, #fae083 100%);
-  color: #502710; font-weight: bold; font-size: 1.12rem; cursor: pointer; transition: opacity 0.2s;
-  box-shadow: 0 6px 24px #f6e07235;
-}
-.pandit-login-btn:disabled { opacity: 0.57; cursor: not-allowed;}
-.pandit-login-error {
-  background: #ffe6e6; color: #d8000c; padding: 8px 10px; border-radius: 5.5px; font-weight: 500; margin-bottom: 2px; font-size: 14.2px;
-}
-.pandit-login-link {
-  margin-top: 17px; font-size: 15px; color: #62461b; text-align: center; display: flex; flex-direction: column; gap: 5px;
-}
-.pandit-login-link a { color: #ba5c09; font-weight: bold; text-decoration: none; transition: color 0.19s;}
-.pandit-login-link a:hover { color: #b39d5e;}
-@media (max-width: 900px) {
-  .pandit-login-container { flex-direction: column; width: 99vw; min-width: 1px;}
-  .pandit-login-left { display: none; }
-  .pandit-login-right { min-width: unset;}
-}
-@media (max-width: 530px) {
-  .pandit-login-card { padding: 12px 3px 17px 3px; min-width: unset; width: 100%; max-width: 100vw;}
-  .pandit-login-logo { width: 54px; height: 54px;}
+.success-anim { text-align: center; margin: 12px 0; }
+.signup-success-msg { text-align: center; color: #fffae7; margin-top: 18px;}
+.login-link { text-align: center; font-size: 16px; margin-top: 18px; color: #eee; }
+.input-group { display: flex; flex-direction: column; position: relative; gap: 4px; }
+.signup-error { color: #ffd369; font-size: 13px; font-weight: 500; margin-left: 4px; margin-top: 2px;}
+.api-error { background: #b61919cc; padding: 7px 13px; border-radius: 7px; margin-top: 10px;}
+.pw-wrapper { position: relative; display: flex; align-items: center; }
+.pw-toggle { position: absolute; right: 13px; cursor: pointer; font-size: 1.09em; user-select: none; color: #fee56e; top: 50%; transform: translateY(-50%);}
+@media (max-width: 600px) {
+  .glass-form { padding: 14px 4px; max-width: 99vw; border-radius: 11px;}
+  .signup-logo, .signup-success-logo { width: 54px; height: 54px; }
 }
