@@ -49,13 +49,6 @@ body {
   width: 94px; height: 94px; border-radius: 50%; background: #fff;
   padding: 13px; box-shadow: 0 6px 22px 0 #fff9bb66; margin: 0 auto 1.2em;
 }
-
-
-.signup-error {
-  color: red;
-  font-size: 13px;
-}
-
 .success-anim { text-align: center; margin: 12px 0; }
 .signup-success-msg { text-align: center; color: #fffae7; margin-top: 18px;}
 .login-link { text-align: center; font-size: 16px; margin-top: 18px; color: #eee; }
@@ -68,4 +61,3 @@ body {
   .glass-form { padding: 14px 4px; max-width: 99vw; border-radius: 11px;}
   .signup-logo, .signup-success-logo { width: 54px; height: 54px; }
 }
-
