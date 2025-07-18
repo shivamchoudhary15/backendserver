@@ -16,37 +16,41 @@ function Dashboard() {
   const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
   const [expandedPandits, setExpandedPandits] = useState({});
+  const [activeSidebar, setActiveSidebar] = useState('dashboard');
+  const [announcement, setAnnouncement] = useState(
+    "Get ₹50 OFF your first puja booking! Use code: SHUBH50"
+  );
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
-
     if (!token || !userData) return navigate('/login');
 
     try {
       const parsedUser = JSON.parse(userData);
       if (parsedUser.role === 'admin') return navigate('/admin');
       if (parsedUser.role === 'pandit') return navigate('/pandit/dashboard');
-
       setUser(parsedUser);
       setReview(prev => ({ ...prev, name: parsedUser.name }));
-
       getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data));
       getVerifiedPandits().then(res => setPandits(res.data));
-    } catch (err) {
-      console.error('User parse error:', err);
+    } catch {
       navigate('/login');
     }
   }, [navigate]);
+
+  const handleSidebarClick = (section) => {
+    setActiveSidebar(section);
+    if (section === 'dashboard') window.scrollTo(0, 0);
+    else if (section === 'bookings') bookingsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    else if (section === 'reviews') reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
+    else if (section === 'book') navigate('/booking');
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/home');
   };
-
-  const handleBookingRedirect = () => navigate('/booking');
-  const scrollToBookings = () => bookingsRef.current?.scrollIntoView({ behavior: 'smooth' });
-  const scrollToReviews = () => reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +59,6 @@ function Dashboard() {
       setReviewMessage('Please fill all fields with a rating between 1 and 5.');
       return;
     }
-
     try {
       await createReview(review);
       setReviewMessage('Review submitted!');
@@ -95,23 +98,48 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
-        <h2>Shubhkarya</h2>
-        <button onClick={scrollToBookings}>Bookings</button>
-        <button onClick={scrollToReviews}>Reviews</button>
-        <button onClick={handleBookingRedirect}>Book a Service</button>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        <div className="logo-section">
+          <img src="/images/subh.png" alt="Shubhkarya" className="sidebar-logo"/>
+          <h2>Shubhkarya</h2>
+        </div>
+        <SidebarButton label="Dashboard Home" icon="🏠" active={activeSidebar==="dashboard"} onClick={()=>handleSidebarClick('dashboard')}/>
+        <SidebarButton label="Bookings" icon="📅" pop={!!bookings.length} active={activeSidebar==="bookings"} onClick={()=>handleSidebarClick('bookings')}/>
+        <SidebarButton label="Reviews" icon="💬" active={activeSidebar==="reviews"} onClick={()=>handleSidebarClick('reviews')}/>
+        <SidebarButton label="Book a Service" icon="🛕" highlight onClick={()=>handleSidebarClick('book')}/>
+        <button className="logout-btn" onClick={handleLogout}><span role="img" aria-label="">🚪</span> Logout</button>
+        <div className="sidebar-announcement animated-pop">{announcement}</div>
       </aside>
 
       <main className="main-content">
         {user && (
-          <div className="welcome-section">
+          <div className="welcome-section animated-fade-up">
             <h2>Welcome, {user.name}</h2>
-            <p>Explore spiritual guidance, book pujas, and connect with verified pandits across India.</p>
+            <p>Find trusted <b>pandits</b>, <b>book pujas</b> for every occasion, <br/>and manage your spiritual journey with ease.</p>
           </div>
         )}
 
+        {/* Quick Actions Section */}
+        <section className="quick-actions animated-fade-in">
+          <button className="action-card" onClick={()=>navigate('/booking')}>+ New Puja Booking</button>
+          <button className="action-card" onClick={()=>handleSidebarClick('bookings')}>📅 View My Bookings</button>
+          <button className="action-card highlight-action" onClick={()=>navigate('/profile')}>👤 My Profile</button>
+        </section>
+
+        {/* Announcement / Info Section */}
+        <section className="dashboard-info animated-info">
+          <img src="/images/kalash.jpeg" alt="Kalash" className="info-img"/>
+          <div>
+            <h4>✨ <span className="highlight-text">Special Festive Offers!</span></h4>
+            <ul>
+              <li>Get ₹50 off your first home puja.</li>
+              <li>Refer friends &amp; earn rewards.</li>
+              <li>24/7 WhatsApp support for all religious queries.</li>
+            </ul>
+          </div>
+        </section>
+
         {/* Highlight Section */}
-        <section className="highlight-section">
+        <section className="highlight-section animated-fade-in">
           <div className="highlight-card" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
             <div className="highlight-content">
               <h4>Spiritual Guides</h4>
@@ -135,8 +163,19 @@ function Dashboard() {
           </div>
         </section>
 
+        {/* Why Shubhkarya */}
+        <section className="why-shubhkarya-section animated-fade-up">
+          <h3>Why Choose Shubhkarya?</h3>
+          <ul>
+            <li><strong>Verified Pandits:</strong> All experts are background-checked and reviewed.</li>
+            <li><strong>Pan India Services:</strong> Metropolitan & local experts in every state.</li>
+            <li><strong>Transparent Pricing:</strong> No hidden charges, clear billing.</li>
+            <li><strong>Personalized Guidance:</strong> Book by tradition, date, or language.</li>
+          </ul>
+        </section>
+
         {/* Pandit Section */}
-        <section className="pandit-section">
+        <section className="pandit-section animated-fade-in">
           <h3>Verified Pandits</h3>
           <input
             type="text"
@@ -147,7 +186,7 @@ function Dashboard() {
           />
           <div className="pandit-list">
             {filteredPandits.slice(0, visibleCount).map(p => (
-              <div key={p._id} className="pandit-card">
+              <div key={p._id} className="pandit-card animated-card-hover">
                 <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>{p.name}</h4>
                 {expandedPandits[p._id] && (
                   <div className="pandit-details">
@@ -174,14 +213,14 @@ function Dashboard() {
         </section>
 
         {/* Bookings Section */}
-        <section ref={bookingsRef} className="bookings-section">
+        <section ref={bookingsRef} className="bookings-section animated-fade-up">
           <h3>Your Bookings</h3>
           <div className="booking-list">
             {filteredBookings.length === 0 ? (
               <p>No matching bookings found.</p>
             ) : (
               filteredBookings.map(b => (
-                <div key={b._id} className="booking-card">
+                <div key={b._id} className="booking-card animated-card-hover">
                   <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
                   <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
                   <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
@@ -195,7 +234,7 @@ function Dashboard() {
         </section>
 
         {/* Review Section */}
-        <section ref={reviewsRef} className="review-section">
+        <section ref={reviewsRef} className="review-section animated-fade-in">
           <h3>Submit a Review</h3>
           {reviewMessage && (
             <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
@@ -222,6 +261,21 @@ function Dashboard() {
         </section>
       </main>
     </div>
+  );
+}
+
+// POP Sidebar Button (with animated pulse for active/pop)
+function SidebarButton({label, icon, pop, highlight, active, onClick}) {
+  return (
+    <button
+      className={`sidebar-btn${active?" active":""}${highlight?" highlight":""}${pop?" pop-anim":""}`}
+      onClick={onClick}
+      tabIndex={0}
+    >
+      <span className="sidebar-icon">{icon}</span>
+      <span>{label}</span>
+      {pop && <span className="pop-dot"></span>}
+    </button>
   );
 }
 
