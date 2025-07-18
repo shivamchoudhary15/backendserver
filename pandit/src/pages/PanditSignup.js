@@ -22,10 +22,9 @@ export default function PanditSignup() {
     profile_photo_url: '',
   });
 
-  // Profile photo live preview condition
-  const isPhoto = form.profile_photo_url && (form.profile_photo_url.startsWith('http') || form.profile_photo_url.includes('/images/'));
+  const isPhoto = form.profile_photo_url && 
+    (form.profile_photo_url.startsWith('http') || form.profile_photo_url.includes('/images/'));
 
-  // Validate steps
   const validateStep = () => {
     if (step === 1) {
       if (!form.name.trim()) return "Name is required.";
@@ -140,28 +139,27 @@ export default function PanditSignup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `linear-gradient(124deg, rgba(35,0,36,0.25), rgba(94,50,0,0.32)), url('/images/ho2.png')`,
+    backgroundImage: `linear-gradient(124deg, rgba(35,0,36,0.15), rgba(94,50,0,0.17)), url('/images/ho2.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '40px',
-    perspective: '1200px',
+    padding: '40px'
   };
 
   return (
     <div style={backgroundStyle}>
-      <form onSubmit={handleSubmit} className="signup-form-3d" style={{ transform: 'rotateY(-6deg) scale(1.04)' }}>
-        <img src="/images/subh.png" className="signup-logo-3d" alt="Pandit Portal Logo" />
+      <form onSubmit={handleSubmit} className="signup-form-modern">
+        <img src="/images/subh.png" className="signup-logo-modern" alt="Pandit Portal Logo" />
         <h2>Pandit Signup <span role="img" aria-label="pandit">🕉️</span></h2>
-        <div className="step-indicator-3d">
+        <div className="step-indicator-modern">
           {[1, 2, 3].map(n => (
             <span key={n} className={`step-dot${step === n ? ' active' : ''}`}>{step === n ? '🔸' : '•'}</span>
           ))}
           <span className="step-label">Step {step} of 3</span>
         </div>
-        {error && <div className="error-3d">{error}</div>}
+        {error && <div className="error-modern">{error}</div>}
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -169,13 +167,13 @@ export default function PanditSignup() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
             transition={{ duration: 0.42 }}
-            className="animated-step-3d"
+            className="animated-step-modern"
           >
             {renderStep()}
           </motion.div>
         </AnimatePresence>
-        <div className="login-link-3d">
-          Already registered? <Link to="/login" className="login-link-3d-link">Login</Link>
+        <div className="login-link-modern">
+          Already registered? <Link to="/login" className="login-link-modern-link">Login</Link>
         </div>
       </form>
     </div>
