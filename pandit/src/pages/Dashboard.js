@@ -29,7 +29,6 @@ function Dashboard() {
   const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
   const [expandedPandits, setExpandedPandits] = useState({});
-
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const sliderImages = [
@@ -62,7 +61,7 @@ function Dashboard() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex(idx => (idx + 1) % sliderImages.length);
-    }, 3800);
+    }, 4000);
     return () => clearInterval(interval);
   }, [sliderImages.length]);
 
@@ -166,11 +165,23 @@ function Dashboard() {
         </AnimatePresence>
       </nav>
 
+      {/* WELCOME BANNER */}
+      {user && (
+        <div className="welcome-banner" data-aos="fade">
+          <h2>
+            Welcome, <span>{user.name}</span>!
+          </h2>
+          <p>May your every puja bring joy and prosperity.</p>
+        </div>
+      )}
+
       {/* HERO + SLIDER */}
       <section className="dashboard-hero" id="dashboard" data-aos="fade-down">
         <div className="hero-main-row">
           <div>
-            <h1 className="hero-title">Book Trusted Pandits with <span>Shubhkarya</span></h1>
+            <h1 className="hero-title">
+              Book Trusted Pandits with <span>Shubhkarya</span>
+            </h1>
             <p className="hero-desc">
               Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.
               <br />Browse, book, and experience auspicious bliss from anywhere.
@@ -179,7 +190,7 @@ function Dashboard() {
               <span role="img" aria-label="puja">🛕</span> Book New Puja
             </button>
           </div>
-          <div className="hero-slider" data-aos="zoom-in">
+          <div className="hero-slider slider-glow" data-aos="zoom-in">
             <div className="slider-frame">
               <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Shubhkarya slider" />
               <div className="slider-dots">
@@ -193,20 +204,29 @@ function Dashboard() {
       </section>
 
       {/* Highlights */}
-      <section id="highlight" className="highlight-section" data-aos="fade-right">
-        <div className="highlight-card" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
+      <section id="highlight" className="highlight-section" data-aos="fade-up">
+        <div className="highlight-card improved-card theme1">
+          <div className="highlight-icon">🌏</div>
           <div className="highlight-content">
-            <h4>Spiritual Guides</h4><p>Pandits & Consultants across India</p><p>250+ Experts</p>
+            <h4>Spiritual Guides</h4>
+            <p>Pandits & Consultants across India</p>
+            <p>250+ Experts</p>
           </div>
         </div>
-        <div className="highlight-card" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
+        <div className="highlight-card improved-card theme2">
+          <div className="highlight-icon">🙏</div>
           <div className="highlight-content">
-            <h4>Religious Services</h4><p>Wide variety of pujas</p><p>100+ Pujas</p>
+            <h4>Religious Services</h4>
+            <p>Wide variety of pujas</p>
+            <p>100+ Pujas</p>
           </div>
         </div>
-        <div className="highlight-card" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
+        <div className="highlight-card improved-card theme3">
+          <div className="highlight-icon">🔥</div>
           <div className="highlight-content">
-            <h4>Pujas Done</h4><p>Performed by verified pandits</p><p>1,000+ Completed</p>
+            <h4>Pujas Done</h4>
+            <p>Performed by verified pandits</p>
+            <p>1,000+ Completed</p>
           </div>
         </div>
       </section>
