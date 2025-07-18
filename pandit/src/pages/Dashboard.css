@@ -1,8 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap');
+
 .dashboard-root {
   background: #f7f6fb;
   min-height: 100vh;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
 }
 
+/* === Welcome Banner === */
+.welcome-banner {
+  background: linear-gradient(100deg,#FFE9B0 25%, #FFF7E7 86%);
+  padding: 1.1rem 2vw 0.7rem 2vw;
+  border-radius: 0 0 18px 18px;
+  margin-bottom: .6rem;
+  box-shadow: 0 2px 25px #ffec8f31;
+  text-align: left;
+  animation: fadeIn .7s cubic-bezier(.39,.88,.29,1);
+}
+.welcome-banner h2 {
+  color: #c58505;
+  font-size: 1.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin: 0 0 2px;
+}
+.welcome-banner h2 span {
+  color: #ff9800;
+  font-family: inherit;
+}
+.welcome-banner p {
+  color: #806014;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+/* === NAVBAR === */
 .navbar-main {
   position: sticky;
   top: 0;
@@ -15,7 +48,6 @@
   padding: 1.1rem 2vw 0.6rem 2vw;
   transition: background 0.22s;
 }
-
 .navbar-brand {
   display: flex;
   align-items: center;
@@ -62,97 +94,154 @@
 }
 .navbar-menu-item.logout { color: #ff3636; font-size:18px; }
 
-.nav-icon { font-size: 1.15em;}
+.nav-icon { font-size: 1.15em; }
 
-/* Hero and Carousel */
+/* === HERO & SLIDER === */
 .dashboard-hero {
-  background: linear-gradient(120deg, #fffbe9 40%, #e3f9ff 115%);
+  background: #fcf8ef;
   padding: 30px 3vw 18px 3vw;
   position:relative;
   border-radius: 0 0 18px 18px;
-  margin-bottom: 1.9rem;
+  margin-bottom: 1.7rem;
+  overflow: visible;
 }
 .hero-main-row {
-  max-width: 1100px; margin: 0 auto; display: flex; gap: 24px; align-items: center; justify-content: space-between;
+  max-width: 1200px; margin: 0 auto; display: flex; gap: 34px; align-items: center; justify-content: space-between;
   flex-wrap: wrap;
 }
 .hero-title {
-  font-size: 2.10rem;
-  font-weight: 800;
-  color:#b8860b;
+  font-size: 2.4rem;
+  font-family: 'Montserrat',sans-serif;
+  font-weight: 900;
+  color:#df9000;
   margin-bottom: .8rem;
   letter-spacing: -.6px;
+  text-shadow: 0 2px 12px #edcf9f29;
 }
-.hero-title span { color: #1c93d8; font-weight: 900; }
+.hero-title span { color: #0f60b6; text-shadow: 0 2px 12px #1987db18; }
 .hero-desc {
-  font-size: 1.18rem;
-  color: #8b5812;
+  font-size: 1.2rem;
+  color: #966223;
+  font-weight: 500;
   margin-bottom: 1rem;
+  max-width:450px;
+  text-shadow:0 1px 0 #fff7;
 }
 .hero-book-btn {
-  background: linear-gradient(90deg,#ffb300,#ffd340 82%);
-  border: none; border-radius: 8px; color: #4a2600;
-  font-size: 1.13rem; font-weight: bold; padding: 10px 30px;
-  margin-top: 8px; box-shadow:0 5px 18px #ffc10755;
-  cursor: pointer; transition:background 0.18s, box-shadow .21s, transform .13s;
+  background: linear-gradient(99deg,#ffb300 7%,#ffd340 90%);
+  border: none; border-radius: 10px; color: #735214;
+  font-size: 1.15rem; font-weight: bold; padding: 10px 36px; margin-top: 13px;
+  box-shadow:0 6px 18px #ffc10759,0 2px 13px #ffedaa22 inset;
+  cursor: pointer;
+  transition:background 0.21s, box-shadow .21s, transform .14s;
+  outline: 0;
+  letter-spacing: .01em;
 }
 .hero-book-btn:hover, .hero-book-btn:focus {
-  background: linear-gradient(90deg,#ffd340,#fff9c4);
-  box-shadow:0 8px 30px #ffd74077;
-  transform:translateY(-2px) scale(1.03);
-  outline: 0;
+  background: linear-gradient(93deg,#ffd340,#f5e7c6);
+  box-shadow:0 9px 32px #ffd740ac;
+  color: #88340e;
+  transform:translateY(-2px) scale(1.04);
 }
-
-/* Carousel Slider */
-.hero-slider { min-width:235px; max-width:320px;}
+.slider-glow {
+  filter: drop-shadow(0 4px 40px #ffd16690);
+  border-radius:17px;
+}
 .slider-frame {
-  width: 100%;
-  height: 202px;
+  width: 340px;
+  max-width:90vw;
+  height: 215px; display: block;
   position:relative;
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
   background: #eaf7ff;
-  box-shadow: 0 4px 18px #b6cffc50;
+  box-shadow: 0 6px 28px #b6cffc61;
 }
 .slider-frame img {
-  width:100%; height:100%; object-fit:cover; transition: opacity .55s;
+  width:100%; height:100%; object-fit:cover; transition: opacity .9s, transform .8s;
+  border-radius: 12px;
+  box-shadow:0 14px 48px #fcc13a48;
 }
 .slider-dots {
   position: absolute; bottom: 15px; left: 0; right: 0; text-align: center;
 }
 .slider-dot {
   display:inline-block;
-  width: 11px; height: 11px; border-radius:50%; background: #fff; margin:0 2px; border: 2px solid #ffd740;
+  width: 10px; height: 10px; border-radius:50%; background: #fff; margin:0 2px; border: 2px solid #ffd740;
   opacity:.72; cursor:pointer;
-  transition:background .15s,transform .14s;
+  transition:background .15s,transform .14s; box-shadow:0 0 5px #ffd25e44;
 }
 .slider-dot.active {
   background: #ffc107;
-  transform:scale(1.23);
+  transform:scale(1.18);
 }
 
-/* Animations */
+/* === HIGHLIGHT SECTION IMPROVED === */
+.highlight-section {
+  display: flex; 
+  gap: 22px;
+  justify-content: center;
+  align-items: stretch;
+  margin: 18px 0 30px 0;
+}
+.highlight-card.improved-card {
+  background: linear-gradient(110deg, #fffbe8 70%, #ffe082 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px #ffebb89f;
+  padding: 32px 20px 24px;
+  width: 260px; min-height:190px; 
+  display:flex; flex-direction:column; align-items:center;
+  margin: 0 8px; 
+  position:relative; transition: transform .21s, box-shadow .23s;
+  overflow: hidden;
+  border: none;
+}
+.highlight-card.improved-card .highlight-icon {
+  font-size: 2.4em; margin-bottom: 14px; transition:transform .25s;
+  background: #fff8e1; border-radius: 50%; padding: 11px;
+  box-shadow: 0 4px 18px #ffe9a771;
+  color: #ff8d00;
+}
+.highlight-card.improved-card .highlight-content h4 {
+  color: #ff9800;
+  font-size: 1.19em;
+  font-weight: 800;
+  margin-bottom: 3px; font-family: 'Montserrat',sans-serif;
+  letter-spacing: 0.02em;
+}
+.highlight-card.improved-card .highlight-content p {
+  color: #a37d15;
+  font-size: 1.05em;
+  margin-bottom: 0px;
+}
+.highlight-card.improved-card:hover {
+  box-shadow: 0 9px 42px #f6cc508a;
+  transform: translateY(-8px) scale(1.035) rotate(-1.5deg);
+}
+.highlight-card.improved-card.theme1 .highlight-icon {background: #e3f2fd;}
+.highlight-card.improved-card.theme2 .highlight-icon {background: #ffe0b2;}
+.highlight-card.improved-card.theme3 .highlight-icon {background: #fff3e0;}
+
+/* ...Keep all your booking, pandit, review, etc. sections styling as before... */
+
+@media (max-width:1080px) {
+  .highlight-section { flex-direction: column; align-items:center; gap: 18px;}
+  .highlight-card.improved-card { width:94vw; margin-bottom: 10px; }
+  .slider-frame { width:98vw; }
+}
+@media (max-width:600px) {
+  .welcome-banner h2 { font-size:1.02rem;}
+  .welcome-banner {padding: 18px 3vw 9px;}
+  .hero-title {font-size: 1.15rem;}
+  .slider-frame { min-width:90vw; height:150px;}
+}
 .animated-pop-offer {
-  animation: popPulse 1.6s infinite alternate;
+  animation:popPulse 1.8s infinite alternate;
 }
-
-/* Success/Error */
-.success-message {
-  color: #2e7d32; font-weight: 600; text-align: center;
+@keyframes popPulse{
+  0%{scale:1;}
+  100%{scale:1.04;}
 }
-.error-message {
-  color: #c62828; font-weight: 600; text-align: center;
-}
-
-@media (max-width: 900px) {
-  .hero-main-row { flex-direction: column; align-items:flex-start;}
-  .sidebar { width: 100px;}
-  .highlight-section { flex-direction: column; align-items:center;}
-  .navbar-main { padding-left:1vw; }
-}
-@media (max-width: 600px) {
-  .hero-title { font-size: 1.25rem;}
-  .dashboard-hero{ padding:20px 2vw 4px 2vw;}
-}
-
-/* Use your existing highlight-section, booking-section, pandit-section, etc., CSS as previously. */
+.promo-gift{width:32px;vertical-align:middle;margin-right:10px;}
+.success-message { color: #2e7d32; font-weight: 600; text-align: center; }
+.error-message { color: #c62828; font-weight: 600; text-align: center; }
