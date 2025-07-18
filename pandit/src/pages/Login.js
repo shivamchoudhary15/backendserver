@@ -1,82 +1,73 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-import './Login.css';
+import { Link, useNavigate } from 'react-router-dom';
+import '../pages/Login.css';
 
-const Login = () => {
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      const res = await axios.post('http://localhost:8080/api/auth/login', form);
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
+    // login logic
+    console.log('Login submitted:', { email, password });
+    navigate('/dashboard');
   };
 
   return (
     <div className="login-page">
       <div className="login-left">
-        <img
-          src="/images/i1.jpeg"
-          alt="Spiritual Background"
-          className="login-bg-img"
-        />
-        <div className="login-overlay" />
+        <div className="image-overlay"></div>
+        <img src="/images/ho1.jpg" alt="Background" className="background-image" />
       </div>
-
       <div className="login-right">
-        <form className="login-form" onSubmit={handleLogin}>
+        <div className="login-box">
           <img src="/images/subh.png" alt="Logo" className="login-logo" />
-          <h2 className="login-heading">Welcome to Shubhkarya</h2>
-          {error && <p className="login-error">{error}</p>}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="login-input"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="login-input"
-          />
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-          <p className="login-text">
-            Don't have an account?{' '}
-            <Link to="/signup" className="login-link">
-              Sign up
-            </Link>
-          </p>
-        </form>
+          <h2>Welcome Back</h2>
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email:</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Password:</label>
+              <div className="password-input">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </span>
+              </div>
+            </div>
+            <button type="submit" className="login-button">
+              Login
+            </button>
+            <div className="login-links">
+              <Link to="/signup">Join as Devotee</Link>
+              <span> | </span>
+              <Link to="/signup/pandit">Register as Pandit</Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Login;
