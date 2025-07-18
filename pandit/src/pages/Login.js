@@ -3,10 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 
-// Import assets
-import bgImage from './assets/pandit_bg.jpg';      // Add a high-quality, culturally relevant image
-import logoPandit from './assets/logo_pandit.png'; // Use your rounded logo with gold accents
-
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -44,15 +40,25 @@ const Login = () => {
   return (
     <div className="pandit-login-bg">
       <div className="pandit-login-container">
-        {/* Left: Background/Imagery */}
-        <div className="pandit-login-left"
+        {/* Left: Background/Imagery with optional mascot */}
+        <div
+          className="pandit-login-left"
           style={{
-            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url(${bgImage})`,
+            backgroundImage: `linear-gradient(to bottom right, rgba(250,140,52,0.3), rgba(146,53,53,0.25)), url('/pandit_bg.jpg')`,
           }}
         >
           <div className="pandit-login-overlay">
+            <img
+              src="/mascot_pandit.png"
+              alt="Friendly Pandit Mascot"
+              className="pandit-mascot-img"
+              style={{ width: 120, borderRadius: '50%', marginBottom: 18, boxShadow: '0 2px 12px #a97f55' }}
+            />
             <h2>Experience Sacred Service</h2>
-            <p>Book trusted pandits & pooja experts for every occasion,<br />anytime, anywhere in India.</p>
+            <p>
+              Book trusted pandits & pooja experts for every occasion,<br />
+              anytime, anywhere in India.
+            </p>
             <ul className="pandit-login-usp">
               <li>🕉️ 100% Verified Pandits</li>
               <li>🌺 Multiple Language Options</li>
@@ -65,11 +71,13 @@ const Login = () => {
         <div className="pandit-login-right">
           <div className="pandit-login-card">
             {/* Logo */}
-            <img src={logoPandit} alt="Pandit Booking Logo" className="pandit-login-logo" />
+            <img
+              src="/logo_pandit.png"
+              alt="Pandit Booking Logo"
+              className="pandit-login-logo"
+            />
             <div className="pandit-login-tagline">Your Path to Sacred Beginnings</div>
-
             <h3 className="pandit-login-welcome">Welcome Back</h3>
-
             <button className="pandit-google-btn" disabled>
               <span className="google-icon">🔵</span> Sign in with Google
             </button>
@@ -88,7 +96,6 @@ const Login = () => {
                 placeholder="example@gmail.com"
                 autoComplete="username"
               />
-
               <label htmlFor="password">Password</label>
               <input
                 id="password"
@@ -101,7 +108,6 @@ const Login = () => {
                 minLength={6}
                 autoComplete="current-password"
               />
-
               <button type="submit" className="pandit-login-btn" disabled={loading}>
                 {loading ? 'Logging in...' : 'Login'}
               </button>
