@@ -36,7 +36,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch('https://backendserver-pf4h.onrender.com/api/users/add', {
+      const response = await fetch('https://backendserver-pf4h.onrender.com/api/users/view', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
