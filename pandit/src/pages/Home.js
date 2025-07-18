@@ -1,5 +1,4 @@
 // src/pages/Home.js
-
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -54,7 +53,7 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero Section */}
       <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
         <div className="hero-overlay">
           <div className="hero-content">
@@ -74,87 +73,95 @@ const Home = () => {
         </div>
       </header>
 
-  <section className="about-section" id="about">
-  <h2 className="section-title">About Shubkarya</h2>
-  <div className="about-content">
-    <div className="about-column">
-      <div className="feature-row">
-        <img src="/images/pooja.png" alt="Pooja Icon" />
-        <div>
-          <h3>Vedic Poojas</h3>
-          <p>Performed by experienced Pandits with authentic rituals.</p>
-        </div>
-      </div>
-      <div className="feature-row">
-        <img src="/images/calendar.png" alt="Calendar Icon" />
-        <div>
-          <h3>Easy Booking</h3>
-          <p>Book poojas anytime with a few simple clicks.</p>
-        </div>
-      </div>
-      <div className="feature-row">
-        <img src="/images/verified.png" alt="Verified Icon" />
-        <div>
-          <h3>Verified Pandits</h3>
-          <p>Only trusted and verified professionals available.</p>
-        </div>
-      </div>
-    </div>
+      {/* About Section */}
+      <section className="about-section" id="about">
+        <h2 className="section-title">About Shubkarya</h2>
+        <div className="about-content">
+          <div className="about-column">
+            <div className="feature-row">
+              <img src="/images/pooja.png" alt="Pooja Icon" />
+              <div>
+                <h3>Vedic Poojas</h3>
+                <p>Performed by experienced Pandits with authentic rituals.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/calendar.png" alt="Calendar Icon" />
+              <div>
+                <h3>Easy Booking</h3>
+                <p>Book poojas anytime with a few simple clicks.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/verified.png" alt="Verified Icon" />
+              <div>
+                <h3>Verified Pandits</h3>
+                <p>Only trusted and verified professionals available.</p>
+              </div>
+            </div>
+          </div>
 
-    <div className="logo-center">
-      <img src="/images/subh.png" alt="Shubkarya Logo" />
-    </div>
+          <div className="logo-center">
+            <img src="/images/subh.png" alt="Shubkarya Logo" />
+          </div>
 
-    <div className="about-column">
-      <div className="feature-row">
-        <img src="/images/blessings.png" alt="Blessings Icon" />
-        <div>
-          <h3>Traditional Rituals</h3>
-          <p>Rooted in ancient Vedic traditions and customs.</p>
+          <div className="about-column">
+            <div className="feature-row">
+              <img src="/images/blessings.png" alt="Blessings Icon" />
+              <div>
+                <h3>Traditional Rituals</h3>
+                <p>Rooted in ancient Vedic traditions and customs.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/service.png" alt="Services Icon" />
+              <div>
+                <h3>Multiple Services</h3>
+                <p>From Griha Pravesh to Wedding, all covered.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/support.png" alt="Support Icon" />
+              <div>
+                <h3>24x7 Support</h3>
+                <p>We’re here to help you anytime, anywhere.</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="feature-row">
-        <img src="/images/service.png" alt="Services Icon" />
-        <div>
-          <h3>Multiple Services</h3>
-          <p>From Griha Pravesh to Wedding, all covered.</p>
-        </div>
-      </div>
-      <div className="feature-row">
-        <img src="/images/support.png" alt="Support Icon" />
-        <div>
-          <h3>24x7 Support</h3>
-          <p>We’re here to help you anytime, anywhere.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
+      {/* Final Services Section */}
+      <section className="services-container" id="services" data-aos="fade-up">
+        <h2>OUR SERVICES</h2>
+        <p style={{ textAlign: 'center' }}>Discover a wide range of spiritual services tailored to your needs.</p>
 
-
-      {/* Services */}
-      <section id="services" className="services-section" data-aos="fade-up">
-        <h2>Explore Our Services</h2>
-        <p>Discover the wide range of puja services available on Shubhkarya.</p>
         <div className="services-grid">
           {services.map(service => (
-            <div key={service._id} className="service-card" onClick={() => navigate('/login')} data-aos="fade-up">
-              <div className="image-wrapper">
-                <img src={service.image} alt={service.name} />
-                <div className="overlay">
-                  <h3>{service.name}</h3>
-                  <p>{service.description}</p>
-                  <button className="book-button-small">Book Now</button>
-                </div>
-              </div>
+            <div key={service._id} className="service-card" data-aos="fade-up" onClick={() => navigate('/login')}>
+              <img
+                src={service.image}
+                alt={service.name}
+                className="service-image"
+              />
+              <h3>{service.name}</h3>
+              <p>{service.description}</p>
+              <button className="book-now">Book Now</button>
             </div>
           ))}
         </div>
-        <button className="explore-more" onClick={() => navigate('/login')}>Explore More</button>
+
+        <div className="service-details">
+          <h4>4000+ Spiritual Guides</h4>
+          <p>Priests, Pandits, Religious Experts & Consultants</p>
+          <h4>500+ Types of Puja</h4>
+          <p>Comprehensive coverage of religious services</p>
+          <h4>100000+ Pujas Performed</h4>
+          <p>Trusted by thousands across India</p>
+        </div>
       </section>
 
-      {/* Pandits */}
+      {/* Pandits Section */}
       <section id="pandits" className="pandits" data-aos="fade-up">
         <h2>Our Verified Pandits</h2>
         <div className="card-section">
