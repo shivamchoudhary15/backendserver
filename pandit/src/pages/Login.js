@@ -1,7 +1,7 @@
+// src/pages/Login.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { motion } from 'framer-motion';
 import './Login.css';
 
 const Login = () => {
@@ -14,101 +14,66 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const response = await axios.post('https://backendserver-pf4h.onrender.com/api/users/login', form);
-      const { token, user } = response.data;
-
-      if (token && user?._id) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        alert('✅ Login successful!');
-
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else if (user.role === 'pandit') {
-          navigate('/pandit-dashboard');
-        } else {
-          navigate('/dashboard');
-        }
-      } else {
-        setError('Invalid login. Try again.');
-      }
+      const res = await axios.post('http://localhost:8080/api/auth/login', form);
+      localStorage.setItem('token', res.data.token);
+      navigate('/dashboard');
     } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.error || '❌ Login failed. Check your credentials.');
+      setError(err.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      {/* Left with background image and gradient overlay */}
-      <div className="login-left"></div>
+    <div className="login-page">
+      <div className="login-left">
+        <img
+          src="/images/i1.jpeg"
+          alt="Spiritual Background"
+          className="login-bg-img"
+        />
+        <div className="login-overlay" />
+      </div>
 
-      {/* Right form section */}
       <div className="login-right">
-        <motion.div
-          className="login-form-box"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <form className="login-form" onSubmit={handleLogin}>
           <img src="/images/subh.png" alt="Logo" className="login-logo" />
-          <p className="login-tagline">Your Path to Sacred Beginnings</p>
-
-          <form onSubmit={handleSubmit} className="login-form">
-            {error && <div className="login-error">{error}</div>}
-
-            <div>
-              <label>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-                placeholder="example@gmail.com"
-              />
-            </div>
-
-            <div>
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-                placeholder="********"
-              />
-            </div>
-
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={loading}
-              className="login-button"
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </motion.button>
-          </form>
-
-          <div className="login-link">
-            <p>
-              Don’t have an account? <Link to="/signup">Join as Devotee</Link>
-            </p>
-            <p>
-              Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
-            </p>
-          </div>
-        </motion.div>
+          <h2 className="login-heading">Welcome to Shubhkarya</h2>
+          {error && <p className="login-error">{error}</p>}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="login-input"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            className="login-input"
+          />
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+          <p className="login-text">
+            Don't have an account?{' '}
+            <Link to="/signup" className="login-link">
+              Sign up
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );
