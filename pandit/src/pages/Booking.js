@@ -9,16 +9,17 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-// You can import images (if using CRA/Vite/etc.)
-// import b2 from '../assets/b2.jpg';
-const bgImage = "/images/bookbg.png";
-const mandala = "/images/mandala.jpeg";
-const flowers = "/images/i2.jpeg";
-const lamp = "/images/diya.jpeg";
-const stepIcons = [
-  "/images/i1.jpeg",
-  "/images/i6.jpeg",
-  "/images/i4.jpeg",
+const bgImage = "/images/b2.jpg";
+const stepTitles = [
+  "Choose Service & Pandit",
+  "Select Date & Location",
+  "Review & Book"
+];
+
+const stepEmojis = [
+  "🧑‍🦱", // Replace with emoji for each step or keep neutral
+  "📅",
+  "✅"
 ];
 
 const astrologicalPoojas = [
@@ -26,12 +27,6 @@ const astrologicalPoojas = [
   { _id: 'horoscope', name: 'Horoscope Matching' },
   { _id: 'career', name: 'Career and Business Guidance' },
   { _id: 'health', name: 'Health Analysis' }
-];
-
-const stepTitles = [
-  "Choose Service & Pandit",
-  "Select Date & Location",
-  "Review & Book"
 ];
 
 function Booking() {
@@ -211,30 +206,23 @@ function Booking() {
     }
   };
 
-  // Decorative images
-  // All image tags below: no background-image in CSS at all!
   return (
     <div className="booking-bg">
-      {/* Background image */}
+      {/* Single background image for full width */}
       <img src={bgImage} alt="" className="bg-img" draggable={false}/>
       <div className="overlay-gradient"></div>
-      {/* Decorative floating images */}
-      <img src={mandala} className="bg-deco mandala" alt="mandala" draggable={false}/>
-      <img src={flowers} className="bg-deco flowers" alt="flowers" draggable={false}/>
-      <img src={lamp} className="bg-deco lamp" alt="lamp" draggable={false}/>
-
       <motion.form
-        className="glass-form-pro animate__animated"
+        className="glass-form-pro"
         onSubmit={handleSubmit}
-        initial={{ scale: 0.95, opacity: 0, y:40 }}
+        initial={{ scale: 0.98, opacity: 0, y: 38 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: 'easeOut'}}
+        transition={{ duration: 0.55, ease: 'easeOut'}}
       >
         <motion.h2
           className="booking-title"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.13 }}
         >
           <span className="emoji">🙏</span> Book Pandit Ji for Puja
         </motion.h2>
@@ -243,10 +231,10 @@ function Booking() {
             <motion.div
               key={n}
               className={`steps-circle ${step === n ? 'active' : ''} ${step > n ? 'done' : ''}`}
-              animate={{ scale: step === n ? 1.09 : 1 }}
-              transition={{ type: "spring", stiffness: 230 }}
+              animate={{ scale: step === n ? 1.07 : 1 }}
+              transition={{ type: "spring", stiffness: 220 }}
             >
-              <img src={stepIcons[idx]} alt="step icon" className="step-icon-img" />
+              <span className="step-emoji" style={{fontSize:"2em"}}>{stepEmojis[idx]}</span>
               <span>{stepTitles[idx]}</span>
               {step > n && <span className="checkmark">&#10003;</span>}
             </motion.div>
@@ -255,10 +243,10 @@ function Booking() {
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.5, ease: 'anticipate' }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.45, ease: 'anticipate' }}
             className="animated-step"
           >
             {renderStep()}
