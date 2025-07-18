@@ -49,21 +49,7 @@ body {
   width: 94px; height: 94px; border-radius: 50%; background: #fff;
   padding: 13px; box-shadow: 0 6px 22px 0 #fff9bb66; margin: 0 auto 1.2em;
 }
-.otp-btn {
-  margin-top: 10px;
-  background-color: #ff9933;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
 
-.otp-success {
-  color: green;
-  font-weight: bold;
-  display: block;
-  margin-top: 5px;
-}
 
 .signup-error {
   color: red;
