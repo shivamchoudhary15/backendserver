@@ -183,8 +183,8 @@ function Dashboard() {
               Book Trusted Pandits with <span>Shubhkarya</span>
             </h1>
             <p className="hero-desc">
-              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.
-              <br />Browse, book, and experience auspicious bliss from anywhere.
+              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
+              Browse, book, and experience auspicious bliss from anywhere.
             </p>
             <button className="hero-book-btn" onClick={()=>navigate('/booking')}>
               <span role="img" aria-label="puja">🛕</span> Book New Puja
@@ -203,26 +203,35 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* Highlights */}
+      {/* HIGHLIGHTS */}
       <section id="highlight" className="highlight-section" data-aos="fade-up">
-        <div className="highlight-card improved-card theme1">
-          <div className="highlight-icon">🌏</div>
+        <div
+          className="highlight-card improved-card theme1"
+          style={{ backgroundImage: "url('/images/india.jpeg')" }}
+        >
+          <div className="highlight-overlay" />
           <div className="highlight-content">
             <h4>Spiritual Guides</h4>
             <p>Pandits & Consultants across India</p>
             <p>250+ Experts</p>
           </div>
         </div>
-        <div className="highlight-card improved-card theme2">
-          <div className="highlight-icon">🙏</div>
+        <div
+          className="highlight-card improved-card theme2"
+          style={{ backgroundImage: "url('/images/kalash.jpeg')" }}
+        >
+          <div className="highlight-overlay" />
           <div className="highlight-content">
             <h4>Religious Services</h4>
             <p>Wide variety of pujas</p>
             <p>100+ Pujas</p>
           </div>
         </div>
-        <div className="highlight-card improved-card theme3">
-          <div className="highlight-icon">🔥</div>
+        <div
+          className="highlight-card improved-card theme3"
+          style={{ backgroundImage: "url('/images/havan.jpeg')" }}
+        >
+          <div className="highlight-overlay" />
           <div className="highlight-content">
             <h4>Pujas Done</h4>
             <p>Performed by verified pandits</p>
@@ -231,30 +240,68 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* Content: Why Us & Offers */}
+      {/* Why Choose Shubhkarya */}
       <section className="why-shubhkarya-section" data-aos="fade-up">
-        <h3>Why Choose Shubhkarya?</h3>
-        <ul>
-          <li><strong>Verified Pandits:</strong> All experts are background-checked and reviewed.</li>
-          <li><strong>Pan India:</strong> Metro & local experts in all states.</li>
-          <li><strong>Transparent Pricing:</strong> No hidden charges, clear billing, fair policies.</li>
-          <li><strong>Book by tradition, date, or language.</strong></li>
-        </ul>
-        <div className="promo-announcement animated-pop-offer">
+        <h3>
+          Why Choose <span className="brand-accent">Shubhkarya?</span>
+        </h3>
+        <div className="why-cards-row">
+          <div className="why-card">
+            <div className="why-icon">✅</div>
+            <div>
+              <h5>Verified Pandits</h5>
+              <p>Background-checked and reviewed experts at your service.</p>
+            </div>
+          </div>
+          <div className="why-card">
+            <div className="why-icon">🌏</div>
+            <div>
+              <h5>Pan India Support</h5>
+              <p>Metro & local experts available in all states.</p>
+            </div>
+          </div>
+          <div className="why-card">
+            <div className="why-icon">💰</div>
+            <div>
+              <h5>Transparent Pricing</h5>
+              <p>No hidden charges, clear billing, and fair policies.</p>
+            </div>
+          </div>
+          <div className="why-card">
+            <div className="why-icon">🔆</div>
+            <div>
+              <h5>Choose by Tradition</h5>
+              <p>Select by tradition, date, or preferred language.</p>
+            </div>
+          </div>
+        </div>
+        {/* Festive Offer */}
+        <div className="promo-announcement improved-offer animated-pop-offer">
           <img src="/images/gift.png" alt="Offer" className="promo-gift" />
-          <b>Festive Offer!</b> <span>Get ₹50 OFF your first puja (code: <b>SHUBH50</b>)</span>
+          <div className="offer-content">
+            <b>Festive Offer!</b>
+            <span>
+              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
+            </span>
+          </div>
         </div>
       </section>
 
       {/* Pandit Showcase */}
       <section id="pandit" className="pandit-section" data-aos="fade-up">
         <h3>Verified Pandits</h3>
-        <input type="text" className="booking-search" placeholder="Search by name or city..." value={search} onChange={e=>setSearch(e.target.value)} />
+        <input
+          type="text"
+          className="booking-search"
+          placeholder="Search by name or city..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
         <div className="pandit-list">
           {filteredPandits.slice(0, visibleCount).map(p => (
             <motion.div
               key={p._id}
-              className="pandit-card"
+              className="pandit-card improved-pandit-card"
               data-aos="zoom-in"
               whileHover={{ y: -4, scale: 1.03 }}
             >
