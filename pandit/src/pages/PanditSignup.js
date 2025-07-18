@@ -140,7 +140,7 @@ export default function PanditSignup() {
 
   const backgroundStyle = {
     minHeight: '100vh',
-    backgroundImage: `linear-gradient(124deg, rgba(35,0,36,0.25), rgba(94,50,0,0.32)), url('/images/b3.jpg')`,
+    backgroundImage: `linear-gradient(124deg, rgba(35,0,36,0.25), rgba(94,50,0,0.32)), url('/images/ho2.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
