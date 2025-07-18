@@ -186,6 +186,9 @@ body {
 
 
 
+
+
+
 /* Get Started Button */
 .get-started-btn {
   background-color: white;
@@ -218,6 +221,14 @@ body {
   justify-content: center;
   gap: 30px;
   margin-top: 30px;
+}
+
+.service-card .service-image {
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.1);
 }
 
 .service-card {
@@ -279,6 +290,10 @@ body {
   font-size: 14px;
   color: #666;
 }
+
+
+
+
 
 
 /* Pandits */
