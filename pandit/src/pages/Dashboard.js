@@ -1,13 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import './Dashboard.css';
+
+const navbarButtons = [
+  { label: 'Home', icon: '🏠', goto: '/' },
+  { label: 'Book New Puja', icon: '🛕', goto: '/booking' },
+  { label: 'Submit Review', icon: '💬', goto: '#review' },
+  { label: 'View Our Pandit', icon: '📿', goto: '#pandit' },
+  { label: 'Search for Puja', icon: '🔍', goto: '#highlight' },
+  { label: 'Booking History', icon: '📅', goto: '#booking' },
+  { label: 'Logout', icon: '🚪', goto: '/home', logout: true },
+];
 
 function Dashboard() {
   const navigate = useNavigate();
   const bookingsRef = useRef(null);
   const reviewsRef = useRef(null);
-
+  const [isNavbarOpen, setNavbarOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [review, setReview] = useState({ name: '', rating: '', comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
@@ -16,16 +29,22 @@ function Dashboard() {
   const [pandits, setPandits] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
   const [expandedPandits, setExpandedPandits] = useState({});
-  const [activeSidebar, setActiveSidebar] = useState('dashboard');
-  const [announcement, setAnnouncement] = useState(
-    "Get ₹50 OFF your first puja booking! Use code: SHUBH50"
-  );
+
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const sliderImages = [
+    '/images/hero1.jpg',
+    '/images/kalash.jpeg',
+    '/images/havan.jpeg',
+    '/images/i3.jpeg',
+    '/images/mascot_pandit.png',
+  ];
 
   useEffect(() => {
+    AOS.init({ duration: 800, once: true });
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) return navigate('/login');
-
     try {
       const parsedUser = JSON.parse(userData);
       if (parsedUser.role === 'admin') return navigate('/admin');
@@ -39,17 +58,30 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  const handleSidebarClick = (section) => {
-    setActiveSidebar(section);
-    if (section === 'dashboard') window.scrollTo(0, 0);
-    else if (section === 'bookings') bookingsRef.current?.scrollIntoView({ behavior: 'smooth' });
-    else if (section === 'reviews') reviewsRef.current?.scrollIntoView({ behavior: 'smooth' });
-    else if (section === 'book') navigate('/booking');
-  };
+  // Carousel slide auto-advance
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex(idx => (idx + 1) % sliderImages.length);
+    }, 3800);
+    return () => clearInterval(interval);
+  }, [sliderImages.length]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/home');
+  // Navbar Hover
+  const handleNavMouseEnter = () => setNavbarOpen(true);
+  const handleNavMouseLeave = () => setNavbarOpen(false);
+
+  // Actions
+  const handleNavClick = (item) => {
+    if (item.logout) {
+      localStorage.clear();
+      navigate(item.goto);
+    } else if (item.goto.startsWith('#')) {
+      const section = document.querySelector(item.goto);
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+      setNavbarOpen(false);
+    } else {
+      navigate(item.goto);
+    }
   };
 
   const handleReviewSubmit = async (e) => {
@@ -96,186 +128,192 @@ function Dashboard() {
   };
 
   return (
-    <div className="dashboard-container">
-      <aside className="sidebar">
-        <div className="logo-section">
-          <img src="/images/subh.png" alt="Shubhkarya" className="sidebar-logo"/>
-          <h2>Shubhkarya</h2>
+    <div className="dashboard-root">
+      {/* NAVBAR */}
+      <nav
+        className={`navbar-main${isNavbarOpen ? ' open' : ''}`}
+        onMouseEnter={handleNavMouseEnter}
+        onMouseLeave={handleNavMouseLeave}
+      >
+        <div className="navbar-brand">
+          <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
+          <span>Shubhkarya</span>
+          <span className="navbar-expand-icon">{isNavbarOpen ? '▲' : '▼'}</span>
         </div>
-        <SidebarButton label="Dashboard Home" icon="🏠" active={activeSidebar==="dashboard"} onClick={()=>handleSidebarClick('dashboard')}/>
-        <SidebarButton label="Bookings" icon="📅" pop={!!bookings.length} active={activeSidebar==="bookings"} onClick={()=>handleSidebarClick('bookings')}/>
-        <SidebarButton label="Reviews" icon="💬" active={activeSidebar==="reviews"} onClick={()=>handleSidebarClick('reviews')}/>
-        <SidebarButton label="Book a Service" icon="🛕" highlight onClick={()=>handleSidebarClick('book')}/>
-        <button className="logout-btn" onClick={handleLogout}><span role="img" aria-label="">🚪</span> Logout</button>
-        <div className="sidebar-announcement animated-pop">{announcement}</div>
-      </aside>
+        <AnimatePresence>
+        {isNavbarOpen &&
+          <motion.ul
+            className="navbar-menu"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22 }}
+          >
+            {navbarButtons.map((item,i) => (
+              <motion.li
+                whileHover={{ scale: 1.06, backgroundColor: "#e0f7fa88" }}
+                whileTap={{ scale: 0.97 }}
+                tabIndex={0}
+                key={item.label}
+                className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
+                onClick={() => handleNavClick(item)}
+              >
+                <span className="nav-icon">{item.icon}</span>{item.label}
+              </motion.li>
+            ))}
+          </motion.ul>
+        }
+        </AnimatePresence>
+      </nav>
 
-      <main className="main-content">
-        {user && (
-          <div className="welcome-section animated-fade-up">
-            <h2>Welcome, {user.name}</h2>
-            <p>Find trusted <b>pandits</b>, <b>book pujas</b> for every occasion, <br/>and manage your spiritual journey with ease.</p>
+      {/* HERO + SLIDER */}
+      <section className="dashboard-hero" id="dashboard" data-aos="fade-down">
+        <div className="hero-main-row">
+          <div>
+            <h1 className="hero-title">Book Trusted Pandits with <span>Shubhkarya</span></h1>
+            <p className="hero-desc">
+              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.
+              <br />Browse, book, and experience auspicious bliss from anywhere.
+            </p>
+            <button className="hero-book-btn" onClick={()=>navigate('/booking')}>
+              <span role="img" aria-label="puja">🛕</span> Book New Puja
+            </button>
+          </div>
+          <div className="hero-slider" data-aos="zoom-in">
+            <div className="slider-frame">
+              <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Shubhkarya slider" />
+              <div className="slider-dots">
+                {sliderImages.map((_,i) => (
+                  <span key={i} className={i===carouselIndex % sliderImages.length ? "slider-dot active" : "slider-dot"} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Highlights */}
+      <section id="highlight" className="highlight-section" data-aos="fade-right">
+        <div className="highlight-card" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
+          <div className="highlight-content">
+            <h4>Spiritual Guides</h4><p>Pandits & Consultants across India</p><p>250+ Experts</p>
+          </div>
+        </div>
+        <div className="highlight-card" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
+          <div className="highlight-content">
+            <h4>Religious Services</h4><p>Wide variety of pujas</p><p>100+ Pujas</p>
+          </div>
+        </div>
+        <div className="highlight-card" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
+          <div className="highlight-content">
+            <h4>Pujas Done</h4><p>Performed by verified pandits</p><p>1,000+ Completed</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Content: Why Us & Offers */}
+      <section className="why-shubhkarya-section" data-aos="fade-up">
+        <h3>Why Choose Shubhkarya?</h3>
+        <ul>
+          <li><strong>Verified Pandits:</strong> All experts are background-checked and reviewed.</li>
+          <li><strong>Pan India:</strong> Metro & local experts in all states.</li>
+          <li><strong>Transparent Pricing:</strong> No hidden charges, clear billing, fair policies.</li>
+          <li><strong>Book by tradition, date, or language.</strong></li>
+        </ul>
+        <div className="promo-announcement animated-pop-offer">
+          <img src="/images/gift.png" alt="Offer" className="promo-gift" />
+          <b>Festive Offer!</b> <span>Get ₹50 OFF your first puja (code: <b>SHUBH50</b>)</span>
+        </div>
+      </section>
+
+      {/* Pandit Showcase */}
+      <section id="pandit" className="pandit-section" data-aos="fade-up">
+        <h3>Verified Pandits</h3>
+        <input type="text" className="booking-search" placeholder="Search by name or city..." value={search} onChange={e=>setSearch(e.target.value)} />
+        <div className="pandit-list">
+          {filteredPandits.slice(0, visibleCount).map(p => (
+            <motion.div
+              key={p._id}
+              className="pandit-card"
+              data-aos="zoom-in"
+              whileHover={{ y: -4, scale: 1.03 }}
+            >
+              <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>
+                <span role="img" aria-label="pandit">🧑‍🦳</span> {p.name}
+              </h4>
+              {expandedPandits[p._id] && (
+                <div className="pandit-details">
+                  <img src={p.profile_photo_url || '/images/i1.jpeg'} alt={p.name} />
+                  <p><strong>City:</strong> {p.city}</p>
+                  <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
+                  <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
+                  <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+        {filteredPandits.length > 3 && (
+          <div className="toggle-btn">
+            <button onClick={() => setVisibleCount(v => v === 3 ? filteredPandits.length : 3)} className="custom-btn">
+              {visibleCount === 3 ? 'Show More' : 'Show Less'}
+            </button>
           </div>
         )}
+      </section>
 
-        {/* Quick Actions Section */}
-        <section className="quick-actions animated-fade-in">
-          <button className="action-card" onClick={()=>navigate('/booking')}>+ New Puja Booking</button>
-          <button className="action-card" onClick={()=>handleSidebarClick('bookings')}>📅 View My Bookings</button>
-          <button className="action-card highlight-action" onClick={()=>navigate('/profile')}>👤 My Profile</button>
-        </section>
-
-        {/* Announcement / Info Section */}
-        <section className="dashboard-info animated-info">
-          <img src="/images/kalash.jpeg" alt="Kalash" className="info-img"/>
-          <div>
-            <h4>✨ <span className="highlight-text">Special Festive Offers!</span></h4>
-            <ul>
-              <li>Get ₹50 off your first home puja.</li>
-              <li>Refer friends &amp; earn rewards.</li>
-              <li>24/7 WhatsApp support for all religious queries.</li>
-            </ul>
-          </div>
-        </section>
-
-        {/* Highlight Section */}
-        <section className="highlight-section animated-fade-in">
-          <div className="highlight-card" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
-            <div className="highlight-content">
-              <h4>Spiritual Guides</h4>
-              <p>Pandits & Consultants across India</p>
-              <p>250+ Experts</p>
-            </div>
-          </div>
-          <div className="highlight-card" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
-            <div className="highlight-content">
-              <h4>Religious Services</h4>
-              <p>Wide variety of pujas</p>
-              <p>100+ Pujas</p>
-            </div>
-          </div>
-          <div className="highlight-card" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
-            <div className="highlight-content">
-              <h4>Pujas Done</h4>
-              <p>Performed by verified pandits</p>
-              <p>1,000+ Completed</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Shubhkarya */}
-        <section className="why-shubhkarya-section animated-fade-up">
-          <h3>Why Choose Shubhkarya?</h3>
-          <ul>
-            <li><strong>Verified Pandits:</strong> All experts are background-checked and reviewed.</li>
-            <li><strong>Pan India Services:</strong> Metropolitan & local experts in every state.</li>
-            <li><strong>Transparent Pricing:</strong> No hidden charges, clear billing.</li>
-            <li><strong>Personalized Guidance:</strong> Book by tradition, date, or language.</li>
-          </ul>
-        </section>
-
-        {/* Pandit Section */}
-        <section className="pandit-section animated-fade-in">
-          <h3>Verified Pandits</h3>
-          <input
-            type="text"
-            className="booking-search"
-            placeholder="Search by name or city..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div className="pandit-list">
-            {filteredPandits.slice(0, visibleCount).map(p => (
-              <div key={p._id} className="pandit-card animated-card-hover">
-                <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>{p.name}</h4>
-                {expandedPandits[p._id] && (
-                  <div className="pandit-details">
-                    <img src={p.profile_photo_url || '/images/default.jpg'} alt={p.name} />
-                    <p><strong>City:</strong> {p.city}</p>
-                    <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
-                    <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
-                    <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          {filteredPandits.length > 3 && (
-            <div className="toggle-btn">
-              <button
-                onClick={() => setVisibleCount(prev => prev === 3 ? filteredPandits.length : 3)}
-                className="custom-btn"
+      {/* Bookings History */}
+      <section id="booking" ref={bookingsRef} className="bookings-section" data-aos="fade-up">
+        <h3>Your Bookings</h3>
+        <div className="booking-list">
+          {filteredBookings.length === 0 ? (
+            <p>No matching bookings found.</p>
+          ) : (
+            filteredBookings.map(b => (
+              <motion.div
+                key={b._id}
+                className="booking-card"
+                whileHover={{ scale: 1.025, boxShadow: '0 4px 24px #42a5f580' }}
               >
-                {visibleCount === 3 ? 'Show More' : 'Show Less'}
-              </button>
-            </div>
+                <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
+                <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
+                <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
+                <p><strong>Time:</strong> {b.puja_time}</p>
+                <p><strong>Location:</strong> {b.location}</p>
+                <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+              </motion.div>
+            ))
           )}
-        </section>
+        </div>
+      </section>
 
-        {/* Bookings Section */}
-        <section ref={bookingsRef} className="bookings-section animated-fade-up">
-          <h3>Your Bookings</h3>
-          <div className="booking-list">
-            {filteredBookings.length === 0 ? (
-              <p>No matching bookings found.</p>
-            ) : (
-              filteredBookings.map(b => (
-                <div key={b._id} className="booking-card animated-card-hover">
-                  <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
-                  <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
-                  <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
-                  <p><strong>Time:</strong> {b.puja_time}</p>
-                  <p><strong>Location:</strong> {b.location}</p>
-                  <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
-
-        {/* Review Section */}
-        <section ref={reviewsRef} className="review-section animated-fade-in">
-          <h3>Submit a Review</h3>
-          {reviewMessage && (
-            <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
-          )}
-          <form onSubmit={handleReviewSubmit} className="review-form">
-            <input type="text" value={review.name} disabled />
-            <input
-              type="number"
-              placeholder="Rating (1-5)"
-              value={review.rating}
-              onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
-              min="1"
-              max="5"
-              required
-            />
-            <textarea
-              placeholder="Write your feedback..."
-              value={review.comment}
-              onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
-              required
-            />
-            <button type="submit" className="custom-btn">Submit Review</button>
-          </form>
-        </section>
-      </main>
+      {/* Reviews */}
+      <section id="review" ref={reviewsRef} className="review-section" data-aos="fade-up">
+        <h3>Submit a Review</h3>
+        {reviewMessage && (
+          <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
+        )}
+        <form onSubmit={handleReviewSubmit} className="review-form">
+          <input type="text" value={review.name} disabled />
+          <input
+            type="number"
+            placeholder="Rating (1-5)"
+            value={review.rating}
+            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
+            min="1"
+            max="5"
+            required
+          />
+          <textarea
+            placeholder="Write your feedback..."
+            value={review.comment}
+            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+            required
+          />
+          <button type="submit" className="custom-btn">Submit Review</button>
+        </form>
+      </section>
     </div>
-  );
-}
-
-// POP Sidebar Button (with animated pulse for active/pop)
-function SidebarButton({label, icon, pop, highlight, active, onClick}) {
-  return (
-    <button
-      className={`sidebar-btn${active?" active":""}${highlight?" highlight":""}${pop?" pop-anim":""}`}
-      onClick={onClick}
-      tabIndex={0}
-    >
-      <span className="sidebar-icon">{icon}</span>
-      <span>{label}</span>
-      {pop && <span className="pop-dot"></span>}
-    </button>
   );
 }
 
