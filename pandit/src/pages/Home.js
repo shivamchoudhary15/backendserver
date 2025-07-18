@@ -79,21 +79,21 @@ const Home = () => {
         <div className="about-content">
           <div className="about-column">
             <div className="feature-row">
-              <img src="/images/pooja.png" alt="Pooja Icon" />
+              <img src="/images/i1.jpeg" alt="Pooja Icon" />
               <div>
                 <h3>Vedic Poojas</h3>
                 <p>Performed by experienced Pandits with authentic rituals.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/calendar.png" alt="Calendar Icon" />
+              <img src="/images/i2.jpeg" alt="Calendar Icon" />
               <div>
                 <h3>Easy Booking</h3>
                 <p>Book poojas anytime with a few simple clicks.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/verified.png" alt="Verified Icon" />
+              <img src="/images/i4.jpeg" alt="Verified Icon" />
               <div>
                 <h3>Verified Pandits</h3>
                 <p>Only trusted and verified professionals available.</p>
@@ -107,21 +107,21 @@ const Home = () => {
 
           <div className="about-column">
             <div className="feature-row">
-              <img src="/images/blessings.png" alt="Blessings Icon" />
+              <img src="/images/i6.jpeg" alt="Blessings Icon" />
               <div>
                 <h3>Traditional Rituals</h3>
                 <p>Rooted in ancient Vedic traditions and customs.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/service.png" alt="Services Icon" />
+              <img src="/images/i5.jpeg" alt="Services Icon" />
               <div>
                 <h3>Multiple Services</h3>
                 <p>From Griha Pravesh to Wedding, all covered.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/support.png" alt="Support Icon" />
+              <img src="/images/i3.jpeg" alt="Support Icon" />
               <div>
                 <h3>24x7 Support</h3>
                 <p>We’re here to help you anytime, anywhere.</p>
