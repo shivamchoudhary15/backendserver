@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL: 'https://backendserver-pf4h.onrender.com/api', // Update with your backend URL
 });
 
-// 🔐 Automatically attach token
+//  Automatically attach token
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -12,7 +12,13 @@ API.interceptors.request.use(config => {
 });
 
 //
-// 🔹 Devotee Auth
+
+
+//  OTP
+export const sendOtp = email => API.post('/users/send-otp', { email });
+export const verifyOtp = (email, otp) => API.post('/users/verify-otp', { email, otp });
+
+//  Devotee Auth
 //
 export const signup = userData => API.post('/users/add', userData);
 export const login = userData => API.post('/users/login', userData);
