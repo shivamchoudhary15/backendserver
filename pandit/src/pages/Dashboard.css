@@ -169,7 +169,6 @@
   transform:scale(1.18);
 }
 
-/* === HIGHLIGHT SECTION CARDS WITH IMAGE-BACKGROUND === */
 .highlight-section {
   display: flex; 
   gap: 22px;
@@ -226,7 +225,6 @@
   transform: translateY(-8px) scale(1.035) rotate(-1.5deg);
 }
 
-/* Why Choose Shubhkarya Section */
 .why-shubhkarya-section {
   padding: 24px 0 12px;
   text-align: center;
@@ -289,8 +287,6 @@
   color: #83612f;
   font-size: .97em;
 }
-
-/* FESTIVE OFFER CARD */
 .improved-offer {
   background: linear-gradient(97deg,#fffbe5 32%,#ffe494 110%);
   border-radius: 16px;
@@ -327,56 +323,290 @@
   font-weight: 700;
 }
 
+.section-heading {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #186dd5;
+  letter-spacing: .01em;
+  margin-bottom: 1.1rem;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.pandit-section {
+  margin-top: 22px;
+}
+
 .pandit-list {
-  display: flex; flex-wrap: wrap; gap: 16px; margin: 1.1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3rem;
+  margin: 1.4rem 0 0.3rem;
   justify-content: flex-start;
 }
-.improved-pandit-card {
-  background: linear-gradient(111deg,#fffde8 60%, #fcf6b0 100%);
-  border-radius: 17px;
-  box-shadow: 0 5px 19px #ffecad72;
-  padding: 19px 14px 13px;
-  margin: 13px 9px 20px 9px;
-  transition: box-shadow .19s, transform .17s;
+
+.improved-pandit-card.glossy {
+  background: linear-gradient(135deg,#fffde8 60%,#ffeab0 120% 80%);
+  border-radius: 22px;
+  box-shadow: 0 7px 32px #a1aba466, 0 2px 13px #ffd56441;
+  padding: 17px 26px 13px 18px;
+  margin: 0 8px 27px 0;
+  transition: box-shadow .21s, transform .14s;
+  min-width: 240px;
+  max-width: 330px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
   position: relative;
-  min-width: 225px;
-  max-width: 320px;
+  cursor: pointer;
+  overflow: visible;
 }
-.improved-pandit-card:hover {
-  box-shadow: 0 11px 36px #ffc940a3;
-  transform: translateY(-5px) scale(1.025) rotate(-.5deg);
+.pandit-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2.5px solid #ffe0b2;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 2.5px 11px #ffe4ba58, 0 1px 7px #adadad0b;
+  transition: border .22s;
+}
+.pandit-avatar-initial {
+  text-shadow: 0 2px 9px #542d1faf;
+}
+.improved-pandit-card.glossy:hover .pandit-avatar {
+  border-color: #ffd740;
+}
+
+.pandit-main-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .pandit-name {
-  color: #e79715;
-  font-size: 1.09rem;
+  color: #d1981b;
+  font-size: 1.14rem;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
+  cursor: pointer;
 }
-.pandit-details img {
-  width:56px; height:56px; object-fit:cover; border-radius:50%;
-  margin-bottom:7px; border:2px solid #ffe0b2;
-  box-shadow: 0 1.5px 10px #ffebbb72;
+.pandit-emoji {
+  font-size: 1.15em;
+  margin-right: 2px;
 }
-.pandit-details p { color: #8b6b2b; font-weight: 500; margin:1px 0; font-size:.96em; }
+.pandit-city {
+  color: #1d3980b6;
+  font-size: 0.97em;
+  margin-bottom: 2px;
+  background: #e3f3ff;
+  border-radius: 7px;
+  padding: 2px 9px;
+}
 
-.animated-pop-offer {
-  animation:popPulse 1.8s infinite alternate;
+.pandit-extra {
+  width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  height: 0;
+  transition: all .32s;
 }
-@keyframes popPulse{
-  0%{scale:1;}
-  100%{scale:1.04;}
+.pandit-extra.expanded {
+  opacity: 1 !important;
+  height: auto !important;
+  margin-top: 0.45rem;
+  padding-top: 7px;
 }
 
-.success-message { color: #2e7d32; font-weight: 600; text-align: center; }
-.error-message { color: #c62828; font-weight: 600; text-align: center; }
+.pandit-details {
+  padding-top: 2px;
+}
+.pandit-badges {
+  display: flex;
+  gap: 9px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.pandit-badge {
+  background: #fff7db;
+  color: #b96d04;
+  border-radius: 8px;
+  font-size: 0.91em;
+  font-weight: 700;
+  letter-spacing: .02em;
+  padding: 3px 13px;
+  margin-bottom: 2px;
+  box-shadow: 0 1px 6px #ffe6b063;
+}
+.pandit-badge.exp { background: #e1f3cd; color: #61a727; }
+.pandit-badge.langs { background: #e9f2fa; color: #1078d1; }
+.pandit-specialties {
+  color: #7b661e;
+  line-break: anywhere;
+  margin-top: -1px;
+}
+
+.toggle-btn {
+  text-align: center; margin-top: 0.7rem;
+}
+
+.custom-btn {
+  padding: 7px 27px;
+  background: linear-gradient(96deg, #ffd740 50%, #ffeec2);
+  color: #964900;
+  font-size: 1.07em;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px #ffeca144;
+  border: none;
+  margin: 12px 0 6px;
+  cursor: pointer;
+  transition: background .22s, color .13s;
+}
+.custom-btn:hover { background: linear-gradient(94deg, #ffe797 90%, #ffe7c3 100%); color: #dd7004; }
+
+.booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin: 1.3rem 0 0.6rem 0;
+}
+
+.booking-card.card-glossy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(108deg, #fefdff 60%, #d8e9fc 98%);
+  border-radius: 17px;
+  box-shadow: 0 4px 18px #dfedfc49;
+  padding: 18px 24px 13px 20px;
+  border: none;
+  transition: box-shadow .22s, transform .16s;
+}
+
+.booking-card-left {
+  display: flex; align-items: center; gap: 14px;
+}
+.booking-icon {
+  font-size: 2.2em;
+  color: #ffb300;
+  margin-right: 9px;
+}
+.booking-type {
+  font-size: 1.09em;
+  font-weight: 700;
+  color: #366ab6;
+  margin-bottom: 2px;
+}
+.booking-date {
+  font-size: 0.98em; color: #795c09b4;
+}
+.booking-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.booking-pandit-label { color: #b09811; font-size: 0.97em; }
+.booking-pandit { font-weight: 800; color: #1e2379; }
+.booking-location { font-size: 0.98em; color: #1482ad; }
+.booking-status {
+  padding: 3px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .97em;
+  background: #f6f9ff;
+  box-shadow: 0 1px 6px #e5f2c463;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  text-align: center;
+}
+.status.accepted { background: #e2f7e2; color: #369e13; }
+.status.pending { background: #fff2e7; color: #f39c12; }
+.status.rejected { background: #ffe7e7; color: #e33939; }
+
+.empty-msg {
+  color: #555; text-align: center;
+  padding: 2rem 0;
+  font-size: 1.07em;
+}
+
+.review-section {
+  margin-top: 32px;
+  margin-bottom: 2rem;
+}
+.review-form.card-glossy {
+  margin: 0.7rem auto 0;
+  background: linear-gradient(106deg,#fffde8 80%,#f3eecd 110%);
+  border-radius: 17px;
+  box-shadow: 0 4px 17px #ffe8c464;
+  padding: 20px 30px;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.review-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.review-input {
+  flex: 1;
+  font-size: 1.07em;
+  padding: 10px 13px;
+  border-radius: 8px;
+  border: 1.7px solid #f7e7ba;
+  background: #fffdfa;
+  color: #875812;
+  font-weight: 600;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .17s;
+}
+.review-input:focus {
+  border-color: #ffc107;
+}
+.review-rating {
+  max-width: 110px;
+}
+.review-textarea {
+  min-height: 84px;
+  resize: vertical;
+  font-size: 1.09em;
+}
+.success-message, .error-message {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1rem; font-size: 1em;
+}
+.success-message { color: #249432; }
+.error-message { color: #d83535; }
 
 @media (max-width:1080px) {
   .highlight-section { flex-direction: column; align-items:center; gap: 18px;}
   .highlight-card.improved-card { width:94vw; margin-bottom: 10px; }
   .slider-frame { width:98vw; }
 }
+
+@media (max-width:880px) {
+  .pandit-list { flex-direction: column; gap: 18px; }
+  .improved-pandit-card.glossy { max-width: 97vw; min-width: 80vw; }
+  .booking-card.card-glossy { flex-direction: column; align-items: flex-start; gap: 10px;}
+}
 @media (max-width:600px) {
+  .section-heading { font-size: 1.2em; }
+  .pandit-avatar { width:38px; height:38px; font-size:1.13em;}
+  .improved-pandit-card.glossy { padding: 12px 9px 12px 9px;}
+  .review-form.card-glossy { padding: 10px 7vw; }
+  .booking-card.card-glossy { padding:9px 5vw 11px 5vw; }
   .welcome-banner h2 { font-size:1.02rem;}
   .welcome-banner {padding: 18px 3vw 9px;}
   .hero-title {font-size: 1.15rem;}
