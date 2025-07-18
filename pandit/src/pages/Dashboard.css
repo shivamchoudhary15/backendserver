@@ -6,7 +6,6 @@
   font-family: 'Montserrat', 'Segoe UI', sans-serif;
 }
 
-/* === Welcome Banner === */
 .welcome-banner {
   background: linear-gradient(100deg,#FFE9B0 25%, #FFF7E7 86%);
   padding: 1.1rem 2vw 0.7rem 2vw;
@@ -35,7 +34,6 @@
   font-weight: 400;
 }
 
-/* === NAVBAR === */
 .navbar-main {
   position: sticky;
   top: 0;
@@ -93,10 +91,8 @@
   transform: scale(1.07);
 }
 .navbar-menu-item.logout { color: #ff3636; font-size:18px; }
-
 .nav-icon { font-size: 1.15em; }
 
-/* === HERO & SLIDER === */
 .dashboard-hero {
   background: #fcf8ef;
   padding: 30px 3vw 18px 3vw;
@@ -143,10 +139,7 @@
   color: #88340e;
   transform:translateY(-2px) scale(1.04);
 }
-.slider-glow {
-  filter: drop-shadow(0 4px 40px #ffd16690);
-  border-radius:17px;
-}
+.slider-glow { filter: drop-shadow(0 4px 40px #ffd16690); border-radius:17px;}
 .slider-frame {
   width: 340px;
   max-width:90vw;
@@ -176,7 +169,7 @@
   transform:scale(1.18);
 }
 
-/* === HIGHLIGHT SECTION IMPROVED === */
+/* === HIGHLIGHT SECTION CARDS WITH IMAGE-BACKGROUND === */
 .highlight-section {
   display: flex; 
   gap: 22px;
@@ -185,44 +178,198 @@
   margin: 18px 0 30px 0;
 }
 .highlight-card.improved-card {
-  background: linear-gradient(110deg, #fffbe8 70%, #ffe082 100%);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  color: #fff;
+  overflow: hidden;
   border-radius: 18px;
   box-shadow: 0 4px 32px #ffebb89f;
   padding: 32px 20px 24px;
   width: 260px; min-height:190px; 
-  display:flex; flex-direction:column; align-items:center;
   margin: 0 8px; 
-  position:relative; transition: transform .21s, box-shadow .23s;
-  overflow: hidden;
+  transition: transform .21s, box-shadow .23s;
   border: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
-.highlight-card.improved-card .highlight-icon {
-  font-size: 2.4em; margin-bottom: 14px; transition:transform .25s;
-  background: #fff8e1; border-radius: 50%; padding: 11px;
-  box-shadow: 0 4px 18px #ffe9a771;
-  color: #ff8d00;
+.highlight-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,rgba(36,21,2,0.43) 40%,rgba(202,153,33,.19) 90%);
+  z-index: 1;
 }
-.highlight-card.improved-card .highlight-content h4 {
-  color: #ff9800;
-  font-size: 1.19em;
+.highlight-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  padding-top: 12px;
+}
+.highlight-content h4 {
+  font-size: 1.28em;
   font-weight: 800;
-  margin-bottom: 3px; font-family: 'Montserrat',sans-serif;
-  letter-spacing: 0.02em;
+  color: #fffbe1;
+  text-shadow: 0 4px 14px #231100a5, 0 1px 8px #fce8a855;
+  margin-bottom: 6px;
 }
-.highlight-card.improved-card .highlight-content p {
-  color: #a37d15;
-  font-size: 1.05em;
-  margin-bottom: 0px;
+.highlight-content p {
+  font-size: 1.11em;
+  font-weight: 500;
+  color: #fffbe6;
+  text-shadow: 0 2px 8px #513400a9;
+  margin-bottom: 2px;
 }
 .highlight-card.improved-card:hover {
   box-shadow: 0 9px 42px #f6cc508a;
   transform: translateY(-8px) scale(1.035) rotate(-1.5deg);
 }
-.highlight-card.improved-card.theme1 .highlight-icon {background: #e3f2fd;}
-.highlight-card.improved-card.theme2 .highlight-icon {background: #ffe0b2;}
-.highlight-card.improved-card.theme3 .highlight-icon {background: #fff3e0;}
 
-/* ...Keep all your booking, pandit, review, etc. sections styling as before... */
+/* Why Choose Shubhkarya Section */
+.why-shubhkarya-section {
+  padding: 24px 0 12px;
+  text-align: center;
+}
+.why-shubhkarya-section h3 {
+  font-size: 1.45em;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #ed9d27;
+  margin-bottom: 20px;
+}
+.why-shubhkarya-section .brand-accent {
+  color: #1885e0;
+  letter-spacing: 0.04em;
+}
+.why-cards-row {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.why-card {
+  background: linear-gradient(120deg,#fffbe2 50%,#fff6c2 100%);
+  border-radius: 15px;
+  box-shadow: 0 3px 24px #ffd37033;
+  padding: 24px 20px 13px;
+  min-width: 185px;
+  max-width: 260px;
+  flex: 1;
+  display: flex; align-items: flex-start; gap: 13px;
+  margin: 8px 1vw;
+  transition: box-shadow .19s, transform .17s;
+  border: none;
+  min-height: 110px;
+}
+.why-card:hover{
+  box-shadow: 0 5px 32px #f2d371aa;
+  transform: translateY(-6px) scale(1.027);
+}
+.why-icon {
+  font-size: 2em;
+  background: #ffecb6;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  width: 47px; height: 47px;
+  margin-right: 2px;
+  color: #ffa800;
+  box-shadow: 0 2px 7px #ffd27d42;
+}
+.why-card h5 {
+  margin: 0 0 4px;
+  font-weight: 800;
+  font-size: 1.09em;
+  letter-spacing: .01em;
+  color: #b68319;
+}
+.why-card p {
+  margin:0;
+  color: #83612f;
+  font-size: .97em;
+}
+
+/* FESTIVE OFFER CARD */
+.improved-offer {
+  background: linear-gradient(97deg,#fffbe5 32%,#ffe494 110%);
+  border-radius: 16px;
+  box-shadow: 0 6px 28px #ffd97468;
+  display: flex; align-items: center; gap: 18px;
+  padding: 14px 28px 14px 18px;
+  margin: 17px auto 8px;
+  max-width: 460px;
+  font-size: 1.08em;
+}
+.improved-offer .promo-gift {
+  width: 48px;
+  border-radius: 10px;
+  background: #fffdf7;
+  box-shadow: 0 3px 13px #fff7e4ac;
+}
+.improved-offer .offer-content {
+  display: flex; flex-direction: column;
+}
+.improved-offer .offer-amt {
+  background: #ffe7b8;
+  padding: 2px 13px;
+  color: #b85a03;
+  margin: 0 6px;
+  font-weight: 900;
+  border-radius: 8px;
+}
+.improved-offer .offer-code {
+  color: #137be1;
+  background: #e6f6ff;
+  padding: 2px 11px;
+  border-radius: 5px;
+  margin-left: 6px;
+  font-weight: 700;
+}
+
+.pandit-list {
+  display: flex; flex-wrap: wrap; gap: 16px; margin: 1.1rem 0;
+  justify-content: flex-start;
+}
+.improved-pandit-card {
+  background: linear-gradient(111deg,#fffde8 60%, #fcf6b0 100%);
+  border-radius: 17px;
+  box-shadow: 0 5px 19px #ffecad72;
+  padding: 19px 14px 13px;
+  margin: 13px 9px 20px 9px;
+  transition: box-shadow .19s, transform .17s;
+  position: relative;
+  min-width: 225px;
+  max-width: 320px;
+}
+.improved-pandit-card:hover {
+  box-shadow: 0 11px 36px #ffc940a3;
+  transform: translateY(-5px) scale(1.025) rotate(-.5deg);
+}
+.pandit-name {
+  color: #e79715;
+  font-size: 1.09rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.pandit-details img {
+  width:56px; height:56px; object-fit:cover; border-radius:50%;
+  margin-bottom:7px; border:2px solid #ffe0b2;
+  box-shadow: 0 1.5px 10px #ffebbb72;
+}
+.pandit-details p { color: #8b6b2b; font-weight: 500; margin:1px 0; font-size:.96em; }
+
+.animated-pop-offer {
+  animation:popPulse 1.8s infinite alternate;
+}
+@keyframes popPulse{
+  0%{scale:1;}
+  100%{scale:1.04;}
+}
+
+.success-message { color: #2e7d32; font-weight: 600; text-align: center; }
+.error-message { color: #c62828; font-weight: 600; text-align: center; }
 
 @media (max-width:1080px) {
   .highlight-section { flex-direction: column; align-items:center; gap: 18px;}
@@ -235,13 +382,3 @@
   .hero-title {font-size: 1.15rem;}
   .slider-frame { min-width:90vw; height:150px;}
 }
-.animated-pop-offer {
-  animation:popPulse 1.8s infinite alternate;
-}
-@keyframes popPulse{
-  0%{scale:1;}
-  100%{scale:1.04;}
-}
-.promo-gift{width:32px;vertical-align:middle;margin-right:10px;}
-.success-message { color: #2e7d32; font-weight: 600; text-align: center; }
-.error-message { color: #c62828; font-weight: 600; text-align: center; }
