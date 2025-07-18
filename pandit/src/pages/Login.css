@@ -1,4 +1,4 @@
-/* Container: full screen split layout */
+/* Full screen layout */
 .login-container {
   display: flex;
   height: 100vh;
@@ -7,24 +7,35 @@
   margin: 0;
 }
 
-/* Left background image section */
+/* Left section with background image and overlay */
 .login-left {
   flex: 1;
+  position: relative;
+  background-image: url('/images/download.jpeg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-/* Right side: Form */
+.login-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(91, 58, 41, 0.9), rgba(91, 58, 41, 0.6));
+  z-index: 1;
+}
+
+/* Right form section */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #fff8f0;
+  padding: 20px;
 }
 
-/* Login form box */
+/* Form container */
 .login-form-box {
   width: 100%;
   max-width: 400px;
@@ -135,7 +146,7 @@
   color: #d2691e;
 }
 
-/* Responsive design */
+/* Responsive */
 @media screen and (max-width: 768px) {
   .login-container {
     flex-direction: column;
