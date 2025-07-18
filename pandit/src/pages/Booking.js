@@ -9,17 +9,12 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const bgImage = "/images/ho3.png";
+const bgImage = "/images/luxi.jpeg";
+
 const stepTitles = [
   "Choose Service & Pandit",
   "Select Date & Location",
   "Review & Book"
-];
-
-const stepEmojis = [
-  "🧑‍🦱", // Replace with emoji for each step or keep neutral
-  "📅",
-  "✅"
 ];
 
 const astrologicalPoojas = [
@@ -120,7 +115,7 @@ function Booking() {
               {services.length ? (
                 services.map((s) => (
                   <option key={s._id} value={s._id}>{s.name}</option>
-                )) 
+                ))
               ) : (
                 <option disabled>Loading services...</option>
               )}
@@ -185,7 +180,7 @@ function Booking() {
       case 3:
         return (
           <>
-            <h3 style={{ color: '#693e17', fontWeight: 700, textAlign: 'center', marginBottom: 8 }}>Review your booking</h3>
+            <h3 className="review-title">Review your booking</h3>
             <ul className="review-list">
               <li>Service: {selectedServiceName}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
@@ -208,7 +203,6 @@ function Booking() {
 
   return (
     <div className="booking-bg">
-      {/* Single background image for full width */}
       <img src={bgImage} alt="" className="bg-img" draggable={false}/>
       <div className="overlay-gradient"></div>
       <motion.form
@@ -224,7 +218,7 @@ function Booking() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.13 }}
         >
-          <span className="emoji">🙏</span> Book Pandit Ji for Puja
+          Book Pandit Ji for Your Puja
         </motion.h2>
         <div className="steps-nav">
           {[1,2,3].map((n, idx) => (
@@ -234,8 +228,8 @@ function Booking() {
               animate={{ scale: step === n ? 1.07 : 1 }}
               transition={{ type: "spring", stiffness: 220 }}
             >
-              <span className="step-emoji" style={{fontSize:"2em"}}>{stepEmojis[idx]}</span>
-              <span>{stepTitles[idx]}</span>
+              <span className="step-index">{n < 10 ? `0${n}` : n}</span>
+              <span className="step-label">{stepTitles[idx]}</span>
               {step > n && <span className="checkmark">&#10003;</span>}
             </motion.div>
           ))}
