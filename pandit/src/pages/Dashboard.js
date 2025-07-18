@@ -33,11 +33,11 @@ function Dashboard() {
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const sliderImages = [
-    '/images/hero1.jpg',
+    '/images/i2.jpeg',
     '/images/kalash.jpeg',
     '/images/havan.jpeg',
     '/images/i3.jpeg',
-    '/images/mascot_pandit.png',
+    '/images/i1.jpeg',
   ];
 
   useEffect(() => {
