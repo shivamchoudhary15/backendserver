@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap');
 
+
 .booking-bg {
   min-height: 100vh;
   width: 100vw;
@@ -83,97 +84,54 @@
   font-family: 'Montserrat', serif;
 }
 
-.steps-nav {
+/* MODERN BOX STEPPER */
+.steps-nav.only-box {
   display: flex;
   justify-content: space-between;
-  margin: 27px 0 16px 0;
-  padding: 0 2px 0 2px;
-  gap: 0.12rem;
+  margin: 27px 0 20px 0;
+  gap: 13px;
+  padding: 0;
 }
-.steps-circle {
-  background: rgba(255,255,255,0.18);
-  border: 1.3px solid rgba(211,84,0,0.09);
-  color: #fee8e4;
-  border-radius: 19px;
-  min-width: 68px;
-  max-width: 120px;
-  height: 62px;
+.steps-circle.onlybox {
+  background: rgba(255,255,255,0.34);
+  border: none;
+  border-radius: 15px;
+  min-width: 96px;
   flex: 1 1 0;
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  font-size: 1rem;
-  position: relative;
-  box-shadow: 0 1px 10px #b84d1933 inset;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-  margin: 0 2px;
-  opacity: 0.95;
-  cursor: pointer;
-  transition: box-shadow .36s cubic-bezier(.77,-0.06,0,.91), background 0.34s;
-}
-.steps-circle.active {
-  background: linear-gradient(107deg, #ffede6 40%, #ffae7429 99%);
-  color: #ba5600;
-  font-weight: 900;
-  border-color: #ffbb6c;
-  box-shadow: 0 3px 22px #e6782a17, 0 1px 15px #fff6ee33 inset;
-  transform: scale(1.06);
-  z-index: 2;
-}
-.steps-circle.done {
-  background: linear-gradient(104deg, #f7faed 22%, #e1f5f0 95%);
-  color: #009052;
-  border-color: #5acd80;
-}
-.steps-circle .step-index {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  font-size: 2.1em;
-  color: #ec9000;
-  background: linear-gradient(92deg, #fff3c3 33%, #e98425 90%);
-  box-shadow: 0 2px 8px #fff7;
-  border-radius: 12px;
-  min-width: 48px;
-  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 7px;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 6px #fff5, 0 1px 18px #ffc54937;
-  transition: color 0.24s, background 0.17s;
-}
-.steps-circle.active .step-index {
-  color: #e15611;
-  background: linear-gradient(91deg, #ffecbc 10%, #ffc051 97%);
-  box-shadow: 0 4px 18px #ffaa0933;
-}
-.steps-circle .step-label {
+  height: 52px;
+  transition: box-shadow 0.23s, background 0.22s, color 0.22s;
+  box-shadow: 0 4px 18px #edd2ab26;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.07em;
+  padding: 0 7px;
+  cursor: pointer;
+}
+.steps-circle.onlybox.active {
+  background: linear-gradient(97deg, #fffefa 34%, #ffd59c 88%, #ffa834 120%);
+  color: #8e4a08;
+  font-weight: 800;
+  box-shadow: 0 5px 19px #ffbd8442,0 2px 12px #fffbe7aa inset;
+}
+.steps-circle.onlybox:not(.active) {
+  color: #9b8577;
   font-weight: 600;
-  color: inherit;
-  letter-spacing: 0.011em;
-  transition: color 0.2s;
+  opacity: 0.82;
+  background: rgba(255,255,255,0.17);
+}
+.step-label.step-label-box {
+  font-size: 1em;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0.018em;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0 2px;
 }
 
-.steps-circle .checkmark {
-  position: absolute;
-  right: 9px;
-  top: 3px;
-  color: #18d27d;
-  font-size: 1.18em;
-  font-weight: bold;
-  text-shadow: 0 1px 2px #fff, 0 0 1px #1d443b33;
-  opacity: 0.85;
-  z-index: 3;
-}
+/* End modern box stepper */
 
-/* Inputs */
 .signup-input {
   background: rgba(245, 238, 229, 0.97);
   color: #432a09;
@@ -200,7 +158,6 @@
   box-shadow: 0 0 8px 1px #e6782a33;
 }
 
-/* Buttons */
 .primary-btn,
 .secondary-btn {
   padding: 11px 18px;
@@ -259,7 +216,6 @@
   100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
 }
 
-/* Step navigation buttons */
 .step-buttons {
   display: flex;
   justify-content: flex-end;
@@ -288,12 +244,9 @@
   min-height: 210px;
 }
 
-/* Responsive */
 @media (max-width: 770px){
   .glass-form-pro{ max-width: 99vw; min-width: 0; padding: 19px 3vw 14px 3vw;}
   .booking-title {font-size: 1.17rem;}
-  .steps-nav {flex-direction: column; gap: 7px; }
-  .steps-circle { flex-direction: row; min-width: 44vw; max-width: 98vw; height:51px; font-size: .96em }
-  .steps-circle .step-index { font-size: 1.45em; min-width: 35px; height: 35px; }
-  .bg-img {filter: blur(2px) brightness(0.965);}
+  .steps-nav.only-box {flex-direction: column; gap: 10px;}
+  .steps-circle.onlybox { min-width: 90vw; height:44px; }
 }
