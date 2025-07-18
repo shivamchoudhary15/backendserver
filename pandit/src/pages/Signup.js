@@ -1,157 +1,221 @@
-// src/pages/Signup.js
-
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';
 
-function Signup() {
-  const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [role, setRole] = useState('devotee');
-  const [formData, setFormData] = useState({
+const Signup = () => {
+  const [form, setForm] = useState({
     name: '',
     email: '',
     password: '',
-    phone: '',
     city: '',
+    phone: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
+
+  const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpError, setOtpError] = useState('');
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSendOtp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await fetch('/api/users/send-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email }),
-      });
+    setLoading(true);
 
-      const data = await res.json();
-      if (res.ok) {
-        setStep(2);
-        alert('OTP sent to your email');
-      } else {
-        alert(data.error || 'Failed to send OTP');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Error sending OTP');
+    if (!otpVerified) {
+      alert('Please verify OTP before registering.');
+      setLoading(false);
+      return;
     }
-  };
-
-  const handleOtpVerify = async (e) => {
-    e.preventDefault();
 
     try {
-      // Secure OTP verification
-      const otpRes = await fetch('/api/users/verify-otp', {
+      const response = await fetch('https://backendserver-pf4h.onrender.com/api/users/add', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, otp }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
       });
 
-      const otpData = await otpRes.json();
-
-      if (!otpRes.ok) {
-        alert(otpData.error || 'Invalid or expired OTP');
-        return;
-      }
-
-      // Proceed to register user
-      const endpoint = role === 'pandit' ? '/api/pandits/add' : '/api/users/add';
-
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, role }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
+      const data = await response.json();
+      if (response.ok) {
         alert('Signup successful!');
         navigate('/login');
       } else {
-        alert(data.error || 'Signup failed');
+        alert(data.message || 'Signup failed');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert('Something went wrong during signup.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendOtp = async () => {
+    try {
+      const res = await fetch('https://backendserver-pf4h.onrender.com/api/users/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('OTP sent to your email.');
+        setOtpSent(true);
+      } else {
+        alert(data.message || 'Failed to send OTP');
       }
     } catch (err) {
+      alert('Error sending OTP');
       console.error(err);
-      alert('Signup error occurred');
+    }
+  };
+
+  const verifyOtp = async () => {
+    try {
+      const res = await fetch('https://backendserver-pf4h.onrender.com/api/users/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email, otp }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setOtpVerified(true);
+        setOtpError('');
+        alert('OTP verified!');
+      } else {
+        setOtpError(data.message || 'Invalid OTP');
+      }
+    } catch (err) {
+      setOtpError('Verification failed.');
+      console.error(err);
+    }
+  };
+
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <div className="input-group">
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={form.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input-group">
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                value={form.city}
+                onChange={handleChange}
+              />
+            </div>
+            <motion.button type="button" onClick={() => setStep(2)} className="next-btn" whileTap={{ scale: 0.97 }}>
+              Next
+            </motion.button>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <div className="input-group">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            {!otpSent ? (
+              <motion.button type="button" onClick={sendOtp} className="otp-btn" whileTap={{ scale: 0.97 }}>
+                Send OTP
+              </motion.button>
+            ) : (
+              <>
+                <div className="input-group">
+                  <input
+                    name="otp"
+                    placeholder="Enter OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                  {otpError && <span className="signup-error">{otpError}</span>}
+                </div>
+                {!otpVerified && (
+                  <motion.button type="button" onClick={verifyOtp} className="otp-btn" whileTap={{ scale: 0.97 }}>
+                    Verify OTP
+                  </motion.button>
+                )}
+                {otpVerified && <span className="otp-success">✅ OTP Verified</span>}
+              </>
+            )}
+
+            <div className="input-group">
+              <input
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                value={form.phone}
+                onChange={handleChange}
+              />
+            </div>
+            <motion.button type="button" onClick={() => setStep(3)} className="next-btn" whileTap={{ scale: 0.97 }}>
+              Next
+            </motion.button>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <div className="input-group">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+              />
+            </div>
+            <motion.button
+              type="submit"
+              className="submit-btn"
+              whileTap={{ scale: 0.97 }}
+              disabled={loading}
+            >
+              {loading ? 'Signing up...' : 'Sign Up'}
+            </motion.button>
+          </>
+        );
+      default:
+        return null;
     }
   };
 
   return (
     <div className="signup-container">
-      <div className="signup-left">
-        <img src="/images/signup-bg.jpg" alt="Spiritual" className="signup-bg-image" />
-      </div>
-
-      <div className="signup-right">
-        <div className="signup-form-container">
-          <img src="/images/subh.png" alt="Logo" className="signup-logo" />
-          <h2 className="signup-title">Join Shubkarya</h2>
-
-          <div className="role-selector">
-            <button
-              className={role === 'devotee' ? 'active' : ''}
-              onClick={() => setRole('devotee')}
-            >
-              Join as Devotee
-            </button>
-            <button
-              className={role === 'pandit' ? 'active' : ''}
-              onClick={() => setRole('pandit')}
-            >
-              Register as Pandit
-            </button>
-          </div>
-
-          {step === 1 ? (
-            <form onSubmit={handleSendOtp}>
-              <input type="text" name="name" placeholder="Name" required onChange={handleChange} />
-              <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-              <input type="text" name="phone" placeholder="Phone" required onChange={handleChange} />
-              <input type="text" name="city" placeholder="City" required onChange={handleChange} />
-              <div className="password-field">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  placeholder="Password"
-                  required
-                  onChange={handleChange}
-                />
-                <span
-                  className="toggle-password"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                >
-                  {showPassword ? '🙈' : '👁️'}
-                </span>
-              </div>
-              <button type="submit" className="submit-btn">Send OTP</button>
-            </form>
-          ) : (
-            <form onSubmit={handleOtpVerify}>
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                required
-              />
-              <button type="submit" className="submit-btn">Verify & Register</button>
-            </form>
-          )}
-        </div>
-      </div>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <h2>Signup</h2>
+        {renderStep()}
+      </form>
     </div>
   );
-}
+};
 
 export default Signup;
