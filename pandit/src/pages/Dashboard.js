@@ -57,7 +57,6 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Carousel slide auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex(idx => (idx + 1) % sliderImages.length);
@@ -65,11 +64,9 @@ function Dashboard() {
     return () => clearInterval(interval);
   }, [sliderImages.length]);
 
-  // Navbar Hover
   const handleNavMouseEnter = () => setNavbarOpen(true);
   const handleNavMouseLeave = () => setNavbarOpen(false);
 
-  // Actions
   const handleNavClick = (item) => {
     if (item.logout) {
       localStorage.clear();
@@ -287,9 +284,9 @@ function Dashboard() {
         </div>
       </section>
 
-      {/* Pandit Showcase */}
+      {/* --- Improved Pandit Showcase --- */}
       <section id="pandit" className="pandit-section" data-aos="fade-up">
-        <h3>Verified Pandits</h3>
+        <h3 className="section-heading">Verified Pandits</h3>
         <input
           type="text"
           className="booking-search"
@@ -301,22 +298,44 @@ function Dashboard() {
           {filteredPandits.slice(0, visibleCount).map(p => (
             <motion.div
               key={p._id}
-              className="pandit-card improved-pandit-card"
+              className="pandit-card improved-pandit-card glossy"
               data-aos="zoom-in"
-              whileHover={{ y: -4, scale: 1.03 }}
+              whileHover={{ y: -4, scale: 1.04 }}
             >
-              <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>
-                <span role="img" aria-label="pandit">🧑‍🦳</span> {p.name}
-              </h4>
-              {expandedPandits[p._id] && (
-                <div className="pandit-details">
-                  <img src={p.profile_photo_url || '/images/i1.jpeg'} alt={p.name} />
-                  <p><strong>City:</strong> {p.city}</p>
-                  <p><strong>Experience:</strong> {p.experienceYears} yrs</p>
-                  <p><strong>Languages:</strong> {p.languages?.join(', ')}</p>
-                  <p><strong>Specialties:</strong> {p.specialties?.join(', ')}</p>
-                </div>
-              )}
+              <div
+                className="pandit-avatar"
+                style={{
+                  backgroundImage: `url(${p.profile_photo_url || '/images/i1.jpeg'})`
+                }}
+                title={p.name}
+                onClick={() => toggleExpand(p._id)}
+              >
+                <span className="pandit-avatar-initial">{(p.name || '').slice(0,1)}</span>
+              </div>
+              <div className="pandit-main-info">
+                <h4 className="pandit-name" onClick={() => toggleExpand(p._id)}>
+                  <span className="pandit-emoji" aria-label="pandit">🧑‍🦳</span> {p.name}
+                </h4>
+                <div className="pandit-city">{p.city}</div>
+              </div>
+              <motion.div
+                className={`pandit-extra${expandedPandits[p._id] ? ' expanded' : ''}`}
+                initial={false}
+                animate={{ height: expandedPandits[p._id] ? "auto" : 0, opacity: expandedPandits[p._id] ? 1 : 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                {expandedPandits[p._id] && (
+                  <div className="pandit-details">
+                    <div className="pandit-badges">
+                      <span className="pandit-badge exp">Exp: {p.experienceYears} yrs</span>
+                      <span className="pandit-badge langs">{p.languages?.join(', ')}</span>
+                    </div>
+                    <div className="pandit-specialties">
+                      <b>Specialties:</b> {p.specialties?.join(', ')}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
             </motion.div>
           ))}
         </div>
@@ -329,55 +348,69 @@ function Dashboard() {
         )}
       </section>
 
-      {/* Bookings History */}
+      {/* --- Improved Bookings History --- */}
       <section id="booking" ref={bookingsRef} className="bookings-section" data-aos="fade-up">
-        <h3>Your Bookings</h3>
+        <h3 className="section-heading">Your Bookings</h3>
         <div className="booking-list">
           {filteredBookings.length === 0 ? (
-            <p>No matching bookings found.</p>
+            <p className="empty-msg">No matching bookings found.</p>
           ) : (
             filteredBookings.map(b => (
               <motion.div
                 key={b._id}
-                className="booking-card"
-                whileHover={{ scale: 1.025, boxShadow: '0 4px 24px #42a5f580' }}
+                className="booking-card card-glossy"
+                whileHover={{ scale: 1.032, boxShadow: '0 6px 22px #5ec4ee51' }}
               >
-                <p><strong>Service:</strong> {b.serviceid?.name || b.serviceid}</p>
-                <p><strong>Pandit:</strong> {b.panditid?.name || 'N/A'}</p>
-                <p><strong>Date:</strong> {new Date(b.puja_date).toDateString()}</p>
-                <p><strong>Time:</strong> {b.puja_time}</p>
-                <p><strong>Location:</strong> {b.location}</p>
-                <p><strong>Status:</strong> <span className={getStatusClass(b.status)}>{b.status}</span></p>
+                <div className="booking-card-left">
+                  <span className="booking-icon">📅</span>
+                  <div>
+                    <div className="booking-type">{b.serviceid?.name || b.serviceid}</div>
+                    <div className="booking-date">{new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}</div>
+                  </div>
+                </div>
+                <div className="booking-card-right">
+                  <div className="booking-pandit">
+                    <span className="booking-pandit-label">Pandit:</span> <span>{b.panditid?.name || 'N/A'}</span>
+                  </div>
+                  <div className="booking-location">📍 {b.location}</div>
+                  <div className={`booking-status ${getStatusClass(b.status)}`}>
+                    {b.status}
+                  </div>
+                </div>
               </motion.div>
             ))
           )}
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* --- Improved Reviews Section --- */}
       <section id="review" ref={reviewsRef} className="review-section" data-aos="fade-up">
-        <h3>Submit a Review</h3>
+        <h3 className="section-heading">Submit a Review</h3>
         {reviewMessage && (
           <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
         )}
-        <form onSubmit={handleReviewSubmit} className="review-form">
-          <input type="text" value={review.name} disabled />
-          <input
-            type="number"
-            placeholder="Rating (1-5)"
-            value={review.rating}
-            onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
-            min="1"
-            max="5"
-            required
-          />
+        <form onSubmit={handleReviewSubmit} className="review-form card-glossy">
+          <div className="review-row">
+            <input type="text" value={review.name} disabled className="review-input" />
+            <input
+              type="number"
+              className="review-input review-rating"
+              placeholder="Rating (1-5) ⭐"
+              value={review.rating}
+              onChange={e => setReview(prev => ({ ...prev, rating: e.target.value }))}
+              min="1"
+              max="5"
+              required
+            />
+          </div>
           <textarea
             placeholder="Write your feedback..."
             value={review.comment}
             onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+            className="review-input review-textarea"
             required
           />
-          <button type="submit" className="custom-btn">Submit Review</button>
+          <button type="submit" className="custom-btn">Submit Review 💬</button>
         </form>
       </section>
     </div>
