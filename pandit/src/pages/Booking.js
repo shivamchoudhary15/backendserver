@@ -1,4 +1,3 @@
-// src/pages/Booking.js
 import React, { useState, useEffect } from 'react';
 import {
   createBooking,
@@ -10,11 +9,29 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
+// You can import images (if using CRA/Vite/etc.)
+// import b2 from '../assets/b2.jpg';
+const bgImage = "/images/bookbg.png";
+const mandala = "/images/mandala.jpeg";
+const flowers = "/images/i2.jpeg";
+const lamp = "/images/diya.jpeg";
+const stepIcons = [
+  "/images/i1.jpeg",
+  "/images/i6.jpeg",
+  "/images/i4.jpeg",
+];
+
 const astrologicalPoojas = [
   { _id: 'kundli', name: 'Kundli Analysis' },
   { _id: 'horoscope', name: 'Horoscope Matching' },
   { _id: 'career', name: 'Career and Business Guidance' },
   { _id: 'health', name: 'Health Analysis' }
+];
+
+const stepTitles = [
+  "Choose Service & Pandit",
+  "Select Date & Location",
+  "Review & Book"
 ];
 
 function Booking() {
@@ -37,19 +54,15 @@ function Booking() {
           getPoojas(),
           getServices()
         ]);
-
         const verifiedPandits = pdRes.data?.filter(p => p.is_verified) || [];
         setPandits(verifiedPandits);
         setFilteredPandits(verifiedPandits);
-
         setPoojas(pjRes.data || []);
         setServices(srvRes.data || []);
       } catch (err) {
-        console.error('❌ Error loading booking data:', err);
-        alert('Failed to load pandits, poojas, or services. Try again later.');
+        alert('Failed to load data. Try again later.');
       }
     }
-
     if (userid) load();
   }, [userid]);
 
@@ -73,30 +86,21 @@ function Booking() {
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
-
-  if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
-    alert('Please fill all fields');
-    return;
-  }
-
-  try {
-    await createBooking({ ...details, userid });
-    alert('✅ Booking created!');
-    navigate('/dashboard');
-  } catch (error) {
-    console.error('❌ Booking failed:', error);
-    // If backend sends a message, show it. Otherwise show fallback message.
-    if (error?.response?.data?.message) {
-      alert(`❌ ${error.response.data.message}`);
-    } else {
-      alert('❌ Booking not available for this Pandit on the selected date.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { serviceid, panditid, poojaId, puja_date, puja_time, location } = details;
+    if (!serviceid || !panditid || !poojaId || !puja_date || !puja_time || !location) {
+      alert('Please fill all fields');
+      return;
     }
-  }
-};
-
+    try {
+      await createBooking({ ...details, userid });
+      alert('✅ Booking created!');
+      navigate('/dashboard');
+    } catch (error) {
+      alert(error?.response?.data?.message || '❌ Booking not available for this Pandit on the selected date.');
+    }
+  };
 
   const renderStep = () => {
     switch (step) {
@@ -110,26 +114,25 @@ const handleSubmit = async (e) => {
               onChange={(e) => setSearch(e.target.value)}
               className="signup-input"
             />
-
             <select
               name="serviceid"
               onChange={handleChange}
               required
               className="signup-input"
+              value={details.serviceid || ''}
             >
               <option value="">-- Select Service --</option>
-              {services.length > 0 ? (
+              {services.length ? (
                 services.map((s) => (
                   <option key={s._id} value={s._id}>{s.name}</option>
-                ))
+                )) 
               ) : (
                 <option disabled>Loading services...</option>
               )}
             </select>
-
-            <select name="panditid" onChange={handleChange} required className="signup-input">
+            <select name="panditid" onChange={handleChange} required className="signup-input" value={details.panditid || ''}>
               <option value="">-- Select Pandit --</option>
-              {filteredPandits.length > 0 ? (
+              {filteredPandits.length ? (
                 filteredPandits.map((p) => (
                   <option key={p._id} value={p._id}>{p.name}</option>
                 ))
@@ -137,10 +140,9 @@ const handleSubmit = async (e) => {
                 <option disabled>No verified pandits available</option>
               )}
             </select>
-
-            <select name="poojaId" onChange={handleChange} required className="signup-input">
+            <select name="poojaId" onChange={handleChange} required className="signup-input" value={details.poojaId || ''}>
               <option value="">-- Select Pooja --</option>
-              {filteredPoojas.length > 0 ? (
+              {filteredPoojas.length ? (
                 filteredPoojas.map((pj) => (
                   <option key={pj._id} value={pj._id}>{pj.name}</option>
                 ))
@@ -148,11 +150,9 @@ const handleSubmit = async (e) => {
                 <option disabled>No poojas found</option>
               )}
             </select>
-
             <button type="button" onClick={nextStep} className="primary-btn">Next</button>
           </>
         );
-
       case 2:
         return (
           <>
@@ -162,6 +162,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               className="signup-input"
+              value={details.puja_date || ''}
             />
             <input
               type="time"
@@ -169,6 +170,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               className="signup-input"
+              value={details.puja_time || ''}
             />
             <input
               type="text"
@@ -177,6 +179,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               className="signup-input"
+              value={details.location || ''}
             />
             <div className="step-buttons">
               <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
@@ -184,11 +187,10 @@ const handleSubmit = async (e) => {
             </div>
           </>
         );
-
       case 3:
         return (
           <>
-            <h3 style={{ color: 'white' }}>Review your details</h3>
+            <h3 style={{ color: '#693e17', fontWeight: 700, textAlign: 'center', marginBottom: 8 }}>Review your booking</h3>
             <ul className="review-list">
               <li>Service: {selectedServiceName}</li>
               <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
@@ -205,30 +207,64 @@ const handleSubmit = async (e) => {
             </div>
           </>
         );
-
-      default:
-        return null;
+      default: return null;
     }
   };
 
+  // Decorative images
+  // All image tags below: no background-image in CSS at all!
   return (
-    <div className="booking-page" style={{ backgroundImage: `url('/images/b2.jpg')` }}>
-      <form className="glass-form" onSubmit={handleSubmit}>
-        <h2 style={{ color: 'white' }}>Book Pandit Ji for Your Puja</h2>
-        <p className="step-indicator">Step {step} of 3</p>
+    <div className="booking-bg">
+      {/* Background image */}
+      <img src={bgImage} alt="" className="bg-img" draggable={false}/>
+      <div className="overlay-gradient"></div>
+      {/* Decorative floating images */}
+      <img src={mandala} className="bg-deco mandala" alt="mandala" draggable={false}/>
+      <img src={flowers} className="bg-deco flowers" alt="flowers" draggable={false}/>
+      <img src={lamp} className="bg-deco lamp" alt="lamp" draggable={false}/>
+
+      <motion.form
+        className="glass-form-pro animate__animated"
+        onSubmit={handleSubmit}
+        initial={{ scale: 0.95, opacity: 0, y:40 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: 'easeOut'}}
+      >
+        <motion.h2
+          className="booking-title"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.1 }}
+        >
+          <span className="emoji">🙏</span> Book Pandit Ji for Puja
+        </motion.h2>
+        <div className="steps-nav">
+          {[1,2,3].map((n, idx) => (
+            <motion.div
+              key={n}
+              className={`steps-circle ${step === n ? 'active' : ''} ${step > n ? 'done' : ''}`}
+              animate={{ scale: step === n ? 1.09 : 1 }}
+              transition={{ type: "spring", stiffness: 230 }}
+            >
+              <img src={stepIcons[idx]} alt="step icon" className="step-icon-img" />
+              <span>{stepTitles[idx]}</span>
+              {step > n && <span className="checkmark">&#10003;</span>}
+            </motion.div>
+          ))}
+        </div>
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.4 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.5, ease: 'anticipate' }}
             className="animated-step"
           >
             {renderStep()}
           </motion.div>
         </AnimatePresence>
-      </form>
+      </motion.form>
     </div>
   );
 }
