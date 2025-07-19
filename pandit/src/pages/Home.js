@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import "./Home.css";
 
 const backendURL = "https://backendserver-dryq.onrender.com";
@@ -15,33 +18,41 @@ const Home = () => {
   const [poojas, setPoojas] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingPoojas, setLoadingPoojas] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    AOS.init({ duration: 900 });
+  }, []);
+
+  // Fetch services, pandits, initial pooja state
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const [panditRes, poojaRes, serviceRes] = await Promise.all([
-          fetch(`${backendURL}/api/pandits/view`),
-          fetch(`${backendURL}/api/poojas/view`),
-          fetch(`${backendURL}/api/services/view`),
+        const [panditRes, serviceRes] = await Promise.all([
+          axios.get(`${backendURL}/api/pandits/view`),
+          axios.get(`${backendURL}/api/services/view`),
         ]);
-        const panditsData = await panditRes.json();
-        const poojasData = await poojaRes.json();
-        const servicesData = await serviceRes.json();
-
-        setPandits(panditsData.filter((p) => p.is_verified));
-        setPoojas(poojasData);
-        setServices(servicesData);
+        setPandits(panditRes.data.filter((p) => p.is_verified));
+        setServices(serviceRes.data);
       } catch {
         setPandits([]);
-        setPoojas([]);
         setServices([]);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
+  }, []);
+
+  // Fetch poojas with Axios
+  useEffect(() => {
+    axios
+      .get(`${backendURL}/api/poojas/view`)
+      .then(res => setPoojas(res.data))
+      .catch(() => setPoojas([]))
+      .finally(() => setLoadingPoojas(false));
   }, []);
 
   return (
@@ -138,13 +149,13 @@ const Home = () => {
         </div>
       </section>
 
-      {/* OUR SERVICES */}
+      {/* OUR SERVICES Section */}
       <section className="services-container" id="services">
         <h2>OUR SERVICES</h2>
         <p style={{ textAlign: "center" }}>Discover a wide range of spiritual services tailored to your needs.</p>
         <div className="services-grid">
-          {services.map((service) => (
-            <div key={service._id} className="service-card" onClick={() => navigate('/login')}>
+          {services.map((service, idx) => (
+            <div key={service._id} className="service-card" data-aos="fade-up" data-aos-delay={idx*50} onClick={() => navigate('/login')}>
               <img src={service.image} alt={service.name} className="service-image" />
               <h3>{service.name}</h3>
               <p>{service.description}</p>
@@ -162,25 +173,26 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Pooja Provided */}
-      <section id="poojas" className="poojas">
+      {/* Pooja Provided - 7 in a row, AOS */}
+      <section id="poojas" className="poojas" data-aos="fade-up">
         <h2>Pooja Provided</h2>
-        {loading ? (
+        {loadingPoojas ? (
           <p>Loading poojas...</p>
         ) : (
-          <div className="card-grid">
-            {poojas.map((pooja) => (
+          <div className="pooja-grid-7">
+            {poojas.map((pooja, idx) => (
               <div
-                className="service-card"
+                className="pooja-card-modern"
                 key={pooja._id}
+                data-aos="zoom-in"
+                data-aos-delay={idx % 7 * 60}
                 onClick={() => setSelectedService(pooja)}
               >
                 <img
                   src={getPoojaImage(pooja.imageUrl)}
                   alt={pooja.name}
-                  className="service-img"
                 />
-                <h3>{pooja.name}</h3>
+                <div className="pooja-name">{pooja.name}</div>
               </div>
             ))}
           </div>
@@ -192,10 +204,12 @@ const Home = () => {
               <img
                 src={getPoojaImage(selectedService.imageUrl)}
                 alt={selectedService.name}
-                style={{ width: "100%", marginBottom: 12, borderRadius: 6 }}
+                style={{ width: "100%", marginBottom: 12, borderRadius: 8 }}
               />
               <p>{selectedService.description}</p>
-              <button onClick={() => setSelectedService(null)} className="close-btn">Close</button>
+              <button onClick={() => setSelectedService(null)} className="close-btn">
+                Close
+              </button>
             </div>
           </div>
         )}
@@ -205,8 +219,8 @@ const Home = () => {
       <section id="pandits" className="pandits">
         <h2>Our Verified Pandits</h2>
         <div className="card-section">
-          {pandits.map((pandit) => (
-            <div className="pandit-card" key={pandit._id}>
+          {pandits.map((pandit, idx) => (
+            <div className="pandit-card" key={pandit._id} data-aos="zoom-in" data-aos-delay={idx*40}>
               <img
                 src={
                   pandit.profile_photo_url &&
