@@ -50,7 +50,7 @@ body {
   border-radius: 4px;
 }
 
-/* Hero Section */
+/* Hero */
 .hero {
   height: 85vh;
   background-size: cover;
@@ -72,7 +72,6 @@ body {
 .hero-content {
   padding: 0 60px;
 }
-
 .main-heading {
   font-size: 44px;
   font-weight: bold;
@@ -80,54 +79,31 @@ body {
   color: white;
   margin-bottom: 15px;
 }
-
 .tagline {
   font-size: 18px;
   color: #f1f1f1;
   margin-bottom: 30px;
 }
-
 .hero-buttons {
   display: flex;
   gap: 16px;
 }
-
 .book-btn,
-.meet-btn,
-.book-button,
-.explore-more {
+.get-started-btn {
   padding: 10px 24px;
   font-weight: bold;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-
 .book-btn {
   background-color: #d67f2a;
   color: white;
 }
-
-.meet-btn {
-  background-color: transparent;
-  color: black;
-  border: 2px solid black;
-}
-
-.explore-more {
-  background-color: #ff4500;
-  color: white;
-  margin-top: 20px;
-}
-
 .get-started-btn {
   background-color: white;
   color: black;
   border: 2px solid white;
-  font-weight: bold;
-  padding: 10px 24px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /* About Section */
@@ -158,33 +134,28 @@ body {
   gap: 30px;
   max-width: 300px;
 }
-
 .feature-row {
   display: flex;
   align-items: center;
   text-align: left;
   gap: 15px;
 }
-
 .feature-row img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
 }
-
 .feature-row h3 {
   font-size: 18px;
   font-weight: bold;
   margin: 0;
 }
-
 .feature-row p {
   font-size: 14px;
   margin: 4px 0 0;
   color: #555;
 }
-
 .logo-center img {
   width: 180px;
   height: 180px;
@@ -192,174 +163,82 @@ body {
   border-radius: 50%;
 }
 
-/* Services Section */
-.services-container {
-  padding: 60px 30px;
-  background: #f9f3e1;
-  text-align: center;
-}
-
-.services-container h2 {
-  font-size: 2.5rem;
-  color: #cc6600;
-  margin-bottom: 10px;
-}
-
-.services-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.service-card .service-image {
-  transition: transform 0.4s ease;
-}
-
-.service-card:hover .service-image {
-  transform: scale(1.1);
-}
-
-.service-card {
-  background-color: white;
-  border: 2px solid #e1e1e1;
-  padding: 20px;
-  border-radius: 8px;
-  width: 250px;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-  text-align: center;
-}
-
-.service-card:hover {
-  transform: scale(1.05);
-}
-
-.service-card h3 {
-  margin: 10px 0 5px;
-  font-size: 20px;
-  color: #333;
-}
-
-.service-card p {
-  font-size: 14px;
-  color: #666;
-}
-
-.service-image {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-.book-now {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.service-details {
-  margin-top: 40px;
-}
-
-.service-details h4 {
-  margin-top: 15px;
-  font-weight: bold;
-  font-size: 18px;
-  color: #444;
-}
-
-.service-details p {
-  font-size: 14px;
-  color: #666;
-}
-
-/* Poojas Section (images: external, uploads or static, hover overlays) */
-.poojas {
+/* Services */
+.services, .poojas {
   padding: 60px 30px;
   text-align: center;
   background: #f4f1eb;
 }
-
-.poojas h2 {
+.services h2, .poojas h2 {
   font-size: 2.2rem;
   color: #bb6a14;
   margin-bottom: 30px;
   font-weight: bold;
 }
-
-.pooja-grid {
+.services-grid, .card-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   justify-content: center;
 }
-
-.pooja-img-card {
-  position: relative;
-  width: 280px;
-  height: 220px;
+.service-card, .pandit-card {
+  width: 230px;
+  background: #fff;
+  border-radius: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.07);
   overflow: hidden;
   cursor: pointer;
-  border-radius: 12px;
-  background: #fff;
-  transition: box-shadow 0.25s;
+  margin-bottom: 30px;
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s;
 }
-.pooja-img-card img {
+.service-card:hover, .pandit-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
+}
+.service-img {
   width: 100%;
-  height: 100%;
+  height: 170px;
   object-fit: cover;
+  border-radius: 14px 14px 0 0;
   display: block;
-  transition: filter 0.35s;
-}
-.pooja-img-card .pooja-name {
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 100%;
-  color: #fff;
-  background: rgba(36,15,11,0.7);
-  font-size: 1.2rem;
-  padding: 18px 0 14px 0;
-  font-weight: bold;
-  text-align: center;
-  letter-spacing: 1px;
-  z-index: 2;
-  transition: opacity 0.3s;
 }
 
-.pooja-img-card .pooja-desc {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(33, 13, 0, 0.82);
-  color: #fff;
+/* Modal overlay for service description */
+.service-description-overlay {
+  position: fixed;
+  z-index: 99;
+  left:0; top:0; width:100vw; height: 100vh;
+  background: rgba(0,0,0,0.43);
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-  padding: 24px;
-  font-size: 16px;
-  line-height: 1.5;
+}
+.service-description-modal {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 335px;
+  padding: 28px 22px 20px 22px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.18);
   text-align: center;
-  transition: opacity 0.3s;
-  z-index: 3;
+  position: relative;
+  animation: pop-in 0.2s;
 }
-
-.pooja-img-card:hover .pooja-desc {
-  opacity: 1;
+@keyframes pop-in {
+  0% { transform: scale(0.88);}
+  100%{ transform: scale(1);}
 }
-.pooja-img-card:hover .pooja-name {
-  opacity: 0;
-}
-.pooja-img-card:hover img {
-  filter: blur(1px) brightness(0.75);
+.close-btn {
+  margin-top: 16px;
+  padding: 4px 20px;
+  border: none;
+  background: #c56f18;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Pandits */
@@ -367,26 +246,15 @@ body {
   padding: 60px 30px;
   text-align: center;
 }
-
 .pandits h2 {
   color: #a44e1d;
 }
-
 .card-section {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 }
-
-.pandit-card {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 220px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
 .pandit-card img {
   width: 100%;
   height: 180px;
@@ -405,44 +273,8 @@ body {
   margin-top: 40px;
 }
 
-/* Responsive for cards grid */
-@media (max-width: 1000px) {
-  .pooja-grid {
-    gap: 18px;
-  }
-  .pooja-img-card {
-    width: 87vw;
-    max-width: 360px;
-    height: 210px;
-  }
-}
-@media (max-width: 900px) {
-  .about-content, .services-grid, .card-section {
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    padding: 0;
-  }
-  .about-column {
-    max-width: none;
-    width: 100%;
-  }
-  .service-card, .pandit-card {
-    width: 90vw;
-    max-width: 350px;
-  }
-  .logo-center img {
-    width: 150px;
-    height: 150px;
-  }
-}
-@media (max-width: 600px) {
-  .home-container {
-    overflow-x: hidden;
-  }
-  .pooja-img-card {
-    width: 95vw;
-    height: 170px;
-    border-radius: 8px;
-  }
+@media (max-width:600px) {
+  .service-card, .pandit-card { width: 94vw; }
+  .service-description-modal { max-width:98vw; }
+  .logo-center img { width: 120px; height: 120px; }
 }
