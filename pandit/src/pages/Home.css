@@ -1,5 +1,3 @@
-/* src/pages/Home.css */
-
 body {
   margin: 0;
   font-family: 'Rubik', sans-serif;
@@ -122,6 +120,18 @@ body {
   margin-top: 20px;
 }
 
+/* Get Started Button */
+.get-started-btn {
+  background-color: white;
+  color: black;
+  border: 2px solid white;
+  font-weight: bold;
+  padding: 10px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* About Section */
 .about-section {
   padding: 80px 20px;
   text-align: center;
@@ -160,7 +170,7 @@ body {
 .feature-row img {
   width: 60px;
   height: 60px;
-  border-radius: 50%; /* Makes it circular */
+  border-radius: 50%;
   object-fit: cover;
 }
 
@@ -180,31 +190,10 @@ body {
   width: 180px;
   height: 180px;
   object-fit: contain;
-  border-radius: 50%; /* Makes the r */
+  border-radius: 50%;
 }
 
-
-
-
-
-
-
-
-
-/* Get Started Button */
-.get-started-btn {
-  background-color: white;
-  color: black;
-  border: 2px solid white;
-  font-weight: bold;
-  padding: 10px 24px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-
-
-
+/* Services Section */
 .services-container {
   padding: 60px 30px;
   background: #f9f3e1;
@@ -293,9 +282,56 @@ body {
   color: #666;
 }
 
+/* ======== Poojas Section ========= */
+.poojas {
+  padding: 60px 30px;
+  text-align: center;
+  background: #f4f1eb;
+}
 
+.poojas h2 {
+  font-size: 2.2rem;
+  color: #bb6a14;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
 
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
 
+/* Pooja Card Style */
+.puja-card, .pooja-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 220px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.puja-card img, .pooja-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.puja-card h3, .pooja-card h3 {
+  margin: 5px 0 5px;
+  font-size: 20px;
+  color: #76410b;
+}
+
+.puja-card p, .pooja-card p {
+  font-size: 14px;
+  color: #534312;
+}
 
 
 /* Pandits */
@@ -304,11 +340,8 @@ body {
   text-align: center;
 }
 
-.card-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+.pandits h2 {
+  color: #a44e1d;
 }
 
 .pandit-card {
@@ -335,4 +368,33 @@ body {
   color: #777;
   font-size: 14px;
   margin-top: 40px;
+}
+
+/* Responsive for cards grid */
+@media (max-width: 900px) {
+  .about-content, .services-grid, .card-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0;
+  }
+  .about-column {
+    max-width: none;
+    width: 100%;
+  }
+  .service-card, .puja-card, .pooja-card, .pandit-card {
+    width: 90vw;
+    max-width: 350px;
+  }
+  .logo-center img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* Hide scroll x on mobile */
+@media (max-width: 600px) {
+  .home-container {
+    overflow-x: hidden;
+  }
 }
