@@ -1,37 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Home.css';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Home.css";
+
+const backendURL = "https://backendserver-dryq.onrender.com";
+
+function getPoojaImage(img) {
+  if (!img) return "/images/default-pooja.png";
+  if (img.startsWith("http://") || img.startsWith("https://")) return img;
+  return `${backendURL}${img}`;
+}
 
 const Home = () => {
   const [pandits, setPandits] = useState([]);
   const [poojas, setPoojas] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch all data parallel
         const [panditRes, poojaRes, serviceRes] = await Promise.all([
-          fetch('https://backendserver-dryq.onrender.com/api/pandits/view'),
-          fetch('https://backendserver-dryq.onrender.com/api/poojas/view'),
-          fetch('https://backendserver-dryq.onrender.com/api/services/view'),
+          fetch(`${backendURL}/api/pandits/view`),
+          fetch(`${backendURL}/api/poojas/view`),
+          fetch(`${backendURL}/api/services/view`),
         ]);
         const panditsData = await panditRes.json();
         const poojasData = await poojaRes.json();
         const servicesData = await serviceRes.json();
 
-        setPandits(panditsData.filter(p => p.is_verified));
+        setPandits(panditsData.filter((p) => p.is_verified));
         setPoojas(poojasData);
         setServices(servicesData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
+      } catch (e) {
+        setPandits([]);
+        setPoojas([]);
+        setServices([]);
       } finally {
         setLoading(false);
       }
@@ -39,18 +45,9 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Utility function for all possible image sources
-  const getPoojaImageSrc = (img) => {
-    if (!img) return '/images/placeholder.jpg';
-    if (img.startsWith('http://') || img.startsWith('https://')) return img;
-    if (img.startsWith('/uploads')) return `https://backendserver-dryq.onrender.com${img}`;
-    return img;
-  };
-
-  const heroBackground = process.env.PUBLIC_URL + '/images/ho1.png';
-
   return (
     <div className="home-container">
+
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-left">
@@ -59,16 +56,16 @@ const Home = () => {
         </div>
         <div className="navbar-right">
           <a href="#about">About Us</a>
-          <a href="#services">Explore Services</a>
-          <a href="#poojas">Our Poojas</a>
-          <a href="#pandits">Meet Our Pandits</a>
+          <a href="#services">Services</a>
+          <a href="#poojas">Pooja Provided</a>
+          <a href="#pandits">Pandits</a>
           <a href="#footer">Contact</a>
           <Link to="/login" className="login-box">Login</Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
+      {/* Hero */}
+      <header className="hero" style={{ backgroundImage: `url(/images/ho1.png)` }}>
         <div className="hero-overlay">
           <div className="hero-content">
             <div className="hero-left">
@@ -87,7 +84,7 @@ const Home = () => {
         </div>
       </header>
 
-      {/* About Section */}
+      {/* About */}
       <section className="about-section" id="about">
         <h2 className="section-title">About Shubkarya</h2>
         <div className="about-content">
@@ -143,65 +140,77 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="services-container" id="services" data-aos="fade-up">
+      {/* Services */}
+      <section className="services" id="services">
         <h2>OUR SERVICES</h2>
-        <p style={{ textAlign: 'center' }}>Discover a wide range of spiritual services tailored to your needs.</p>
-        <div className="services-grid">
-          {services.map(service => (
-            <div key={service._id} className="service-card" data-aos="fade-up" onClick={() => navigate('/login')}>
-              <img
-                src={service.image}
-                alt={service.name}
-                className="service-image"
-              />
-              <h3>{service.name}</h3>
-              <p>{service.description}</p>
-              <button className="book-now">Book Now</button>
-            </div>
-          ))}
-        </div>
-        <div className="service-details">
-          <h4>4000+ Spiritual Guides</h4>
-          <p>Priests, Pandits, Religious Experts & Consultants</p>
-          <h4>500+ Types of Puja</h4>
-          <p>Comprehensive coverage of religious services</p>
-          <h4>100000+ Pujas Performed</h4>
-          <p>Trusted by thousands across India</p>
-        </div>
-      </section>
-
-      {/* Poojas Section */}
-      <section id="poojas" className="poojas" data-aos="fade-up">
-        <h2>Our Poojas</h2>
-        <div className="pooja-grid">
-          {loading && <p>Loading Poojas...</p>}
-          {!loading && poojas.length === 0 && <p>No poojas available right now.</p>}
-          {poojas.map(pooja => (
-            <div key={pooja._id} className="pooja-img-card">
-              <img
-                src={getPoojaImageSrc(pooja.image)}
-                alt={pooja.name}
-              />
-              <div className="pooja-name">{pooja.name}</div>
-              <div className="pooja-desc">
-                <p>{pooja.description}</p>
+        {loading ? (
+          <p>Loading services...</p>
+        ) : (
+          <div className="services-grid">
+            {services.map(service => (
+              <div className="service-card" key={service._id}>
+                <img src={service.image} alt={service.name} className="service-img" />
+                <h3>{service.name}</h3>
+                <p>{service.description}</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Pandits Section */}
-      <section id="pandits" className="pandits" data-aos="fade-up">
+      {/* === Pooja Provided Section === */}
+      <section id="poojas" className="poojas">
+        <h2>Pooja Provided</h2>
+        {loading ? (
+          <p>Loading poojas...</p>
+        ) : (
+          <div className="card-grid">
+            {poojas.map((pooja) => (
+              <div
+                className="service-card"
+                key={pooja._id}
+                onClick={() => setSelectedService(pooja)}
+              >
+                <img
+                  src={getPoojaImage(pooja.imageUrl)}
+                  alt={pooja.name}
+                  className="service-img"
+                />
+                <h3>{pooja.name}</h3>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {selectedService && (
+          <div className="service-description-overlay" onClick={() => setSelectedService(null)}>
+            <div className="service-description-modal" onClick={e => e.stopPropagation()}>
+              <h3>{selectedService.name}</h3>
+              <img
+                src={getPoojaImage(selectedService.imageUrl)}
+                alt={selectedService.name}
+                style={{ width: "100%", marginBottom: 12, borderRadius: 6 }}
+              />
+              <p>{selectedService.description}</p>
+              <button onClick={() => setSelectedService(null)} className="close-btn">
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Pandits */}
+      <section id="pandits" className="pandits">
         <h2>Our Verified Pandits</h2>
         <div className="card-section">
-          {pandits.map(pandit => (
-            <div key={pandit._id} className="pandit-card" data-aos="zoom-in">
+          {pandits.map((pandit) => (
+            <div className="pandit-card" key={pandit._id}>
               <img
                 src={
-                  pandit.profile_photo_url.startsWith('/uploads')
-                    ? `https://backendserver-dryq.onrender.com${pandit.profile_photo_url}`
+                  pandit.profile_photo_url &&
+                  pandit.profile_photo_url.startsWith("/uploads")
+                    ? `${backendURL}${pandit.profile_photo_url}`
                     : pandit.profile_photo_url
                 }
                 alt={pandit.name}
