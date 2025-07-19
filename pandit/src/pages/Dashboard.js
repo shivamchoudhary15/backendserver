@@ -1,24 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
-import { MdLogout, MdHome, MdReviews, MdSearch, MdCalendarToday, MdExpandMore, MdExpandLess, MdVerifiedUser, MdPublic, MdAttachMoney, MdLanguage, MdPerson } from "react-icons/md";
-import { GiTempleHindu } from 'react-icons/gi';
-import { FaGift, FaStar } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Dashboard.css';
 
+// Navbar
 const navbarButtons = [
-  { label: 'Home', icon: <MdHome />, goto: '/' },
-  { label: 'Book New Puja', icon: <GiTempleHindu />, goto: '/booking' },
-  { label: 'Submit Review', icon: <MdReviews />, goto: '#review' },
-  { label: 'View Our Pandit', icon: <MdVerifiedUser />, goto: '#pandit' },
-  { label: 'Search for Puja', icon: <MdSearch />, goto: '#highlight' },
-  { label: 'Booking History', icon: <MdCalendarToday />, goto: '#booking' },
-  { label: 'Logout', icon: <MdLogout />, goto: '/home', logout: true },
+  { label: 'Home', icon: '🏠', goto: '/' },
+  { label: 'Book New Puja', icon: '🛕', goto: '/booking' },
+  { label: 'Submit Review', icon: '💬', goto: '#review' },
+  { label: 'View Our Pandit', icon: '📿', goto: '#pandit' },
+  { label: 'Search for Puja', icon: '🔍', goto: '#highlight' },
+  { label: 'Booking History', icon: '📅', goto: '#booking' },
+  { label: 'Logout', icon: '🚪', goto: '/home', logout: true },
 ];
 
+// Hero/slider images
 const sliderImages = [
   '/images/i2.jpeg',
   '/images/kalash.jpeg',
@@ -27,18 +26,20 @@ const sliderImages = [
   '/images/i1.jpeg',
 ];
 
+// Star rating component
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
       {[1,2,3,4,5].map(i => (
-        <FaStar
+        <span
           key={i}
           tabIndex={0}
           onClick={() => onChange(i)}
           onKeyPress={e => (e.key === "Enter" || e.key === " ") && onChange(i)}
-          className={i <= rating ? 'active' : ''}
+          className={i <= rating ? 'star active' : 'star'}
+          role="button"
           aria-label={`Rate ${i} star${i>1?'s':''}`}
-        />
+        >★</span>
       ))}
     </div>
   );
@@ -82,8 +83,7 @@ function Dashboard() {
     } catch {
       navigate('/login');
     }
-    //eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -151,7 +151,6 @@ function Dashboard() {
     ...p, [id]: !p[id]
   }));
 
-  // --- UI RENDER ---
   return (
     <div className="dashboard-root">
       {/* NAVBAR */}
@@ -165,7 +164,7 @@ function Dashboard() {
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span className="brand-accent neon-text">Shubhkarya</span>
           <span className="navbar-expand-icon" aria-hidden>
-            {isNavbarOpen ? <MdExpandLess /> : <MdExpandMore />}
+            {isNavbarOpen ? '▲' : '▼'}
           </span>
         </div>
         <AnimatePresence>
@@ -190,7 +189,7 @@ function Dashboard() {
                 onKeyDown={e => (e.key === "Enter" || e.key===" ") && handleNavClick(item)}
                 aria-label={item.label}
               >
-                <span className="nav-icon">{item.icon}</span>
+                <span className="nav-icon" aria-hidden="true">{item.icon}</span>
                 {item.label}
               </motion.li>
             ))}
@@ -221,7 +220,7 @@ function Dashboard() {
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
             <button className="hero-book-btn glow-btn" onClick={()=>navigate('/booking')}>
-              <GiTempleHindu /> Book New Puja
+              <span role="img" aria-label="Temple">🛕</span> Book New Puja
             </button>
           </div>
           <div className="hero-slider slider-glow" data-aos="zoom-in">
@@ -247,7 +246,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <MdVerifiedUser size={32} aria-label="Verified" style={{ color: '#ffe064' }}/>
+            <span style={{fontSize:"2em"}} role="img" aria-label="Verified">✔️</span>
             <h4>Spiritual Guides</h4>
             <p>Pandits & Consultants across India</p>
             <p>250+ Experts</p>
@@ -256,7 +255,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <GiTempleHindu size={32} aria-label="Temple" style={{ color: '#f66613' }}/>
+            <span style={{fontSize:"2em"}} role="img" aria-label="Temple">🛕</span>
             <h4>Religious Services</h4>
             <p>Wide variety of pujas</p>
             <p>100+ Pujas</p>
@@ -265,7 +264,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <MdCalendarToday size={27} aria-label="Calendar" style={{ color: '#7ce85c' }}/>
+            <span style={{fontSize:"1.7em"}} role="img" aria-label="Calendar">📆</span>
             <h4>Pujas Done</h4>
             <p>Performed by verified pandits</p>
             <p>1,000+ Completed</p>
@@ -280,28 +279,28 @@ function Dashboard() {
         </h3>
         <div className="why-cards-row">
           <div className="why-card neon-card">
-            <div className="why-icon glow-icon"><MdVerifiedUser /></div>
+            <div className="why-icon glow-icon">✅</div>
             <div>
               <h5>Verified Pandits</h5>
               <p>Background-checked and reviewed experts at your service.</p>
             </div>
           </div>
           <div className="why-card neon-card">
-            <div className="why-icon glow-icon"><MdPublic /></div>
+            <div className="why-icon glow-icon">🌏</div>
             <div>
               <h5>Pan India Support</h5>
               <p>Metro & local experts available in all states.</p>
             </div>
           </div>
           <div className="why-card neon-card">
-            <div className="why-icon glow-icon"><MdAttachMoney /></div>
+            <div className="why-icon glow-icon">💰</div>
             <div>
               <h5>Transparent Pricing</h5>
               <p>No hidden charges, clear billing, and fair policies.</p>
             </div>
           </div>
           <div className="why-card neon-card">
-            <div className="why-icon glow-icon"><MdLanguage /></div>
+            <div className="why-icon glow-icon">🔆</div>
             <div>
               <h5>Choose by Tradition</h5>
               <p>Select by tradition, date, or preferred language.</p>
@@ -310,7 +309,7 @@ function Dashboard() {
         </div>
         {/* Festive Offer */}
         <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass">
-          <FaGift className="promo-gift" />
+          <span className="promo-gift" role="img" aria-label="Gift" style={{fontSize:"2.1em"}}>🎁</span>
           <div className="offer-content">
             <b>Festive Offer!</b>
             <span>
@@ -353,7 +352,7 @@ function Dashboard() {
               </div>
               <div className="pandit-main-info">
                 <h4 className="pandit-name hero-text-glow" tabIndex={0} onClick={() => toggleExpand(p._id)}>
-                  <MdPerson className="pandit-emoji" /> {p.name}
+                  <span className="pandit-emoji" aria-label="Person">🧑‍🦳</span> {p.name}
                 </h4>
                 <div className="pandit-city">{p.city}</div>
               </div>
@@ -410,7 +409,7 @@ function Dashboard() {
                 whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
               >
                 <div className="booking-card-left">
-                  <span className="booking-icon"><MdCalendarToday /></span>
+                  <span className="booking-icon" role="img" aria-label="Calendar">📅</span>
                   <div>
                     <div className="booking-type">{b.serviceid?.name || b.serviceid}</div>
                     <div className="booking-date">{new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}</div>
@@ -453,7 +452,7 @@ function Dashboard() {
             required
           />
           <button type="submit" className="custom-btn glow-btn" disabled={reviewLoading}>
-            {reviewLoading ? 'Submitting...' : 'Submit Review'} <MdReviews style={{verticalAlign:'-2px'}}/>
+            {reviewLoading ? 'Submitting...' : <>Submit Review <span role="img" aria-label="Review">💬</span></>}
           </button>
         </form>
       </section>
