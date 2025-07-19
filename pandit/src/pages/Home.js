@@ -39,6 +39,19 @@ const Home = () => {
     fetchData();
   }, []);
 
+  // Helper for correct pooja image URL (handles links and /uploads and others)
+  const getPoojaImageSrc = (poojaImage) => {
+    if (!poojaImage) return '/images/placeholder.jpg'; // Use a placeholder if none
+    if (poojaImage.startsWith('http://') || poojaImage.startsWith('https://')) {
+      return poojaImage;
+    }
+    if (poojaImage.startsWith('/uploads')) {
+      return `https://backendserver-dryq.onrender.com${poojaImage}`;
+    }
+    // fallback (maybe static file from public folder)
+    return poojaImage;
+  };
+
   const heroBackground = process.env.PUBLIC_URL + '/images/ho1.png';
 
   return (
@@ -167,7 +180,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Poojas Section (full image overlay/hover effect) */}
+      {/* Poojas Section (images from links, /uploads, or public) */}
       <section id="poojas" className="poojas" data-aos="fade-up">
         <h2>Our Poojas</h2>
         <div className="pooja-grid">
@@ -176,11 +189,7 @@ const Home = () => {
           {poojas.map(pooja => (
             <div key={pooja._id} className="pooja-img-card">
               <img
-                src={
-                  pooja.image && pooja.image.startsWith('/uploads')
-                    ? `https://backendserver-dryq.onrender.com${pooja.image}`
-                    : pooja.image
-                }
+                src={getPoojaImageSrc(pooja.image)}
                 alt={pooja.name}
               />
               <div className="pooja-name">{pooja.name}</div>
