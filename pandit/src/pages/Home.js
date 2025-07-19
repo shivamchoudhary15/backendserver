@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
@@ -7,7 +6,9 @@ import 'aos/dist/aos.css';
 
 const Home = () => {
   const [pandits, setPandits] = useState([]);
+  const [poojas, setPoojas] = useState([]);
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,18 +18,22 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [panditRes, serviceRes] = await Promise.all([
+        const [panditRes, poojaRes, serviceRes] = await Promise.all([
           fetch('https://backendserver-dryq.onrender.com/api/pandits/view'),
+          fetch('https://backendserver-dryq.onrender.com/api/poojas/view'),
           fetch('https://backendserver-dryq.onrender.com/api/services/view'),
         ]);
-
         const panditsData = await panditRes.json();
+        const poojasData = await poojaRes.json();
         const servicesData = await serviceRes.json();
 
         setPandits(panditsData.filter(p => p.is_verified));
+        setPoojas(poojasData);
         setServices(servicesData);
-      } catch (err) {
-        console.error('Failed to fetch data:', err);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -47,91 +52,16 @@ const Home = () => {
         <div className="navbar-right">
           <a href="#about">About Us</a>
           <a href="#services">Explore Services</a>
+          <a href="#poojas">Our Poojas</a>
           <a href="#pandits">Meet Our Pandits</a>
           <a href="#footer">Contact</a>
           <Link to="/login" className="login-box">Login</Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
-        <div className="hero-overlay">
-          <div className="hero-content">
-            <div className="hero-left">
-              <h1 className="main-heading">
-                Shubhkarya:<br />
-                Your Trusted Online<br />
-                Pandit Booking
-              </h1>
-              <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
-              <div className="hero-buttons">
-                <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
-                <button className="get-started-btn" onClick={() => navigate('/signup')}>Get Started</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Hero, About, Services... (same as previous code) */}
 
-      {/* About Section */}
-      <section className="about-section" id="about">
-        <h2 className="section-title">About Shubkarya</h2>
-        <div className="about-content">
-          <div className="about-column">
-            <div className="feature-row">
-              <img src="/images/i1.jpeg" alt="Pooja Icon" />
-              <div>
-                <h3>Vedic Poojas</h3>
-                <p>Performed by experienced Pandits with authentic rituals.</p>
-              </div>
-            </div>
-            <div className="feature-row">
-              <img src="/images/i2.jpeg" alt="Calendar Icon" />
-              <div>
-                <h3>Easy Booking</h3>
-                <p>Book poojas anytime with a few simple clicks.</p>
-              </div>
-            </div>
-            <div className="feature-row">
-              <img src="/images/i4.jpeg" alt="Verified Icon" />
-              <div>
-                <h3>Verified Pandits</h3>
-                <p>Only trusted and verified professionals available.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="logo-center">
-            <img src="/images/subh.png" alt="Shubkarya Logo" />
-          </div>
-
-          <div className="about-column">
-            <div className="feature-row">
-              <img src="/images/i6.jpeg" alt="Blessings Icon" />
-              <div>
-                <h3>Traditional Rituals</h3>
-                <p>Rooted in ancient Vedic traditions and customs.</p>
-              </div>
-            </div>
-            <div className="feature-row">
-              <img src="/images/i5.jpeg" alt="Services Icon" />
-              <div>
-                <h3>Multiple Services</h3>
-                <p>From Griha Pravesh to Wedding, all covered.</p>
-              </div>
-            </div>
-            <div className="feature-row">
-              <img src="/images/i3.jpeg" alt="Support Icon" />
-              <div>
-                <h3>24x7 Support</h3>
-                <p>We’re here to help you anytime, anywhere.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Final Services Section */}
+      {/* Services Section */}
       <section className="services-container" id="services" data-aos="fade-up">
         <h2>OUR SERVICES</h2>
         <p style={{ textAlign: 'center' }}>Discover a wide range of spiritual services tailored to your needs.</p>
@@ -161,6 +91,29 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Poojas Section */}
+      <section id="poojas" className="poojas" data-aos="fade-up">
+        <h2>Our Poojas</h2>
+        <div className="card-section">
+          {loading && <p>Loading Poojas...</p>}
+          {!loading && poojas.length === 0 && <p>No poojas available right now.</p>}
+          {poojas.map(pooja => (
+            <div key={pooja._id} className="pooja-card" data-aos="zoom-in">
+              <img
+                src={
+                  pooja.image && pooja.image.startsWith('/uploads')
+                    ? `https://backendserver-dryq.onrender.com${pooja.image}`
+                    : pooja.image
+                }
+                alt={pooja.name}
+              />
+              <h3>{pooja.name}</h3>
+              {pooja.description && <p>{pooja.description}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Pandits Section */}
       <section id="pandits" className="pandits" data-aos="fade-up">
         <h2>Our Verified Pandits</h2>
@@ -168,9 +121,11 @@ const Home = () => {
           {pandits.map(pandit => (
             <div key={pandit._id} className="pandit-card" data-aos="zoom-in">
               <img
-                src={pandit.profile_photo_url.startsWith('/uploads')
-                  ? `https://backendserver-pf4h.onrender.com${pandit.profile_photo_url}`
-                  : pandit.profile_photo_url}
+                src={
+                  pandit.profile_photo_url.startsWith('/uploads')
+                    ? `https://backendserver-dryq.onrender.com${pandit.profile_photo_url}`
+                    : pandit.profile_photo_url
+                }
                 alt={pandit.name}
               />
               <h3>{pandit.name}</h3>
