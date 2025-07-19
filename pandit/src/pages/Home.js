@@ -59,7 +59,83 @@ const Home = () => {
         </div>
       </nav>
 
-      {/* Hero, About, Services... (same as previous code) */}
+      {/* Hero Section */}
+      <header className="hero" style={{ backgroundImage: `url(${heroBackground})` }}>
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <div className="hero-left">
+              <h1 className="main-heading">
+                Shubhkarya:<br />
+                Your Trusted Online<br />
+                Pandit Booking
+              </h1>
+              <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
+              <div className="hero-buttons">
+                <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
+                <button className="get-started-btn" onClick={() => navigate('/signup')}>Get Started</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* About Section */}
+      <section className="about-section" id="about">
+        <h2 className="section-title">About Shubkarya</h2>
+        <div className="about-content">
+          <div className="about-column">
+            <div className="feature-row">
+              <img src="/images/i1.jpeg" alt="Pooja Icon" />
+              <div>
+                <h3>Vedic Poojas</h3>
+                <p>Performed by experienced Pandits with authentic rituals.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/i2.jpeg" alt="Calendar Icon" />
+              <div>
+                <h3>Easy Booking</h3>
+                <p>Book poojas anytime with a few simple clicks.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/i4.jpeg" alt="Verified Icon" />
+              <div>
+                <h3>Verified Pandits</h3>
+                <p>Only trusted and verified professionals available.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="logo-center">
+            <img src="/images/subh.png" alt="Shubkarya Logo" />
+          </div>
+
+          <div className="about-column">
+            <div className="feature-row">
+              <img src="/images/i6.jpeg" alt="Blessings Icon" />
+              <div>
+                <h3>Traditional Rituals</h3>
+                <p>Rooted in ancient Vedic traditions and customs.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/i5.jpeg" alt="Services Icon" />
+              <div>
+                <h3>Multiple Services</h3>
+                <p>From Griha Pravesh to Wedding, all covered.</p>
+              </div>
+            </div>
+            <div className="feature-row">
+              <img src="/images/i3.jpeg" alt="Support Icon" />
+              <div>
+                <h3>24x7 Support</h3>
+                <p>We’re here to help you anytime, anywhere.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Services Section */}
       <section className="services-container" id="services" data-aos="fade-up">
