@@ -39,7 +39,7 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Robust image URL logic
+  // Utility function for all possible image sources
   const getPoojaImageSrc = (img) => {
     if (!img) return '/images/placeholder.jpg';
     if (img.startsWith('http://') || img.startsWith('https://')) return img;
@@ -114,11 +114,9 @@ const Home = () => {
               </div>
             </div>
           </div>
-
           <div className="logo-center">
             <img src="/images/subh.png" alt="Shubkarya Logo" />
           </div>
-
           <div className="about-column">
             <div className="feature-row">
               <img src="/images/i6.jpeg" alt="Blessings Icon" />
@@ -149,7 +147,6 @@ const Home = () => {
       <section className="services-container" id="services" data-aos="fade-up">
         <h2>OUR SERVICES</h2>
         <p style={{ textAlign: 'center' }}>Discover a wide range of spiritual services tailored to your needs.</p>
-
         <div className="services-grid">
           {services.map(service => (
             <div key={service._id} className="service-card" data-aos="fade-up" onClick={() => navigate('/login')}>
@@ -164,7 +161,6 @@ const Home = () => {
             </div>
           ))}
         </div>
-
         <div className="service-details">
           <h4>4000+ Spiritual Guides</h4>
           <p>Priests, Pandits, Religious Experts & Consultants</p>
@@ -175,7 +171,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ---- Poojas Section ---- */}
+      {/* Poojas Section */}
       <section id="poojas" className="poojas" data-aos="fade-up">
         <h2>Our Poojas</h2>
         <div className="pooja-grid">
