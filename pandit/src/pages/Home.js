@@ -167,14 +167,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Poojas Section */}
+      {/* Poojas Section (full image overlay/hover effect) */}
       <section id="poojas" className="poojas" data-aos="fade-up">
         <h2>Our Poojas</h2>
-        <div className="card-section">
+        <div className="pooja-grid">
           {loading && <p>Loading Poojas...</p>}
           {!loading && poojas.length === 0 && <p>No poojas available right now.</p>}
           {poojas.map(pooja => (
-            <div key={pooja._id} className="pooja-card" data-aos="zoom-in">
+            <div key={pooja._id} className="pooja-img-card">
               <img
                 src={
                   pooja.image && pooja.image.startsWith('/uploads')
@@ -183,8 +183,10 @@ const Home = () => {
                 }
                 alt={pooja.name}
               />
-              <h3>{pooja.name}</h3>
-              {pooja.description && <p>{pooja.description}</p>}
+              <div className="pooja-name">{pooja.name}</div>
+              <div className="pooja-desc">
+                <p>{pooja.description}</p>
+              </div>
             </div>
           ))}
         </div>
