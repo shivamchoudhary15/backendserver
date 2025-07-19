@@ -39,17 +39,12 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Helper for correct pooja image URL (handles links and /uploads and others)
-  const getPoojaImageSrc = (poojaImage) => {
-    if (!poojaImage) return '/images/placeholder.jpg'; // Use a placeholder if none
-    if (poojaImage.startsWith('http://') || poojaImage.startsWith('https://')) {
-      return poojaImage;
-    }
-    if (poojaImage.startsWith('/uploads')) {
-      return `https://backendserver-dryq.onrender.com${poojaImage}`;
-    }
-    // fallback (maybe static file from public folder)
-    return poojaImage;
+  // Robust image URL logic
+  const getPoojaImageSrc = (img) => {
+    if (!img) return '/images/placeholder.jpg';
+    if (img.startsWith('http://') || img.startsWith('https://')) return img;
+    if (img.startsWith('/uploads')) return `https://backendserver-dryq.onrender.com${img}`;
+    return img;
   };
 
   const heroBackground = process.env.PUBLIC_URL + '/images/ho1.png';
@@ -180,7 +175,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Poojas Section (images from links, /uploads, or public) */}
+      {/* ---- Poojas Section ---- */}
       <section id="poojas" className="poojas" data-aos="fade-up">
         <h2>Our Poojas</h2>
         <div className="pooja-grid">
