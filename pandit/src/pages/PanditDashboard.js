@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Place your background image in src/assets/ or src/images/
-import backgroundImg from './images/i3.jpeg';
-
 import './PanditDashboard.css';
 
 function PanditDashboard() {
@@ -14,11 +11,11 @@ function PanditDashboard() {
   const [filterStatus, setFilterStatus] = useState('');
   const [showStats, setShowStats] = useState(false);
 
-  // Single background image set in root style
+  // Uses public/images/i3.jpeg for the entire page background
   const bgStyle = {
     minHeight: '100vh',
     width: '100%',
-    background: `url(${backgroundImg}) center center / cover no-repeat fixed`,
+    background: "url('/images/i3.jpeg') center center / cover no-repeat fixed",
     position: 'relative',
   };
 
@@ -57,14 +54,13 @@ function PanditDashboard() {
     return dateMatch && nameMatch && statusMatch;
   });
 
-  // Modern badge color/label logic
   const statusEmoji = {
     Pending: "⏳",
     Accepted: "✅",
     Rejected: "❌",
   };
 
-  // Stats
+  // Stats for the profile
   const completedCount = bookings.filter(b => b.status === 'Accepted').length;
   const pendingCount = bookings.filter(b => b.status === 'Pending').length;
   const rejectedCount = bookings.filter(b => b.status === 'Rejected').length;
@@ -191,7 +187,6 @@ function PanditDashboard() {
         ) : (
           <div className="pandit-nobookings fade-in">No bookings found.</div>
         )}
-
       </div>
     </div>
   );
