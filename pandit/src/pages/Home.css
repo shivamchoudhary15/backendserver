@@ -163,29 +163,35 @@ body {
   border-radius: 50%;
 }
 
-/* Services */
-.services, .poojas {
+/* Services and Poojas Sections */
+.services,
+.poojas {
   padding: 60px 30px;
   text-align: center;
   background: #f4f1eb;
 }
-.services h2, .poojas h2 {
+.services h2,
+.poojas h2 {
   font-size: 2.2rem;
   color: #bb6a14;
   margin-bottom: 30px;
   font-weight: bold;
 }
-.services-grid, .card-grid {
+.services-grid,
+.card-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 18px;
   justify-content: center;
 }
-.service-card, .pandit-card {
-  width: 230px;
+
+.service-card,
+.pandit-card {
+  width: 185px;               /* Reduced width */
+  min-height: 265px;
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
   overflow: hidden;
   cursor: pointer;
   margin-bottom: 30px;
@@ -195,23 +201,37 @@ body {
   align-items: center;
   transition: box-shadow 0.3s;
 }
-.service-card:hover, .pandit-card:hover {
-  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
+.service-card:hover,
+.pandit-card:hover {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.14);
 }
 .service-img {
   width: 100%;
-  height: 170px;
+  height: 110px;              /* Reduced height */
   object-fit: cover;
-  border-radius: 14px 14px 0 0;
+  border-radius: 12px 12px 0 0;
   display: block;
+  border-bottom: 1px solid #eee;
+}
+
+.pandit-card img {
+  width: 100%;
+  height: 110px;              /* Match Service Img */
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
 
 /* Modal overlay for service description */
 .service-description-overlay {
   position: fixed;
   z-index: 99;
-  left:0; top:0; width:100vw; height: 100vh;
-  background: rgba(0,0,0,0.43);
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.43);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,14 +241,18 @@ body {
   border-radius: 10px;
   max-width: 335px;
   padding: 28px 22px 20px 22px;
-  box-shadow: 0 8px 26px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
   text-align: center;
   position: relative;
   animation: pop-in 0.2s;
 }
 @keyframes pop-in {
-  0% { transform: scale(0.88);}
-  100%{ transform: scale(1);}
+  0% {
+    transform: scale(0.88);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .close-btn {
   margin-top: 16px;
@@ -241,28 +265,6 @@ body {
   cursor: pointer;
 }
 
-/* Pandits */
-.pandits {
-  padding: 60px 30px;
-  text-align: center;
-}
-.pandits h2 {
-  color: #a44e1d;
-}
-.card-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-.pandit-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
 /* Footer */
 .footer {
   text-align: center;
@@ -273,8 +275,29 @@ body {
   margin-top: 40px;
 }
 
-@media (max-width:600px) {
-  .service-card, .pandit-card { width: 94vw; }
-  .service-description-modal { max-width:98vw; }
-  .logo-center img { width: 120px; height: 120px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .service-card,
+  .pandit-card {
+    width: 92vw;
+    max-width: 270px;
+  }
+  .service-img,
+  .pandit-card img {
+    height: 140px;
+  }
+}
+@media (max-width: 600px) {
+  .service-card,
+  .pandit-card {
+    width: 95vw;
+  }
+  .service-description-modal {
+    max-width: 98vw;
+  }
+  .logo-center img {
+    width: 120px;
+    height: 120px;
+  }
 }
