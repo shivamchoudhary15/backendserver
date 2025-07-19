@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
 
 const backendURL = "https://backendserver-dryq.onrender.com";
@@ -20,19 +22,16 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [panditRes, poojaRes, serviceRes] = await Promise.all([
-          fetch(`${backendURL}/api/pandits/view`),
-          fetch(`${backendURL}/api/poojas/view`),
-          fetch(`${backendURL}/api/services/view`),
+          axios.get(`${backendURL}/api/pandits/view`),
+          axios.get(`${backendURL}/api/poojas/view`),
+          axios.get(`${backendURL}/api/services/view`),
         ]);
-        const panditsData = await panditRes.json();
-        const poojasData = await poojaRes.json();
-        const servicesData = await serviceRes.json();
-
-        setPandits(panditsData.filter((p) => p.is_verified));
-        setPoojas(poojasData);
-        setServices(servicesData);
+        setPandits((panditRes.data || []).filter((p) => p.is_verified));
+        setPoojas(poojaRes.data || []);
+        setServices(serviceRes.data || []);
       } catch {
         setPandits([]);
         setPoojas([]);
@@ -49,7 +48,9 @@ const Home = () => {
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-left">
-          <img src="/images/subh.png" alt="Logo" className="logo-circle" />
+          <motion.img src="/images/subh.png" alt="Logo" className="logo-circle"
+            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.5 }}
+          />
           <span className="logo-text">Shubhkarya</span>
         </div>
         <div className="navbar-right">
@@ -65,7 +66,10 @@ const Home = () => {
       {/* Hero */}
       <header className="hero" style={{ backgroundImage: `url(/images/ho1.png)` }}>
         <div className="hero-overlay">
-          <div className="hero-content">
+          <motion.div
+            className="hero-content"
+            initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+          >
             <div className="hero-left">
               <h1 className="main-heading">
                 Shubhkarya:<br />
@@ -78,15 +82,18 @@ const Home = () => {
                 <button className="get-started-btn" onClick={() => navigate('/signup')}>Get Started</button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </header>
 
       {/* About */}
       <section className="about-section" id="about">
-        <h2 className="section-title">About Shubkarya</h2>
+        <motion.h2 className="section-title"
+          initial={{ x: -150, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.7 }}
+        >About Shubkarya</motion.h2>
         <div className="about-content">
-          <div className="about-column">
+          <motion.div className="about-column" initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}>
             <div className="feature-row">
               <img src="/images/i1.jpeg" alt="Pooja Icon" />
               <div>
@@ -108,11 +115,11 @@ const Home = () => {
                 <p>Only trusted and verified professionals available.</p>
               </div>
             </div>
-          </div>
+          </motion.div>
           <div className="logo-center">
             <img src="/images/subh.png" alt="Shubkarya Logo" />
           </div>
-          <div className="about-column">
+          <motion.div className="about-column" initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}>
             <div className="feature-row">
               <img src="/images/i6.jpeg" alt="Blessings Icon" />
               <div>
@@ -134,32 +141,45 @@ const Home = () => {
                 <p>We’re here to help you anytime, anywhere.</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* OUR SERVICES */}
       <section className="services-container" id="services">
-        <h2>OUR SERVICES</h2>
+        <motion.h2
+          initial={{ scale: 0.7, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >OUR SERVICES</motion.h2>
         <p style={{ textAlign: "center" }}>Discover a wide range of spiritual services tailored to your needs.</p>
         <div className="services-grid">
-          {services.map((service) => (
-            <div key={service._id} className="service-card" onClick={() => navigate('/login')}>
+          {services.map((service, i) => (
+            <motion.div
+              key={service._id}
+              className="service-card"
+              onClick={() => navigate('/login')}
+              whileHover={{ scale: 1.07, boxShadow: "0 8px 28px #ffc10744" }}
+              initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.35 }}
+            >
               <img src={service.image} alt={service.name} className="service-image" />
               <h3>{service.name}</h3>
               <p>{service.description}</p>
               <button className="book-now">Book Now</button>
-            </div>
+            </motion.div>
           ))}
         </div>
-        <div className="service-details">
+        <motion.div className="service-details"
+          initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.7 }}
+        >
           <h4>4000+ Spiritual Guides</h4>
           <p>Priests, Pandits, Religious Experts & Consultants</p>
           <h4>500+ Types of Puja</h4>
           <p>Comprehensive coverage of religious services</p>
           <h4>100000+ Pujas Performed</h4>
           <p>Trusted by thousands across India</p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Pooja Provided */}
@@ -168,12 +188,18 @@ const Home = () => {
         {loading ? (
           <p>Loading poojas...</p>
         ) : (
-          <div className="card-grid">
-            {poojas.map((pooja) => (
-              <div
+          <motion.div className="card-grid" initial="hidden" animate="visible" variants={{
+            visible: { transition: { staggerChildren: 0.08 } }
+          }}>
+            {poojas.map((pooja, i) => (
+              <motion.div
                 className="service-card"
                 key={pooja._id}
                 onClick={() => setSelectedService(pooja)}
+                whileHover={{ scale: 1.07, boxShadow: "0 8px 32px #ffa72640" }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 + 0.2, duration: 0.32 }}
               >
                 <img
                   src={getPoojaImage(pooja.imageUrl)}
@@ -181,32 +207,52 @@ const Home = () => {
                   className="service-img"
                 />
                 <h3>{pooja.name}</h3>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
-        {selectedService && (
-          <div className="service-description-overlay" onClick={() => setSelectedService(null)}>
-            <div className="service-description-modal" onClick={e => e.stopPropagation()}>
-              <h3>{selectedService.name}</h3>
-              <img
-                src={getPoojaImage(selectedService.imageUrl)}
-                alt={selectedService.name}
-                style={{ width: "100%", marginBottom: 12, borderRadius: 6 }}
-              />
-              <p>{selectedService.description}</p>
-              <button onClick={() => setSelectedService(null)} className="close-btn">Close</button>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {selectedService && (
+            <motion.div className="service-description-overlay"
+              onClick={() => setSelectedService(null)}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="service-description-modal"
+                onClick={e => e.stopPropagation()}
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.7, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <h3>{selectedService.name}</h3>
+                <img
+                  src={getPoojaImage(selectedService.imageUrl)}
+                  alt={selectedService.name}
+                  style={{ width: "100%", marginBottom: 12, borderRadius: 6 }}
+                />
+                <p>{selectedService.description}</p>
+                <button onClick={() => setSelectedService(null)} className="close-btn">Close</button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* Pandits */}
       <section id="pandits" className="pandits">
         <h2>Our Verified Pandits</h2>
-        <div className="card-section">
-          {pandits.map((pandit) => (
-            <div className="pandit-card" key={pandit._id}>
+        <motion.div className="card-section"
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          {pandits.map((pandit, i) => (
+            <motion.div
+              className="pandit-card"
+              key={pandit._id}
+              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06, duration: 0.29 }}
+            >
               <img
                 src={
                   pandit.profile_photo_url &&
@@ -219,9 +265,9 @@ const Home = () => {
               <h3>{pandit.name}</h3>
               <p>{pandit.experience} years experience</p>
               <p>{pandit.language}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Footer */}
