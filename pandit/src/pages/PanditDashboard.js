@@ -50,7 +50,7 @@ function PanditDashboard() {
     ? user.profile_photo_url.startsWith('/uploads')
       ? `https://backendserver-pf4h.onrender.com${user.profile_photo_url}`
       : user.profile_photo_url
-    : '/images/default-pandit.png';
+    : '/images/i1.jpeg';
 
   return (
     <div className="pandit-container">
@@ -61,15 +61,15 @@ function PanditDashboard() {
           src={profilePhoto}
           alt="Pandit Profile"
           className="pandit-avatar"
-          onError={e => { e.target.onerror = null; e.target.src = '/images/default-pandit.png'; }}
+          onError={e => { e.target.onerror = null; e.target.src = '/images/i2.jpeg'; }}
         />
         <div>
           <h2>🙏 {user?.name || 'Pandit Ji'}</h2>
           <p>
             <strong>Verified: </strong>
             {user?.is_verified
-              ? <img src="/images/verified.png" alt="Verified" className="pandit-icon-ver" />
-              : <img src="/images/cross.png" alt="Not Verified" className="pandit-icon-ver" />}
+              ? <img src="/images/i3.jpeg" alt="Verified" className="pandit-icon-ver" />
+              : <img src="/images/i4.jpeg" alt="Not Verified" className="pandit-icon-ver" />}
           </p>
         </div>
       </div>
@@ -122,10 +122,10 @@ function PanditDashboard() {
               {b.status === 'Pending' && (
                 <div className="pandit-buttons">
                   <button onClick={() => updateStatus(b._id, 'Accepted')} className="accept-btn">
-                    <img src="/images/accept.png" alt="Accept" className="pandit-icon-btn" />Accept
+                    <img src="/images/i5.jpeg" alt="Accept" className="pandit-icon-btn" />Accept
                   </button>
                   <button onClick={() => updateStatus(b._id, 'Rejected')} className="reject-btn">
-                    <img src="/images/reject.png" alt="Reject" className="pandit-icon-btn" />Reject
+                    <img src="/images/i6.jpeg" alt="Reject" className="pandit-icon-btn" />Reject
                   </button>
                 </div>
               )}
@@ -138,7 +138,7 @@ function PanditDashboard() {
 
       <div className="pandit-actions">
         <button onClick={handleLogout} className="logout-btn">
-          <img src="/images/logout.png" alt="Logout" className="pandit-icon-btn" />Logout
+          <img src="/images/i7.jpeg" alt="Logout" className="pandit-icon-btn" />Logout
         </button>
       </div>
     </div>
