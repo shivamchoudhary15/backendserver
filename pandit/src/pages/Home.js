@@ -21,7 +21,6 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all data parallel
         const [panditRes, poojaRes, serviceRes] = await Promise.all([
           fetch(`${backendURL}/api/pandits/view`),
           fetch(`${backendURL}/api/poojas/view`),
@@ -34,7 +33,7 @@ const Home = () => {
         setPandits(panditsData.filter((p) => p.is_verified));
         setPoojas(poojasData);
         setServices(servicesData);
-      } catch (e) {
+      } catch {
         setPandits([]);
         setPoojas([]);
         setServices([]);
@@ -47,7 +46,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-
       {/* Navbar */}
       <nav className="navbar">
         <div className="navbar-left">
@@ -140,25 +138,31 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="services" id="services">
+      {/* OUR SERVICES */}
+      <section className="services-container" id="services">
         <h2>OUR SERVICES</h2>
-        {loading ? (
-          <p>Loading services...</p>
-        ) : (
-          <div className="services-grid">
-            {services.map(service => (
-              <div className="service-card" key={service._id}>
-                <img src={service.image} alt={service.name} className="service-img" />
-                <h3>{service.name}</h3>
-                <p>{service.description}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        <p style={{ textAlign: "center" }}>Discover a wide range of spiritual services tailored to your needs.</p>
+        <div className="services-grid">
+          {services.map((service) => (
+            <div key={service._id} className="service-card" onClick={() => navigate('/login')}>
+              <img src={service.image} alt={service.name} className="service-image" />
+              <h3>{service.name}</h3>
+              <p>{service.description}</p>
+              <button className="book-now">Book Now</button>
+            </div>
+          ))}
+        </div>
+        <div className="service-details">
+          <h4>4000+ Spiritual Guides</h4>
+          <p>Priests, Pandits, Religious Experts & Consultants</p>
+          <h4>500+ Types of Puja</h4>
+          <p>Comprehensive coverage of religious services</p>
+          <h4>100000+ Pujas Performed</h4>
+          <p>Trusted by thousands across India</p>
+        </div>
       </section>
 
-      {/* === Pooja Provided Section === */}
+      {/* Pooja Provided */}
       <section id="poojas" className="poojas">
         <h2>Pooja Provided</h2>
         {loading ? (
@@ -181,7 +185,6 @@ const Home = () => {
             ))}
           </div>
         )}
-
         {selectedService && (
           <div className="service-description-overlay" onClick={() => setSelectedService(null)}>
             <div className="service-description-modal" onClick={e => e.stopPropagation()}>
@@ -192,9 +195,7 @@ const Home = () => {
                 style={{ width: "100%", marginBottom: 12, borderRadius: 6 }}
               />
               <p>{selectedService.description}</p>
-              <button onClick={() => setSelectedService(null)} className="close-btn">
-                Close
-              </button>
+              <button onClick={() => setSelectedService(null)} className="close-btn">Close</button>
             </div>
           </div>
         )}
