@@ -14,6 +14,7 @@
   font-family: 'Montserrat', 'Segoe UI', sans-serif;
 }
 
+/*---------------------- NAVBAR ---------------------*/
 .dashboard-navbar {
   position: sticky;
   top: 0;
@@ -46,7 +47,6 @@
 .navbar-brand:hover {
   text-shadow: 0 2px 26px #ffd55e99, 0 1px 11px #b3e1ff60;
 }
-
 .brand-accent { color: var(--brand-blue); font-weight: 800; letter-spacing: 0.02em;}
 .navbar-logo {
   width: 48px; height: 48px; border-radius: 50%; background: #fff; padding: 4px; border: 2.5px solid var(--accent-yellow);
@@ -329,6 +329,7 @@
   border-radius: 13px;
   background: #fffdf7;
   box-shadow: 0 3px 13px #fff7e4ad;
+  display: flex; align-items: center; justify-content: center;
 }
 .improved-offer .offer-content {
   display: flex; flex-direction: column;
@@ -497,7 +498,6 @@
   transition: background .19s, color .13s;
 }
 
-/* ---- BOOKINGS ---- */
 .booking-list {
   display: flex;
   flex-direction: column;
@@ -573,21 +573,27 @@
   border: 2.5px solid #ffedc990;
 }
 
-/* ----- STAR RATING WIDGET ----- */
+/* ---- EMOJI STAR RATING ---- */
 .star-rating {
-  display: flex; align-items: center; gap: 0.25em;
-  margin-left: 7px; --star-size: 1.55em;
+  display: flex; align-items: center; gap: 0.13em;
+  margin-left: 7px; --star-size: 1.65em;
 }
-.star-rating .fa-star {
-  color: #ffc107;
+.star-rating .star {
+  color: #ffd740;
   font-size: var(--star-size);
   cursor: pointer;
   transition: transform .17s;
   outline: none;
+  user-select: none;
+  background: none;
+  border: none;
+  margin: 0 1px;
+  display: inline-block;
 }
-.star-rating .fa-star.active { color: #ffbb11; transform:scale(1.09);}
-.star-rating .fa-star:focus, .star-rating .fa-star:hover { text-shadow:0 4px 12px #ffeaaa88; color: #ffd661;}
+.star-rating .star.active { color: #ffbb11; transform:scale(1.12);}
+.star-rating .star:focus, .star-rating .star:hover { text-shadow:0 3px 9px #ffeaaa88; color: #ffd661; }
 .star-rating:focus-within { outline: 2px solid #ffd740; border-radius:9px;}
+
 .review-row {
   display: flex;
   gap: 10px;
