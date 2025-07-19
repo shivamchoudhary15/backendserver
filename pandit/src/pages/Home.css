@@ -120,7 +120,6 @@ body {
   margin-top: 20px;
 }
 
-/* Get Started Button */
 .get-started-btn {
   background-color: white;
   color: black;
@@ -282,8 +281,7 @@ body {
   color: #666;
 }
 
-
-/* ======= Poojas Section (full card image + overlay) ======= */
+/* Poojas Section (images: external, uploads or static, hover overlays) */
 .poojas {
   padding: 60px 30px;
   text-align: center;
