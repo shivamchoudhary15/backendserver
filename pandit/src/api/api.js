@@ -11,7 +11,12 @@ API.interceptors.request.use(config => {
   return config;
 });
 
-//
+//loactions
+export const postLocation = ({ latitude, longitude, userId }) =>
+  API.post('/locations/view', { latitude, longitude, userId }); // userId optional
+
+export const getLocations = (userId) =>
+  API.get(`/locations${userId ? `?userId=${userId}` : ''}`);
 
 
 //  OTP
