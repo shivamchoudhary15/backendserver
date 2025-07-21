@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import jwt_decode from 'jwt-decode'; // <--- add this!
 import './Login.css';
-import { googleLogin } from '../api/api'; // <-- make sure this import is correct based on your file structure
 
-const GOOGLE_CLIENT_ID = '597264934965-k8f8ts385e0emch6d7tgoea05bu2lmc8.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '285160037801-8je1h2pconfermojci9vesa8v2len5ol.apps.googleusercontent.com';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [googleUser, setGoogleUser] = useState(null);
   const navigate = useNavigate();
   const googleBtnRef = useRef();
 
@@ -21,54 +22,26 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('https://backendserver-dryq.onrender.com/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await response.json();
-      const { token, user } = data;
-      if (token && user?._id) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        alert('✅ Login successful!');
-        if (user.role === 'admin') navigate('/admin');
-        else if (user.role === 'pandit') navigate('/pandit-dashboard');
-        else navigate('/dashboard');
-      } else {
-        setError('Invalid login. Try again.');
-      }
-    } catch (err) {
-      setError('❌ Login failed. Check your credentials.');
+      // Your original backend login can remain here if you want.
+      // Otherwise, just remove this block for Google-only demo.
+      setError('This login does not work in frontend-only mode.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Google Sign-In handler with API abstraction
-  const handleGoogleResponse = async (response) => {
-    setLoading(true);
-    setError('');
+  // Google Sign-In handler: frontend-only, decode token directly!
+  const handleGoogleResponse = (response) => {
     try {
-      const res = await googleLogin(response.credential);
-      const { token, user } = res.data;
-      if (token && user?._id) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        alert('✅ Login successful!');
-        if (user.role === 'admin') navigate('/admin');
-        else if (user.role === 'pandit') navigate('/pandit-dashboard');
-        else navigate('/dashboard');
-      } else {
-        setError('Google login failed. Please try again.');
-      }
+      const userProfile = jwt_decode(response.credential);
+      // Now userProfile contains {name, email, picture, ...}
+      setGoogleUser(userProfile);
+      localStorage.setItem('googleUser', JSON.stringify(userProfile));
+      alert('✅ Google Sign-In success!\n' + userProfile.email);
+      // Navigate to dashboard or wherever:
+      navigate('/dashboard');
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-        '❌ Google login failed. Please use a different method.'
-      );
-    } finally {
-      setLoading(false);
+      setError('❌ Google login failed (frontend-only).');
     }
   };
 
@@ -89,7 +62,7 @@ const Login = () => {
   return (
     <div className="pandit-login-bg">
       <div className="pandit-login-container">
-        {/* Left side with background image */}
+        {/* Left side */}
         <div
           className="pandit-login-left"
           style={{
@@ -174,6 +147,15 @@ const Login = () => {
                 Are you a Pandit? <Link to="/signup/pandit">Register as Pandit</Link>
               </span>
             </div>
+
+            {/* Show frontend Google sign-in user info if available */}
+            {googleUser && (
+              <div style={{ marginTop: 18, textAlign: "center" }}>
+                <img src={googleUser.picture} alt="profile" style={{ borderRadius: "50%", width: 48, marginBottom: 8 }}/>
+                <div>Signed in as <b>{googleUser.name}</b><br/>{googleUser.email}</div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
