@@ -45,6 +45,13 @@ export const getAllPoojas = () => API.get('/poojas/view');
 //
 // 🔹 Admin: Pandit Management
 //
+
+
+//
+// 🔹 Google Auth
+export const googleLogin = (credential) =>
+  API.post('/users/google-login', { credential });
+
 export const verifyPandit = id => API.put(`/pandits/verify/${id}`);
 export const uploadPanditPhoto = (id, formData) =>
   API.post(`/pandits/upload/${id}`, formData, {
