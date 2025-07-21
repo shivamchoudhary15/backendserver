@@ -3,7 +3,7 @@ const router = express.Router();
 const Location = require('../models/Location');
 
 // POST /api/locations
-router.post('/', async (req, res) => {
+router.post('/view', async (req, res) => {
   try {
     const { latitude, longitude, userId } = req.body;
     if (typeof latitude !== 'number' || typeof longitude !== 'number') {
