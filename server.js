@@ -29,6 +29,7 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const poojaRoutes = require('./routes/poojaRoutes');
+const locationRoutes = require('./routes/locationRoutes');
 
 // yaha pe routes ko mount kara raha hai 
 app.use('/api/users', userRoutes);
@@ -39,6 +40,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
+app.use('/api/locations', locationRoutes);
 
 //  default 
 app.get('/', (req, res) => {
