@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
-import { googleLogin } from '..api/api'; // <-- make sure this import is correct based on your file structure
+import { googleLogin } from '../api/api'; // <-- make sure this import is correct based on your file structure
 
 const GOOGLE_CLIENT_ID = '597264934965-k8f8ts385e0emch6d7tgoea05bu2lmc8.apps.googleusercontent.com';
 
