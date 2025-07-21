@@ -7,6 +7,9 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const Otp = require('../models/Otp');
 
+const { OAuth2Client } = require('google-auth-library');
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '597264934965-k8f8ts385e0emch6d7tgoea05bu2lmc8.apps.googleusercontent.com';
+
 // Signup
 router.post('/add', async (req, res) => {
   try {
@@ -49,6 +52,51 @@ router.post('/add', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// Google Sign-In
+router.post('/google-login', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ error: 'Missing Google credential.' });
+    }
+
+    const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    const { email, name, sub } = payload;
+    if (!email) {
+      return res.status(400).json({ error: "No email from Google account." });
+    }
+
+    // Find or create user
+    let user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      user = await User.create({
+        name,
+        email: email.toLowerCase(),
+        password: sub, // not used for password login
+        role: "devotee"
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || "dev_secret",
+      { expiresIn: "7d" }
+    );
+    const { password: _, ...userData } = user.toObject();
+    res.json({ token, user: userData });
+  } catch (err) {
+    console.error('Google Login error:', err);
+    res.status(500).json({ error: 'Failed to login with Google' });
+  }
+});
+
 
 // Login
 router.post('/login', async (req, res) => {
@@ -112,9 +160,7 @@ router.get('/admin-view', async (req, res) => {
   }
 });
 
-
-
-
+// OTP routes
 router.post('/send-otp', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required' });
@@ -166,7 +212,5 @@ router.post('/verify-otp', async (req, res) => {
     res.status(500).json({ error: 'Verification failed' });
   }
 });
-
-
 
 module.exports = router;
