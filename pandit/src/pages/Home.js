@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
-import { postLocation } from '../api'; // <-- add this import
+import { postLocation } from '../api/api'; // <-- add this import
 
 const backendURL = "https://backendserver-dryq.onrender.com";
 
