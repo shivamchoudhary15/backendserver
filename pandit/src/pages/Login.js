@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
+
+// <-- Replace this with your real Google Client ID -->
+const GOOGLE_CLIENT_ID = '597264934965-k8f8ts385e0emch6d7tgoea05bu2lmc8.apps.googleusercontent.com';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const googleBtnRef = useRef();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,6 +40,50 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  // Google Sign-In handler
+  const handleGoogleResponse = async (response) => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await axios.post('https://backendserver-dryq.onrender.com/api/users/google-login', {
+        credential: response.credential,
+      });
+      const { token, user } = res.data;
+      if (token && user?._id) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        alert('✅ Login successful!');
+        if (user.role === 'admin') navigate('/admin');
+        else if (user.role === 'pandit') navigate('/pandit-dashboard');
+        else navigate('/dashboard');
+      } else {
+        setError('Google login failed. Please try again.');
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.error ||
+        '❌ Google login failed. Please use a different method.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // make sure Google script is loaded
+    if (window.google && googleBtnRef.current) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleGoogleResponse,
+      });
+      window.google.accounts.id.renderButton(googleBtnRef.current, {
+        theme: 'outline',
+        size: 'large',
+        width: "100%",
+      });
+    }
+  }, [googleBtnRef.current]);
 
   return (
     <div className="pandit-login-bg">
@@ -83,9 +131,8 @@ const Login = () => {
             <div className="pandit-login-tagline">Your Path to Sacred Beginnings</div>
             <h3 className="pandit-login-welcome">Welcome Back</h3>
 
-            <button className="pandit-google-btn" disabled>
-              <span className="google-icon">🔵</span> Sign in with Google
-            </button>
+            {/* GOOGLE SIGN-IN BUTTON -- replaces old disabled button */}
+            <div ref={googleBtnRef} style={{ width: "100%", marginBottom: 10 }}></div>
             <div className="pandit-or-divider">or</div>
 
             <form onSubmit={handleSubmit} className="pandit-login-form" autoComplete="on">
