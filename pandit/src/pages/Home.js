@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
+import { postLocation } from '../api'; // <-- add this import
 
 const backendURL = "https://backendserver-dryq.onrender.com";
 
@@ -18,13 +19,6 @@ const Home = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
-  // Add state for location
-  const [location, setLocation] = useState({
-    status: "loading", // "loading", "success", "error"
-    lat: null,
-    lng: null,
-    error: null
-  });
 
   const navigate = useNavigate();
 
@@ -51,29 +45,17 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Location fetching effect
+  // Location fetching effect (no UI, only post)
   useEffect(() => {
-    if (!("geolocation" in navigator)) {
-      setLocation({ status: "error", lat: null, lng: null, error: "Geolocation not supported by your browser" });
-      return;
-    }
+    if (!("geolocation" in navigator)) return;
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        setLocation({
-          status: "success",
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          error: null
-        });
+        postLocation({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        }).catch(() => {});
       },
-      (err) => {
-        setLocation({
-          status: "error",
-          lat: null,
-          lng: null,
-          error: "Unable to fetch location (permission denied or unavailable)"
-        });
-      },
+      (err) => {},
       { enableHighAccuracy: true, maximumAge: 0 }
     );
     return () => navigator.geolocation.clearWatch(watchId);
@@ -113,19 +95,6 @@ const Home = () => {
                 Pandit Booking
               </h1>
               <p className="tagline">Your Spiritual Partner: For Every Sacred Occasion</p>
-              {/* ----------- LOCATION SECTION ----------- */}
-              <div style={{ marginTop: 12, minHeight: 30 }}>
-                {location.status === "loading" && <span>Getting your location...</span>}
-                {location.status === "success" && (
-                  <span style={{ color: "#218838" }}>
-                    Your Live Location: <b>Lat {location.lat.toFixed(4)}, Lng {location.lng.toFixed(4)}</b>
-                  </span>
-                )}
-                {location.status === "error" && (
-                  <span style={{ color: "#dc3545" }}>{location.error}</span>
-                )}
-              </div>
-              {/* ----------- END LOCATION SECTION ----------- */}
               <div className="hero-buttons">
                 <button className="book-btn" onClick={() => navigate('/login')}>Book Now</button>
                 <button className="get-started-btn" onClick={() => navigate('/signup')}>Get Started</button>
