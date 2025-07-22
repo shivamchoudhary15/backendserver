@@ -7,6 +7,8 @@ const Panditschema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   city: { type: String },
   experienceYears: { type: Number },
+  languages: [{ type: String }],  // Changed to array
+  specialties: [{ type: String }], // Changed to array
   bio: { type: String },
   profile_photo_url: { type: String },
   is_verified: { type: Boolean, default: false },
