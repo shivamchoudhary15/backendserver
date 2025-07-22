@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import DashboardLayout from '../components/DashboardLayout';
-import Home from './Home';
+import Home from './Home1';
 import PanditsPage from './PanditsPage';
 import DevoteesPage from './DevoteesPage';
 import BookingHistory from './BookingHistory';
