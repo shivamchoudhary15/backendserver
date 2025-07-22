@@ -1,20 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Dashboard.css';
-
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
 
-const navItems = [
-  { label: 'Home', icon: '🏠', path: '/' },
-  { label: 'Book New Puja', icon: '📅', path: '/booking' },
-  { label: 'Submit Review', icon: '💬', path: '#review' },
-  { label: 'View Our Pandit', icon: '🧑‍🦳', path: '#pandit' },
-  { label: 'Search for Puja', icon: '🔍', path: '#highlight' },
-  { label: 'Booking History', icon: '📅', path: '#booking' },
-  { label: 'Logout', icon: '🚪', path: '/home', logout: true }
+const navbarItems = [
+  { label: 'Home', icon: '🏠', goto: '/' },
+  { label: 'Book New Puja', icon: '🛕', goto: '/booking' },
+  { label: 'Submit Review', icon: '💬', goto: '#review' },
+  { label: 'View Our Pandit', icon: '📿', goto: '#pandit' },
+  { label: 'Search for Puja', icon: '🔍', goto: '#highlight' },
+  { label: 'Booking History', icon: '📅', goto: '#booking' },
+  { label: 'Logout', icon: '🚪', goto: '/home', logout: true },
 ];
 
 const sliderImages = [
@@ -27,42 +26,46 @@ const sliderImages = [
 
 function StarRating({ rating, onChange }) {
   return (
-    <div className="star-rating">
+    <div className="star-rating" aria-label="Rating">
       {[1, 2, 3, 4, 5].map(i => (
         <span
           key={i}
-          tabIndex={0}
-          className={i <= rating ? 'star active' : 'star'}
-          aria-label={`${i} star`}
-          onClick={() => onChange(i)}
-          onKeyDown={e => ['Enter', ' '].includes(e.key) && onChange(i)}
           role="button"
-        >⭐</span>
+          tabIndex="0"
+          className={`star ${i <= rating ? 'active' : ''}`}
+          aria-label={`Rate ${i} star${i > 1 ? 's' : ''}`}
+          onClick={() => onChange(i)}
+          onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onChange(i)}
+        >
+          ★
+        </span>
       ))}
     </div>
   );
 }
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
-  const [isNavbarOpen, setNavbarOpen] = useState(false);
+  const [bookings, setBookings] = useState([]);
+  const [pandits, setPandits] = useState([]);
+
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [visiblePandits, setVisiblePandits] = useState(3);
+  const [expandedPandits, setExpandedPandits] = useState({});
+  const [searchPandits, setSearchPandits] = useState('');
+  const [searchBookings, setSearchBookings] = useState('');
 
   const [review, setReview] = useState({ name: '', rating: 0, comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
 
-  const [bookings, setBookings] = useState([]);
-  const [pandits, setPandits] = useState([]);
-  const [visiblePandits, setVisiblePandits] = useState(3);
-  const [searchPandits, setSearchPandits] = useState('');
-  const [searchBookings, setSearchBookings] = useState('');
-  const [expandedPandits, setExpandedPandits] = useState({});
-  const [carouselIndex, setCarouselIndex] = useState(0);
   const [showChatbot, setShowChatbot] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init({ duration: 800, once: true });
+    AOS.init({ duration: 750, once: true });
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) return navigate('/login');
@@ -71,60 +74,68 @@ export default function Dashboard() {
       if (parsedUser.role === 'admin') return navigate('/admin');
       if (parsedUser.role === 'pandit') return navigate('/pandit/dashboard');
       setUser(parsedUser);
-      setReview(prev => ({ ...prev, name: parsedUser.name }));
-      getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data));
-      getVerifiedPandits().then(res => setPandits(res.data));
+      setReview(r => ({ ...r, name: parsedUser.name }));
+      getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data || []));
+      getVerifiedPandits().then(res => setPandits(res.data || []));
     } catch {
       navigate('/login');
     }
   }, [navigate]);
 
   useEffect(() => {
-    const intv = setInterval(() => setCarouselIndex(i => (i + 1) % sliderImages.length), 4000);
-    return () => clearInterval(intv);
+    const interval = setInterval(() => {
+      setCarouselIndex(i => (i + 1) % sliderImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
-  const handleNavClick = (item) => {
+  function handleNavClick(item) {
     if (item.logout) {
       localStorage.clear();
-      navigate(item.path);
-      return;
-    }
-    if (String(item.path).startsWith('#')) {
-      const section = document.querySelector(item.path);
+      navigate(item.goto);
+    } else if (String(item.goto).startsWith('#')) {
+      const section = document.querySelector(item.goto);
       if (section) section.scrollIntoView({ behavior: 'smooth' });
-      setNavbarOpen(false);
-    } else navigate(item.path);
-  };
+      setIsNavbarOpen(false);
+    } else {
+      navigate(item.goto);
+    }
+  }
 
-  const handleReviewSubmit = async (e) => {
+  async function handleReviewSubmit(e) {
     e.preventDefault();
     if (!review.name || !review.comment || !review.rating) {
-      setReviewMessage('Please fill all fields and give a star rating.');
+      setReviewMessage('Please complete all fields and provide star rating.');
       return;
     }
     setReviewLoading(true);
     try {
       await createReview(review);
-      setReviewMessage('Review submitted!');
-      setReview({ name: review.name, rating: 0, comment: '' });
+      setReviewMessage('Thank you for your review!');
+      setReview(r => ({ name: r.name, rating: 0, comment: '' }));
     } catch {
       setReviewMessage('Failed to submit review.');
     } finally {
       setReviewLoading(false);
-      setTimeout(() => setReviewMessage(''), 2800);
+      setTimeout(() => setReviewMessage(''), 2500);
     }
-  };
+  }
 
-  const getStatusClass = (status) => ({
-    accepted: 'status accepted',
-    rejected: 'status rejected',
-    pending: 'status pending'
-  }[(status || '').toLowerCase()] || 'status');
+  function toggleExpand(id) {
+    setExpandedPandits(prev => ({ ...prev, [id]: !prev[id] }));
+  }
 
-  const filteredPandits = pandits.filter(p =>
-    p.name?.toLowerCase().includes(searchPandits.toLowerCase()) ||
-    (p.city || '').toLowerCase().includes(searchPandits.toLowerCase())
+  const getStatusClass = status =>
+    ({
+      accepted: 'status accepted',
+      rejected: 'status rejected',
+      pending: 'status pending',
+    }[(status || '').toLowerCase()] || 'status');
+
+  const filteredPandits = pandits.filter(
+    p =>
+      p.name.toLowerCase().includes(searchPandits.toLowerCase()) ||
+      (p.city || '').toLowerCase().includes(searchPandits.toLowerCase())
   );
 
   const filteredBookings = bookings.filter(b => {
@@ -136,86 +147,88 @@ export default function Dashboard() {
     );
   });
 
-  const toggleExpand = id => setExpandedPandits(p => ({ ...p, [id]: !p[id] }));
-
   return (
     <div className="dashboard-root">
       {/* NAVBAR */}
       <nav
         className={`dashboard-navbar${isNavbarOpen ? ' open' : ''}`}
-        onMouseEnter={() => setNavbarOpen(true)}
-        onMouseLeave={() => setNavbarOpen(false)}
+        aria-label="Main Navigation"
+        onMouseEnter={() => setIsNavbarOpen(true)}
+        onMouseLeave={() => setIsNavbarOpen(false)}
       >
-        <div className="navbar-brand">
+        <div className="navbar-brand" tabIndex={0}>
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span className="brand-accent neon-text">Shubhkarya</span>
-          <span className="navbar-expand-icon">{isNavbarOpen ? '▲' : '▼'}</span>
+          <span className="navbar-expand-icon" aria-hidden="true">{isNavbarOpen ? '▲' : '▼'}</span>
         </div>
         <AnimatePresence>
-          {isNavbarOpen &&
+          {isNavbarOpen && (
             <motion.ul
               className="navbar-menu"
               role="menu"
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.21 }}
+              transition={{ duration: 0.25 }}
             >
-              {navItems.map((item) => (
+              {navbarItems.map(item => (
                 <motion.li
                   key={item.label}
-                  className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
                   role="menuitem"
                   tabIndex={0}
+                  className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
                   onClick={() => handleNavClick(item)}
                   onKeyDown={e => ['Enter', ' '].includes(e.key) && handleNavClick(item)}
-                  whileHover={{ scale: 1.045 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.97 }}
+                  aria-label={item.label}
                 >
-                  <span className="nav-icon">{item.icon}</span>
+                  <span className="nav-icon" aria-hidden="true">{item.icon}</span>
                   {item.label}
                 </motion.li>
               ))}
             </motion.ul>
-          }
+          )}
         </AnimatePresence>
       </nav>
 
       {/* WELCOME BANNER */}
       {user && (
-        <div className="welcome-banner nice-glass" data-aos="fade">
+        <section className="welcome-banner nice-glass" data-aos="fade">
           <h2>
             Welcome, <span>{user.name}</span>!
           </h2>
           <p>May your every puja bring joy and prosperity.</p>
-        </div>
+        </section>
       )}
 
-      {/* HERO / SLIDER */}
-      <section className="hero-section gradient-hero" id="dashboard" data-aos="fade-down">
-        <div className="hero-container">
-          <div className="hero-content">
-            <h1>
-              Book Trusted Pandits with <span className="primary">Shubhkarya</span>
+      {/* HERO + SLIDER */}
+      <section className="dashboard-hero gradient-hero" id="dashboard" data-aos="fade-down">
+        <div className="hero-main-row">
+          <div>
+            <h1 className="hero-title hero-text-glow">
+              Book Trusted Pandits with <span>Shubhkarya</span>
             </h1>
-            <p>
+            <p className="hero-desc">
               Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
-            <div className="hero-buttons">
-              <button className="btn-primary" onClick={() => navigate('/booking')}>
-                📅 Book New Puja
-              </button>
-            </div>
+            <button
+              className="hero-book-btn glow-btn"
+              onClick={() => navigate('/booking')}
+              aria-label="Book New Puja"
+            >
+              🛕 Book New Puja
+            </button>
           </div>
-          <div className="hero-visual" data-aos="zoom-in">
-            <div className="slider-frame">
-              <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Hero Visual" />
+          <div className="hero-slider slider-glow" data-aos="zoom-in">
+            <div className="slider-frame shadow-pop">
+              <img src={sliderImages[carouselIndex]} alt="Spiritual slider" />
               <div className="slider-dots">
                 {sliderImages.map((_, i) => (
                   <button
                     key={i}
-                    className={`slider-dot${i === carouselIndex % sliderImages.length ? " active" : ""}`}
+                    className={`slider-dot${i === carouselIndex ? ' active' : ''}`}
                     aria-label={`Go to slide ${i + 1}`}
                     onClick={() => setCarouselIndex(i)}
                   />
@@ -226,108 +239,138 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* HIGHLIGHTS SECTION */}
-      <section id="highlight" className="stats-section" data-aos="fade-up">
-        <div className="stats-container">
-          <div className="stat-card glass">
-            🥇
-            <span className="stat-title">Verified Pandits</span>
-            <span className="stat-value">250+</span>
+      {/* HIGHLIGHTS */}
+      <section id="highlight" className="highlight-section" data-aos="fade-up" aria-label="Platform highlights">
+        <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <span role="img" aria-label="Verified" style={{ fontSize: '2em' }}>✔️</span>
+            <h4>Spiritual Guides</h4>
+            <p>Pandits & Consultants across India</p>
+            <p>250+ Experts</p>
           </div>
-          <div className="stat-card glass">
-            📖
-            <span className="stat-title">Pujas Performed</span>
-            <span className="stat-value">1,000+</span>
+        </div>
+        <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <span role="img" aria-label="Temple" style={{ fontSize: '2em' }}>🛕</span>
+            <h4>Religious Services</h4>
+            <p>Wide variety of pujas</p>
+            <p>100+ Pujas</p>
           </div>
-          <div className="stat-card glass">
-            👪
-            <span className="stat-title">Happy Families</span>
-            <span className="stat-value">800+</span>
+        </div>
+        <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <span role="img" aria-label="Calendar" style={{ fontSize: '1.7em' }}>📆</span>
+            <h4>Pujas Done</h4>
+            <p>Performed by verified pandits</p>
+            <p>1,000+ Completed</p>
           </div>
         </div>
       </section>
 
       {/* WHY SHUBHKARYA */}
-      <section className="why-section nice-glass" data-aos="fade-up">
+      <section className="why-shubhkarya-section nice-glass" data-aos="fade-up" aria-label="Why choose Shubhkarya">
         <h3>
-          Why <span className="brand-accent">Shubhkarya?</span>
+          Why Choose <span className="brand-accent">Shubhkarya?</span>
         </h3>
-        <div className="why-row">
-          <div className="why-block">
-            ✅ Verified Pandits
+        <div className="why-cards-row">
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">✅</div>
+            <div>
+              <h5>Verified Pandits</h5>
+              <p>Background-checked and reviewed experts at your service.</p>
+            </div>
           </div>
-          <div className="why-block">
-            🌏 Pan India Support
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">🌏</div>
+            <div>
+              <h5>Pan India Support</h5>
+              <p>Metro & local experts available in all states.</p>
+            </div>
           </div>
-          <div className="why-block">
-            💸 Fixed Pricing
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">💰</div>
+            <div>
+              <h5>Transparent Pricing</h5>
+              <p>No hidden charges, clear billing, and fair policies.</p>
+            </div>
+          </div>
+          <div className="why-card neon-card">
+            <div className="why-icon glow-icon">🔆</div>
+            <div>
+              <h5>Choose by Tradition</h5>
+              <p>Select by tradition, date, or preferred language.</p>
+            </div>
           </div>
         </div>
-        <div className="offer-banner">
-          🎁 Festive Offer! <span className="offer-main">₹50 OFF</span> on first puja <span className="offer-code">[SHUBH50]</span>
+
+        <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass" aria-label="Festive Offer">
+          <span className="promo-gift" role="img" aria-label="Gift" style={{ fontSize: '2.1em' }}>🎁</span>
+          <div className="offer-content">
+            <b>Festive Offer!</b>
+            <span>
+              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
+            </span>
+          </div>
         </div>
       </section>
 
       {/* PANDIT SHOWCASE */}
-      <section id="pandit" className="pandit-section" data-aos="fade-up">
-        <div className="section-title-row">
-          <h3>Verified Pandits</h3>
-          <div className="search-pandit-input">
-            🔍
-            <input
-              type="text"
-              placeholder="Search by name or city..."
-              value={searchPandits}
-              onChange={e => setSearchPandits(e.target.value)}
-              aria-label="Search pandits"
-            />
-          </div>
-        </div>
+      <section id="pandit" className="pandit-section" data-aos="fade-up" tabIndex={-1} aria-label="Verified Pandits">
+        <h3 className="section-heading">Verified Pandits</h3>
+        <input
+          type="text"
+          className="booking-search"
+          aria-label="Search pandits"
+          placeholder="Search by name or city..."
+          value={searchPandits}
+          onChange={e => setSearchPandits(e.target.value)}
+        />
         <div className="pandit-list">
-          {filteredPandits.slice(0, visiblePandits).map(p => (
+          {filteredPandits.slice(0, visiblePandits).map(pandit => (
             <motion.div
-              key={p._id}
-              className="pandit-card glass"
-              whileHover={{ y: -4, scale: 1.03 }}
+              key={pandit._id}
+              className="improved-pandit-card neon-card glass-highlight glossy shadow-pop"
+              whileHover={{ y: -4, scale: 1.04 }}
+              tabIndex={0}
+              aria-expanded={expandedPandits[pandit._id]}
+              onClick={() => toggleExpand(pandit._id)}
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}
             >
               <div
-                className="pandit-avatar"
-                style={{
-                  backgroundImage: `url(${p.profile_photo_url || '/images/i1.jpeg'})`
-                }}
-                title={p.name}
-                tabIndex={0}
-                aria-label={"Pandit: " + p.name}
-                onClick={() => toggleExpand(p._id)}
+                className="pandit-avatar glass"
+                style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
+                aria-label={`Pandit ${pandit.name}`}
               >
-                🧑‍🦳
+                <span className="pandit-avatar-initial">{pandit.name.slice(0, 1)}</span>
               </div>
-              <div className="pandit-content">
-                <div className="pandit-header">
-                  <span className="pandit-name">{p.name}</span>
-                  <span className="pandit-city">
-                    📍 {p.city}
-                  </span>
-                </div>
-                {expandedPandits[p._id] && (
-                  <div className="pandit-extra-info">
-                    <div className="pandit-badge">Exp: {p.experienceYears} Years</div>
-                    <div className="pandit-badge">{(p.languages || []).join(', ')}</div>
-                    <div className="pandit-specials">
-                      <b>Specialties:</b> {p.specialties?.join(', ')}
+              <div className="pandit-main-info">
+                <h4 className="pandit-name hero-text-glow">🧑‍🦳 {pandit.name}</h4>
+                <div className="pandit-city">{pandit.city}</div>
+              </div>
+              {expandedPandits[pandit._id] && (
+                <div className="pandit-extra expanded">
+                  <div className="pandit-details">
+                    <div className="pandit-badges">
+                      <span className="pandit-badge exp">Exp: {pandit.experienceYears} yrs</span>
+                      <span className="pandit-badge langs">{pandit.languages?.join(', ')}</span>
                     </div>
+                    <div className="pandit-specialties"><b>Specialties:</b> {pandit.specialties?.join(', ')}</div>
                   </div>
-                )}
-              </div>
-              <button className="expand-btn" onClick={() => toggleExpand(p._id)}>
-                {expandedPandits[p._id] ? '➖' : '➕'}
-              </button>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
         {filteredPandits.length > 3 && (
-          <div style={{ textAlign: "center" }}>
-            <button className="btn-secondary" onClick={() => setVisiblePandits(v => v === 3 ? filteredPandits.length : 3)}>
+          <div className="toggle-btn">
+            <button
+              onClick={() => setVisiblePandits(v => (v === 3 ? filteredPandits.length : 3))}
+              className="custom-btn glow-btn"
+              aria-expanded={visiblePandits !== 3}
+            >
               {visiblePandits === 3 ? 'Show More' : 'Show Less'}
             </button>
           </div>
@@ -335,92 +378,88 @@ export default function Dashboard() {
       </section>
 
       {/* BOOKINGS */}
-      <section id="booking" className="bookings-section glass" data-aos="fade-up">
-        <div className="section-title-row">
-          <h3>Your Bookings</h3>
-          <div className="search-booking-input">
-            🔍
-            <input
-              type="text"
-              placeholder="Search bookings..."
-              value={searchBookings}
-              onChange={e => setSearchBookings(e.target.value)}
-              aria-label="Search bookings"
-            />
-          </div>
-        </div>
+      <section id="booking" className="bookings-section blur-bg" data-aos="fade-up" tabIndex={-1} aria-label="Booking History">
+        <h3 className="section-heading">Your Bookings</h3>
+        <input
+          type="text"
+          className="booking-search"
+          aria-label="Search bookings"
+          placeholder="Search bookings..."
+          value={searchBookings}
+          onChange={e => setSearchBookings(e.target.value)}
+        />
         <div className="booking-list">
           {filteredBookings.length === 0 ? (
-            <p className="empty-msg">No bookings found.</p>
-          ) : filteredBookings.map(b => (
-            <motion.div
-              key={b._id}
-              className="booking-card glass"
-              whileHover={{ scale: 1.025 }}
-            >
-              <div className="booking-main">
-                <div className="booking-header">
-                  📅
+            <p className="empty-msg">No bookings found. Book your first puja now!</p>
+          ) : (
+            filteredBookings.map(b => (
+              <motion.div
+                key={b._id}
+                className="booking-card card-glossy glass neon-card shadow-pop"
+                whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
+                tabIndex={0}
+                role="article"
+                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
+              >
+                <div className="booking-card-left">
+                  <span className="booking-icon" aria-hidden="true">📅</span>
                   <div>
                     <div className="booking-type">{b.serviceid?.name}</div>
-                    <div className="booking-date">⏰ {new Date(b.puja_date).toLocaleDateString()} {b.puja_time}</div>
+                    <div className="booking-date">{new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}</div>
                   </div>
                 </div>
-                <div className="booking-details">
-                  <span>🧑‍🦳 {b.panditid?.name || 'N/A'}</span>
-                  <span>📍 {b.location}</span>
-                  <span className={`${getStatusClass(b.status)}`}>{b.status}</span>
+                <div className="booking-card-right">
+                  <div className="booking-pandit">
+                    <span className="booking-pandit-label">Pandit:</span> <span>{b.panditid?.name ?? 'N/A'}</span>
+                  </div>
+                  <div className="booking-location">📍 {b.location}</div>
+                  <div className={getStatusClass(b.status)}>{b.status}</div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          )}
         </div>
       </section>
 
-      {/* REVIEW */}
-      <section id="review" className="review-section glass" data-aos="fade-up">
-        <h3>Leave a Review</h3>
+      {/* REVIEWS */}
+      <section id="review" className="review-section glass-review" data-aos="fade-up" tabIndex={-1} aria-label="Submit Review">
+        <h3 className="section-heading neon-text">Submit a Review</h3>
         {reviewMessage && (
-          <p className={reviewMessage.includes('submitted') ? 'msg-success' : 'msg-error'}>
-            {reviewMessage}
-          </p>
+          <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
         )}
-        <form className="review-form" onSubmit={handleReviewSubmit}>
+        <form onSubmit={handleReviewSubmit} className="review-form card-glossy glass nice-glass" aria-label="Review submission form">
           <div className="review-row">
-            <input className="review-input" type="text" value={review.name} disabled placeholder="Your Name" />
-            <StarRating
-              rating={review.rating}
-              onChange={v => setReview(prev => ({ ...prev, rating: v }))}
-            />
+            <input type="text" value={review.name} disabled className="review-input" aria-label="Your name" />
+            <StarRating rating={review.rating} onChange={v => setReview(prev => ({ ...prev, rating: v }))} />
           </div>
           <textarea
-            required
-            className="review-textarea"
             placeholder="Write your feedback..."
             value={review.comment}
             onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+            className="review-input review-textarea"
+            required
+            aria-required="true"
           />
-          <button className="btn-primary" type="submit" disabled={reviewLoading}>
-            {reviewLoading ? 'Submitting...' : <>Submit 💬</>}
+          <button type="submit" className="custom-btn glow-btn" disabled={reviewLoading}>
+            {reviewLoading ? 'Submitting...' : 'Submit Review 💬'}
           </button>
         </form>
       </section>
 
       {/* CHATBOT BUTTON */}
-      <button className="chatbot-toggle" onClick={() => setShowChatbot(s => !s)} aria-label="Open Chatbot">
-        {showChatbot ? '✖️' : <img src="/images/subh.png" alt="Chatbot" style={{ width: 38, borderRadius: '50%' }} />}
+      <button
+        aria-label="Toggle Chatbot"
+        className="chatbot-toggle"
+        onClick={() => setShowChatbot(!showChatbot)}
+      >
+        {showChatbot ? '×' : <img src="/images/subh.png" alt="Open Chatbot" style={{ borderRadius: '50%', width: 38, height: 38 }} />}
       </button>
       {showChatbot && (
-        <div className="chatbot-popup">
+        <div className="chatbot-popup" role="dialog" aria-modal="true" aria-label="Chatbot window">
           <iframe
             title="Chatbot"
             src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              borderRadius: 18
-            }}
+            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 15 }}
             allow="clipboard-write"
           />
         </div>
