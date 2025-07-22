@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   const [showChatbot, setShowChatbot] = useState(false);
 
-  // Chat states: add these
+  // Chat state variables
   const [chatPanditId, setChatPanditId] = useState(null);
   const [chatPanditName, setChatPanditName] = useState('');
 
@@ -288,7 +288,7 @@ export default function Dashboard() {
                   </div>
                 </div>
               )}
-              {/* New Chat Button */}
+              {/* Chat button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -315,7 +315,7 @@ export default function Dashboard() {
         )}
       </section>
 
-      {/* CHAT WINDOW */}
+      {/* Chat Window */}
       {chatPanditId && (
         <ChatWindow
           userId={user?._id}
