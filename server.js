@@ -14,7 +14,7 @@ const server = http.createServer(app);         // Create HTTP server from Expres
 // Initialize Socket.IO with CORS configuration
 const io = new Server(server, {
   cors: {
-    origin: "*",        // Replace '*' with your frontend URL in production for security
+    origin: "https://backendserver-1-zr4c.onrender.com",        // Replace '*' with your frontend URL in production for security
     methods: ["GET", "POST"]
   }
 });
