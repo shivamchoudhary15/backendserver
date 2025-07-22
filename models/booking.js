@@ -7,7 +7,11 @@ const BookingSchema = new Schema({
   serviceid: { type: Schema.Types.ObjectId, ref: 'Service', required: true },
   poojaId: { type: Schema.Types.ObjectId, ref: 'Pooja' }, 
   puja_date: { type: Date, required: true },
-  puja_time: { type: String }
+  puja_time: { type: String },
+  location: { type: String },
+  SamanList: { type: String },
+  status: { type: String, default: 'Pending' },
+  created_at: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Booking', BookingSchema);
