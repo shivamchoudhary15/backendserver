@@ -1,16 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import './Login.css';
-import { googleLogin } from '../api/api'; // <-- make sure this import is correct based on your file structure
-
-const GOOGLE_CLIENT_ID = '285160037801-8je1h2pconfermojci9vesa8v2len5ol.apps.googleusercontent.com';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const googleBtnRef = useRef();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,13 +18,8 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('https://backendserver-dryq.onrender.com/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await response.json();
-      const { token, user } = data;
+      const response = await axios.post('https://backendserver-dryq.onrender.com/api/users/login', form);
+      const { token, user } = response.data;
       if (token && user?._id) {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
@@ -39,52 +31,11 @@ const Login = () => {
         setError('Invalid login. Try again.');
       }
     } catch (err) {
-      setError('❌ Login failed. Check your credentials.');
+      setError(err.response?.data?.error || '❌ Login failed. Check your credentials.');
     } finally {
       setLoading(false);
     }
   };
-
-  // Google Sign-In handler with API abstraction
-  const handleGoogleResponse = async (response) => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await googleLogin(response.credential);
-      const { token, user } = res.data;
-      if (token && user?._id) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        alert('✅ Login successful!');
-        if (user.role === 'admin') navigate('/admin');
-        else if (user.role === 'pandit') navigate('/pandit-dashboard');
-        else navigate('/dashboard');
-      } else {
-        setError('Google login failed. Please try again.');
-      }
-    } catch (err) {
-      setError(
-        err.response?.data?.error ||
-        '❌ Google login failed. Please use a different method.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (window.google && googleBtnRef.current) {
-      window.google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleResponse,
-      });
-      window.google.accounts.id.renderButton(googleBtnRef.current, {
-        theme: 'outline',
-        size: 'large',
-        width: "100%",
-      });
-    }
-  }, [googleBtnRef.current]);
 
   return (
     <div className="pandit-login-bg">
@@ -132,8 +83,9 @@ const Login = () => {
             <div className="pandit-login-tagline">Your Path to Sacred Beginnings</div>
             <h3 className="pandit-login-welcome">Welcome Back</h3>
 
-            {/* GOOGLE SIGN-IN BUTTON */}
-            <div ref={googleBtnRef} style={{ width: "100%", marginBottom: 10 }}></div>
+            <button className="pandit-google-btn" disabled>
+              <span className="google-icon">🔵</span> Sign in with Google
+            </button>
             <div className="pandit-or-divider">or</div>
 
             <form onSubmit={handleSubmit} className="pandit-login-form" autoComplete="on">
