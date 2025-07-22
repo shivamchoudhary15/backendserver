@@ -1,0 +1,106 @@
+.pandits-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.pandits-page h2 {
+  text-align: center;
+  color: #2980b9;
+  margin-bottom: 1.8rem;
+}
+
+.pandit-card {
+  display: flex;
+  flex-wrap: wrap;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  margin-bottom: 1.7rem;
+  padding: 1.3rem 1.5rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pandit-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.pandit-info {
+  flex: 1 1 300px;
+  font-size: 0.95rem;
+  color: #34495e;
+  line-height: 1.4;
+}
+
+.pandit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 120px;
+  flex-shrink: 0;
+  align-items: flex-start;
+}
+
+.pandit-actions button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-verify {
+  background-color: #27ae60;
+}
+
+.btn-verify:hover {
+  background-color: #1e8449;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+  background-color: #b93227;
+}
+
+.upload-photo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  min-width: 220px;
+}
+
+.upload-photo input[type="file"] {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.upload-photo button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  background-color: #2980b9;
+  color: white;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.upload-photo button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.upload-photo button:hover:not(:disabled) {
+  background-color: #1c5980;
+}
