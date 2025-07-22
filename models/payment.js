@@ -6,7 +6,7 @@ const PaymentSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
   payment_method: { type: String, enum: ['UPI','Card','Cash'], required: true },
   payment_status: { type: String, enum: ['Paid','Pending','Failed'], default:'Pending'},
-  payment_date: { type: Date, default: Date.now }
+ 
 });
 
 module.exports = mongoose.model('Payment', PaymentSchema);
