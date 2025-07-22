@@ -518,7 +518,7 @@ function Dashboard() {
         >
           <iframe
             title="Chatbase Chatbot"
-            src="https://www.chatbase.co/chatbot-iframe/c4lNDmZCNJ6CrCZIHtcg7"
+            src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
             style={{
               width: '100%',
               height: '100%',
