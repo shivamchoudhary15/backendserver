@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const BACKEND_URL = 'https://backendserver-dryq.onrender.com';  // Your backend URL
+// Use your deployed backend URL here to connect Socket.IO
+const BACKEND_URL = 'https://backendserver-1-zr4c.onrender.com';
 
-const socket = io(BACKEND_URL, { autoConnect: false });
+// Create Socket.IO client instance
+const socket = io(BACKEND_URL, {
+  autoConnect: false,
+  transports: ['websocket', 'polling'],
+});
 
 function ChatWindow({ userId, panditId, onClose, chatName }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const roomId = `${userId}_${panditId}`;
+  const roomId = `${userId}_${panditId}`; // Ensures same room on both sides
   const messagesEndRef = useRef(null);
 
-  // Store sent message IDs to prevent duplicates
+  // Track sent messages to avoid duplicates
   const sentMessageIds = useRef(new Set());
 
   useEffect(() => {
@@ -19,11 +24,9 @@ function ChatWindow({ userId, panditId, onClose, chatName }) {
     socket.emit('joinRoom', roomId);
 
     socket.on('receiveMessage', (msg) => {
-      // Use a unique message id. Here, timestamp + senderId works (better with UUID)
       const msgId = `${msg.timestamp}_${msg.senderId}`;
       if (sentMessageIds.current.has(msgId)) {
-        // Ignore duplicate
-        return;
+        return; // Ignore duplicate message
       }
       setMessages(prev => [...prev, msg]);
     });
@@ -49,9 +52,7 @@ function ChatWindow({ userId, panditId, onClose, chatName }) {
       timestamp: Date.now(),
     };
 
-    // Track sent message id to ignore duplicates later
-    const msgId = `${msgObj.timestamp}_${msgObj.senderId}`;
-    sentMessageIds.current.add(msgId);
+    sentMessageIds.current.add(`${msgObj.timestamp}_${msgObj.senderId}`);
 
     setMessages(prev => [...prev, msgObj]);
     socket.emit('sendMessage', msgObj);
@@ -62,8 +63,7 @@ function ChatWindow({ userId, panditId, onClose, chatName }) {
     <div style={{
       position: 'fixed', bottom: 0, right: 0, width: 350, height: 400,
       border: '1px solid #ccc', backgroundColor: 'white', display: 'flex',
-      flexDirection: 'column', boxShadow: '0 0 10px rgba(0,0,0,0.3)',
-      zIndex: 9999
+      flexDirection: 'column', boxShadow: '0 0 10px rgba(0,0,0,0.3)', zIndex: 9999
     }}>
       <div style={{ padding: 10, borderBottom: '1px solid #ddd', backgroundColor: '#f5f5f5' }}>
         <strong>Chat with {chatName}</strong>
@@ -75,7 +75,6 @@ function ChatWindow({ userId, panditId, onClose, chatName }) {
           ✖
         </button>
       </div>
-
       <div style={{ flex: 1, overflowY: 'auto', padding: 10, fontSize: 14 }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ marginBottom: 8, textAlign: msg.senderId === userId ? 'right' : 'left' }}>
@@ -93,17 +92,17 @@ function ChatWindow({ userId, panditId, onClose, chatName }) {
         ))}
         <div ref={messagesEndRef} />
       </div>
-
       <div style={{ padding: 10, borderTop: '1px solid #ddd', display: 'flex' }}>
         <input
           type="text"
           placeholder="Type a message"
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={e => { if (e.key === 'Enter') sendMessage(); }}
+          onKeyDown={e => { if (e.key === 'Enter') sendMessage() }}
           style={{ flex: 1, marginRight: 5, padding: 8 }}
+          aria-label="Message input"
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={sendMessage} aria-label="Send message">Send</button>
       </div>
     </div>
   );
