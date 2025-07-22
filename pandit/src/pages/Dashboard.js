@@ -1,48 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Home, Calendar, MessageSquare, Users, Search, History, LogOut, Star, MapPin, Clock, User, Award, Filter } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Dashboard.css';
 
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
 
-const NavIcons = {
-  'Home': <Home size={21} />,
-  'Book New Puja': <Calendar size={21} />,
-  'Submit Review': <MessageSquare size={21} />,
-  'View Our Pandit': <Users size={21} />,
-  'Search for Puja': <Search size={21} />,
-  'Booking History': <History size={21} />,
-  'Logout': <LogOut size={21} />,
-};
-
 const navItems = [
-  { label: 'Home', path: '/' }, 
-  { label: 'Book New Puja', path: '/booking' }, 
-  { label: 'Submit Review', path: '#review' },
-  { label: 'View Our Pandit', path: '#pandit' },
-  { label: 'Search for Puja', path: '#highlight' },
-  { label: 'Booking History', path: '#booking' },
-  { label: 'Logout', path: '/home', logout: true }
+  { label: 'Home', icon: '🏠', path: '/' },
+  { label: 'Book New Puja', icon: '📅', path: '/booking' },
+  { label: 'Submit Review', icon: '💬', path: '#review' },
+  { label: 'View Our Pandit', icon: '🧑‍🦳', path: '#pandit' },
+  { label: 'Search for Puja', icon: '🔍', path: '#highlight' },
+  { label: 'Booking History', icon: '📅', path: '#booking' },
+  { label: 'Logout', icon: '🚪', path: '/home', logout: true }
+];
+
+const sliderImages = [
+  '/images/i2.jpeg',
+  '/images/kalash.jpeg',
+  '/images/havan.jpeg',
+  '/images/i3.jpeg',
+  '/images/i1.jpeg',
 ];
 
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating">
-      {[1,2,3,4,5].map(i => (
+      {[1, 2, 3, 4, 5].map(i => (
         <span
           key={i}
           tabIndex={0}
-          role="button"
           className={i <= rating ? 'star active' : 'star'}
           aria-label={`${i} star`}
           onClick={() => onChange(i)}
-          onKeyDown={e=>['Enter',' '].includes(e.key)&&onChange(i)}
-        >
-          <Star size={20} fill={i<=rating?"#ffd700":"none"} />
-        </span>
+          onKeyDown={e => ['Enter', ' '].includes(e.key) && onChange(i)}
+          role="button"
+        >⭐</span>
       ))}
     </div>
   );
@@ -60,17 +55,14 @@ export default function Dashboard() {
   const [pandits, setPandits] = useState([]);
   const [visiblePandits, setVisiblePandits] = useState(3);
   const [searchPandits, setSearchPandits] = useState('');
-
   const [searchBookings, setSearchBookings] = useState('');
   const [expandedPandits, setExpandedPandits] = useState({});
   const [carouselIndex, setCarouselIndex] = useState(0);
-
   const [showChatbot, setShowChatbot] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
-    // User from storage (simulate login/session)
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) return navigate('/login');
@@ -88,27 +80,23 @@ export default function Dashboard() {
   }, [navigate]);
 
   useEffect(() => {
-    const intv = setInterval(() => setCarouselIndex(i => (i+1)%sliderImages.length), 4000);
+    const intv = setInterval(() => setCarouselIndex(i => (i + 1) % sliderImages.length), 4000);
     return () => clearInterval(intv);
   }, []);
 
-  const sliderImages = ['/images/i2.jpeg','/images/kalash.jpeg','/images/havan.jpeg','/images/i3.jpeg','/images/i1.jpeg'];
-
-  // Navigation
   const handleNavClick = (item) => {
     if (item.logout) {
       localStorage.clear();
       navigate(item.path);
       return;
     }
-    if(String(item.path).startsWith('#')) {
+    if (String(item.path).startsWith('#')) {
       const section = document.querySelector(item.path);
-      if(section) section.scrollIntoView({ behavior: 'smooth' });
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
       setNavbarOpen(false);
     } else navigate(item.path);
   };
 
-  // Review
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!review.name || !review.comment || !review.rating) {
@@ -132,7 +120,7 @@ export default function Dashboard() {
     accepted: 'status accepted',
     rejected: 'status rejected',
     pending: 'status pending'
-  }[(status||'').toLowerCase()] || 'status');
+  }[(status || '').toLowerCase()] || 'status');
 
   const filteredPandits = pandits.filter(p =>
     p.name?.toLowerCase().includes(searchPandits.toLowerCase()) ||
@@ -148,20 +136,20 @@ export default function Dashboard() {
     );
   });
 
-  const toggleExpand = id => setExpandedPandits(p=>({...p, [id]:!p[id]}));
+  const toggleExpand = id => setExpandedPandits(p => ({ ...p, [id]: !p[id] }));
 
   return (
     <div className="dashboard-root">
       {/* NAVBAR */}
       <nav
         className={`dashboard-navbar${isNavbarOpen ? ' open' : ''}`}
-        onMouseEnter={()=>setNavbarOpen(true)}
-        onMouseLeave={()=>setNavbarOpen(false)}
+        onMouseEnter={() => setNavbarOpen(true)}
+        onMouseLeave={() => setNavbarOpen(false)}
       >
         <div className="navbar-brand">
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span className="brand-accent neon-text">Shubhkarya</span>
-          <span className="navbar-expand-icon">{isNavbarOpen?'▲':'▼'}</span>
+          <span className="navbar-expand-icon">{isNavbarOpen ? '▲' : '▼'}</span>
         </div>
         <AnimatePresence>
           {isNavbarOpen &&
@@ -179,12 +167,12 @@ export default function Dashboard() {
                   className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
                   role="menuitem"
                   tabIndex={0}
-                  onClick={()=>handleNavClick(item)}
-                  onKeyDown={e=>['Enter',' '].includes(e.key)&&handleNavClick(item)}
-                  whileHover={{scale:1.045}}
-                  whileTap={{scale:0.98}}
+                  onClick={() => handleNavClick(item)}
+                  onKeyDown={e => ['Enter', ' '].includes(e.key) && handleNavClick(item)}
+                  whileHover={{ scale: 1.045 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <span className="nav-icon">{NavIcons[item.label]}</span>
+                  <span className="nav-icon">{item.icon}</span>
                   {item.label}
                 </motion.li>
               ))}
@@ -215,8 +203,8 @@ export default function Dashboard() {
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
             <div className="hero-buttons">
-              <button className="btn-primary" onClick={()=>navigate('/booking')}>
-                <Calendar size={19} style={{marginRight:7,marginBottom:-3}}/> Book New Puja
+              <button className="btn-primary" onClick={() => navigate('/booking')}>
+                📅 Book New Puja
               </button>
             </div>
           </div>
@@ -224,12 +212,12 @@ export default function Dashboard() {
             <div className="slider-frame">
               <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Hero Visual" />
               <div className="slider-dots">
-                {sliderImages.map((_,i)=>(
+                {sliderImages.map((_, i) => (
                   <button
                     key={i}
-                    className={`slider-dot${i===carouselIndex % sliderImages.length ? " active" : ""}`}
-                    aria-label={`Go to slide ${i+1}`}
-                    onClick={()=>setCarouselIndex(i)}
+                    className={`slider-dot${i === carouselIndex % sliderImages.length ? " active" : ""}`}
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => setCarouselIndex(i)}
                   />
                 ))}
               </div>
@@ -242,17 +230,17 @@ export default function Dashboard() {
       <section id="highlight" className="stats-section" data-aos="fade-up">
         <div className="stats-container">
           <div className="stat-card glass">
-            <Award color="#FFD700" size={32}/> 
+            🥇
             <span className="stat-title">Verified Pandits</span>
             <span className="stat-value">250+</span>
           </div>
           <div className="stat-card glass">
-            <Calendar color="#ff6e00" size={32} />
+            📖
             <span className="stat-title">Pujas Performed</span>
             <span className="stat-value">1,000+</span>
           </div>
           <div className="stat-card glass">
-            <Users color="#1593f5" size={32} />
+            👪
             <span className="stat-title">Happy Families</span>
             <span className="stat-value">800+</span>
           </div>
@@ -266,13 +254,13 @@ export default function Dashboard() {
         </h3>
         <div className="why-row">
           <div className="why-block">
-            <CheckCircle color="#18bb29" size={28}/> Verified Pandits
+            ✅ Verified Pandits
           </div>
           <div className="why-block">
-            <Users color="#5487dc" size={28}/> Pan India Support
+            🌏 Pan India Support
           </div>
           <div className="why-block">
-            <TrendingUp color="#b99105" size={28}/> Fixed Pricing
+            💸 Fixed Pricing
           </div>
         </div>
         <div className="offer-banner">
@@ -285,12 +273,12 @@ export default function Dashboard() {
         <div className="section-title-row">
           <h3>Verified Pandits</h3>
           <div className="search-pandit-input">
-            <Search size={18} />
+            🔍
             <input
               type="text"
               placeholder="Search by name or city..."
               value={searchPandits}
-              onChange={e=>setSearchPandits(e.target.value)}
+              onChange={e => setSearchPandits(e.target.value)}
               aria-label="Search pandits"
             />
           </div>
@@ -310,35 +298,39 @@ export default function Dashboard() {
                 title={p.name}
                 tabIndex={0}
                 aria-label={"Pandit: " + p.name}
-                onClick={()=>toggleExpand(p._id)}
+                onClick={() => toggleExpand(p._id)}
               >
-                <User size={30} />
+                🧑‍🦳
               </div>
               <div className="pandit-content">
                 <div className="pandit-header">
                   <span className="pandit-name">{p.name}</span>
                   <span className="pandit-city">
-                    <MapPin size={15} /> {p.city}
+                    📍 {p.city}
                   </span>
                 </div>
                 {expandedPandits[p._id] && (
                   <div className="pandit-extra-info">
                     <div className="pandit-badge">Exp: {p.experienceYears} Years</div>
-                    <div className="pandit-badge">{(p.languages||[]).join(', ')}</div>
+                    <div className="pandit-badge">{(p.languages || []).join(', ')}</div>
                     <div className="pandit-specials">
                       <b>Specialties:</b> {p.specialties?.join(', ')}
                     </div>
                   </div>
                 )}
               </div>
-              <button className="expand-btn" onClick={()=>toggleExpand(p._id)}>
-                {expandedPandits[p._id] ? <Filter /> : <Filter color="#888" />}
+              <button className="expand-btn" onClick={() => toggleExpand(p._id)}>
+                {expandedPandits[p._id] ? '➖' : '➕'}
               </button>
             </motion.div>
           ))}
         </div>
         {filteredPandits.length > 3 && (
-          <div style={{textAlign:"center"}}><button className="btn-secondary" onClick={()=>setVisiblePandits(v=>v===3?filteredPandits.length:3)}>{visiblePandits===3?'Show More':'Show Less'}</button></div>
+          <div style={{ textAlign: "center" }}>
+            <button className="btn-secondary" onClick={() => setVisiblePandits(v => v === 3 ? filteredPandits.length : 3)}>
+              {visiblePandits === 3 ? 'Show More' : 'Show Less'}
+            </button>
+          </div>
         )}
       </section>
 
@@ -347,12 +339,12 @@ export default function Dashboard() {
         <div className="section-title-row">
           <h3>Your Bookings</h3>
           <div className="search-booking-input">
-            <Search size={18} />
+            🔍
             <input
               type="text"
               placeholder="Search bookings..."
               value={searchBookings}
-              onChange={e=>setSearchBookings(e.target.value)}
+              onChange={e => setSearchBookings(e.target.value)}
               aria-label="Search bookings"
             />
           </div>
@@ -360,7 +352,7 @@ export default function Dashboard() {
         <div className="booking-list">
           {filteredBookings.length === 0 ? (
             <p className="empty-msg">No bookings found.</p>
-          ) : filteredBookings.map(b=>(
+          ) : filteredBookings.map(b => (
             <motion.div
               key={b._id}
               className="booking-card glass"
@@ -368,15 +360,15 @@ export default function Dashboard() {
             >
               <div className="booking-main">
                 <div className="booking-header">
-                  <Calendar color="#DE8100" size={24} />
+                  📅
                   <div>
                     <div className="booking-type">{b.serviceid?.name}</div>
-                    <div className="booking-date"><Clock size={14} /> {new Date(b.puja_date).toLocaleDateString()} {b.puja_time}</div>
+                    <div className="booking-date">⏰ {new Date(b.puja_date).toLocaleDateString()} {b.puja_time}</div>
                   </div>
                 </div>
                 <div className="booking-details">
-                  <span><User size={14} /> {b.panditid?.name || 'N/A'}</span>
-                  <span><MapPin size={14} /> {b.location}</span>
+                  <span>🧑‍🦳 {b.panditid?.name || 'N/A'}</span>
+                  <span>📍 {b.location}</span>
                   <span className={`${getStatusClass(b.status)}`}>{b.status}</span>
                 </div>
               </div>
@@ -409,14 +401,14 @@ export default function Dashboard() {
             onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
           />
           <button className="btn-primary" type="submit" disabled={reviewLoading}>
-            {reviewLoading ? 'Submitting...' : <>Submit <MessageSquare size={15}/></>}
+            {reviewLoading ? 'Submitting...' : <>Submit 💬</>}
           </button>
         </form>
       </section>
 
       {/* CHATBOT BUTTON */}
-      <button className="chatbot-toggle" onClick={()=>setShowChatbot(s=>!s)} aria-label="Open Chatbot">
-        {showChatbot ? <XCircle size={32}/> : <img src="/images/subh.png" alt="Chatbot" style={{width:38,borderRadius:'50%'}} />}
+      <button className="chatbot-toggle" onClick={() => setShowChatbot(s => !s)} aria-label="Open Chatbot">
+        {showChatbot ? '✖️' : <img src="/images/subh.png" alt="Chatbot" style={{ width: 38, borderRadius: '50%' }} />}
       </button>
       {showChatbot && (
         <div className="chatbot-popup">
