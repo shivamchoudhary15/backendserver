@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPandits, getAllDevotees, getAllPoojas } from '../api/api';
-import './Home.css';
+import './Home1.css';
 
 function Home() {
   const [stats, setStats] = useState({ pandits: 0, devotees: 0, bookings: 0 });
