@@ -63,7 +63,7 @@ export default function Dashboard() {
   const [showChatbot, setShowChatbot] = useState(false);
 
   useEffect(() => {
-    AOS.init({ duration: 750, once: true });
+    AOS.init({ duration: 700, once: true });
 
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
@@ -84,7 +84,6 @@ export default function Dashboard() {
       setUser(parsedUser);
       setReview(r => ({ ...r, name: parsedUser.name }));
 
-      // Fetch bookings and pandits data
       getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data || []));
       getVerifiedPandits().then(res => setPandits(res.data || []));
     } catch {
@@ -99,7 +98,6 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // Navigation handler
   function handleNavClick(item) {
     if (item.logout) {
       localStorage.clear();
@@ -115,7 +113,6 @@ export default function Dashboard() {
     navigate(item.goto);
   }
 
-  // Submit review handler
   async function handleReviewSubmit(e) {
     e.preventDefault();
     if (!review.rating || !review.comment) {
@@ -146,6 +143,7 @@ export default function Dashboard() {
       pending: 'status pending',
     }[(status || '').toLowerCase()] || 'status');
 
+  // Filters
   const filteredPandits = pandits.filter(
     p =>
       p.name.toLowerCase().includes(searchPandits.toLowerCase()) ||
@@ -211,7 +209,7 @@ export default function Dashboard() {
         </section>
       )}
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="bolt-hero-section" data-aos="fade-down" id="dashboard">
         <div className="bolt-hero-content">
           <div>
@@ -219,35 +217,26 @@ export default function Dashboard() {
               <span className="bolt-hero-title-glow">Book Verified Pandits</span><br />
               with <span className="bolt-hero-brand-gradient">Shubhkarya</span>
             </h1>
-            <p className="bolt-hero-desc">
-              Auspicious Pujas. Trusted Experts. Nationwide. <span className="bolt-highlight-strong">Feel divine from home!</span>
-            </p>
-            <button className="bolt-hero-button" onClick={() => navigate('/booking')} aria-label="Book New Puja">
-              🛕 Book Now
-            </button>
+            <p className="bolt-hero-desc">Auspicious Pujas. Trusted Experts. Nationwide. <span className="bolt-highlight-strong">Feel divine from home!</span></p>
+            <button onClick={() => navigate('/booking')} className="bolt-hero-button" aria-label="Book New Puja">🛕 Book Now</button>
           </div>
           <div className="bolt-slider-frame">
-            <img alt="Puja hero slider" src={sliderImages[carouselIndex]} />
+            <img src={sliderImages[carouselIndex]} alt="Puja slider" />
             <div className="bolt-slider-dots">
               {sliderImages.map((_, i) => (
-                <button
-                  key={i}
-                  className={`bolt-slider-dot${i === carouselIndex ? ' active' : ''}`}
-                  onClick={() => setCarouselIndex(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                />
+                <button key={i} className={`bolt-slider-dot${i === carouselIndex ? ' active' : ''}`} onClick={() => setCarouselIndex(i)} aria-label={`Go to slide ${i + 1}`} />
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Highlights Section */}
+      {/* Highlights */}
       <section id="highlight" className="highlight-section" data-aos="fade-up" aria-label="Platform highlights">
         <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: 'url(/images/india.jpeg)' }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span aria-hidden="true" style={{ fontSize: '2em' }}>✔️</span>
+            <span role="img" aria-label="Verified" style={{ fontSize: '2em' }}>✔️</span>
             <h4>Spiritual Guides</h4>
             <p>Pandits & Consultants across India</p>
             <p>250+ Experts</p>
@@ -256,7 +245,7 @@ export default function Dashboard() {
         <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: 'url(/images/kalash.jpeg)' }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span aria-hidden="true" style={{ fontSize: '2em' }}>🛕</span>
+            <span role="img" aria-label="Temple" style={{ fontSize: '2em' }}>🛕</span>
             <h4>Religious Services</h4>
             <p>Wide variety of pujas</p>
             <p>100+ Pujas</p>
@@ -265,7 +254,7 @@ export default function Dashboard() {
         <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: 'url(/images/havan.jpeg)' }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span aria-hidden="true" style={{ fontSize: '1.7em' }}>📆</span>
+            <span role="img" aria-label="Calendar" style={{ fontSize: '1.7em' }}>📆</span>
             <h4>Pujas Done</h4>
             <p>Performed by verified pandits</p>
             <p>1,000+ Completed</p>
@@ -273,7 +262,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Why Shubhkarya Section */}
+      {/* Why Shubhkarya */}
       <section className="why-shubhkarya-section nice-glass" data-aos="fade-up" aria-label="Why choose Shubhkarya">
         <h3>Why Choose <span className="brand-accent">Shubhkarya?</span></h3>
         <div className="why-cards-row">
@@ -314,7 +303,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Verified Pandits Section with Search */}
+      {/* Verified Pandits Section */}
       <section id="pandit" className="bolt-verified-pandit-section" data-aos="fade-up" tabIndex={-1} aria-label="Verified Pandits">
         <div className="bolt-section-title-row">
           <h2>Verified Pandits</h2>
@@ -349,7 +338,7 @@ export default function Dashboard() {
                   <div className="bolt-pandit-expanded">
                     <div className="bolt-pandit-badges">
                       <span className="bolt-pandit-badge bolt-exp">Exp: {p.experienceYears} yrs</span>
-                      <span className="bolt-pandit-badge bolt-langs">{(p.languages||[]).join(', ')}</span>
+                      <span className="bolt-pandit-badge bolt-langs">{(p.languages || []).join(', ')}</span>
                     </div>
                     <div className="bolt-pandit-specials">👉 <b>Specialties:</b> {p.specialties?.join(', ')}</div>
                   </div>
@@ -358,7 +347,7 @@ export default function Dashboard() {
             </motion.div>
           ))}
         </div>
-        <div style={{textAlign:'center',margin:'18px 0'}}>
+        <div style={{textAlign:'center', margin:'18px 0'}}>
           {filteredPandits.length > visiblePandits && (
             <button className="bolt-see-more" onClick={() => setVisiblePandits(v => v + 4)}>Show More</button>
           )}
@@ -403,7 +392,7 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Review Submission Section */}
+      {/* Review Section */}
       <section id="review" className="bolt-review-section" data-aos="fade-up" tabIndex={-1}>
         <h2>Submit Your Review</h2>
         <form className="bolt-review-form" onSubmit={handleReviewSubmit}>
@@ -412,7 +401,7 @@ export default function Dashboard() {
             <StarRating rating={review.rating} onChange={v => setReview(prev => ({ ...prev, rating: v }))} />
           </div>
           <textarea className="bolt-review-textarea" placeholder="Share your experience..." required value={review.comment} onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))} />
-          <button type="submit" className="bolt-review-button" disabled={reviewLoading}>
+          <button className="bolt-review-button" disabled={reviewLoading} type="submit">
             {reviewLoading ? 'Submitting...' : 'Submit Review 💬'}
           </button>
           {reviewMessage && <div className="bolt-review-msg">{reviewMessage}</div>}
@@ -424,14 +413,10 @@ export default function Dashboard() {
         {showChatbot ? '×' : <img src="/images/subh.png" alt="Chatbot" style={{ borderRadius: '50%', width: 38, height: 38 }} />}
       </button>
 
+      {/* Chatbot Frame */}
       {showChatbot && (
         <div className="chatbot-popup" role="dialog" aria-modal="true" aria-label="Chatbot window">
-          <iframe
-            title="Chatbot"
-            src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
-            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 15 }}
-            allow="clipboard-write"
-          />
+          <iframe title="Chatbot" src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP" style={{ width: '100%', height: '100%', border: 'none', borderRadius: 15 }} allow="clipboard-write" />
         </div>
       )}
     </div>
@@ -439,14 +424,11 @@ export default function Dashboard() {
 }
 
 function getStatusClass(status) {
-  switch ((status || '').toLowerCase()) {
-    case 'accepted':
-      return 'status accepted';
-    case 'pending':
-      return 'status pending';
-    case 'rejected':
-      return 'status rejected';
-    default:
-      return 'status';
+  if (!status) return 'status';
+  switch (status.toLowerCase()) {
+    case 'accepted': return 'status accepted';
+    case 'pending': return 'status pending';
+    case 'rejected': return 'status rejected';
+    default: return 'status';
   }
 }
