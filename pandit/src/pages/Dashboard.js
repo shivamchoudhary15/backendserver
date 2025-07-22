@@ -30,7 +30,7 @@ const sliderImages = [
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
-      {[1,2,3,4,5].map(i => (
+      {[1, 2, 3, 4, 5].map(i => (
         <span
           key={i}
           tabIndex={0}
@@ -38,7 +38,7 @@ function StarRating({ rating, onChange }) {
           onKeyPress={e => (e.key === "Enter" || e.key === " ") && onChange(i)}
           className={i <= rating ? 'star active' : 'star'}
           role="button"
-          aria-label={`Rate ${i} star${i>1?'s':''}`}
+          aria-label={`Rate ${i} star${i > 1 ? 's' : ''}`}
         >★</span>
       ))}
     </div>
@@ -52,13 +52,9 @@ function Dashboard() {
 
   const [isNavbarOpen, setNavbarOpen] = useState(false);
   const [user, setUser] = useState(null);
-
-  // Reviews
   const [review, setReview] = useState({ name: '', rating: 0, comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
-  
-  // Bookings & Pandits
   const [bookings, setBookings] = useState([]);
   const [searchPandits, setSearchPandits] = useState('');
   const [searchBookings, setSearchBookings] = useState('');
@@ -92,22 +88,6 @@ function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // --- Tidio Chatbot Embed ---
-  useEffect(() => {
-    if (document.getElementById('tidio-chat-script')) return;
-    const script = document.createElement('script');
-    script.id = 'tidio-chat-script';
-    script.src = '//code.tidio.co/oyrtrqcd7qo8rbxxpzlsqh70onrxgesr.js'; // example Tidio script URL for demo; replace with your own for production
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      const frame = document.getElementById('tidio-chat');
-      if (frame) frame.remove();
-      script.remove();
-    };
-  }, []);
-  // --- End Tidio Embed ---
-
   const handleNavMouseEnter = () => setNavbarOpen(true);
   const handleNavMouseLeave = () => setNavbarOpen(false);
 
@@ -115,7 +95,7 @@ function Dashboard() {
     if (item.logout) {
       localStorage.clear();
       navigate(item.goto);
-    } else if ((item.goto+"").startsWith('#')) {
+    } else if ((item.goto + "").startsWith('#')) {
       const section = document.querySelector(item.goto);
       if (section) section.scrollIntoView({ behavior: 'smooth' });
       setNavbarOpen(false);
@@ -147,7 +127,7 @@ function Dashboard() {
     accepted: 'status accepted',
     rejected: 'status rejected',
     pending: 'status pending'
-  }[(status||'').toLowerCase()] || 'status');
+  }[(status || '').toLowerCase()] || 'status');
 
   const filteredPandits = pandits.filter(p =>
     p.name.toLowerCase().includes(searchPandits.toLowerCase()) ||
@@ -323,7 +303,6 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        {/* Festive Offer */}
         <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass">
           <span className="promo-gift" role="img" aria-label="Gift" style={{ fontSize: "2.1em" }}>🎁</span>
           <div className="offer-content">
@@ -472,6 +451,23 @@ function Dashboard() {
           </button>
         </form>
       </section>
+
+      {/* Chatbase Chatbot Iframe: Fixed bottom right */}
+      <iframe
+        title="Chatbase Chatbot"
+        src="https://www.chatbase.co/chatbot-iframe/c4lNDmZCNJ6CrCZIHtcg7"
+        style={{
+          position: 'fixed',
+          bottom: 20,
+          right: 20,
+          width: 350,
+          height: 480,
+          border: 'none',
+          borderRadius: 12,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
+          zIndex: 9999
+        }}
+      />
     </div>
   );
 }
