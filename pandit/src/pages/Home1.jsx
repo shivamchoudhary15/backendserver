@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllPandits, getAllDevotees, getAllPoojas } from '../api/api';
 import './Home1.css';
 
-function Home() {
+function Home1() {
   const [stats, setStats] = useState({ pandits: 0, devotees: 0, bookings: 0 });
   const navigate = useNavigate();
 
@@ -25,16 +25,34 @@ function Home() {
   }, []);
 
   return (
-    <div className="home-cards">
-      <div role="button" tabIndex={0} className="card card-pandits" onClick={() => navigate('/admin/pandits')} onKeyPress={() => navigate('/admin/pandits')}>
+    <div className="home1-container">
+      <div
+        role="button"
+        tabIndex={0}
+        className="card card-pandits"
+        onClick={() => navigate('/admin/pandits')}
+        onKeyPress={() => navigate('/admin/pandits')}
+      >
         <h3>{stats.pandits}</h3>
         <p>Total Pandits</p>
       </div>
-      <div role="button" tabIndex={0} className="card card-devotees" onClick={() => navigate('/admin/devotees')} onKeyPress={() => navigate('/admin/devotees')}>
+      <div
+        role="button"
+        tabIndex={0}
+        className="card card-devotees"
+        onClick={() => navigate('/admin/devotees')}
+        onKeyPress={() => navigate('/admin/devotees')}
+      >
         <h3>{stats.devotees}</h3>
         <p>Total Devotees</p>
       </div>
-      <div role="button" tabIndex={0} className="card card-bookings" onClick={() => navigate('/admin/bookings')} onKeyPress={() => navigate('/admin/bookings')}>
+      <div
+        role="button"
+        tabIndex={0}
+        className="card card-bookings"
+        onClick={() => navigate('/admin/bookings')}
+        onKeyPress={() => navigate('/admin/bookings')}
+      >
         <h3>{stats.bookings}</h3>
         <p>Total Pooja Bookings</p>
       </div>
@@ -42,4 +60,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Home1;
