@@ -92,6 +92,24 @@ function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  // --- Perplexity AI chatbot embed ---
+  useEffect(() => {
+    if (document.getElementById('px-embed-script')) return;
+    const script = document.createElement('script');
+    script.id = 'px-embed-script';
+    script.src = 'https://www.perplexity.ai/js/embed.js';
+    script.async = true;
+    script.setAttribute('data-px-embed', 'true');
+    script.setAttribute('data-px-embed-position', 'right');
+    document.body.appendChild(script);
+    return () => {
+      const bot = document.querySelector('[data-px-root]');
+      if (bot) bot.remove();
+      script.remove();
+    };
+  }, []);
+  // --- End Perplexity embed ---
+
   const handleNavMouseEnter = () => setNavbarOpen(true);
   const handleNavMouseLeave = () => setNavbarOpen(false);
 
