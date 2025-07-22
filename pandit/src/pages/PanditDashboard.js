@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PanditDashboard.css';
+import ChatWindow from './ChatWindow';  // Make sure to have ChatWindow.js as per previous instructions
 
 function PanditDashboard() {
   const navigate = useNavigate();
@@ -10,6 +11,10 @@ function PanditDashboard() {
   const [searchName, setSearchName] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [showStats, setShowStats] = useState(false);
+
+  // Added states for chat:
+  const [activeChatDevoteeId, setActiveChatDevoteeId] = useState(null);
+  const [activeChatDevoteeName, setActiveChatDevoteeName] = useState('');
 
   // Uses public/images/i3.jpeg for the entire page background
   const bgStyle = {
@@ -175,6 +180,19 @@ function PanditDashboard() {
                 <div className="pandit-booking-row">
                   <span>📍 <b>Location:</b> {b.location || 'N/A'}</span>
                 </div>
+
+                {/* Chat with Devotee Button (New) */}
+                <button
+                  style={{ marginTop: 10 }}
+                  onClick={() => {
+                    setActiveChatDevoteeId(b.userid?._id);
+                    setActiveChatDevoteeName(b.userid?.name || 'Devotee');
+                  }}
+                  disabled={!b.userid?._id}
+                >
+                  Chat with Devotee
+                </button>
+
                 {b.status === 'Pending' && (
                   <div className="pandit-buttons">
                     <button onClick={() => updateStatus(b._id, 'Accepted')} className="accept-btn">✅ Accept</button>
@@ -186,6 +204,16 @@ function PanditDashboard() {
           </div>
         ) : (
           <div className="pandit-nobookings fade-in">No bookings found.</div>
+        )}
+
+        {/* Chat Window */}
+        {activeChatDevoteeId && (
+          <ChatWindow
+            userId={user?._id}
+            panditId={activeChatDevoteeId}
+            chatName={activeChatDevoteeName}
+            onClose={() => setActiveChatDevoteeId(null)}
+          />
         )}
       </div>
     </div>
