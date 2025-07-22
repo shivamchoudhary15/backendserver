@@ -1,0 +1,41 @@
+.devotees-page {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.devotees-page h2 {
+  text-align: center;
+  color: #27ae60;
+  margin-bottom: 1.8rem;
+}
+
+.devotees-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.devotee-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 6px 15px rgba(39, 174, 96, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.devotee-card:hover {
+  box-shadow: 0 12px 28px rgba(39, 174, 96, 0.22);
+}
+
+.devotee-card p {
+  margin: 0;
+  color: #34495e;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.devotee-card p + p {
+  font-weight: 400;
+  font-size: 0.93rem;
+  color: #666;
+}
