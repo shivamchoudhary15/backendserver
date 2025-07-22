@@ -1,0 +1,15 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f7f9;
+}
+
+.dashboard-main {
+  margin-left: 220px;
+  padding: 2rem 2.5rem;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(120deg, #f5f8fa 60%, #e1eaf7 100%);
+}
