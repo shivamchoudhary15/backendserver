@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import jwt_decode from 'jwt-decode'; // <--- add this!
+import {jwtDecode} from 'jwt-decode'; // <--- add this!
 import './Login.css';
 
 const GOOGLE_CLIENT_ID = '285160037801-8je1h2pconfermojci9vesa8v2len5ol.apps.googleusercontent.com';
