@@ -39,6 +39,7 @@
     "react-icons": "^5.5.0",
     "jest-watch-typeahead": "^1.0.0",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
     "mini-css-extract-plugin": "^2.4.5",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
