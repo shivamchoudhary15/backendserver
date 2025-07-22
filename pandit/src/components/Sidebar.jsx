@@ -5,17 +5,50 @@ import './Sidebar.css';
 function Sidebar() {
   return (
     <nav className="sidebar">
-      <h2>Admin Dashboard</h2>
-      <NavLink to="/admin/home" className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
-      <NavLink to="/admin/pandits" className={({ isActive }) => (isActive ? 'active' : '')}>Pandits</NavLink>
-      <NavLink to="/admin/devotees" className={({ isActive }) => (isActive ? 'active' : '')}>Devotees</NavLink>
-      <NavLink to="/admin/bookings" className={({ isActive }) => (isActive ? 'active' : '')}>Bookings</NavLink>
-      <NavLink to="/admin/map" className={({ isActive }) => (isActive ? 'active' : '')}>Map</NavLink>
+      <h2 className="sidebar-title">Admin Dashboard</h2>
+
+      <NavLink
+        to="/admin/home"
+        className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
+      >
+        Home
+      </NavLink>
+
+      <NavLink
+        to="/admin/pandits"
+        className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
+      >
+        Pandits
+      </NavLink>
+
+      <NavLink
+        to="/admin/devotees"
+        className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
+      >
+        Devotees
+      </NavLink>
+
+      <NavLink
+        to="/admin/bookings"
+        className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
+      >
+        Bookings
+      </NavLink>
+
+      <NavLink
+        to="/admin/map"
+        className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
+      >
+        Map
+      </NavLink>
+
       <button
+        className="logout-button"
         onClick={() => {
           localStorage.clear();
           window.location.href = '/';
         }}
+        aria-label="Logout"
       >
         Logout
       </button>
