@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const BACKEND_URL = 'http://localhost:5000'; // Replace with your backend URL
+const BACKEND_URL = 'https://backendserver-dryq.onrender.com'; // Replace with your backend URL
 const socket = io(BACKEND_URL);
 
 const ChatWindow = ({ userId, panditId, onClose }) => {
