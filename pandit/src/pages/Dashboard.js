@@ -92,23 +92,21 @@ function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // --- Perplexity AI chatbot embed ---
+  // --- Tidio Chatbot Embed ---
   useEffect(() => {
-    if (document.getElementById('px-embed-script')) return;
+    if (document.getElementById('tidio-chat-script')) return;
     const script = document.createElement('script');
-    script.id = 'px-embed-script';
-    script.src = 'https://www.perplexity.ai/js/embed.js';
+    script.id = 'tidio-chat-script';
+    script.src = '//code.tidio.co/oyrtrqcd7qo8rbxxpzlsqh70onrxgesr.js'; // example Tidio script URL for demo; replace with your own for production
     script.async = true;
-    script.setAttribute('data-px-embed', 'true');
-    script.setAttribute('data-px-embed-position', 'right');
     document.body.appendChild(script);
     return () => {
-      const bot = document.querySelector('[data-px-root]');
-      if (bot) bot.remove();
+      const frame = document.getElementById('tidio-chat');
+      if (frame) frame.remove();
       script.remove();
     };
   }, []);
-  // --- End Perplexity embed ---
+  // --- End Tidio Embed ---
 
   const handleNavMouseEnter = () => setNavbarOpen(true);
   const handleNavMouseLeave = () => setNavbarOpen(false);
@@ -186,33 +184,33 @@ function Dashboard() {
           </span>
         </div>
         <AnimatePresence>
-        {isNavbarOpen &&
-          <motion.ul
-            className="navbar-menu"
-            role="menu"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.22 }}
-          >
-            {navbarButtons.map((item, i) => (
-              <motion.li
-                key={item.label}
-                role="menuitem"
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.97 }}
-                tabIndex={0}
-                className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
-                onClick={() => handleNavClick(item)}
-                onKeyDown={e => (e.key === "Enter" || e.key===" ") && handleNavClick(item)}
-                aria-label={item.label}
-              >
-                <span className="nav-icon" aria-hidden="true">{item.icon}</span>
-                {item.label}
-              </motion.li>
-            ))}
-          </motion.ul>
-        }
+          {isNavbarOpen &&
+            <motion.ul
+              className="navbar-menu"
+              role="menu"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.22 }}
+            >
+              {navbarButtons.map((item, i) => (
+                <motion.li
+                  key={item.label}
+                  role="menuitem"
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.97 }}
+                  tabIndex={0}
+                  className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
+                  onClick={() => handleNavClick(item)}
+                  onKeyDown={e => (e.key === "Enter" || e.key === " ") && handleNavClick(item)}
+                  aria-label={item.label}
+                >
+                  <span className="nav-icon" aria-hidden="true">{item.icon}</span>
+                  {item.label}
+                </motion.li>
+              ))}
+            </motion.ul>
+          }
         </AnimatePresence>
       </nav>
 
@@ -237,7 +235,7 @@ function Dashboard() {
               Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
-            <button className="hero-book-btn glow-btn" onClick={()=>navigate('/booking')}>
+            <button className="hero-book-btn glow-btn" onClick={() => navigate('/booking')}>
               <span role="img" aria-label="Temple">🛕</span> Book New Puja
             </button>
           </div>
@@ -245,11 +243,11 @@ function Dashboard() {
             <div className="slider-frame shadow-pop">
               <img src={sliderImages[carouselIndex % sliderImages.length]} alt="Shubhkarya slider" />
               <div className="slider-dots">
-                {sliderImages.map((_,i) => (
+                {sliderImages.map((_, i) => (
                   <button
                     key={i}
-                    className={`slider-dot${i===carouselIndex % sliderImages.length ? " active" : ""}`}
-                    aria-label={`Go to slide ${i+1}`}
+                    className={`slider-dot${i === carouselIndex % sliderImages.length ? " active" : ""}`}
+                    aria-label={`Go to slide ${i + 1}`}
                     onClick={() => setCarouselIndex(i)}
                   />
                 ))}
@@ -264,7 +262,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span style={{fontSize:"2em"}} role="img" aria-label="Verified">✔️</span>
+            <span style={{ fontSize: "2em" }} role="img" aria-label="Verified">✔️</span>
             <h4>Spiritual Guides</h4>
             <p>Pandits & Consultants across India</p>
             <p>250+ Experts</p>
@@ -273,7 +271,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span style={{fontSize:"2em"}} role="img" aria-label="Temple">🛕</span>
+            <span style={{ fontSize: "2em" }} role="img" aria-label="Temple">🛕</span>
             <h4>Religious Services</h4>
             <p>Wide variety of pujas</p>
             <p>100+ Pujas</p>
@@ -282,7 +280,7 @@ function Dashboard() {
         <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
           <div className="highlight-overlay" />
           <div className="highlight-content">
-            <span style={{fontSize:"1.7em"}} role="img" aria-label="Calendar">📆</span>
+            <span style={{ fontSize: "1.7em" }} role="img" aria-label="Calendar">📆</span>
             <h4>Pujas Done</h4>
             <p>Performed by verified pandits</p>
             <p>1,000+ Completed</p>
@@ -327,7 +325,7 @@ function Dashboard() {
         </div>
         {/* Festive Offer */}
         <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass">
-          <span className="promo-gift" role="img" aria-label="Gift" style={{fontSize:"2.1em"}}>🎁</span>
+          <span className="promo-gift" role="img" aria-label="Gift" style={{ fontSize: "2.1em" }}>🎁</span>
           <div className="offer-content">
             <b>Festive Offer!</b>
             <span>
@@ -366,7 +364,7 @@ function Dashboard() {
                 tabIndex={0}
                 onClick={() => toggleExpand(p._id)}
               >
-                <span className="pandit-avatar-initial">{(p.name || '').slice(0,1)}</span>
+                <span className="pandit-avatar-initial">{(p.name || '').slice(0, 1)}</span>
               </div>
               <div className="pandit-main-info">
                 <h4 className="pandit-name hero-text-glow" tabIndex={0} onClick={() => toggleExpand(p._id)}>
@@ -474,9 +472,6 @@ function Dashboard() {
           </button>
         </form>
       </section>
-
-      {/* Perplexity AI Chatbot Embed */}
-      <div id="perplexity-ai-widget-container"></div>
     </div>
   );
 }
