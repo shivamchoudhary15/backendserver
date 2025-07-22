@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PanditDashboard.css';
-import ChatWindow from './ChatWindow';  // Make sure to have ChatWindow.js as per previous instructions
+import ChatWindow from './ChatWindow';  // Ensure ChatWindow.js is implemented as per prior instructions
 
 function PanditDashboard() {
   const navigate = useNavigate();
@@ -12,11 +12,11 @@ function PanditDashboard() {
   const [filterStatus, setFilterStatus] = useState('');
   const [showStats, setShowStats] = useState(false);
 
-  // Added states for chat:
+  // Added states for chat functionality
   const [activeChatDevoteeId, setActiveChatDevoteeId] = useState(null);
   const [activeChatDevoteeName, setActiveChatDevoteeName] = useState('');
 
-  // Uses public/images/i3.jpeg for the entire page background
+  // Background style for the dashboard page
   const bgStyle = {
     minHeight: '100vh',
     width: '100%',
@@ -65,7 +65,7 @@ function PanditDashboard() {
     Rejected: "❌",
   };
 
-  // Stats for the profile
+  // Stats calculation for display
   const completedCount = bookings.filter(b => b.status === 'Accepted').length;
   const pendingCount = bookings.filter(b => b.status === 'Pending').length;
   const rejectedCount = bookings.filter(b => b.status === 'Rejected').length;
@@ -75,7 +75,7 @@ function PanditDashboard() {
       <div className="pdash-overlay" />
       <div className="pandit-container">
 
-        {/* Header Row */}
+        {/* Header Section */}
         <div className="pandit-header-row">
           <h1 className="pandit-heading">🧘 Pandit Dashboard</h1>
           <button onClick={handleLogout} className="logout-btn" aria-label="Logout">
@@ -83,12 +83,14 @@ function PanditDashboard() {
           </button>
         </div>
 
-        {/* Profile Card */}
+        {/* Profile Information */}
         <div className="pandit-profile-card animate-in">
           <div className="pandit-profile-pic">
             <div className="pandit-avatar" aria-label="Profile Picture" role="img">🧑‍🦳</div>
             <span className={user?.is_verified ? 'pdash-badge verified' : 'pdash-badge notverified'}>
-              {user?.is_verified ? <><span role="img" aria-label="Verified">✅</span> Verified</> : <><span role="img" aria-label="Not Verified">⏳</span> Not verified</>}
+              {user?.is_verified ? 
+                <><span role="img" aria-label="Verified">✅</span> Verified</> : 
+                <><span role="img" aria-label="Not Verified">⏳</span> Not verified</>}
             </span>
           </div>
           <div className="pandit-profile-info">
@@ -106,7 +108,7 @@ function PanditDashboard() {
             >
               {showStats ? 'Hide Stats ▲' : 'Show Stats ▼'}
             </button>
-            <div style={{overflow:'hidden'}}>
+            <div style={{ overflow: 'hidden' }}>
               <div className={showStats ? "stats-box visible" : "stats-box"}>
                 <div className="stats-item">
                   <span className="stats-emoji">✅</span>
@@ -162,8 +164,8 @@ function PanditDashboard() {
         {/* Bookings List */}
         {filteredBookings.length > 0 ? (
           <div className="pandit-bookings">
-            {filteredBookings.map((b,i) => (
-              <div key={b._id} className="pandit-booking-card fade-in" style={{animationDelay: `${0.07*i}s`}}>
+            {filteredBookings.map((b, i) => (
+              <div key={b._id} className="pandit-booking-card fade-in" style={{ animationDelay: `${0.07 * i}s` }}>
                 <div className="pandit-booking-head">
                   <span className="booking-devotee">{b.userid?.name || 'N/A'}</span>
                   <span className={`pandit-status ${b.status.toLowerCase()}`}>{statusEmoji[b.status] || ''} {b.status}</span>
@@ -181,7 +183,7 @@ function PanditDashboard() {
                   <span>📍 <b>Location:</b> {b.location || 'N/A'}</span>
                 </div>
 
-                {/* Chat with Devotee Button (New) */}
+                {/* Chat with Devotee Button */}
                 <button
                   style={{ marginTop: 10 }}
                   onClick={() => {
@@ -206,7 +208,7 @@ function PanditDashboard() {
           <div className="pandit-nobookings fade-in">No bookings found.</div>
         )}
 
-        {/* Chat Window */}
+        {/* ChatWindow rendering */}
         {activeChatDevoteeId && (
           <ChatWindow
             userId={user?._id}
