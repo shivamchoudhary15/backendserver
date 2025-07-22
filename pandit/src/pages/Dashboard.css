@@ -1,6 +1,7 @@
-/* ========== Fonts ========== */
+/* ====== Fonts ====== */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
+/* ====== Root Colors and Variables ====== */
 :root {
   --accent-yellow: #ffd740;
   --accent-blue: #2586ff;
@@ -10,9 +11,10 @@
   --shadow-glow: 0 12px 34px #ffe0668f;
 }
 
-/* ========== Base Styles ========== */
+/* ====== Base Styles ====== */
 body, html {
-  margin: 0; padding: 0;
+  margin: 0; 
+  padding: 0;
   font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
   background: linear-gradient(111deg, #fdfbfa 0%, #f2f7ff 34%, #f9efdb 100%);
   color: #20282b;
@@ -21,22 +23,22 @@ body, html {
 
 .bolt-root {
   min-height: 100vh;
-  padding-bottom: 70px; /* space for chatbot button */
+  padding-bottom: 70px; /* Space for chatbot button */
 }
 
-/* ========== NAVBAR ========== */
+/* ====== Navbar ====== */
 .bolt-navbar {
   position: sticky;
   top: 0;
-  background: linear-gradient(99deg,#f5fcffbb 44%,#fffdfa 100%);
+  background: linear-gradient(99deg, #f5fcffbb 44%, #fffdfa 100%);
   box-shadow: 0 10px 38px #ffc96018;
   border-bottom: 2.5px solid #ffe68a57;
   border-radius: 0 0 34px 34px;
   padding: 1rem 2vw 0.6rem 2vw;
   display: flex;
   flex-direction: column;
-  z-index: 22;
   user-select: none;
+  z-index: 22;
 }
 .bolt-navbar.open {
   box-shadow: 0 18px 65px #ffd65190;
@@ -48,8 +50,8 @@ body, html {
   font-weight: 800;
   color: var(--brand-orange);
   gap: 14px;
-  letter-spacing: -0.03em;
   cursor: pointer;
+  letter-spacing: -0.03em;
   outline-offset: 2px;
   outline-color: var(--accent-yellow);
 }
@@ -67,7 +69,6 @@ body, html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 0.01em;
-  font-family: 'Montserrat', sans-serif;
 }
 .bolt-navbar-expand {
   font-size: 1.22em;
@@ -113,10 +114,9 @@ body, html {
 }
 .bolt-nav-icon {
   font-size: 1.15em;
-  user-select: none;
 }
 
-/* ========== WELCOME BANNER ========== */
+/* ====== Welcome Banner ====== */
 .welcome-banner.nice-glass {
   background: linear-gradient(104deg, #fffbe5f9 57%, #fff37b33 120%);
   border-radius: 27px;
@@ -141,7 +141,7 @@ body, html {
   color: #805500;
 }
 
-/* ========== HERO SECTION ========== */
+/* ====== Hero Section ====== */
 .bolt-hero-section {
   background: linear-gradient(110deg, #fafdff 41%, #fffbe1 100%);
   padding: 34px 0 0;
@@ -258,13 +258,13 @@ body, html {
   transform: scale(1.38);
 }
 
-/* ========== HIGHLIGHT CARDS ========== */
+/* ====== Highlights Section ====== */
 .highlight-section {
   display: flex;
   gap: 32px;
   justify-content: center;
   align-items: stretch;
-  margin: 32px 0 39px 0;
+  margin: 32px 0 39px;
 }
 .highlight-card.glass-highlight {
   background-size: cover;
@@ -316,7 +316,7 @@ body, html {
   text-shadow: 0 2px 8px #513400a9;
 }
 
-/* ========== WHY SHUBHKARYA ========== */
+/* ====== Why Shubhkarya Section ====== */
 .why-shubhkarya-section.nice-glass {
   margin-top: 12px;
   margin-bottom: 22px;
@@ -391,7 +391,7 @@ body, html {
   font-size: 0.98em;
 }
 
-/* Festive Offer */
+/* ====== Festive Offer ====== */
 .improved-offer.animated-pop-offer.offer-gradient-glass {
   background: linear-gradient(97deg, #fffbe5f5 32%, #ffd16e44 102%);
   border-radius: 19px;
@@ -441,11 +441,11 @@ body, html {
 }
 
 @keyframes popPulse {
-  0% {scale:1;}
-  100% {scale:1.07;}
+  0% { scale: 1; }
+  100% { scale: 1.07; }
 }
 
-/* Section heading style */
+/* ====== Section Heading ====== */
 .section-heading {
   font-size: 1.27em;
   font-weight: 800;
@@ -469,7 +469,7 @@ body, html {
   margin-left: 5px;
 }
 
-/* Pendit Cards */
+/* ====== Verified Pandit Card ====== */
 .pandit-section {
   margin-top: 2.2rem;
 }
@@ -596,309 +596,10 @@ body, html {
   word-break: break-word;
 }
 
-/* Button Utils */
-.toggle-btn {
-  text-align: center;
-  margin-top: 0.7rem;
-}
-.custom-btn {
-  padding: 9px 34px;
-  background: linear-gradient(96deg, var(--accent-yellow) 52%, #bdf9ff 100%);
-  color: #964900;
-  font-size: 1.07em;
-  font-weight: bold;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px #ffeca144;
-  border: none;
-  margin: 12px 0 6px;
-  cursor: pointer;
-  transition: background 0.19s, color 0.13s;
-}
-.custom-btn:hover {
-  background: linear-gradient(96deg, #ffd740 52%, #61d7fc 100%);
-  color: #3c2d00;
+/* Footer padding for chatbot */
+@media (max-width: 600px) {
+  .bolt-root {
+    padding-bottom: 90px;
+  }
 }
 
-/* Booking List */
-.booking-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.38rem;
-  margin: 1.45rem 0 0.9rem 0;
-}
-.booking-card.card-glossy.glass.neon-card.shadow-pop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(101deg, #fffefa 70%, #e1f5fe 120%);
-  border-radius: 19px;
-  box-shadow: 0 14px 28px #b1ccfe63;
-  padding: 23px 31px 15px 23px;
-  border: 3px solid #f9f7f267;
-  transition: box-shadow 0.22s, transform 0.16s, background 0.16s;
-  user-select: none;
-}
-.booking-card-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.booking-icon {
-  font-size: 2.2em;
-  color: #ffaa00;
-  margin-right: 9px;
-}
-.booking-type {
-  font-size: 1.09em;
-  font-weight: 800;
-  color: #3673cf;
-  margin-bottom: 2px;
-}
-.booking-date {
-  font-size: 1em;
-  color: #795c09b6;
-}
-.booking-card-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-.booking-pandit-label {
-  color: #daa200;
-  font-size: 0.98em;
-}
-.booking-pandit {
-  font-weight: 800;
-  color: #246f99;
-}
-.booking-location {
-  font-size: 1em;
-  color: #1482ad;
-  margin-bottom: 2px;
-}
-.status {
-  padding: 3px 16px;
-  border-radius: 11px;
-  font-weight: 800;
-  font-size: 1em;
-  margin-top: 8px;
-  background: #fcf9ed;
-  box-shadow: 0 1.5px 7px #e5f2c463;
-  text-align: center;
-  border: 2.5px solid #e5e5e59a;
-}
-.status.accepted {
-  background: #ddfae8;
-  color: #1dbe28;
-  border-color: #7dffae;
-}
-.status.pending {
-  background: #fff6ed;
-  color: #e08b1d;
-  border-color: #ffe2b7;
-}
-.status.rejected {
-  background: #ffd7d7;
-  color: #ea2912;
-  border-color: #ffa3a3;
-}
-.empty-msg {
-  color: #888;
-  text-align: center;
-  padding: 2.3rem 0 1rem 0;
-  font-size: 1.09em;
-  font-weight: 600;
-}
-
-/* Reviews Section */
-.bolt-review-section {
-  margin: 65px auto 38px auto;
-  max-width: 540px;
-  background: linear-gradient(118deg,#fdfbe2 25%, #cdedff 130%);
-  box-shadow: 0 9px 37px #ffb70024;
-  border-radius: 25px;
-  padding: 36px 38px 24px 38px;
-}
-.bolt-review-section h2 {
-  color: var(--accent-blue);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.22em;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  margin-bottom: 18px;
-}
-.bolt-review-form {
-  display: flex; flex-direction: column; gap: 19px;
-  margin-top: 0.7em;
-}
-.bolt-review-row {
-  display: flex; gap: 11px; align-items: center;
-}
-.bolt-review-input {
-  flex: 1;
-  font-size: 1.10em;
-  padding: 12px 17px;
-  border-radius: 10px;
-  border: 2.0px solid #f2e1a1;
-  background: #fbfaf9;
-  color: #4f3303;
-  font-weight: 700;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.17s;
-}
-.bolt-review-input:focus {
-  border-color: var(--accent-yellow);
-}
-.bolt-review-textarea {
-  min-height: 85px;
-  resize: vertical;
-  font-size: 1.14em;
-  font-family: inherit;
-  border-radius: 13px;
-  border: 2.0px solid #f2e1a1;
-  padding: 13px 17px;
-  background: #fcfcfa;
-}
-.bolt-review-textarea:focus {
-  border-color: var(--accent-yellow);
-}
-.bolt-star-rating {
-  display: flex;
-  align-items: center;
-  gap: 2.5px;
-  margin-left: 9px;
-}
-.bolt-star {
-  font-size: 1.75em;
-  color: var(--accent-yellow);
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.16s;
-  margin: 0 1px;
-}
-.bolt-star.active {
-  color: #ffb700;
-  transform: scale(1.16);
-  text-shadow: 0 2px 13px #ffeaaa88;
-}
-.bolt-star:focus,
-.bolt-star:hover {
-  color: #f9dc66;
-  outline: none;
-}
-.bolt-review-button {
-  background: linear-gradient(91deg, var(--accent-yellow) 42%, var(--accent-blue) 100%);
-  color: #0e1b43;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.07em;
-  font-weight: 800;
-  border-radius: 11px;
-  padding: 12px 37px;
-  border: none;
-  box-shadow: 0 1.6px 12px #ffe79144;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, box-shadow 0.11s, transform 0.12s;
-}
-.bolt-review-button:focus,
-.bolt-review-button:hover {
-  background: linear-gradient(99deg, #39a5ec 49%, var(--accent-yellow) 97%);
-  color: #934f15;
-  box-shadow: 0 6px 24px #ffd33445;
-  transform: scale(1.035);
-}
-.bolt-review-msg {
-  color: #198228;
-  font-weight: 600;
-  font-family: 'Poppins', sans-serif;
-  padding: 0.5em 0 0 0;
-  text-align: center;
-}
-
-/* See More/Less Button */
-.bolt-see-more {
-  background: var(--accent-blue);
-  color: #fffdf7;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 22px;
-  font-weight: 700;
-  font-size: 1em;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.16s, transform 0.13s;
-}
-.bolt-see-more:hover {
-  background: var(--accent-yellow);
-  color: #1a2a76;
-  transform: scale(1.07);
-}
-
-/* Chatbot Toggle Button */
-.chatbot-toggle {
-  position: fixed;
-  bottom: 26px;
-  right: 26px;
-  z-index: 10011;
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #2786ef, #31c7ec 90%);
-  box-shadow: 0 4px 24px rgba(38, 82, 132, 0.11);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: box-shadow 0.18s;
-  padding: 0;
-  outline: none;
-}
-.chatbot-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 38px rgba(38, 82, 132, 0.22);
-}
-
-/* Chatbot Popup */
-.chatbot-popup {
-  position: fixed;
-  bottom: 100px;
-  right: 28px;
-  width: 350px;
-  height: 480px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.24);
-  z-index: 10010;
-  overflow: hidden;
-  animation: fadeInChatbase 0.28s ease-out;
-}
-@keyframes fadeInChatbase {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: none; }
-}
-
-/* Responsive */
-@media (max-width: 1080px) {
-  .bolt-hero-content { flex-direction: column; align-items: center; gap: 32px; }
-  .bolt-hero-content > div:first-child { max-width: 93vw; }
-  .bolt-slider-frame { margin-top: 19px; }
-  .bolt-pandit-list { flex-direction: column; gap: 14px; }
-}
-@media (max-width: 700px) {
-  .bolt-navbar { padding: 10px 13px 0 13px; }
-  .bolt-navbar-brand { font-size: 1.08em; }
-  .bolt-navbar-logo { width: 34px; height: 34px; }
-  .bolt-navbar-menu { font-size: .99em; }
-  .bolt-root, body { font-size: .98em; }
-  .bolt-pandit-card { padding: 17px 7px 15px 11px; }
-  .bolt-slider-frame { width: 98vw; height: 120px; }
-  .bolt-hero-content h1 { font-size: 1.28rem; }
-  .bolt-hero-section { padding-bottom: 12px; }
-  .bolt-verified-pandit-section, .bolt-review-section { padding: 21px 5vw 13px; }
-}
-@media (max-width: 505px) {
-  .bolt-navbar-brand { font-size: .899em;}
-  .bolt-navbar-menu { gap: 7px; }
-}
