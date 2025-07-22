@@ -1,0 +1,64 @@
+.home-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 5rem;
+  user-select: none;
+}
+
+.card {
+  flex: 1;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 1.7rem;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(44, 62, 80, 0.08);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.7s forwards;
+}
+
+.card:nth-child(1) {
+  animation-delay: 0.1s;
+  border-top: 6px solid #2980b9; /* blue */
+}
+.card:nth-child(2) {
+  animation-delay: 0.25s;
+  border-top: 6px solid #27ae60; /* green */
+}
+.card:nth-child(3) {
+  animation-delay: 0.4s;
+  border-top: 6px solid #f39c12; /* orange */
+}
+
+.card h3 {
+  font-size: 3.2rem;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.card p {
+  font-size: 1.25rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.05);
+  box-shadow: 0 14px 35px rgba(41, 128, 185, 0.25);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
