@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import DashboardLayout from './DashboardLayout';
+import DashboardLayout from '../components/DashboardLayout';
 import Home from './Home';
 import PanditsPage from './PanditsPage'; // Your existing Pandits list page component
 import DevoteesPage from './DevoteesPage'; // Your existing Devotees list page component
