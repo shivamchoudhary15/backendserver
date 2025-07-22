@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   const [showChatbot, setShowChatbot] = useState(false);
 
-  // Chat state variables
+  // Chat states for interaction
   const [chatPanditId, setChatPanditId] = useState(null);
   const [chatPanditName, setChatPanditName] = useState('');
 
