@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode'; // <--- add this!
+import { jwtDecode } from 'jwt-decode'; // ✅ Correct import
 import './Login.css';
 
 const GOOGLE_CLIENT_ID = '285160037801-8je1h2pconfermojci9vesa8v2len5ol.apps.googleusercontent.com';
@@ -22,8 +22,6 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      // Your original backend login can remain here if you want.
-      // Otherwise, just remove this block for Google-only demo.
       setError('This login does not work in frontend-only mode.');
     } finally {
       setLoading(false);
@@ -33,12 +31,10 @@ const Login = () => {
   // Google Sign-In handler: frontend-only, decode token directly!
   const handleGoogleResponse = (response) => {
     try {
-      const userProfile = jwt_decode(response.credential);
-      // Now userProfile contains {name, email, picture, ...}
+      const userProfile = jwtDecode(response.credential); // ✅ Correct function usage
       setGoogleUser(userProfile);
       localStorage.setItem('googleUser', JSON.stringify(userProfile));
       alert('✅ Google Sign-In success!\n' + userProfile.email);
-      // Navigate to dashboard or wherever:
       navigate('/dashboard');
     } catch (err) {
       setError('❌ Google login failed (frontend-only).');
@@ -148,7 +144,6 @@ const Login = () => {
               </span>
             </div>
 
-            {/* Show frontend Google sign-in user info if available */}
             {googleUser && (
               <div style={{ marginTop: 18, textAlign: "center" }}>
                 <img src={googleUser.picture} alt="profile" style={{ borderRadius: "50%", width: 48, marginBottom: 8 }}/>
