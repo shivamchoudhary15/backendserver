@@ -2,8 +2,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Booking = require('../models/booking');
+const Pandit = require('../models/pandit');       // Import Pandit model
+const nodemailer = require('nodemailer');
+require('dotenv').config();                       // Load .env variables
 
-// yaha pe booking create hogi
+// Setup nodemailer transporter with env credentials
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
+
+// Booking creation route
 router.post('/create', async (req, res) => {
   try {
     const {
@@ -21,7 +33,7 @@ router.post('/create', async (req, res) => {
     const panditObjId = new mongoose.Types.ObjectId(panditid);
     const poojaObjId = poojaId ? new mongoose.Types.ObjectId(poojaId) : undefined;
 
-    // ise double booking prevent hogi 
+    // Prevent double booking
     const existing = await Booking.findOne({
       panditid: panditObjId,
       puja_date: new Date(puja_date),
@@ -44,6 +56,44 @@ router.post('/create', async (req, res) => {
     });
 
     const savedBooking = await booking.save();
+
+    // Send notification email to pandit
+    try {
+      const pandit = await Pandit.findById(panditObjId);
+
+      if (pandit && pandit.email) {
+        // You can customize userName extraction if you store user details differently
+        const userName = req.body.userName || 'A user';
+
+        const mailOptions = {
+          from: process.env.MAIL_USER,
+          to: pandit.email,
+          subject: 'New Pandit Booking Received',
+          text: `Hello Pandit,
+
+You have a new booking from ${userName}.
+Date: ${savedBooking.puja_date}
+Time: ${savedBooking.puja_time}
+
+Please check your dashboard for details.
+
+Thank you.`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error('Error sending booking notification email:', error);
+          } else {
+            console.log('Booking notification email sent:', info.response);
+          }
+        });
+      } else {
+        console.log('Pandit not found or has no email for ID:', panditObjId);
+      }
+    } catch (emailErr) {
+      console.error('Error while sending email:', emailErr);
+    }
+
     res.status(201).json({ message: 'Booking created', booking: savedBooking });
   } catch (err) {
     console.error('Booking creation error:', err);
@@ -51,7 +101,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// booking get hogi 
+// Booking fetch route
 router.get('/view', async (req, res) => {
   try {
     const { userid, panditid } = req.query;
@@ -64,7 +114,7 @@ router.get('/view', async (req, res) => {
       .populate('panditid', 'name')
       .populate('poojaId', 'name')
       .populate('serviceid', 'name')
-      .populate('userid', 'name email phone');  // ✅ include phone here
+      .populate('userid', 'name email phone');  // include phone here
 
     res.status(200).json(bookings);
   } catch (err) {
@@ -73,7 +123,7 @@ router.get('/view', async (req, res) => {
   }
 });
 
-// ye optoinal ye booking update ke liye
+// Booking status update route
 router.put('/status/:id', async (req, res) => {
   try {
     const { status } = req.body;
@@ -94,7 +144,7 @@ router.put('/status/:id', async (req, res) => {
   }
 });
 
-// ek particular user ki sari bookings aa jayegi 
+// Get bookings for a specific user
 router.get('/user/:userid', async (req, res) => {
   try {
     const userObjId = new mongoose.Types.ObjectId(req.params.userid);
@@ -102,7 +152,7 @@ router.get('/user/:userid', async (req, res) => {
       .populate('poojaId', 'name')
       .populate('panditid', 'name')
       .populate('serviceid', 'name')
-      .populate('userid', 'name email phone'); 
+      .populate('userid', 'name email phone');
 
     res.json(bookings);
   } catch (err) {
