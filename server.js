@@ -1,6 +1,6 @@
 const express = require('express');
-const http = require('http');                  // Add this
-const { Server } = require('socket.io');       // Add this
+const http = require('http');                  // Required to create HTTP server
+const { Server } = require('socket.io');       // Socket.IO server
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -9,10 +9,12 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);         // Use HTTP server
+const server = http.createServer(app);         // Create HTTP server from Express app
+
+// Initialize Socket.IO with CORS configuration
 const io = new Server(server, {
   cors: {
-    origin: "*",        // In production, replace '*' with your frontend domain
+    origin: "*",        // Replace '*' with your frontend URL in production for security
     methods: ["GET", "POST"]
   }
 });
@@ -21,11 +23,12 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Connect to MongoDB using your .env connection string
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch((err) => console.error('❌ DB connection error:', err));
 
-/* your routes imports and mounting here */
+// Import routes as before (no changes here)
 const userRoutes = require('./routes/userRoutes');
 const panditRoutes = require('./routes/panditRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
@@ -36,6 +39,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const poojaRoutes = require('./routes/poojaRoutes');
 const locationRoutes = require('./routes/locationRoutes');
 
+// Mount your routes
 app.use('/api/users', userRoutes);
 app.use('/api/pandits', panditRoutes);
 app.use('/api/bookings', bookingRoutes);
@@ -46,10 +50,12 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/poojas', poojaRoutes);
 app.use('/api/locations', locationRoutes);
 
+// Default root endpoint
 app.get('/', (req, res) => {
   res.send('Shubkarya API is running...');
 });
 
+// Error handling middleware for invalid JSON
 app.use((err, req, res, next) => {
   if(err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: '❌ Invalid JSON' });
@@ -57,19 +63,19 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// Socket.IO connection handling
+// Socket.IO logic for real-time chat connection
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  // Join a unique room for user-pandit pair chat (roomId format: userId_panditId)
+  // Join a room identified by userId_panditId string
   socket.on('joinRoom', (roomId) => {
     socket.join(roomId);
     console.log(`Socket ${socket.id} joined room ${roomId}`);
   });
 
-  // Receive message from client and broadcast to the room
+  // Broadcast received messages to all clients in that room
   socket.on('sendMessage', (data) => {
-    // data must contain: roomId, senderId, message, timestamp
+    // Data format expected: { roomId, senderId, message, timestamp }
     io.to(data.roomId).emit('receiveMessage', data);
   });
 
@@ -78,6 +84,7 @@ io.on('connection', (socket) => {
   });
 });
 
+// Start the server using the HTTP server instance for socket.io compatibility
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
