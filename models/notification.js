@@ -18,7 +18,7 @@ const notificationSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: { createdAt: 'created_at', updatedAt: false },
+    
   }
 );
 
