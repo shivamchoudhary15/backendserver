@@ -1,4 +1,3 @@
-/*original*/
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -6,6 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Dashboard.css';
 import { createReview, getBookings, getVerifiedPandits } from '../api/api';
+import ChatWindow from './ChatWindow'; // Import your chat component
 
 const navbarItems = [
   { label: 'Home', icon: '🏠', goto: '/' },
@@ -64,6 +64,10 @@ export default function Dashboard() {
   const [reviewLoading, setReviewLoading] = useState(false);
 
   const [showChatbot, setShowChatbot] = useState(false);
+
+  // Chat states: add these
+  const [chatPanditId, setChatPanditId] = useState(null);
+  const [chatPanditName, setChatPanditName] = useState('');
 
   useEffect(() => {
     AOS.init({ duration: 750, once: true });
@@ -240,84 +244,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* HIGHLIGHTS */}
-      <section id="highlight" className="highlight-section" data-aos="fade-up" aria-label="Platform highlights">
-        <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Verified" style={{ fontSize: '2em' }}>✔️</span>
-            <h4>Spiritual Guides</h4>
-            <p>Pandits & Consultants across India</p>
-            <p>250+ Experts</p>
-          </div>
-        </div>
-        <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Temple" style={{ fontSize: '2em' }}>🛕</span>
-            <h4>Religious Services</h4>
-            <p>Wide variety of pujas</p>
-            <p>100+ Pujas</p>
-          </div>
-        </div>
-        <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Calendar" style={{ fontSize: '1.7em' }}>📆</span>
-            <h4>Pujas Done</h4>
-            <p>Performed by verified pandits</p>
-            <p>1,000+ Completed</p>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY SHUBHKARYA */}
-      <section className="why-shubhkarya-section nice-glass" data-aos="fade-up" aria-label="Why choose Shubhkarya">
-        <h3>
-          Why Choose <span className="brand-accent">Shubhkarya?</span>
-        </h3>
-        <div className="why-cards-row">
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">✅</div>
-            <div>
-              <h5>Verified Pandits</h5>
-              <p>Background-checked and reviewed experts at your service.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">🌏</div>
-            <div>
-              <h5>Pan India Support</h5>
-              <p>Metro & local experts available in all states.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">💰</div>
-            <div>
-              <h5>Transparent Pricing</h5>
-              <p>No hidden charges, clear billing, and fair policies.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">🔆</div>
-            <div>
-              <h5>Choose by Tradition</h5>
-              <p>Select by tradition, date, or preferred language.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass" aria-label="Festive Offer">
-          <span className="promo-gift" role="img" aria-label="Gift" style={{ fontSize: '2.1em' }}>🎁</span>
-          <div className="offer-content">
-            <b>Festive Offer!</b>
-            <span>
-              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
-            </span>
-          </div>
-        </div>
-      </section>
-
       {/* PANDIT SHOWCASE */}
       <section id="pandit" className="pandit-section" data-aos="fade-up" tabIndex={-1} aria-label="Verified Pandits">
         <h3 className="section-heading">Verified Pandits</h3>
@@ -362,6 +288,17 @@ export default function Dashboard() {
                   </div>
                 </div>
               )}
+              {/* New Chat Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setChatPanditId(pandit._id);
+                  setChatPanditName(pandit.name);
+                }}
+                style={{ marginTop: 8 }}
+              >
+                Chat with Pandit
+              </button>
             </motion.div>
           ))}
         </div>
@@ -377,6 +314,16 @@ export default function Dashboard() {
           </div>
         )}
       </section>
+
+      {/* CHAT WINDOW */}
+      {chatPanditId && (
+        <ChatWindow
+          userId={user?._id}
+          panditId={chatPanditId}
+          chatName={chatPanditName}
+          onClose={() => setChatPanditId(null)}
+        />
+      )}
 
       {/* BOOKINGS */}
       <section id="booking" className="bookings-section blur-bg" data-aos="fade-up" tabIndex={-1} aria-label="Booking History">
