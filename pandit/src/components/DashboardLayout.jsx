@@ -1,16 +1,23 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+// Example: DashboardLayout.jsx
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
+import { Outlet } from 'react-router-dom';
 import './DashboardLayout.css';
 
 function DashboardLayout() {
-  return (
-    <div className="dashboard-layout">
-      {/* Sidebar navigation */}
-      <Sidebar />
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-      {/* Main content area for nested routes */}
+  return (
+    <div className={`dashboard-layout ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <main className="dashboard-main">
+        <button 
+          className="sidebar-toggle-btn" 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {sidebarOpen ? "←" : "→"}
+        </button>
         <Outlet />
       </main>
     </div>
