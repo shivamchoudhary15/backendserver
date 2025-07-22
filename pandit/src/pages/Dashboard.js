@@ -474,6 +474,9 @@ function Dashboard() {
           </button>
         </form>
       </section>
+
+      {/* Perplexity AI Chatbot Embed */}
+      <div id="perplexity-ai-widget-container"></div>
     </div>
   );
 }
