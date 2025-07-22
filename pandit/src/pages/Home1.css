@@ -1,64 +1,68 @@
-.home-cards {
+.home1-container {
   display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-top: 5rem;
-  user-select: none;
+  gap: 1.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+  /* Container padding to avoid overlap with navbar if needed */
+  margin-top: 72px; /* adjust if your navbar height differs */
 }
 
 .card {
-  flex: 1;
-  background: white;
-  border-radius: 20px;
-  padding: 3rem 1.7rem;
+  flex: 1 1 180px;
+  max-width: 260px;
+  min-width: 160px;
+  background-color: white;
+  border-radius: 14px;
+  padding: 2rem 1rem;
+  box-shadow: 0 6px 20px rgba(44,62,80,0.1);
   text-align: center;
-  box-shadow: 0 6px 15px rgba(44, 62, 80, 0.08);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  opacity: 0;
-  animation: fadeInUp 0.7s forwards;
-}
-
-.card:nth-child(1) {
-  animation-delay: 0.1s;
-  border-top: 6px solid #2980b9; /* blue */
-}
-.card:nth-child(2) {
-  animation-delay: 0.25s;
-  border-top: 6px solid #27ae60; /* green */
-}
-.card:nth-child(3) {
-  animation-delay: 0.4s;
-  border-top: 6px solid #f39c12; /* orange */
+  user-select: none;
 }
 
 .card h3 {
   font-size: 3.2rem;
   color: #34495e;
   margin-bottom: 0.5rem;
+  letter-spacing: 1px;
   font-weight: 700;
-  letter-spacing: 1.5px;
   font-family: 'Montserrat', sans-serif;
 }
 
 .card p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #7f8c8d;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.card:hover {
-  transform: translateY(-12px) scale(1.05);
-  box-shadow: 0 14px 35px rgba(41, 128, 185, 0.25);
+.card:hover, .card:focus {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(44,62,80,0.2);
+  outline: none;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+/* Specific color accents */
+.card-pandits {
+  border-top: 6px solid #2980b9;
+}
+
+.card-devotees {
+  border-top: 6px solid #27ae60;
+}
+
+.card-bookings {
+  border-top: 6px solid #f39c12;
+}
+
+/* Responsive - On small screens stack cards */
+@media (max-width: 640px) {
+  .home1-container {
+    justify-content: center;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .card {
+    min-width: 90vw;
+    max-width: 90vw;
   }
 }
