@@ -17,6 +17,7 @@ const navbarButtons = [
   { label: 'Logout', icon: '🚪', goto: '/home', logout: true },
 ];
 
+// Hero/slider images
 const sliderImages = [
   '/images/i2.jpeg',
   '/images/kalash.jpeg',
@@ -25,10 +26,11 @@ const sliderImages = [
   '/images/i1.jpeg',
 ];
 
+// Star rating component
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
-      {[1, 2, 3, 4, 5].map(i => (
+      {[1,2,3,4,5].map(i => (
         <span
           key={i}
           tabIndex={0}
@@ -36,7 +38,7 @@ function StarRating({ rating, onChange }) {
           onKeyPress={e => (e.key === "Enter" || e.key === " ") && onChange(i)}
           className={i <= rating ? 'star active' : 'star'}
           role="button"
-          aria-label={`Rate ${i} star${i > 1 ? 's' : ''}`}
+          aria-label={`Rate ${i} star${i>1?'s':''}`}
         >★</span>
       ))}
     </div>
@@ -50,9 +52,13 @@ function Dashboard() {
 
   const [isNavbarOpen, setNavbarOpen] = useState(false);
   const [user, setUser] = useState(null);
+
+  // Reviews
   const [review, setReview] = useState({ name: '', rating: 0, comment: '' });
   const [reviewMessage, setReviewMessage] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
+
+  // Bookings & Pandits
   const [bookings, setBookings] = useState([]);
   const [searchPandits, setSearchPandits] = useState('');
   const [searchBookings, setSearchBookings] = useState('');
@@ -96,7 +102,7 @@ function Dashboard() {
     if (item.logout) {
       localStorage.clear();
       navigate(item.goto);
-    } else if ((item.goto + "").startsWith('#')) {
+    } else if ((item.goto+"").startsWith('#')) {
       const section = document.querySelector(item.goto);
       if (section) section.scrollIntoView({ behavior: 'smooth' });
       setNavbarOpen(false);
@@ -128,7 +134,7 @@ function Dashboard() {
     accepted: 'status accepted',
     rejected: 'status rejected',
     pending: 'status pending'
-  }[(status || '').toLowerCase()] || 'status');
+  }[(status||'').toLowerCase()] || 'status');
 
   const filteredPandits = pandits.filter(p =>
     p.name.toLowerCase().includes(searchPandits.toLowerCase()) ||
@@ -150,8 +156,8 @@ function Dashboard() {
 
   return (
     <div className="dashboard-root">
-      {/* Your entire existing JSX remains unchanged */}
-      {/* ... All Dashboard Sections ... */}
+      {/* NAVBAR */}
+      {/* ...all your dashboard sections stay here... */}
 
       {/* REVIEWS */}
       <section id="review" ref={reviewsRef} className="review-section glass-review" data-aos="fade-up">
@@ -180,11 +186,9 @@ function Dashboard() {
         </form>
       </section>
 
-      {/* ----------- CHATBASE POPUP BUTTON & IFRAME -------------- */}
-      {/* Chat button */}
+      {/* --- CHATBASE ROUND BUTTON & POPUP CHATBOT --- */}
       <button
         aria-label="Open Chatbase chatbot"
-        className="chatbase-popup-btn"
         style={{
           position: 'fixed',
           bottom: 26,
@@ -199,16 +203,29 @@ function Dashboard() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 34,
-          color: '#fff',
+          padding: 0,
           cursor: 'pointer',
           transition: 'box-shadow 0.18s'
         }}
         onClick={() => setShowChatbot((s) => !s)}
       >
-        {showChatbot ? '×' : <span role="img" aria-label="Chat">💬</span>}
+        {showChatbot ? (
+          <span style={{ fontSize: 44, fontWeight: 700, color: "#fff", marginTop: -2 }}>×</span>
+        ) : (
+          <img
+            src="/images/subh.png"
+            alt="Open Chatbot"
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              objectFit: "cover",
+              display: "block",
+              background: "#fff"
+            }}
+          />
+        )}
       </button>
-      {/* Chatbase popup */}
       {showChatbot && (
         <div
           style={{
@@ -239,7 +256,6 @@ function Dashboard() {
           />
         </div>
       )}
-      {/* Fade-in effect for popup */}
       <style>
         {`
           @keyframes fadeInChatbase {
