@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getAllBookings } from '../api/api';
+import { getBookings } from '../api/api';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
