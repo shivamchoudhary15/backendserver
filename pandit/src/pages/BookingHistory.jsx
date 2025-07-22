@@ -19,7 +19,7 @@ function BookingHistory() {
   useEffect(() => {
     async function fetchBookings() {
       try {
-        const res = await getAllBookings();
+        const res = await getBookings();
         setBookings(res.data);
       } catch (error) {
         console.error('Error fetching bookings', error);
