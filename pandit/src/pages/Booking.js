@@ -9,8 +9,6 @@ import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-const bgImage = "/images/sat.jpeg";
-
 const stepTitles = [
   "Choose Service & Pandit",
   "Select Date & Location",
@@ -104,7 +102,6 @@ function Booking() {
               onChange={(e) => setSearch(e.target.value)}
               className="signup-input"
             />
-
             <select
               name="serviceid"
               onChange={handleChange}
@@ -122,7 +119,6 @@ function Booking() {
               )}
             </select>
 
-            {/* -------- PANDIT CARD ROW -------- */}
             <div className="pandit-row">
               {filteredPandits.length ? (
                 filteredPandits.map((p) => (
@@ -135,7 +131,7 @@ function Booking() {
                     <div className="pandit-name">{p.name}</div>
                     <div className="pandit-rating">
                       <span>⭐</span> {p.rating?.toFixed(1) ?? "4.2"}
-                      <span style={{ marginLeft: 3, color: "#bbaec9" }}>
+                      <span style={{ marginLeft: 3, color: "#888ABF" }}>
                         ({p.reviewsCount || "41"})
                       </span>
                     </div>
@@ -143,7 +139,7 @@ function Booking() {
                   </div>
                 ))
               ) : (
-                <div style={{ color: "#bbaec9", padding: "18px 0", width: "100%" }}>
+                <div style={{ color: "#babfd1", padding: "18px 0", width: "100%" }}>
                   No verified pandits available.
                 </div>
               )}
@@ -228,7 +224,6 @@ function Booking() {
 
   return (
     <div className="booking-bg">
-      <img src={bgImage} alt="" className="bg-img" draggable={false}/>
       <div className="overlay-gradient"></div>
       <motion.form
         className="glass-form-pro"
