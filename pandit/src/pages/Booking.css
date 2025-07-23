@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap');
+
 
 .booking-bg {
   min-height: 100vh;
@@ -6,245 +7,246 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #F9FAFB;
-  font-family: 'Inter', 'Montserrat', Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
+  background: #faeade;
+}
+
+.bg-img {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(0.96) blur(0.5px) saturate(1.07);
+  transition: filter .7s;
+}
+
+.overlay-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(110deg, rgba(255,210,183,0.20) 10%, rgba(104,60,36,0.31) 80%);
+  mix-blend-mode: overlay;
+  animation: overlayPulse 12s ease-in-out infinite alternate;
+}
+@keyframes overlayPulse {
+  0% { opacity: 0.83; }
+  100% { opacity: 0.62; }
 }
 
 .glass-form-pro {
-  background: #fff;
-  border-radius: 30px;
-  box-shadow: 0 16px 44px rgba(85,110,230,.09), 0 2px 16px #bfc6d3;
-  max-width: 430px;
-  width: 99vw;
-  padding: 55px 40px 44px 40px;
-  border: 2px solid #F0F0F9;
-  margin: 32px 0;
-  animation: formPopIn 0.95s cubic-bezier(.33,1.11,.29,1) 1;
+  position: relative;
+  background: rgba(255,255,255,0.14);
+  border-radius: 23px;
+  box-shadow: 0 16px 40px #0006, 0 2px 9px #c7763034;
+  backdrop-filter: blur(16px) saturate(180%);
+  min-width: 330px;
+  width: 100%;
+  max-width: 420px;
+  padding: 42px 28px 32px 28px;
+  margin: 16px 0;
+  border: 1.3px solid rgba(235,115,33,0.09);
+  z-index: 10;
+  animation: fadeIn 0.8s cubic-bezier(.33,1.11,.29,1);
+  overflow: visible;
+  transition: box-shadow .27s;
 }
 
-@keyframes formPopIn {
-  from { opacity:0; transform:scale(0.96) translateY(40px);}
-  to { opacity: 1; transform: scale(1) translateY(0);}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px);}
+  to { opacity: 1; transform: translateY(0);}
 }
 
 .booking-title {
-  font-family: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
-  font-size: 2.15rem;
-  color: #2C3E50;
-  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 30px;
-  letter-spacing: 0.02em;
+  margin-bottom: 13px;
+  line-height: 1.3;
+  letter-spacing: 0.025em;
+  text-shadow: 0 2px 12px #a7540099;
 }
 
+.review-title {
+  color: #c98a29;
+  font-weight: 800;
+  font-size: 1.25em;
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 0.015em;
+  font-family: 'Montserrat', serif;
+}
+
+/* MODERN BOX STEPPER */
 .steps-nav.only-box {
   display: flex;
   justify-content: space-between;
-  margin: 34px 0 28px 0;
-  gap: 12px;
+  margin: 27px 0 20px 0;
+  gap: 13px;
+  padding: 0;
 }
 .steps-circle.onlybox {
-  background: #E8EEF7;
-  border-radius: 18px;
-  min-width: 110px;
+  background: rgba(255,255,255,0.34);
+  border: none;
+  border-radius: 15px;
+  min-width: 96px;
   flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 54px;
-  transition: all 0.2s;
-  box-shadow: 0 3px 10px #bfc6d322;
-  color: #34495E;
-  font-family: 'Montserrat', 'Inter', Arial, sans-serif;
-  font-weight: 700;
-  font-size: 1.1em;
+  height: 52px;
+  transition: box-shadow 0.23s, background 0.22s, color 0.22s;
+  box-shadow: 0 4px 18px #edd2ab26;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0 7px;
+  cursor: pointer;
 }
 .steps-circle.onlybox.active {
-  background: linear-gradient(90deg, #556EE6 0%, #6F42C1 100%);
-  color: #FFFFFF;
-  font-weight: 900;
-  box-shadow: 0 6px 18px #6e42f329;
+  background: linear-gradient(97deg, #fffefa 34%, #ffd59c 88%, #ffa834 120%);
+  color: #8e4a08;
+  font-weight: 800;
+  box-shadow: 0 5px 19px #ffbd8442,0 2px 12px #fffbe7aa inset;
 }
 .steps-circle.onlybox:not(.active) {
-  opacity: 0.8;
+  color: #9b8577;
+  font-weight: 600;
+  opacity: 0.82;
+  background: rgba(255,255,255,0.17);
 }
-
 .step-label.step-label-box {
-  font-size: 1.12em;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-weight: 800;
+  font-size: 1em;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
   letter-spacing: 0.018em;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0 2px;
 }
 
-.pandit-row {
-  display: flex;
-  gap: 18px;
-  margin-bottom: 22px;
-  flex-wrap: wrap;
-}
-.pandit-card {
-  background: #fff;
-  border-radius: 19px;
-  box-shadow: 0 6px 18px #bdbbdc22;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 108px;
-  max-width: 128px;
-  padding: 18px 8px 15px 8px;
-  cursor: pointer;
-  border: 2.5px solid transparent;
-  transition: all 0.2s;
-  position: relative;
-}
-.pandit-card.selected {
-  border: 2.5px solid #556EE6;
-  background: #F0F4FF;
-  box-shadow: 0 8px 24px #556ee673;
-}
-.pandit-avatar {
-  background: #556EE6;
-  color: #fff;
-  font-family: 'Space Grotesk', Arial, sans-serif;
-  font-weight: 900;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.27em;
-  margin-bottom: 8px;
-}
-.pandit-name {
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 1.13em;
-  font-weight: 800;
-  margin-bottom: 2.5px;
-  text-align: center;
-  color: #2C3E50;
-}
-.pandit-rating {
-  font-family: 'Inter', Arial, sans-serif;
-  font-size: 0.98em;
-  color: #7D8CA3;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.pandit-badge {
-  background: #D6E4FF;
-  color: #2C3E50;
-  border-radius: 7px;
-  padding: 2.8px 10px;
-  font-size: 0.83em;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  box-shadow: 0 1.5px 6px #bfc6d333;
-}
+/* End modern box stepper */
 
 .signup-input {
-  background: #fff;
-  color: #34495E;
-  padding: 15px 18px;
-  margin-bottom: 22px;
-  border: 2.1px solid #CAD5E2;
-  border-radius: 13px;
+  background: rgba(245, 238, 229, 0.97);
+  color: #432a09;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1.3px solid #f6dbc740;
+  border-radius: 10px;
   font-size: 1.09rem;
-  font-family: 'Inter', Arial, sans-serif;
-  font-weight: 600;
-  box-shadow: 0 1.5px 14px #edebf4cc inset;
-  letter-spacing: 0.03em;
+  font-family: inherit;
+  outline: none;
+  font-weight: 400;
+  box-shadow: 0 1.5px 9px #ffedda0a inset;
+  transition: border-color 0.21s, box-shadow 0.21s, background 0.22s;
+  width: 100%;
 }
 .signup-input::placeholder {
-  color: #b6bac3;
-  opacity: 0.8;
-  font-family: 'Inter', Arial, sans-serif;
+  color: #ba9950;
+  letter-spacing: 0.01em;
+  opacity: 0.68;
 }
 .signup-input:focus {
-  border-color: #556EE6;
-  background: #f7faff;
-  box-shadow: 0 0 8px 2px #cad5e292;
+  border-color: #ea822c;
+  background: #fffdf7;
+  box-shadow: 0 0 8px 1px #e6782a33;
 }
 
-.primary-btn {
-  background: linear-gradient(90deg, #556EE6 0%, #6F42C1 100%);
-  color: #fff;
-  border: 1.4px solid #CAD5E2;
-  box-shadow: 0 7px 22px #556EE640;
-  width: 100%;
-  margin-top: 24px;
-  font-size: 1.17rem;
-  border-radius: 15px;
-  font-weight: 900;
-  padding: 14px 0;
-  letter-spacing: 0.02em;
+.primary-btn,
+.secondary-btn {
+  padding: 11px 18px;
+  font-size: 1.07rem;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  margin-top: 10px;
+  letter-spacing: 0.023em;
+  position: relative;
   cursor: pointer;
-  font-family: 'Montserrat', Arial, sans-serif;
-  transition: all 0.18s;
+  overflow: hidden;
+  outline: none;
+  transition: background 0.19s, box-shadow 0.2s, color 0.15s;
+}
+.primary-btn {
+  background: linear-gradient(91deg, #ffc678 12%, #e4762a 98%);
+  color: #fff8f5;
+  border: 1.2px solid #e78c30;
+  box-shadow: 0 1.5px 14px #ee901645;
 }
 .primary-btn:hover {
-  background: linear-gradient(91deg, #6F42C1 30%, #556EE6 90%);
-  color: #fff;
+  background: linear-gradient(97deg, #e4762a 18%, #eecaad 99%);
+  color: #b84808;
 }
-
 .secondary-btn {
-  background: #F4F6F8;
-  color: #556EE6;
-  border: 1.3px solid #CAD5E2;
-  min-width: 101px;
-  border-radius: 12px;
-  padding: 13px 0;
-  font-weight: 800;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 1.08rem;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  box-shadow: 0 1px 10px #bfc6d322;
-  margin-right: 13px;
+  background: #fcf3e2;
+  color: #be9444;
+  border: 1.2px solid #fbe0b1;
+  margin-right: 10px;
+  box-shadow: 0 1px 7px #eecaad44;
 }
 .secondary-btn:hover{
-  background: #E8EEF7;
-  color: #34495E;
+  background: #efdbbe;
+  color: #944405;
+}
+.primary-btn:active:after,
+.secondary-btn:active:after{
+  content: '';
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  width: 210%;
+  height: 230%;
+  transform: translate(-50%,-50%);
+  background: #fff6;
+  opacity: 0.25;
+  z-index: 2;
+  pointer-events: none;
+  animation: btnRipple 0.32s 1;
+}
+@keyframes btnRipple {
+  0% { opacity: 0.21; transform: translate(-50%,-50%) scale(0.1);}
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1); }
 }
 
 .step-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 13px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 4px;
 }
-
 .review-list {
-  color: #34495E;
-  font-size: 1.08em;
-  background: #F4F6F8;
-  border-radius: 12px;
-  margin: 24px auto 24px auto;
-  padding: 18px 20px 12px 28px;
-  box-shadow: 0 1.5px 8px #b2bdd21c;
-  border-left: 5px solid #556ee6a7;
+  color: #361f00;
+  font-size: 1.07em;
+  background: rgba(245,245,245,0.94);
+  border-radius: 8px;
+  margin: 12px auto 19px auto;
+  padding: 14px 13px 9px 19px;
+  box-shadow: 0 1.5px 11px #eecfb129;
+  border-left: 4px solid #e4762a5b;
   list-style: none;
-  max-width: 330px;
-  font-family: 'Inter', Arial, sans-serif;
+  max-width: 320px;
 }
 .review-list li {
-  margin-bottom: 10px;
-  font-weight: 600;
+  margin-bottom: 7px;
+  font-weight: 500;
+  text-shadow: 0 1px 0 #fff8bb24;
   letter-spacing: 0.01em;
 }
-
 .animated-step {
-  min-height: 237px;
+  min-height: 210px;
 }
 
 @media (max-width: 770px){
-  .glass-form-pro{ max-width: 99vw; min-width: 0; padding: 20px 3vw 14px 3vw;}
-  .booking-title {font-size: 1.05rem;}
+  .glass-form-pro{ max-width: 99vw; min-width: 0; padding: 19px 3vw 14px 3vw;}
+  .booking-title {font-size: 1.17rem;}
   .steps-nav.only-box {flex-direction: column; gap: 10px;}
-  .steps-circle.onlybox { min-width: 92vw; height:44px; }
-  .pandit-row {flex-wrap: wrap;}
+  .steps-circle.onlybox { min-width: 90vw; height:44px; }
 }
