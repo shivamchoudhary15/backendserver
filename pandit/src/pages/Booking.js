@@ -8,7 +8,17 @@ import {
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { User, Calendar, MapPin, ChevronRight, CheckCircle, Search, Book, Sun } from 'lucide-react';
+import {
+  User,
+  Calendar,
+  MapPin,
+  ChevronRight,
+  CheckCircle,
+  Search,
+  Book,
+  Sun,
+  Clock   // <-- Added Clock import here
+} from 'lucide-react';
 
 const bgImage = "/images/sat.jpeg";
 
