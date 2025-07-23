@@ -104,6 +104,7 @@ function Booking() {
               onChange={(e) => setSearch(e.target.value)}
               className="signup-input"
             />
+
             <select
               name="serviceid"
               onChange={handleChange}
@@ -120,17 +121,41 @@ function Booking() {
                 <option disabled>Loading services...</option>
               )}
             </select>
-            <select name="panditid" onChange={handleChange} required className="signup-input" value={details.panditid || ''}>
-              <option value="">-- Select Pandit --</option>
+
+            {/* -------- PANDIT CARD ROW -------- */}
+            <div className="pandit-row">
               {filteredPandits.length ? (
                 filteredPandits.map((p) => (
-                  <option key={p._id} value={p._id}>{p.name}</option>
+                  <div
+                    key={p._id}
+                    className={`pandit-card${details.panditid === p._id ? " selected" : ""}`}
+                    onClick={() => setDetails({ ...details, panditid: p._id })}
+                  >
+                    <div className="pandit-avatar">{p.name[0]}</div>
+                    <div className="pandit-name">{p.name}</div>
+                    <div className="pandit-rating">
+                      <span>⭐</span> {p.rating?.toFixed(1) ?? "4.2"}
+                      <span style={{ marginLeft: 3, color: "#bbaec9" }}>
+                        ({p.reviewsCount || "41"})
+                      </span>
+                    </div>
+                    <div className="pandit-badge">Verified</div>
+                  </div>
                 ))
               ) : (
-                <option disabled>No verified pandits available</option>
+                <div style={{ color: "#bbaec9", padding: "18px 0", width: "100%" }}>
+                  No verified pandits available.
+                </div>
               )}
-            </select>
-            <select name="poojaId" onChange={handleChange} required className="signup-input" value={details.poojaId || ''}>
+            </div>
+
+            <select
+              name="poojaId"
+              onChange={handleChange}
+              required
+              className="signup-input"
+              value={details.poojaId || ''}
+            >
               <option value="">-- Select Pooja --</option>
               {filteredPoojas.length ? (
                 filteredPoojas.map((pj) => (
@@ -140,7 +165,7 @@ function Booking() {
                 <option disabled>No poojas found</option>
               )}
             </select>
-            <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+            <button type="button" onClick={nextStep} className="primary-btn">Continue</button>
           </>
         );
       case 2:
@@ -218,7 +243,7 @@ function Booking() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.13 }}
         >
-          Book Pandit Ji for Your Puja
+          Sacred Ceremony Booking
         </motion.h2>
         <div className="steps-nav only-box">
           {stepTitles.map((title, idx) => (
