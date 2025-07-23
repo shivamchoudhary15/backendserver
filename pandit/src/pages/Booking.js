@@ -47,19 +47,23 @@ function Booking() {
         setFilteredPandits(verifiedPandits);
         setPoojas(pjRes.data || []);
         setServices(srvRes.data || []);
-      } catch (err) {
-        alert('Failed to load data. Try again later.');
+      } catch {
+        alert('Failed to load data. Please try again later.');
       }
     }
     if (userid) load();
   }, [userid]);
 
   useEffect(() => {
-    setFilteredPandits(
-      pandits.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+    if (search.trim() === "") {
+      setFilteredPandits(pandits);
+    } else {
+      setFilteredPandits(
+        pandits.filter(p =>
+          p.name.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   }, [search, pandits]);
 
   const selectedServiceName = services.find(s => s._id === details.serviceid)?.name;
@@ -71,8 +75,8 @@ function Booking() {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
 
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, stepTitles.length));
+  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,11 +90,11 @@ function Booking() {
       alert('✅ Booking created!');
       navigate('/dashboard');
     } catch (error) {
-      alert(error?.response?.data?.message || '❌ Booking not available for this Pandit on the selected date.');
+      alert(error?.response?.data?.message || '❌ Booking could not be completed.');
     }
   };
 
-  const renderStep = () => {
+  const renderStepContent = () => {
     switch (step) {
       case 1:
         return (
@@ -98,21 +102,21 @@ function Booking() {
             <input
               type="text"
               placeholder="Search Pandit"
+              className="signup-input"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="signup-input"
             />
             <select
               name="serviceid"
-              onChange={handleChange}
-              required
               className="signup-input"
+              onChange={handleChange}
               value={details.serviceid || ''}
+              required
             >
               <option value="">-- Select Service --</option>
               {services.length ? (
-                services.map((s) => (
-                  <option key={s._id} value={s._id}>{s.name}</option>
+                services.map(service => (
+                  <option key={service._id} value={service._id}>{service.name}</option>
                 ))
               ) : (
                 <option disabled>Loading services...</option>
@@ -120,26 +124,27 @@ function Booking() {
             </select>
 
             <div className="pandit-row">
-              {filteredPandits.length ? (
-                filteredPandits.map((p) => (
-                  <div
-                    key={p._id}
-                    className={`pandit-card${details.panditid === p._id ? " selected" : ""}`}
-                    onClick={() => setDetails({ ...details, panditid: p._id })}
-                  >
-                    <div className="pandit-avatar">{p.name[0]}</div>
-                    <div className="pandit-name">{p.name}</div>
-                    <div className="pandit-rating">
-                      <span>⭐</span> {p.rating?.toFixed(1) ?? "4.2"}
-                      <span style={{ marginLeft: 3, color: "#888ABF" }}>
-                        ({p.reviewsCount || "41"})
-                      </span>
-                    </div>
-                    <div className="pandit-badge">Verified</div>
+              {filteredPandits.length ? filteredPandits.map(p => (
+                <div
+                  key={p._id}
+                  className={`pandit-card${details.panditid === p._id ? ' selected' : ''}`}
+                  onClick={() => setDetails({ ...details, panditid: p._id })}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if(e.key==='Enter') setDetails({ ...details, panditid: p._id }); }}
+                >
+                  <div className="pandit-avatar">{p.name.charAt(0).toUpperCase()}</div>
+                  <div className="pandit-name">{p.name}</div>
+                  <div className="pandit-rating">
+                    <span>⭐</span> {p.rating?.toFixed(1) ?? '4.2'}
+                    <span style={{ marginLeft: 4, color: '#7D8CA3' }}>
+                      ({p.reviewsCount || '41'})
+                    </span>
                   </div>
-                ))
-              ) : (
-                <div style={{ color: "#babfd1", padding: "18px 0", width: "100%" }}>
+                  <div className="pandit-badge">Verified</div>
+                </div>
+              )) : (
+                <div style={{ color: '#bcbfcf', padding: '18px 0', width: '100%', textAlign: 'center' }}>
                   No verified pandits available.
                 </div>
               )}
@@ -147,90 +152,126 @@ function Booking() {
 
             <select
               name="poojaId"
-              onChange={handleChange}
-              required
               className="signup-input"
+              onChange={handleChange}
               value={details.poojaId || ''}
+              required
             >
               <option value="">-- Select Pooja --</option>
               {filteredPoojas.length ? (
-                filteredPoojas.map((pj) => (
-                  <option key={pj._id} value={pj._id}>{pj.name}</option>
+                filteredPoojas.map(pooja => (
+                  <option key={pooja._id} value={pooja._id}>{pooja.name}</option>
                 ))
               ) : (
                 <option disabled>No poojas found</option>
               )}
             </select>
-            <button type="button" onClick={nextStep} className="primary-btn">Continue</button>
+            
+            <button
+              type="button"
+              className="primary-btn"
+              onClick={nextStep}
+            >
+              Continue
+            </button>
           </>
         );
+
       case 2:
         return (
           <>
             <input
               type="date"
               name="puja_date"
-              onChange={handleChange}
-              required
               className="signup-input"
               value={details.puja_date || ''}
+              onChange={handleChange}
+              required
             />
             <input
               type="time"
               name="puja_time"
-              onChange={handleChange}
-              required
               className="signup-input"
               value={details.puja_time || ''}
+              onChange={handleChange}
+              required
             />
             <input
               type="text"
               name="location"
+              className="signup-input"
               placeholder="Location"
+              value={details.location || ''}
               onChange={handleChange}
               required
-              className="signup-input"
-              value={details.location || ''}
             />
             <div className="step-buttons">
-              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
-              <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+              <button
+                type="button"
+                className="secondary-btn"
+                onClick={prevStep}
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                className="primary-btn"
+                onClick={nextStep}
+              >
+                Next
+              </button>
             </div>
           </>
         );
+
       case 3:
+        const selectedPandit = pandits.find(p => p._id === details.panditid);
+        const selectedPooja = (selectedServiceName === 'Astrological Service'
+          ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
+          : poojas.find(pj => pj._id === details.poojaId)) || {};
         return (
           <>
             <h3 className="review-title">Review your booking</h3>
-            <ul className="review-list">
-              <li>Service: {selectedServiceName}</li>
-              <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {(selectedServiceName === 'Astrological Service'
-                ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
-                : poojas.find(pj => pj._id === details.poojaId))?.name}</li>
-              <li>Date: {details.puja_date}</li>
-              <li>Time: {details.puja_time}</li>
-              <li>Location: {details.location}</li>
+            <ul className="review-list" aria-live="polite">
+              <li><strong>Service:</strong> {selectedServiceName || '—'}</li>
+              <li><strong>Pandit:</strong> {selectedPandit?.name || '—'}</li>
+              <li><strong>Pooja:</strong> {selectedPooja?.name || '—'}</li>
+              <li><strong>Date:</strong> {details.puja_date || '—'}</li>
+              <li><strong>Time:</strong> {details.puja_time || '—'}</li>
+              <li><strong>Location:</strong> {details.location || '—'}</li>
             </ul>
             <div className="step-buttons">
-              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
-              <button type="submit" className="primary-btn">Book Now</button>
+              <button
+                type="button"
+                className="secondary-btn"
+                onClick={prevStep}
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="primary-btn"
+              >
+                Book Now
+              </button>
             </div>
           </>
         );
-      default: return null;
+
+      default: 
+        return null;
     }
   };
 
   return (
-    <div className="booking-bg">
-      <div className="overlay-gradient"></div>
+    <div className="booking-bg" role="main" aria-label="Pandit booking form">
       <motion.form
         className="glass-form-pro"
         onSubmit={handleSubmit}
         initial={{ scale: 0.98, opacity: 0, y: 38 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: 'easeOut'}}
+        noValidate
       >
         <motion.h2
           className="booking-title"
@@ -240,18 +281,20 @@ function Booking() {
         >
           Sacred Ceremony Booking
         </motion.h2>
-        <div className="steps-nav only-box">
+        <nav aria-label="Booking steps" className="steps-nav only-box">
           {stepTitles.map((title, idx) => (
             <motion.div
               key={title}
               className={`steps-circle onlybox ${step === idx+1 ? 'active' : ''}`}
+              aria-current={step === idx + 1 ? 'step' : undefined}
+              aria-label={`Step ${idx + 1}: ${title}`}
               animate={{ scale: step === idx+1 ? 1.07 : 1 }}
               transition={{ type: "spring", stiffness: 220 }}
             >
               <span className="step-label step-label-box">{title}</span>
             </motion.div>
           ))}
-        </div>
+        </nav>
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -261,7 +304,7 @@ function Booking() {
             transition={{ duration: 0.45, ease: 'anticipate' }}
             className="animated-step"
           >
-            {renderStep()}
+            {renderStepContent()}
           </motion.div>
         </AnimatePresence>
       </motion.form>
