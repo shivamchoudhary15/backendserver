@@ -8,6 +8,7 @@ import {
 import './Booking.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { User, Calendar, MapPin, ChevronRight, CheckCircle, Search, Book, Sun } from 'lucide-react';
 
 const bgImage = "/images/sat.jpeg";
 
@@ -97,103 +98,165 @@ function Booking() {
       case 1:
         return (
           <>
-            <input
-              type="text"
-              placeholder="Search Pandit"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="signup-input"
-            />
-            <select
-              name="serviceid"
-              onChange={handleChange}
-              required
-              className="signup-input"
-              value={details.serviceid || ''}
-            >
-              <option value="">-- Select Service --</option>
-              {services.length ? (
-                services.map((s) => (
-                  <option key={s._id} value={s._id}>{s.name}</option>
-                ))
-              ) : (
-                <option disabled>Loading services...</option>
-              )}
-            </select>
-            <select name="panditid" onChange={handleChange} required className="signup-input" value={details.panditid || ''}>
-              <option value="">-- Select Pandit --</option>
-              {filteredPandits.length ? (
-                filteredPandits.map((p) => (
-                  <option key={p._id} value={p._id}>{p.name}</option>
-                ))
-              ) : (
-                <option disabled>No verified pandits available</option>
-              )}
-            </select>
-            <select name="poojaId" onChange={handleChange} required className="signup-input" value={details.poojaId || ''}>
-              <option value="">-- Select Pooja --</option>
-              {filteredPoojas.length ? (
-                filteredPoojas.map((pj) => (
-                  <option key={pj._id} value={pj._id}>{pj.name}</option>
-                ))
-              ) : (
-                <option disabled>No poojas found</option>
-              )}
-            </select>
-            <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+            <div style={{ position: 'relative' }}>
+              <Search className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.66 }} size={18} />
+              <input
+                type="text"
+                placeholder="Search Pandit"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="signup-input"
+                style={{ paddingLeft: 34 }}
+              />
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Book className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.72 }} size={18} />
+              <select
+                name="serviceid"
+                onChange={handleChange}
+                required
+                className="signup-input"
+                style={{ paddingLeft: 34 }}
+                value={details.serviceid || ''}
+              >
+                <option value="">-- Select Service --</option>
+                {services.length ? (
+                  services.map((s) => (
+                    <option key={s._id} value={s._id}>{s.name}</option>
+                  ))
+                ) : (
+                  <option disabled>Loading services...</option>
+                )}
+              </select>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <User className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.7 }} size={18} />
+              <select name="panditid" onChange={handleChange} required className="signup-input" style={{ paddingLeft: 34 }}
+                value={details.panditid || ''}>
+                <option value="">-- Select Pandit --</option>
+                {filteredPandits.length ? (
+                  filteredPandits.map((p) => (
+                    <option key={p._id} value={p._id}>{p.name}</option>
+                  ))
+                ) : (
+                  <option disabled>No verified pandits available</option>
+                )}
+              </select>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Sun className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.6 }} size={18} />
+              <select name="poojaId" onChange={handleChange} required className="signup-input" style={{ paddingLeft: 34 }}
+                value={details.poojaId || ''}>
+                <option value="">-- Select Pooja --</option>
+                {filteredPoojas.length ? (
+                  filteredPoojas.map((pj) => (
+                    <option key={pj._id} value={pj._id}>{pj.name}</option>
+                  ))
+                ) : (
+                  <option disabled>No poojas found</option>
+                )}
+              </select>
+            </div>
+            <button type="button" onClick={nextStep} className="primary-btn">
+              Next
+              <ChevronRight size={18} style={{ marginLeft: 7, verticalAlign: 'middle' }} />
+            </button>
           </>
         );
       case 2:
         return (
           <>
-            <input
-              type="date"
-              name="puja_date"
-              onChange={handleChange}
-              required
-              className="signup-input"
-              value={details.puja_date || ''}
-            />
-            <input
-              type="time"
-              name="puja_time"
-              onChange={handleChange}
-              required
-              className="signup-input"
-              value={details.puja_time || ''}
-            />
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              onChange={handleChange}
-              required
-              className="signup-input"
-              value={details.location || ''}
-            />
+            <div style={{ position: 'relative' }}>
+              <Calendar className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.65 }} size={18} />
+              <input
+                type="date"
+                name="puja_date"
+                onChange={handleChange}
+                required
+                className="signup-input"
+                style={{ paddingLeft: 34 }}
+                value={details.puja_date || ''}
+              />
+            </div>
+            <div style={{ position: 'relative' }}>
+              <Clock className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.67 }} size={18} />
+              <input
+                type="time"
+                name="puja_time"
+                onChange={handleChange}
+                required
+                className="signup-input"
+                style={{ paddingLeft: 34 }}
+                value={details.puja_time || ''}
+              />
+            </div>
+            <div style={{ position: 'relative' }}>
+              <MapPin className="lucide-icon" style={{ position: 'absolute', left: 8, top: 12, opacity: 0.65 }} size={18} />
+              <input
+                type="text"
+                name="location"
+                placeholder="Location"
+                onChange={handleChange}
+                required
+                className="signup-input"
+                style={{ paddingLeft: 34 }}
+                value={details.location || ''}
+              />
+            </div>
             <div className="step-buttons">
-              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
-              <button type="button" onClick={nextStep} className="primary-btn">Next</button>
+              <button type="button" onClick={prevStep} className="secondary-btn">
+                Back
+              </button>
+              <button type="button" onClick={nextStep} className="primary-btn">
+                Next
+                <ChevronRight size={18} style={{ marginLeft: 7, verticalAlign: 'middle' }} />
+              </button>
             </div>
           </>
         );
       case 3:
         return (
           <>
-            <h3 className="review-title">Review your booking</h3>
+            <h3 className="review-title">
+              <CheckCircle className="lucide-icon" size={20} style={{ color: "#c98a29" }} />
+              Review your booking
+            </h3>
             <ul className="review-list">
-              <li>Service: {selectedServiceName}</li>
-              <li>Pandit: {pandits.find(p => p._id === details.panditid)?.name}</li>
-              <li>Pooja: {(selectedServiceName === 'Astrological Service'
-                ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
-                : poojas.find(pj => pj._id === details.poojaId))?.name}</li>
-              <li>Date: {details.puja_date}</li>
-              <li>Time: {details.puja_time}</li>
-              <li>Location: {details.location}</li>
+              <li>
+                <Book className="lucide-icon" size={16} />
+                Service: {selectedServiceName}
+              </li>
+              <li>
+                <User className="lucide-icon" size={16} />
+                Pandit: {pandits.find(p => p._id === details.panditid)?.name}
+              </li>
+              <li>
+                <Sun className="lucide-icon" size={16} />
+                Pooja: {(selectedServiceName === 'Astrological Service'
+                  ? astrologicalPoojas.find(pj => pj._id === details.poojaId)
+                  : poojas.find(pj => pj._id === details.poojaId))?.name}
+              </li>
+              <li>
+                <Calendar className="lucide-icon" size={16} />
+                Date: {details.puja_date}
+              </li>
+              <li>
+                <Clock className="lucide-icon" size={16} />
+                Time: {details.puja_time}
+              </li>
+              <li>
+                <MapPin className="lucide-icon" size={16} />
+                Location: {details.location}
+              </li>
             </ul>
             <div className="step-buttons">
-              <button type="button" onClick={prevStep} className="secondary-btn">Back</button>
-              <button type="submit" className="primary-btn">Book Now</button>
+              <button type="button" onClick={prevStep} className="secondary-btn">
+                Back
+              </button>
+              <button type="submit" className="primary-btn">
+                <CheckCircle size={18} style={{ marginRight: 7, verticalAlign: 'middle' }} />
+                Book Now
+              </button>
             </div>
           </>
         );
