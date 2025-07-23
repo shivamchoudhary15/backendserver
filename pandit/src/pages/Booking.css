@@ -6,25 +6,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: #F9FAFB;
   font-family: 'Inter', 'Montserrat', Arial, sans-serif;
 }
 
-.overlay-gradient,
-.booking-bg::before {
-  display: none !important;
-}
-
 .glass-form-pro {
-  background: rgba(255,255,255,0.97);
+  background: #fff;
   border-radius: 30px;
-  box-shadow: 0 16px 44px #564a967c, 0 2px 16px #7e9fff24;
-  backdrop-filter: blur(9px);
+  box-shadow: 0 16px 44px rgba(85,110,230,.09), 0 2px 16px #bfc6d3;
   max-width: 430px;
   width: 99vw;
   padding: 55px 40px 44px 40px;
-  border: 2px solid #f0f0f9;
-  z-index: 10;
+  border: 2px solid #F0F0F9;
   margin: 32px 0;
   animation: formPopIn 0.95s cubic-bezier(.33,1.11,.29,1) 1;
 }
@@ -36,13 +29,11 @@
 
 .booking-title {
   font-family: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
-  font-size: 2.2rem;
-  color: #221248;
+  font-size: 2.15rem;
+  color: #2C3E50;
   font-weight: 900;
   text-align: center;
   margin-bottom: 30px;
-  background: none;
-  -webkit-text-fill-color: unset;
   letter-spacing: 0.02em;
 }
 
@@ -50,36 +41,36 @@
   display: flex;
   justify-content: space-between;
   margin: 34px 0 28px 0;
-  gap: 15px;
+  gap: 12px;
 }
 .steps-circle.onlybox {
-  background: #f4f3fa;
-  border-radius: 19px;
+  background: #E8EEF7;
+  border-radius: 18px;
   min-width: 110px;
   flex: 1 1 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 56px;
+  height: 54px;
   transition: all 0.2s;
-  box-shadow: 0 3px 12px #bdbbdc22;
-  color: #4737a8;
+  box-shadow: 0 3px 10px #bfc6d322;
+  color: #34495E;
   font-family: 'Montserrat', 'Inter', Arial, sans-serif;
   font-weight: 700;
-  font-size: 1.19em;
+  font-size: 1.1em;
 }
 .steps-circle.onlybox.active {
-  background: linear-gradient(97deg,#fd47b6 35%,#42eefd 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #556EE6 0%, #6F42C1 100%);
+  color: #FFFFFF;
   font-weight: 900;
-  box-shadow: 0 5px 22px #a82bf32a, 0 1.5px 10px #9cdfed0a;
+  box-shadow: 0 6px 18px #6e42f329;
 }
 .steps-circle.onlybox:not(.active) {
-  opacity: 0.72;
-  color: #6422b1;
+  opacity: 0.8;
 }
+
 .step-label.step-label-box {
-  font-size: 1.14em;
+  font-size: 1.12em;
   font-family: 'Montserrat', Arial, sans-serif;
   font-weight: 800;
   letter-spacing: 0.018em;
@@ -87,43 +78,43 @@
 
 .pandit-row {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   margin-bottom: 22px;
   flex-wrap: wrap;
 }
 .pandit-card {
-  background: linear-gradient(136deg, #f8fafe 33%, #f0e5ff 100%);
-  border-radius: 20px;
-  box-shadow: 0 6px 18px #7063fa1c;
+  background: #fff;
+  border-radius: 19px;
+  box-shadow: 0 6px 18px #bdbbdc22;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 102px;
-  max-width: 122px;
-  padding: 18px 8px 16px 8px;
+  min-width: 108px;
+  max-width: 128px;
+  padding: 18px 8px 15px 8px;
   cursor: pointer;
-  border: 3px solid transparent;
-  transition: all 0.22s;
+  border: 2.5px solid transparent;
+  transition: all 0.2s;
   position: relative;
 }
 .pandit-card.selected {
-  border: 3px solid #fd47b6;
-  background: linear-gradient(87deg,#ffcff1 25%, #eafffa 100%);
-  box-shadow: 0 6px 24px #fd47b6a3;
+  border: 2.5px solid #556EE6;
+  background: #F0F4FF;
+  box-shadow: 0 8px 24px #556ee673;
 }
 .pandit-avatar {
-  background: linear-gradient(120deg,#42eefd 30%,#fd47b6 100%);
+  background: #556EE6;
   color: #fff;
+  font-family: 'Space Grotesk', Arial, sans-serif;
   font-weight: 900;
-  width: 46px;
-  height: 46px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.42em;
+  font-size: 1.27em;
   margin-bottom: 8px;
-  font-family: 'Space Grotesk', Arial, sans-serif;
 }
 .pandit-name {
   font-family: 'Montserrat', Arial, sans-serif;
@@ -131,93 +122,93 @@
   font-weight: 800;
   margin-bottom: 2.5px;
   text-align: center;
-  color: #1c157f;
+  color: #2C3E50;
 }
 .pandit-rating {
   font-family: 'Inter', Arial, sans-serif;
-  font-size: 1em;
-  color: #4737a8;
+  font-size: 0.98em;
+  color: #7D8CA3;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 .pandit-badge {
-  background: #eafffa;
-  color: #1dbe96;
-  border-radius: 8px;
-  padding: 3px 13px;
-  font-size: 0.85em;
+  background: #D6E4FF;
+  color: #2C3E50;
+  border-radius: 7px;
+  padding: 2.8px 10px;
+  font-size: 0.83em;
   position: absolute;
-  right: 11px;
-  top: 11px;
+  right: 10px;
+  top: 10px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  box-shadow: 0 1px 6px #beaeff60;
+  box-shadow: 0 1.5px 6px #bfc6d333;
 }
 
 .signup-input {
-  background: #f6f5fd;
-  color: #42296d;
+  background: #fff;
+  color: #34495E;
   padding: 15px 18px;
   margin-bottom: 22px;
-  border: 2.1px solid #eaafff;
-  border-radius: 14px;
-  font-size: 1.07rem;
+  border: 2.1px solid #CAD5E2;
+  border-radius: 13px;
+  font-size: 1.09rem;
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 600;
   box-shadow: 0 1.5px 14px #edebf4cc inset;
   letter-spacing: 0.03em;
 }
 .signup-input::placeholder {
-  color: #c69cca;
-  opacity: 0.79;
+  color: #b6bac3;
+  opacity: 0.8;
   font-family: 'Inter', Arial, sans-serif;
 }
 .signup-input:focus {
-  border-color: #42eefd;
-  background: #fffaff;
-  box-shadow: 0 0 10px 3px #84fff980;
+  border-color: #556EE6;
+  background: #f7faff;
+  box-shadow: 0 0 8px 2px #cad5e292;
 }
 
 .primary-btn {
-  background: linear-gradient(90deg, #fd47b6 10%, #42eefd 100%);
+  background: linear-gradient(90deg, #556EE6 0%, #6F42C1 100%);
   color: #fff;
-  border: 1.8px solid #dac5ff;
-  box-shadow: 0 7px 22px #fd47b694;
+  border: 1.4px solid #CAD5E2;
+  box-shadow: 0 7px 22px #556EE640;
   width: 100%;
   margin-top: 24px;
-  font-size: 1.18rem;
+  font-size: 1.17rem;
   border-radius: 15px;
   font-weight: 900;
   padding: 14px 0;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   cursor: pointer;
   font-family: 'Montserrat', Arial, sans-serif;
-  transition: all 0.23s;
+  transition: all 0.18s;
 }
 .primary-btn:hover {
-  background: linear-gradient(97deg, #8dfaf2 20%, #fd47b6 80%);
-  color: #1c151d;
+  background: linear-gradient(91deg, #6F42C1 30%, #556EE6 90%);
+  color: #fff;
 }
 
 .secondary-btn {
-  background: #fdf6ff;
-  color: #4737a8;
-  border: 1.6px solid #c9b7fd;
+  background: #F4F6F8;
+  color: #556EE6;
+  border: 1.3px solid #CAD5E2;
   min-width: 101px;
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 13px 0;
   font-weight: 800;
   font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 1.06rem;
-  letter-spacing: 0.03em;
+  font-size: 1.08rem;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 1px 10px #c4b6ff44;
+  box-shadow: 0 1px 10px #bfc6d322;
   margin-right: 13px;
 }
 .secondary-btn:hover{
-  background: #eafffa;
-  color: #3ed8e2;
+  background: #E8EEF7;
+  color: #34495E;
 }
 
 .step-buttons {
@@ -228,14 +219,14 @@
 }
 
 .review-list {
-  color: #512f6f;
-  font-size: 1.1em;
-  background: #fff8fc;
+  color: #34495E;
+  font-size: 1.08em;
+  background: #F4F6F8;
   border-radius: 12px;
   margin: 24px auto 24px auto;
   padding: 18px 20px 12px 28px;
-  box-shadow: 0 1.5px 12px #b2cdf21c;
-  border-left: 5px solid #fd47b6b7;
+  box-shadow: 0 1.5px 8px #b2bdd21c;
+  border-left: 5px solid #556ee6a7;
   list-style: none;
   max-width: 330px;
   font-family: 'Inter', Arial, sans-serif;
@@ -252,8 +243,8 @@
 
 @media (max-width: 770px){
   .glass-form-pro{ max-width: 99vw; min-width: 0; padding: 20px 3vw 14px 3vw;}
-  .booking-title {font-size: 1.12rem;}
-  .steps-nav.only-box {flex-direction: column; gap: 11px;}
+  .booking-title {font-size: 1.05rem;}
+  .steps-nav.only-box {flex-direction: column; gap: 10px;}
   .steps-circle.onlybox { min-width: 92vw; height:44px; }
   .pandit-row {flex-wrap: wrap;}
 }
