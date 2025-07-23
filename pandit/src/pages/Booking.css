@@ -1,55 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;600&family=Montserrat:wght@500;700&display=swap');
 
-:root {
-  --primary: #7150ff;
-  --deep-blue: #192148;
-  --aqua: #42eefd;
-  --hot-pink: #fd47b6;
-  --mint: #3efda8;
-  --card-bg: rgba(255,255,255,0.13);
-}
-
-body, .booking-bg {
+.booking-bg {
   min-height: 100vh;
-  min-width: 100vw;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(120deg, #4f2fdd 0%, #3196d1 60%, #a387fc 100%);
-  background-attachment: fixed;
-  position: relative;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  font-family: 'Inter', 'Montserrat', Arial, sans-serif;
 }
 
+.overlay-gradient,
 .booking-bg::before {
-  content: '';
-  position: fixed;
-  top: -15vw; left: -12vw;
-  width: 110vw; height: 110vw;
-  z-index: 0;
-  background: radial-gradient(circle at 70% 20%,#a8effa55 0%, transparent 60%),
-    radial-gradient(circle at 20% 80%, #fd47b652 0%, transparent 65%),
-    linear-gradient(127deg,#9aeffd33 10%,#bda5fd28 70%);
-  filter: blur(60px);
-  pointer-events: none;
-}
-
-.overlay-gradient {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(115deg, rgba(255,255,255,0.13) 22%, rgba(31,14,80,0.23) 77%);
+  display: none !important;
 }
 
 .glass-form-pro {
-  background: var(--card-bg);
+  background: rgba(255,255,255,0.97);
   border-radius: 30px;
-  box-shadow: 0 24px 54px #321e50a6, 0 1.5px 20px #78a9ff0e;
-  backdrop-filter: blur(32px) saturate(205%);
+  box-shadow: 0 16px 44px #564a967c, 0 2px 16px #7e9fff24;
+  backdrop-filter: blur(9px);
   max-width: 430px;
   width: 99vw;
   padding: 55px 40px 44px 40px;
-  border: 2.2px solid rgba(116,74,255,0.13);
+  border: 2px solid #f0f0f9;
   z-index: 10;
   margin: 32px 0;
   animation: formPopIn 0.95s cubic-bezier(.33,1.11,.29,1) 1;
@@ -62,16 +36,14 @@ body, .booking-bg {
 
 .booking-title {
   font-family: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
-  font-size: 2.3rem;
-  color: #2d175c;
+  font-size: 2.2rem;
+  color: #221248;
   font-weight: 900;
   text-align: center;
-  margin-bottom: 33px;
-  letter-spacing: 0.025em;
-  text-shadow: 0 2px 12px #c8c6fa51;
-  background: linear-gradient(90deg, #fd47b6 20%, #42eefd 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-bottom: 30px;
+  background: none;
+  -webkit-text-fill-color: unset;
+  letter-spacing: 0.02em;
 }
 
 .steps-nav.only-box {
@@ -81,7 +53,7 @@ body, .booking-bg {
   gap: 15px;
 }
 .steps-circle.onlybox {
-  background: rgba(255,255,255,0.52);
+  background: #f4f3fa;
   border-radius: 19px;
   min-width: 110px;
   flex: 1 1 0;
@@ -90,17 +62,17 @@ body, .booking-bg {
   justify-content: center;
   height: 56px;
   transition: all 0.2s;
-  box-shadow: 0 3px 12px #7c62fd22;
+  box-shadow: 0 3px 12px #bdbbdc22;
   color: #4737a8;
   font-family: 'Montserrat', 'Inter', Arial, sans-serif;
   font-weight: 700;
   font-size: 1.19em;
 }
 .steps-circle.onlybox.active {
-  background: linear-gradient(97deg,#fd47b6 25%,#42eefd 80%);
+  background: linear-gradient(97deg,#fd47b6 35%,#42eefd 100%);
   color: #fff;
   font-weight: 900;
-  box-shadow: 0 5px 22px #a82bf33f, 0 1.5px 10px #9cdfed1f;
+  box-shadow: 0 5px 22px #a82bf32a, 0 1.5px 10px #9cdfed0a;
 }
 .steps-circle.onlybox:not(.active) {
   opacity: 0.72;
@@ -184,7 +156,7 @@ body, .booking-bg {
 }
 
 .signup-input {
-  background: #fff9ff;
+  background: #f6f5fd;
   color: #42296d;
   padding: 15px 18px;
   margin-bottom: 22px;
