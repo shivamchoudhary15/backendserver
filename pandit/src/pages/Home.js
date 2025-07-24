@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
 import { postLocation } from '../api/api'; // <-- add this import
 
-const backendURL = "https://backendserver-dryq.onrender.com";
+const backendURL = "https://backendserver-lnxc.onrender.com";
 
 function getPoojaImage(img) {
   if (!img) return "/images/default-pooja.png";
