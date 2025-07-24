@@ -25,7 +25,7 @@ function PanditDashboard() {
 
   useEffect(() => {
     if (user?._id) {
-      fetch(`https://backendserver-dryq.onrender.com/api/bookings/view?panditid=${user._id}`)
+      fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/view?panditid=${user._id}`)
         .then(res => res.json())
         .then(setBookings)
         .catch(err => console.error('Error fetching bookings:', err));
