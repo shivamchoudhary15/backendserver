@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 
 // Use your deployed backend URL here to connect Socket.IO
-const BACKEND_URL = 'https://backendserver-dryq.onrender.com';
+const BACKEND_URL = 'https://backendserver-lnxc.onrender.com';
 
 // Create Socket.IO client instance
 const socket = io(BACKEND_URL, {
