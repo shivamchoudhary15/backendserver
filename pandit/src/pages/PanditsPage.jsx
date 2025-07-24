@@ -63,7 +63,7 @@ function PanditsPage() {
     if (imgPreview[pandit._id]) return imgPreview[pandit._id];
     if (pandit.profile_photo_url)
       return pandit.profile_photo_url.startsWith('/uploads')
-        ? `https://backendserver-1-pa6o.onrender.com${pandit.profile_photo_url}`
+        ? `https://backendserver-lnxc.onrender.com${pandit.profile_photo_url}`
         : pandit.profile_photo_url;
     return '/images/default-pandit.png';
   }
