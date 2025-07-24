@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PanditDashboard.css';
-import ChatWindow from './ChatWindow';  // Ensure ChatWindow.js is implemented and imported properly
 
 function PanditDashboard() {
   const navigate = useNavigate();
@@ -12,10 +11,7 @@ function PanditDashboard() {
   const [filterStatus, setFilterStatus] = useState('');
   const [showStats, setShowStats] = useState(false);
 
-  // Chat integration states
-  const [activeChatDevoteeId, setActiveChatDevoteeId] = useState(null);
-  const [activeChatDevoteeName, setActiveChatDevoteeName] = useState('');
-
+  // Uses public/images/i3.jpeg for the entire page background
   const bgStyle = {
     minHeight: '100vh',
     width: '100%',
@@ -25,7 +21,7 @@ function PanditDashboard() {
 
   useEffect(() => {
     if (user?._id) {
-      fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/view?panditid=${user._id}`)
+      fetch(`https://backendserver-dryq.onrender.com/api/bookings/view?panditid=${user._id}`)
         .then(res => res.json())
         .then(setBookings)
         .catch(err => console.error('Error fetching bookings:', err));
@@ -34,7 +30,7 @@ function PanditDashboard() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/status/${id}`, {
+      const res = await fetch(`https://backendserver-dryq.onrender.com/api/bookings/status/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
@@ -64,6 +60,7 @@ function PanditDashboard() {
     Rejected: "❌",
   };
 
+  // Stats for the profile
   const completedCount = bookings.filter(b => b.status === 'Accepted').length;
   const pendingCount = bookings.filter(b => b.status === 'Pending').length;
   const rejectedCount = bookings.filter(b => b.status === 'Rejected').length;
@@ -86,11 +83,7 @@ function PanditDashboard() {
           <div className="pandit-profile-pic">
             <div className="pandit-avatar" aria-label="Profile Picture" role="img">🧑‍🦳</div>
             <span className={user?.is_verified ? 'pdash-badge verified' : 'pdash-badge notverified'}>
-              {user?.is_verified ? <>
-                <span role="img" aria-label="Verified">✅</span> Verified
-              </> : <>
-                <span role="img" aria-label="Not Verified">⏳</span> Not verified
-              </>}
+              {user?.is_verified ? <><span role="img" aria-label="Verified">✅</span> Verified</> : <><span role="img" aria-label="Not Verified">⏳</span> Not verified</>}
             </span>
           </div>
           <div className="pandit-profile-info">
@@ -168,9 +161,7 @@ function PanditDashboard() {
               <div key={b._id} className="pandit-booking-card fade-in" style={{animationDelay: `${0.07*i}s`}}>
                 <div className="pandit-booking-head">
                   <span className="booking-devotee">{b.userid?.name || 'N/A'}</span>
-                  <span className={`pandit-status ${b.status.toLowerCase()}`}>
-                    {statusEmoji[b.status] || ''} {b.status}
-                  </span>
+                  <span className={`pandit-status ${b.status.toLowerCase()}`}>{statusEmoji[b.status] || ''} {b.status}</span>
                 </div>
                 <div className="pandit-booking-row">
                   <span>📱 <b>Phone:</b> {b.userid?.phone || 'N/A'}</span>
@@ -184,19 +175,6 @@ function PanditDashboard() {
                 <div className="pandit-booking-row">
                   <span>📍 <b>Location:</b> {b.location || 'N/A'}</span>
                 </div>
-
-                {/* Chat with Devotee Button */}
-                <button
-                  style={{ marginTop: 10 }}
-                  onClick={() => {
-                    setActiveChatDevoteeId(b.userid?._id);
-                    setActiveChatDevoteeName(b.userid?.name || 'Devotee');
-                  }}
-                  disabled={!b.userid?._id}
-                >
-                  Chat with Devotee
-                </button>
-
                 {b.status === 'Pending' && (
                   <div className="pandit-buttons">
                     <button onClick={() => updateStatus(b._id, 'Accepted')} className="accept-btn">✅ Accept</button>
@@ -209,17 +187,6 @@ function PanditDashboard() {
         ) : (
           <div className="pandit-nobookings fade-in">No bookings found.</div>
         )}
-
-        {/* Chat Window */}
-        {activeChatDevoteeId && (
-          <ChatWindow
-            userId={user?._id}
-            panditId={activeChatDevoteeId}
-            chatName={activeChatDevoteeName}
-            onClose={() => setActiveChatDevoteeId(null)}
-          />
-        )}
-
       </div>
     </div>
   );
