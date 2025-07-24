@@ -16,7 +16,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 30px 18px 30px;
+  padding: 18px 30px;
   background: #fff;
   border-bottom: 1px solid #eee;
   position: sticky;
@@ -60,7 +60,6 @@ body {
 .navbar-right a:hover {
   color: #d67f2a;
 }
-
 .login-box {
   background: linear-gradient(90deg, #d67f2a 0%, #e0a143 100%);
   color: #fff;
@@ -98,7 +97,7 @@ body {
 }
 .hero-content {
   padding: 0 60px;
-  max-width: 700px;
+  max-width: 100vw;
 }
 .main-heading {
   font-size: 46px;
@@ -153,7 +152,7 @@ body {
 
 /* About Section */
 .about-section {
-  padding: 80px 0 80px 0;
+  padding: 80px 0;
   text-align: center;
   background: #fff8dc;
   position: relative;
@@ -169,17 +168,19 @@ body {
 }
 .about-content {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 24px;
   flex-wrap: wrap;
   margin: 0 auto;
+  width: 100%;
 }
 .about-column {
   display: flex;
   flex-direction: column;
   gap: 35px;
-  max-width: 350px;
+  min-width: 250px;
+  flex: 1 1 320px;
 }
 .feature-row {
   display: flex;
@@ -213,6 +214,8 @@ body {
 .logo-center {
   margin: 0 8px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 .logo-center img {
   width: 180px;
@@ -224,7 +227,7 @@ body {
 
 /* Services Section */
 .services-container {
-  padding: 60px 10vw 60px 10vw;
+  padding: 60px 0;
   background: #fbf0d8;
   text-align: center;
 }
@@ -238,17 +241,19 @@ body {
 .services-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 38px;
+  justify-content: flex-start;
+  gap: 24px;
   margin-top: 34px;
+  width: 100%;
 }
 .service-card {
   background: white;
   border: 2px solid #f6dfab;
   padding: 23px 18px;
   border-radius: 17px;
-  width: 282px;
-  min-height: 250px;
+  width: calc(25% - 26px);
+  min-width: 230px;
+  box-sizing: border-box;
   box-shadow: 0 6px 22px rgba(198,127,27,0.13);
   transition: transform 0.34s cubic-bezier(.8,.3,0,1.43), box-shadow 0.35s;
   cursor: pointer;
@@ -257,6 +262,8 @@ body {
   flex-direction: column;
   align-items: center;
   user-select: none;
+  flex: 1 1 230px;
+  max-width: 350px;
 }
 .service-card h3 {
   padding: 17px 10px 8px 10px;
@@ -320,7 +327,7 @@ body {
 
 /* Pooja Provided */
 .poojas {
-  padding: 60px 8vw;
+  padding: 60px 0;
   text-align: center;
   background: #fff8eb;
 }
@@ -335,8 +342,9 @@ body {
 .card-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px 28px;
+  justify-content: flex-start;
+  gap: 24px;
+  width: 100%;
 }
 .service-img {
   width: 100%;
@@ -389,7 +397,7 @@ body {
 
 /* Pandits */
 .pandits {
-  padding: 60px 8vw;
+  padding: 60px 0;
   text-align: center;
   background: #f9f2e3;
 }
@@ -402,20 +410,25 @@ body {
 .card-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 26px;
-  justify-content: center;
+  gap: 24px;
+  justify-content: flex-start;
   margin-top: 28px;
+  width: 100%;
 }
 .pandit-card {
   background: white;
   padding: 18px 13px;
   border-radius: 9px;
-  width: 225px;
+  width: calc(20% - 20px);
+  box-sizing: border-box;
   box-shadow: 0 4px 14px #efc25c13;
   text-align: center;
   transition: transform 0.21s, box-shadow 0.23s;
   border: 2px solid #f3e0ba;
   cursor: pointer;
+  flex: 1 1 190px;
+  min-width: 190px;
+  max-width: 250px;
 }
 .pandit-card:hover {
   transform: translateY(-5px) scale(1.03);
@@ -455,20 +468,36 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 1100px) {
-  .about-content {
-    gap: 37px;
+@media (max-width: 1200px) {
+  .service-card, .pandit-card {
+    width: calc(32% - 16px);
+    min-width: 200px;
   }
-  .logo-center img { width: 140px; height: 140px; }
 }
 @media (max-width: 900px) {
-  .services-container, .pandits, .poojas { padding-left: 4vw; padding-right: 4vw; }
-  .service-card, .pandit-card { width: 97vw; max-width: 355px; min-width: 190px;}
+  .about-content {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+  .services-grid,
+  .card-grid,
+  .card-section {
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .service-card,
+  .pandit-card {
+    width: 100%;
+    min-width: 170px;
+    max-width: none;
+  }
   .service-image,
   .service-img {
     height: 130px;
   }
-  .about-content { flex-direction: column; gap: 18px; align-items: center; }
+  .logo-center img { width: 100px; height: 100px; }
 }
 
 @media (max-width: 600px) {
@@ -481,7 +510,6 @@ body {
     padding-left: 8px;
     padding-right: 8px;
   }
-  .logo-center img { width: 95px; height: 95px; }
   .main-heading { font-size: 26px; }
   .section-title { font-size: 23px; }
 }
