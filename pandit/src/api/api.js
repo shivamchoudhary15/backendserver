@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://backendserver-dryq.onrender.com/api', // Update with your backend URL
+  baseURL: 'https://backendserver-1-pa6o.onrender.com/api', // Update with your backend URL
 });
 
 //  Automatically attach token
