@@ -87,7 +87,6 @@ body {
   animation: fadeDown 0.25s;
   backdrop-filter: blur(13px);
 }
-
 @keyframes fadeDown {
   from {
     opacity: 0;
@@ -123,6 +122,7 @@ body {
   outline: 2px solid var(--accent-yellow);
   transform: scale(1.06);
 }
+
 .navbar-menu-item.logout {
   color: #ff3636;
   font-size: 1.05em;
@@ -374,7 +374,7 @@ body {
   margin-left: 5px;
 }
 
-/* Expert cards grid (reuse) */
+/* Expert cards grid (pandit-list) */
 .pandit-list {
   display: flex;
   flex-wrap: wrap;
@@ -420,11 +420,9 @@ body {
 .pandit-avatar-initial {
   text-shadow: 0 2px 8px #542d1faf;
 }
-
 .improved-pandit-card:hover .pandit-avatar {
   border-color: var(--accent-yellow);
 }
-
 .pandit-main-info {
   flex: 2;
   display: flex;
@@ -501,7 +499,7 @@ body {
   word-break: break-word;
 }
 
-/* Button utilities */
+/* Button utils */
 .toggle-btn {
   text-align: center;
   margin-top: 0.7rem;
@@ -524,14 +522,13 @@ body {
   color: #3c2d00;
 }
 
-/* TICKETS/BOOKINGS */
+/* BOOKINGS */
 .booking-list {
   display: flex;
   flex-direction: column;
   gap: 1.38rem;
   margin: 1.45rem 0 0.9rem 0;
 }
-
 .booking-card.card-glossy.glass.neon-card.shadow-pop {
   display: flex;
   align-items: center;
@@ -548,6 +545,11 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
+}
+.booking-icon {
+  font-size: 2.2em;
+  color: #ffaa00;
+  margin-right: 9px;
 }
 .booking-type {
   font-size: 1.09em;
@@ -612,7 +614,7 @@ body {
   font-weight: 600;
 }
 
-/* FEEDBACK */
+/* REVIEW */
 .review-section.glass-review {
   margin-top: 35px;
   margin-bottom: 38px;
@@ -828,11 +830,4 @@ body {
   .booking-card.card-glossy {
     padding: 11px 4vw 13px 4vw;
   }
-}
-
-.spin {
-  animation: spinLoad 1s linear infinite;
-}
-@keyframes spinLoad {
-  to { transform: rotate(360deg); }
 }
