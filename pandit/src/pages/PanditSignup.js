@@ -59,7 +59,7 @@ export default function PanditSignup() {
       specialties: form.specialties.split(',').map((item) => item.trim()).filter(Boolean),
     };
     try {
-      await axios.post('https://backendserver-1-pa6o.onrender.com/api/pandits/signup', formData);
+      await axios.post('https://backendserver-lnxc.onrender.com/api/pandits/signup', formData);
       alert('Pandit registered successfully. Please wait for admin verification.');
       navigate('/login');
     } catch (err) {
