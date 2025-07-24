@@ -34,7 +34,7 @@ function PanditDashboard() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`https://backendserver-dryq.onrender.com/api/bookings/status/${id}`, {
+      const res = await fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/status/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
