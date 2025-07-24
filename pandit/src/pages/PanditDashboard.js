@@ -25,7 +25,7 @@ function PanditDashboard() {
 
   useEffect(() => {
     if (user?._id) {
-      fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/view?panditid=${user._id}`)
+      fetch(`https://backendserver-lnxc.onrender.com/api/bookings/view?panditid=${user._id}`)
         .then(res => res.json())
         .then(setBookings)
         .catch(err => console.error('Error fetching bookings:', err));
@@ -34,7 +34,7 @@ function PanditDashboard() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`https://backendserver-1-pa6o.onrender.com/api/bookings/status/${id}`, {
+      const res = await fetch(`https://backendserver-lnxc.onrender.com/api/bookings/status/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
