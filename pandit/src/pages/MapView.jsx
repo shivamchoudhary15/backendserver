@@ -16,13 +16,8 @@ L.Icon.Default.mergeOptions({
 
 function MapView({ userLocations = [], panditLocations = [] }) {
   return (
-    <div className="dashboard-map-wrap">
-      <MapContainer
-        center={[20.5937, 78.9629]}
-        zoom={5}
-        scrollWheelZoom={true}
-        className="dashboard-map"
-      >
+    <div style={{ width: '100%', height: '80vh', marginTop: '2rem', borderRadius: '14px', boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}>
+      <MapContainer center={[20.5937, 78.9629]} zoom={5} style={{ height: '100%', width: '100%', borderRadius: '14px' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {userLocations.map(({ id, lat, lng, name }) => (
           <Marker key={`user-${id}`} position={[lat, lng]}>
