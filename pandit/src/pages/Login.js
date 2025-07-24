@@ -18,7 +18,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('https://backendserver-1-pa6o.onrender.com/api/users/login', form);
+      const response = await axios.post('https://backendserver-lnxc.onrender.com/api/users/login', form);
       const { token, user } = response.data;
       if (token && user?._id) {
         localStorage.setItem('token', token);
