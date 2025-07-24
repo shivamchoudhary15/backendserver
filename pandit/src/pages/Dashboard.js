@@ -1,3 +1,4 @@
+// Dashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,6 +18,10 @@ import {
   User,
   CheckCircle,
   MoveRight,
+  Gift,
+  Globe,
+  CreditCard,
+  Star,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -168,18 +173,18 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-root">
+
       {/* NAVBAR */}
       <nav
         className={`dashboard-navbar${isNavbarOpen ? ' open' : ''}`}
         aria-label="Main Navigation"
         onMouseEnter={() => setIsNavbarOpen(true)}
-        onMouseLeave={() => setIsNavbarOpen(false)}>
+        onMouseLeave={() => setIsNavbarOpen(false)}
+      >
         <div className="navbar-brand" tabIndex={0}>
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span className="brand-accent neon-text">Shubhkarya</span>
-          <span className="navbar-expand-icon" aria-hidden="true">
-            {isNavbarOpen ? '▲' : '▼'}
-          </span>
+          <span className="navbar-expand-icon" aria-hidden="true">{isNavbarOpen ? '▲' : '▼'}</span>
         </div>
         <AnimatePresence>
           {isNavbarOpen && (
@@ -189,7 +194,8 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.25 }}>
+              transition={{ duration: 0.25 }}
+            >
               {NAV_ITEMS.map(item => (
                 <motion.li
                   key={item.label}
@@ -200,10 +206,9 @@ export default function Dashboard() {
                   onKeyDown={e => ['Enter', ' '].includes(e.key) && handleNavClick(item)}
                   whileHover={{ scale: 1.06 }}
                   whileTap={{ scale: 0.97 }}
-                  aria-label={item.label}>
-                  <span className="nav-icon" aria-hidden="true">
-                    {item.icon}
-                  </span>
+                  aria-label={item.label}
+                >
+                  <span className="nav-icon" aria-hidden="true">{item.icon}</span>
                   {item.label}
                 </motion.li>
               ))}
@@ -215,9 +220,7 @@ export default function Dashboard() {
       {/* WELCOME BANNER */}
       {user && (
         <section className="welcome-banner nice-glass" data-aos="fade">
-          <h2>
-            Welcome, <span>{user.name}</span>!
-          </h2>
+          <h2>Welcome, <span>{user.name}</span>!</h2>
           <p>May your every puja bring joy and prosperity.</p>
         </section>
       )}
@@ -230,15 +233,11 @@ export default function Dashboard() {
               Book Trusted Pandits with <span>Shubhkarya</span>
             </h1>
             <p className="hero-desc">
-              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.
-              <br />
+              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
-            <button
-              className="hero-book-btn glow-btn"
-              onClick={() => navigate('/booking')}
-              aria-label="Book New Puja">
-              <Zap size={18} style={{ marginBottom: '-4px', marginRight: 6 }} /> Book New Puja
+            <button className="hero-book-btn glow-btn" onClick={() => navigate('/booking')} aria-label="Book New Puja">
+              <Zap size={18} style={{ marginBottom: "-4px", marginRight: 6 }} /> Book New Puja
             </button>
           </div>
           <div className="hero-slider slider-glow" data-aos="zoom-in">
@@ -246,15 +245,90 @@ export default function Dashboard() {
               <img src={SLIDER_IMAGES[carouselIndex]} alt="Spiritual slider" />
               <div className="slider-dots">
                 {SLIDER_IMAGES.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`slider-dot${i === carouselIndex ? ' active' : ''}`}
-                    aria-label={`Go to slide ${i + 1}`}
-                    onClick={() => setCarouselIndex(i)}
-                  />
+                  <button key={i} className={`slider-dot${i === carouselIndex ? ' active' : ''}`} aria-label={`Go to slide ${i + 1}`} onClick={() => setCarouselIndex(i)} />
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* HIGHLIGHTS */}
+      <section id="highlight" className="highlight-section" data-aos="fade-up" aria-label="Platform highlights">
+
+        <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <CheckCircle size={40} color="#00a000" aria-hidden="true" />
+            <h4>Spiritual Guides</h4>
+            <p>Pandits & Consultants across India</p>
+            <p>250+ Experts</p>
+          </div>
+        </div>
+
+        <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <Users size={40} color="#005599" aria-hidden="true" />
+            <h4>Religious Services</h4>
+            <p>Wide variety of pujas</p>
+            <p>100+ Pujas</p>
+          </div>
+        </div>
+
+        <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
+          <div className="highlight-overlay" />
+          <div className="highlight-content">
+            <CalendarDays size={36} color="#a0522d" aria-hidden="true" />
+            <h4>Pujas Done</h4>
+            <p>Performed by verified pandits</p>
+            <p>1,000+ Completed</p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY SHUBHKARYA */}
+      <section className="why-shubhkarya-section nice-glass" data-aos="fade-up" aria-label="Why choose Shubhkarya">
+        <h3>
+          Why Choose <span className="brand-accent">Shubhkarya?</span>
+        </h3>
+        <div className="why-cards-row">
+          <div className="why-card neon-card">
+            <CheckCircle size={28} className="why-icon glow-icon" />
+            <div>
+              <h5>Verified Pandits</h5>
+              <p>Background-checked and reviewed experts at your service.</p>
+            </div>
+          </div>
+          <div className="why-card neon-card">
+            <Globe size={28} className="why-icon glow-icon" />
+            <div>
+              <h5>Pan India Support</h5>
+              <p>Metro & local experts available in all states.</p>
+            </div>
+          </div>
+          <div className="why-card neon-card">
+            <CreditCard size={28} className="why-icon glow-icon" />
+            <div>
+              <h5>Transparent Pricing</h5>
+              <p>No hidden charges, clear billing, and fair policies.</p>
+            </div>
+          </div>
+          <div className="why-card neon-card">
+            <Star size={28} className="why-icon glow-icon" />
+            <div>
+              <h5>Choose by Tradition</h5>
+              <p>Select by tradition, date, or preferred language.</p>
+            </div>
+          </div>
+        </div>
+        <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass" aria-label="Festive Offer">
+          <Gift size={36} className="promo-gift" aria-hidden="true" />
+          <div className="offer-content">
+            <b>Festive Offer!</b>
+            <span>
+              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
+            </span>
           </div>
         </div>
       </section>
@@ -279,11 +353,13 @@ export default function Dashboard() {
               tabIndex={0}
               aria-expanded={expandedPandits[pandit._id]}
               onClick={() => toggleExpand(pandit._id)}
-              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}>
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}
+            >
               <div
                 className="pandit-avatar glass"
                 style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
-                aria-label={`Pandit ${pandit.name}`}>
+                aria-label={`Pandit ${pandit.name}`}
+              >
                 <User color="#156fee" size={27} style={{ background: 'rgba(255,255,255,0.8)', borderRadius: '50%' }} />
               </div>
               <div className="pandit-main-info">
@@ -305,7 +381,6 @@ export default function Dashboard() {
                   </div>
                 </div>
               )}
-              {/* Chat button */}
               <button
                 onClick={e => {
                   e.stopPropagation();
@@ -313,7 +388,8 @@ export default function Dashboard() {
                   setChatPanditName(pandit.name);
                 }}
                 style={{ marginTop: 8 }}
-                className="custom-btn">
+                className="custom-btn"
+              >
                 <MessageCircle size={16} style={{ marginBottom: '-4px', marginRight: 5 }} /> Chat with Pandit
               </button>
             </motion.div>
@@ -324,7 +400,8 @@ export default function Dashboard() {
             <button
               onClick={() => setVisiblePandits(v => (v === 3 ? filteredPandits.length : 3))}
               className="custom-btn glow-btn"
-              aria-expanded={visiblePandits !== 3}>
+              aria-expanded={visiblePandits !== 3}
+            >
               {visiblePandits === 3 ? (
                 <>
                   Show More <MoveRight size={16} style={{ marginLeft: 4, marginBottom: -3 }} />
@@ -364,7 +441,8 @@ export default function Dashboard() {
                 whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
                 tabIndex={0}
                 role="article"
-                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}>
+                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
+              >
                 <div className="booking-card-left">
                   <span className="booking-icon" aria-hidden="true">
                     <CalendarDays size={22} color="#ffaa00" />
@@ -393,7 +471,7 @@ export default function Dashboard() {
       <section id="review" className="review-section glass-review" data-aos="fade-up" tabIndex={-1} aria-label="Submit Review">
         <h3 className="section-heading neon-text">Submit a Review</h3>
         {reviewMessage && (
-          <p className={reviewMessage.includes('thank') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
+          <p className={reviewMessage.toLowerCase().includes('thank') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
         )}
         <form onSubmit={handleReviewSubmit} className="review-form card-glossy glass nice-glass" aria-label="Review submission form">
           <div className="review-row">
