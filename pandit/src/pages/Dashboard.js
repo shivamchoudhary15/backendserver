@@ -9,8 +9,8 @@ import { getUserTickets, getExperts, createFeedback, getUserStats, getNotificati
 import ChatWindow from './ChatWindow';
 
 import {
+  Zap,
   Home,
-  Flash,
   MessageCircle,
   Users,
   CalendarDays,
@@ -24,7 +24,7 @@ import {
 
 const NAV_ITEMS = [
   { label: 'Home', icon: <Home size={20} />, goto: '/' },
-  { label: 'New Task', icon: <Flash size={20} />, goto: '/new-task' },
+  { label: 'New Task', icon: <Zap size={20} />, goto: '/new-task' },
   { label: 'Feedback', icon: <MessageCircle size={20} />, goto: '#review' },
   { label: 'Experts', icon: <Users size={20} />, goto: '#pandit' },
   { label: 'My Tickets', icon: <CalendarDays size={20} />, goto: '#booking' },
@@ -199,7 +199,7 @@ export default function Dashboard() {
             <span className="analytic-value">{stats.acceptedBookings}</span>
           </div>
           <div className="analytic-card">
-            <Flash color="#eebf04" size={18} style={{ marginBottom: "-4px", marginRight: 7 }} />
+            <Zap color="#eebf04" size={18} style={{ marginBottom: "-4px", marginRight: 7 }} />
             <span className="analytic-label">Pending</span>
             <span className="analytic-value">{stats.pendingBookings}</span>
           </div>
@@ -285,7 +285,7 @@ export default function Dashboard() {
               onClick={() => navigate('/booking')}
               aria-label="Book New Puja"
             >
-              <Flash size={18} style={{marginBottom: "-4px", marginRight: 6}} /> Book New Puja
+              <Zap size={18} style={{ marginBottom: "-4px", marginRight: 6 }} /> Book New Puja
             </button>
           </div>
           <div className="hero-slider slider-glow" data-aos="zoom-in">
@@ -336,10 +336,10 @@ export default function Dashboard() {
                 style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
                 aria-label={`Pandit ${pandit.name}`}
               >
-                <User color="#156fee" size={27} style={{background: "rgba(255,255,255,0.8)", borderRadius: "50%"}}/>
+                <User color="#156fee" size={27} style={{ background: "rgba(255,255,255,0.8)", borderRadius: "50%" }} />
               </div>
               <div className="pandit-main-info">
-                <h4 className="pandit-name hero-text-glow"><Users size={16} style={{marginBottom:"-4px", marginRight:6}} /> {pandit.name}</h4>
+                <h4 className="pandit-name hero-text-glow"><Users size={16} style={{ marginBottom: "-4px", marginRight: 6 }} /> {pandit.name}</h4>
                 <div className="pandit-city">{pandit.city}</div>
               </div>
               {expandedPandits[pandit._id] && (
@@ -363,7 +363,7 @@ export default function Dashboard() {
                 style={{ marginTop: 8 }}
                 className="custom-btn"
               >
-                <MessageCircle size={16} style={{marginBottom:"-4px", marginRight:5}}/> Chat with Pandit
+                <MessageCircle size={16} style={{ marginBottom: "-4px", marginRight: 5 }} /> Chat with Pandit
               </button>
             </motion.div>
           ))}
@@ -375,7 +375,7 @@ export default function Dashboard() {
               className="custom-btn glow-btn"
               aria-expanded={visiblePandits !== 3}
             >
-              {visiblePandits === 3 ? <>Show More <MoveRight size={16} style={{marginLeft:4,marginBottom:-3}}/></> : 'Show Less'}
+              {visiblePandits === 3 ? <>Show More <MoveRight size={16} style={{ marginLeft: 4, marginBottom: -3 }} /></> : 'Show Less'}
             </button>
           </div>
         )}
