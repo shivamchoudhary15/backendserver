@@ -1,11 +1,10 @@
-// Dashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Dashboard.css';
-import { getUserTickets, getExperts, createFeedback, getUserStats, getNotifications } from '../api/api';
+import { createReview, getBookings, getVerifiedPandits } from '../api/api';
 import ChatWindow from './ChatWindow';
 
 import {
@@ -14,9 +13,7 @@ import {
   MessageCircle,
   Users,
   CalendarDays,
-  BarChart2,
   LogOut,
-  Bell,
   User,
   CheckCircle,
   MoveRight,
@@ -24,11 +21,10 @@ import {
 
 const NAV_ITEMS = [
   { label: 'Home', icon: <Home size={20} />, goto: '/' },
-  { label: 'New Task', icon: <Zap size={20} />, goto: '/new-task' },
+  { label: 'New Task', icon: <Zap size={20} />, goto: '/booking' },
   { label: 'Feedback', icon: <MessageCircle size={20} />, goto: '#review' },
   { label: 'Experts', icon: <Users size={20} />, goto: '#pandit' },
   { label: 'My Tickets', icon: <CalendarDays size={20} />, goto: '#booking' },
-  { label: 'Analytics', icon: <BarChart2 size={20} />, goto: '#analytics' },
   { label: 'Logout', icon: <LogOut size={20} />, goto: '/login', logout: true },
 ];
 
@@ -54,8 +50,8 @@ function StarRating({ rating, onChange }) {
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onChange(i)}
         >
           <CheckCircle
-            color={i <= rating ? "#ffd740" : "#e0e0e0"}
-            fill={i <= rating ? "#ffd740" : "none"}
+            color={i <= rating ? '#ffd740' : '#e0e0e0'}
+            fill={i <= rating ? '#ffd740' : 'none'}
             size={24}
             style={{ marginRight: 2, verticalAlign: -5 }}
           />
@@ -67,11 +63,10 @@ function StarRating({ rating, onChange }) {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [pandits, setPandits] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [notifications, setNotifications] = useState([]);
 
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -94,14 +89,13 @@ export default function Dashboard() {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     if (!token || !userData) return navigate('/login');
+
     try {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
       setReview(r => ({ ...r, name: parsedUser.name }));
-      getUserTickets({ userid: parsedUser._id }).then(res => setBookings(res.data || []));
-      getExperts().then(res => setPandits(res.data || []));
-      getUserStats({ userid: parsedUser._id }).then(res => setStats(res.data || null));
-      getNotifications({ userid: parsedUser._id }).then(res => setNotifications(res.data || []));
+      getBookings({ userid: parsedUser._id }).then(res => setBookings(res.data || []));
+      getVerifiedPandits().then(res => setPandits(res.data || []));
     } catch {
       navigate('/login');
     }
@@ -130,25 +124,32 @@ export default function Dashboard() {
   async function handleReviewSubmit(e) {
     e.preventDefault();
     if (!review.name || !review.comment || !review.rating) {
-      setReviewMessage('Please rate and share your feedback.');
+      setReviewMessage('Please complete all fields and provide star rating.');
       return;
     }
     setReviewLoading(true);
     try {
-      await createFeedback(review);
-      setReviewMessage('Thank you for sharing!');
+      await createReview(review);
+      setReviewMessage('Thank you for your review!');
       setReview(r => ({ name: r.name, rating: 0, comment: '' }));
     } catch {
-      setReviewMessage('Submission error. Try again!');
+      setReviewMessage('Failed to submit review.');
     } finally {
       setReviewLoading(false);
-      setTimeout(() => setReviewMessage(''), 2000);
+      setTimeout(() => setReviewMessage(''), 2500);
     }
   }
 
   function toggleExpand(id) {
     setExpandedPandits(prev => ({ ...prev, [id]: !prev[id] }));
   }
+
+  const getStatusClass = status =>
+    ({
+      accepted: 'status accepted',
+      rejected: 'status rejected',
+      pending: 'status pending',
+    }[(status || '').toLowerCase()] || 'status');
 
   const filteredPandits = pandits.filter(
     p =>
@@ -165,54 +166,6 @@ export default function Dashboard() {
     );
   });
 
-  const getStatusClass = status =>
-    ({
-      accepted: 'status accepted',
-      rejected: 'status rejected',
-      pending: 'status pending',
-    }[(status || '').toLowerCase()] || 'status');
-
-  function NotificationBell() {
-    const unreadCount = notifications.filter(n => !n.read).length;
-    return (
-      <div className="notification-bell" aria-label={`You have ${unreadCount} notifications`}>
-        <Bell size={22} strokeWidth={2.1} />
-        {unreadCount > 0 && <span className="noti-badge">{unreadCount}</span>}
-      </div>
-    );
-  }
-
-  function AnalyticsPanel() {
-    if (!stats) return null;
-    return (
-      <section id="analytics" className="analytics-panel" data-aos="fade-up">
-        <h3 className="section-heading"><span>My Productivity at a Glance</span></h3>
-        <div className="analytics-row">
-          <div className="analytic-card">
-            <BarChart2 color="#2586ff" size={19} style={{ marginBottom: "-4px", marginRight: 7 }} />
-            <span className="analytic-label">Total Bookings</span>
-            <span className="analytic-value">{stats.totalBookings}</span>
-          </div>
-          <div className="analytic-card">
-            <CheckCircle color="#18b251" size={18} style={{ marginBottom: "-4px", marginRight: 7 }} />
-            <span className="analytic-label">Accepted</span>
-            <span className="analytic-value">{stats.acceptedBookings}</span>
-          </div>
-          <div className="analytic-card">
-            <Zap color="#eebf04" size={18} style={{ marginBottom: "-4px", marginRight: 7 }} />
-            <span className="analytic-label">Pending</span>
-            <span className="analytic-value">{stats.pendingBookings}</span>
-          </div>
-          <div className="analytic-card">
-            <CalendarDays color="#156fee" size={17} style={{ marginBottom: "-4px", marginRight: 7 }} />
-            <span className="analytic-label">Avg. Completion Time</span>
-            <span className="analytic-value">{stats.avgCompletionTime} hrs</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <div className="dashboard-root">
       {/* NAVBAR */}
@@ -220,13 +173,13 @@ export default function Dashboard() {
         className={`dashboard-navbar${isNavbarOpen ? ' open' : ''}`}
         aria-label="Main Navigation"
         onMouseEnter={() => setIsNavbarOpen(true)}
-        onMouseLeave={() => setIsNavbarOpen(false)}
-      >
+        onMouseLeave={() => setIsNavbarOpen(false)}>
         <div className="navbar-brand" tabIndex={0}>
           <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
           <span className="brand-accent neon-text">Shubhkarya</span>
-          <NotificationBell />
-          <span className="navbar-expand-icon" aria-hidden="true">{isNavbarOpen ? '▲' : '▼'}</span>
+          <span className="navbar-expand-icon" aria-hidden="true">
+            {isNavbarOpen ? '▲' : '▼'}
+          </span>
         </div>
         <AnimatePresence>
           {isNavbarOpen && (
@@ -236,8 +189,7 @@ export default function Dashboard() {
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.25 }}
-            >
+              transition={{ duration: 0.25 }}>
               {NAV_ITEMS.map(item => (
                 <motion.li
                   key={item.label}
@@ -248,9 +200,10 @@ export default function Dashboard() {
                   onKeyDown={e => ['Enter', ' '].includes(e.key) && handleNavClick(item)}
                   whileHover={{ scale: 1.06 }}
                   whileTap={{ scale: 0.97 }}
-                  aria-label={item.label}
-                >
-                  <span className="nav-icon" aria-hidden="true">{item.icon}</span>
+                  aria-label={item.label}>
+                  <span className="nav-icon" aria-hidden="true">
+                    {item.icon}
+                  </span>
                   {item.label}
                 </motion.li>
               ))}
@@ -277,15 +230,15 @@ export default function Dashboard() {
               Book Trusted Pandits with <span>Shubhkarya</span>
             </h1>
             <p className="hero-desc">
-              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
+              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.
+              <br />
               Browse, book, and experience auspicious bliss from anywhere.
             </p>
             <button
               className="hero-book-btn glow-btn"
               onClick={() => navigate('/booking')}
-              aria-label="Book New Puja"
-            >
-              <Zap size={18} style={{ marginBottom: "-4px", marginRight: 6 }} /> Book New Puja
+              aria-label="Book New Puja">
+              <Zap size={18} style={{ marginBottom: '-4px', marginRight: 6 }} /> Book New Puja
             </button>
           </div>
           <div className="hero-slider slider-glow" data-aos="zoom-in">
@@ -305,9 +258,6 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-
-      {/* ANALYTICS */}
-      <AnalyticsPanel />
 
       {/* PANDIT SHOWCASE */}
       <section id="pandit" className="pandit-section" data-aos="fade-up" tabIndex={-1} aria-label="Verified Pandits">
@@ -329,17 +279,17 @@ export default function Dashboard() {
               tabIndex={0}
               aria-expanded={expandedPandits[pandit._id]}
               onClick={() => toggleExpand(pandit._id)}
-              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}
-            >
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}>
               <div
                 className="pandit-avatar glass"
                 style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
-                aria-label={`Pandit ${pandit.name}`}
-              >
-                <User color="#156fee" size={27} style={{ background: "rgba(255,255,255,0.8)", borderRadius: "50%" }} />
+                aria-label={`Pandit ${pandit.name}`}>
+                <User color="#156fee" size={27} style={{ background: 'rgba(255,255,255,0.8)', borderRadius: '50%' }} />
               </div>
               <div className="pandit-main-info">
-                <h4 className="pandit-name hero-text-glow"><Users size={16} style={{ marginBottom: "-4px", marginRight: 6 }} /> {pandit.name}</h4>
+                <h4 className="pandit-name hero-text-glow">
+                  <Users size={16} style={{ marginBottom: '-4px', marginRight: 6 }} /> {pandit.name}
+                </h4>
                 <div className="pandit-city">{pandit.city}</div>
               </div>
               {expandedPandits[pandit._id] && (
@@ -349,21 +299,22 @@ export default function Dashboard() {
                       <span className="pandit-badge exp">Exp: {pandit.experienceYears} yrs</span>
                       <span className="pandit-badge langs">{pandit.languages?.join(', ')}</span>
                     </div>
-                    <div className="pandit-specialties"><b>Specialties:</b> {pandit.specialties?.join(', ')}</div>
+                    <div className="pandit-specialties">
+                      <b>Specialties:</b> {pandit.specialties?.join(', ')}
+                    </div>
                   </div>
                 </div>
               )}
               {/* Chat button */}
               <button
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   setChatPanditId(pandit._id);
                   setChatPanditName(pandit.name);
                 }}
                 style={{ marginTop: 8 }}
-                className="custom-btn"
-              >
-                <MessageCircle size={16} style={{ marginBottom: "-4px", marginRight: 5 }} /> Chat with Pandit
+                className="custom-btn">
+                <MessageCircle size={16} style={{ marginBottom: '-4px', marginRight: 5 }} /> Chat with Pandit
               </button>
             </motion.div>
           ))}
@@ -373,9 +324,14 @@ export default function Dashboard() {
             <button
               onClick={() => setVisiblePandits(v => (v === 3 ? filteredPandits.length : 3))}
               className="custom-btn glow-btn"
-              aria-expanded={visiblePandits !== 3}
-            >
-              {visiblePandits === 3 ? <>Show More <MoveRight size={16} style={{ marginLeft: 4, marginBottom: -3 }} /></> : 'Show Less'}
+              aria-expanded={visiblePandits !== 3}>
+              {visiblePandits === 3 ? (
+                <>
+                  Show More <MoveRight size={16} style={{ marginLeft: 4, marginBottom: -3 }} />
+                </>
+              ) : (
+                'Show Less'
+              )}
             </button>
           </div>
         )}
@@ -383,12 +339,7 @@ export default function Dashboard() {
 
       {/* Chat Window */}
       {chatPanditId && (
-        <ChatWindow
-          userId={user?._id}
-          panditId={chatPanditId}
-          chatName={chatPanditName}
-          onClose={() => setChatPanditId(null)}
-        />
+        <ChatWindow userId={user?._id} panditId={chatPanditId} chatName={chatPanditName} onClose={() => setChatPanditId(null)} />
       )}
 
       {/* BOOKINGS */}
@@ -413,13 +364,16 @@ export default function Dashboard() {
                 whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
                 tabIndex={0}
                 role="article"
-                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
-              >
+                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}>
                 <div className="booking-card-left">
-                  <span className="booking-icon" aria-hidden="true"><CalendarDays size={22} color="#ffaa00" /></span>
+                  <span className="booking-icon" aria-hidden="true">
+                    <CalendarDays size={22} color="#ffaa00" />
+                  </span>
                   <div>
                     <div className="booking-type">{b.serviceid?.name}</div>
-                    <div className="booking-date">{new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}</div>
+                    <div className="booking-date">
+                      {new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}
+                    </div>
                   </div>
                 </div>
                 <div className="booking-card-right">
@@ -439,7 +393,7 @@ export default function Dashboard() {
       <section id="review" className="review-section glass-review" data-aos="fade-up" tabIndex={-1} aria-label="Submit Review">
         <h3 className="section-heading neon-text">Submit a Review</h3>
         {reviewMessage && (
-          <p className={reviewMessage.includes('sharing') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
+          <p className={reviewMessage.includes('thank') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
         )}
         <form onSubmit={handleReviewSubmit} className="review-form card-glossy glass nice-glass" aria-label="Review submission form">
           <div className="review-row">
@@ -461,12 +415,12 @@ export default function Dashboard() {
       </section>
 
       {/* CHATBOT BUTTON */}
-      <button
-        aria-label="Toggle Chatbot"
-        className="chatbot-toggle"
-        onClick={() => setShowChatbot(!showChatbot)}
-      >
-        {showChatbot ? '×' : <img src="/images/subh.png" alt="Open Chatbot" style={{ borderRadius: '50%', width: 38, height: 38 }} />}
+      <button aria-label="Toggle Chatbot" className="chatbot-toggle" onClick={() => setShowChatbot(!showChatbot)}>
+        {showChatbot ? (
+          '×'
+        ) : (
+          <img src="/images/subh.png" alt="Open Chatbot" style={{ borderRadius: '50%', width: 38, height: 38 }} />
+        )}
       </button>
       {showChatbot && (
         <div className="chatbot-popup" role="dialog" aria-modal="true" aria-label="Chatbot window">
