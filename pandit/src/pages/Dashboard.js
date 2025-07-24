@@ -1,4 +1,3 @@
-/*original*/
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -52,7 +51,7 @@ export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const [pandits, setPandits] = useState([]);
 
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [visiblePandits, setVisiblePandits] = useState(3);
   const [expandedPandits, setExpandedPandits] = useState({});
@@ -97,7 +96,6 @@ export default function Dashboard() {
     } else if (String(item.goto).startsWith('#')) {
       const section = document.querySelector(item.goto);
       if (section) section.scrollIntoView({ behavior: 'smooth' });
-      setIsNavbarOpen(false);
     } else {
       navigate(item.goto);
     }
@@ -148,319 +146,498 @@ export default function Dashboard() {
     );
   });
 
+  const currentTime = new Date().toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: true 
+  });
+
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
   return (
     <div className="dashboard-root">
-      {/* NAVBAR */}
-      <nav
-        className={`dashboard-navbar${isNavbarOpen ? ' open' : ''}`}
-        aria-label="Main Navigation"
-        onMouseEnter={() => setIsNavbarOpen(true)}
-        onMouseLeave={() => setIsNavbarOpen(false)}
-      >
-        <div className="navbar-brand" tabIndex={0}>
-          <img src="/images/subh.png" alt="Logo" className="navbar-logo" />
-          <span className="brand-accent neon-text">Shubhkarya</span>
-          <span className="navbar-expand-icon" aria-hidden="true">{isNavbarOpen ? '▲' : '▼'}</span>
-        </div>
-        <AnimatePresence>
-          {isNavbarOpen && (
-            <motion.ul
-              className="navbar-menu"
-              role="menu"
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.25 }}
-            >
-              {navbarItems.map(item => (
-                <motion.li
-                  key={item.label}
-                  role="menuitem"
-                  tabIndex={0}
-                  className={`navbar-menu-item${item.logout ? ' logout' : ''}`}
-                  onClick={() => handleNavClick(item)}
-                  onKeyDown={e => ['Enter', ' '].includes(e.key) && handleNavClick(item)}
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.97 }}
-                  aria-label={item.label}
-                >
-                  <span className="nav-icon" aria-hidden="true">{item.icon}</span>
-                  {item.label}
-                </motion.li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      {/* WELCOME BANNER */}
-      {user && (
-        <section className="welcome-banner nice-glass" data-aos="fade">
-          <h2>
-            Welcome, <span>{user.name}</span>!
-          </h2>
-          <p>May your every puja bring joy and prosperity.</p>
-        </section>
-      )}
-
-      {/* HERO + SLIDER */}
-      <section className="dashboard-hero gradient-hero" id="dashboard" data-aos="fade-down">
-        <div className="hero-main-row">
-          <div>
-            <h1 className="hero-title hero-text-glow">
-              Book Trusted Pandits with <span>Shubhkarya</span>
-            </h1>
-            <p className="hero-desc">
-              Your dedicated portal for <b>pujas, havans, and ceremonies</b> with experienced and verified experts.<br />
-              Browse, book, and experience auspicious bliss from anywhere.
-            </p>
-            <button
-              className="hero-book-btn glow-btn"
-              onClick={() => navigate('/booking')}
-              aria-label="Book New Puja"
-            >
-              🛕 Book New Puja
-            </button>
-          </div>
-          <div className="hero-slider slider-glow" data-aos="zoom-in">
-            <div className="slider-frame shadow-pop">
-              <img src={sliderImages[carouselIndex]} alt="Spiritual slider" />
-              <div className="slider-dots">
-                {sliderImages.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`slider-dot${i === carouselIndex ? ' active' : ''}`}
-                    aria-label={`Go to slide ${i + 1}`}
-                    onClick={() => setCarouselIndex(i)}
-                  />
-                ))}
+      {/* LEFT SIDEBAR */}
+      <aside className={`dashboard-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-header">
+          <div className="sidebar-brand">
+            <img src="/images/subh.png" alt="Logo" className="sidebar-logo" />
+            {!isSidebarCollapsed && (
+              <div className="brand-text">
+                <span className="brand-name">Shubhkarya</span>
+                <span className="brand-tagline">Spiritual Portal</span>
               </div>
-            </div>
+            )}
           </div>
-        </div>
-      </section>
-
-      {/* HIGHLIGHTS */}
-      <section id="highlight" className="highlight-section" data-aos="fade-up" aria-label="Platform highlights">
-        <div className="highlight-card glass-highlight theme1" style={{ backgroundImage: "url('/images/india.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Verified" style={{ fontSize: '2em' }}>✔️</span>
-            <h4>Spiritual Guides</h4>
-            <p>Pandits & Consultants across India</p>
-            <p>250+ Experts</p>
-          </div>
-        </div>
-        <div className="highlight-card glass-highlight theme2" style={{ backgroundImage: "url('/images/kalash.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Temple" style={{ fontSize: '2em' }}>🛕</span>
-            <h4>Religious Services</h4>
-            <p>Wide variety of pujas</p>
-            <p>100+ Pujas</p>
-          </div>
-        </div>
-        <div className="highlight-card glass-highlight theme3" style={{ backgroundImage: "url('/images/havan.jpeg')" }}>
-          <div className="highlight-overlay" />
-          <div className="highlight-content">
-            <span role="img" aria-label="Calendar" style={{ fontSize: '1.7em' }}>📆</span>
-            <h4>Pujas Done</h4>
-            <p>Performed by verified pandits</p>
-            <p>1,000+ Completed</p>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY SHUBHKARYA */}
-      <section className="why-shubhkarya-section nice-glass" data-aos="fade-up" aria-label="Why choose Shubhkarya">
-        <h3>
-          Why Choose <span className="brand-accent">Shubhkarya?</span>
-        </h3>
-        <div className="why-cards-row">
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">✅</div>
-            <div>
-              <h5>Verified Pandits</h5>
-              <p>Background-checked and reviewed experts at your service.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">🌏</div>
-            <div>
-              <h5>Pan India Support</h5>
-              <p>Metro & local experts available in all states.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">💰</div>
-            <div>
-              <h5>Transparent Pricing</h5>
-              <p>No hidden charges, clear billing, and fair policies.</p>
-            </div>
-          </div>
-          <div className="why-card neon-card">
-            <div className="why-icon glow-icon">🔆</div>
-            <div>
-              <h5>Choose by Tradition</h5>
-              <p>Select by tradition, date, or preferred language.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="promo-announcement improved-offer animated-pop-offer offer-gradient-glass" aria-label="Festive Offer">
-          <span className="promo-gift" role="img" aria-label="Gift" style={{ fontSize: '2.1em' }}>🎁</span>
-          <div className="offer-content">
-            <b>Festive Offer!</b>
-            <span>
-              Get <span className="offer-amt">₹50 OFF</span> your first puja <span className="offer-code">(code: <b>SHUBH50</b>)</span>
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* PANDIT SHOWCASE */}
-      <section id="pandit" className="pandit-section" data-aos="fade-up" tabIndex={-1} aria-label="Verified Pandits">
-        <h3 className="section-heading">Verified Pandits</h3>
-        <input
-          type="text"
-          className="booking-search"
-          aria-label="Search pandits"
-          placeholder="Search by name or city..."
-          value={searchPandits}
-          onChange={e => setSearchPandits(e.target.value)}
-        />
-        <div className="pandit-list">
-          {filteredPandits.slice(0, visiblePandits).map(pandit => (
-            <motion.div
-              key={pandit._id}
-              className="improved-pandit-card neon-card glass-highlight glossy shadow-pop"
-              whileHover={{ y: -4, scale: 1.04 }}
-              tabIndex={0}
-              aria-expanded={expandedPandits[pandit._id]}
-              onClick={() => toggleExpand(pandit._id)}
-              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(pandit._id)}
-            >
-              <div
-                className="pandit-avatar glass"
-                style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
-                aria-label={`Pandit ${pandit.name}`}
-              >
-                <span className="pandit-avatar-initial">{pandit.name.slice(0, 1)}</span>
-              </div>
-              <div className="pandit-main-info">
-                <h4 className="pandit-name hero-text-glow">🧑‍🦳 {pandit.name}</h4>
-                <div className="pandit-city">{pandit.city}</div>
-              </div>
-              {expandedPandits[pandit._id] && (
-                <div className="pandit-extra expanded">
-                  <div className="pandit-details">
-                    <div className="pandit-badges">
-                      <span className="pandit-badge exp">Exp: {pandit.experienceYears} yrs</span>
-                      <span className="pandit-badge langs">{pandit.languages?.join(', ')}</span>
-                    </div>
-                    <div className="pandit-specialties"><b>Specialties:</b> {pandit.specialties?.join(', ')}</div>
-                  </div>
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-        {filteredPandits.length > 3 && (
-          <div className="toggle-btn">
-            <button
-              onClick={() => setVisiblePandits(v => (v === 3 ? filteredPandits.length : 3))}
-              className="custom-btn glow-btn"
-              aria-expanded={visiblePandits !== 3}
-            >
-              {visiblePandits === 3 ? 'Show More' : 'Show Less'}
-            </button>
-          </div>
-        )}
-      </section>
-
-      {/* BOOKINGS */}
-      <section id="booking" className="bookings-section blur-bg" data-aos="fade-up" tabIndex={-1} aria-label="Booking History">
-        <h3 className="section-heading">Your Bookings</h3>
-        <input
-          type="text"
-          className="booking-search"
-          aria-label="Search bookings"
-          placeholder="Search bookings..."
-          value={searchBookings}
-          onChange={e => setSearchBookings(e.target.value)}
-        />
-        <div className="booking-list">
-          {filteredBookings.length === 0 ? (
-            <p className="empty-msg">No bookings found. Book your first puja now!</p>
-          ) : (
-            filteredBookings.map(b => (
-              <motion.div
-                key={b._id}
-                className="booking-card card-glossy glass neon-card shadow-pop"
-                whileHover={{ scale: 1.032, boxShadow: '0 6px 32px #aecaee51' }}
-                tabIndex={0}
-                role="article"
-                aria-label={`Booking for ${b.serviceid?.name} with ${b.panditid?.name} on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
-              >
-                <div className="booking-card-left">
-                  <span className="booking-icon" aria-hidden="true">📅</span>
-                  <div>
-                    <div className="booking-type">{b.serviceid?.name}</div>
-                    <div className="booking-date">{new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}</div>
-                  </div>
-                </div>
-                <div className="booking-card-right">
-                  <div className="booking-pandit">
-                    <span className="booking-pandit-label">Pandit:</span> <span>{b.panditid?.name ?? 'N/A'}</span>
-                  </div>
-                  <div className="booking-location">📍 {b.location}</div>
-                  <div className={getStatusClass(b.status)}>{b.status}</div>
-                </div>
-              </motion.div>
-            ))
-          )}
-        </div>
-      </section>
-
-      {/* REVIEWS */}
-      <section id="review" className="review-section glass-review" data-aos="fade-up" tabIndex={-1} aria-label="Submit Review">
-        <h3 className="section-heading neon-text">Submit a Review</h3>
-        {reviewMessage && (
-          <p className={reviewMessage.includes('submitted') ? 'success-message' : 'error-message'}>{reviewMessage}</p>
-        )}
-        <form onSubmit={handleReviewSubmit} className="review-form card-glossy glass nice-glass" aria-label="Review submission form">
-          <div className="review-row">
-            <input type="text" value={review.name} disabled className="review-input" aria-label="Your name" />
-            <StarRating rating={review.rating} onChange={v => setReview(prev => ({ ...prev, rating: v }))} />
-          </div>
-          <textarea
-            placeholder="Write your feedback..."
-            value={review.comment}
-            onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
-            className="review-input review-textarea"
-            required
-            aria-required="true"
-          />
-          <button type="submit" className="custom-btn glow-btn" disabled={reviewLoading}>
-            {reviewLoading ? 'Submitting...' : 'Submit Review 💬'}
+          <button 
+            className="sidebar-toggle"
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            aria-label="Toggle sidebar"
+          >
+            {isSidebarCollapsed ? '→' : '←'}
           </button>
-        </form>
-      </section>
+        </div>
 
-      {/* CHATBOT BUTTON */}
+        <nav className="sidebar-nav">
+          <div className="nav-section">
+            <div className="nav-section-title">
+              {!isSidebarCollapsed && 'Navigation'}
+            </div>
+            {navbarItems.map(item => (
+              <motion.button
+                key={item.label}
+                className={`nav-item ${item.logout ? 'logout' : ''}`}
+                onClick={() => handleNavClick(item)}
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.95 }}
+                title={isSidebarCollapsed ? item.label : ''}
+              >
+                <span className="nav-icon">{item.icon}</span>
+                {!isSidebarCollapsed && <span className="nav-label">{item.label}</span>}
+              </motion.button>
+            ))}
+          </div>
+        </nav>
+
+        <div className="sidebar-footer">
+          {!isSidebarCollapsed && (
+            <div className="sidebar-stats">
+              <div className="stat-item">
+                <span className="stat-icon">📊</span>
+                <div className="stat-info">
+                  <span className="stat-value">{bookings.length}</span>
+                  <span className="stat-label">Total Bookings</span>
+                </div>
+              </div>
+              <div className="stat-item">
+                <span className="stat-icon">🕉️</span>
+                <div className="stat-info">
+                  <span className="stat-value">{pandits.length}</span>
+                  <span className="stat-label">Available Pandits</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <div className={`dashboard-main ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        {/* TOP HEADER */}
+        <header className="dashboard-header">
+          <div className="header-left">
+            <div className="header-greeting">
+              <h1>Welcome back, <span className="user-name">{user?.name}</span>!</h1>
+              <p className="header-subtitle">Here's what's happening with your spiritual journey today</p>
+            </div>
+          </div>
+          
+          <div className="header-right">
+            <div className="header-time">
+              <div className="time-display">{currentTime}</div>
+              <div className="date-display">{currentDate}</div>
+            </div>
+            
+            <div className="user-profile">
+              <div className="user-avatar">
+                <img 
+                  src={user?.profile_photo || '/images/i1.jpeg'} 
+                  alt={user?.name}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="user-initial" style={{display: 'none'}}>
+                  {user?.name?.charAt(0)?.toUpperCase()}
+                </div>
+              </div>
+              <div className="user-info">
+                <div className="user-name-header">{user?.name}</div>
+                <div className="user-role">Devotee</div>
+              </div>
+              <div className="user-status">
+                <div className="status-indicator active"></div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* DASHBOARD CONTENT */}
+        <div className="dashboard-content">
+          {/* STATS CARDS */}
+          <div className="stats-grid" data-aos="fade-up">
+            <div className="stat-card booking-stats">
+              <div className="stat-icon-large">📅</div>
+              <div className="stat-content">
+                <h3>{bookings.length}</h3>
+                <p>Total Bookings</p>
+                <span className="stat-trend">
+                  {bookings.filter(b => b.status === 'accepted').length} Completed
+                </span>
+              </div>
+            </div>
+            
+            <div className="stat-card pandit-stats">
+              <div className="stat-icon-large">👨‍🦳</div>
+              <div className="stat-content">
+                <h3>{pandits.length}</h3>
+                <p>Available Pandits</p>
+                <span className="stat-trend">Verified Experts</span>
+              </div>
+            </div>
+            
+            <div className="stat-card pending-stats">
+              <div className="stat-icon-large">⏳</div>
+              <div className="stat-content">
+                <h3>{bookings.filter(b => b.status === 'pending').length}</h3>
+                <p>Pending Bookings</p>
+                <span className="stat-trend">Awaiting Confirmation</span>
+              </div>
+            </div>
+            
+            <div className="stat-card quick-action">
+              <div className="stat-icon-large">🛕</div>
+              <div className="stat-content">
+                <h3>Book Now</h3>
+                <p>Quick Puja Booking</p>
+                <button 
+                  className="quick-action-btn"
+                  onClick={() => navigate('/booking')}
+                >
+                  Start Booking
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* HERO + SLIDER */}
+          <section className="dashboard-hero" id="dashboard" data-aos="fade-down">
+            <div className="hero-content">
+              <div className="hero-text">
+                <h2 className="hero-title">
+                  Connect with Trusted <span className="gradient-text">Spiritual Guides</span>
+                </h2>
+                <p className="hero-description">
+                  Experience authentic pujas, havans, and sacred ceremonies with verified pandits across India. 
+                  Your spiritual journey begins with a single click.
+                </p>
+                <div className="hero-buttons">
+                  <button
+                    className="hero-btn primary"
+                    onClick={() => navigate('/booking')}
+                  >
+                    🛕 Book Sacred Puja
+                  </button>
+                  <button
+                    className="hero-btn secondary"
+                    onClick={() => document.querySelector('#pandit').scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    👨‍🦳 Meet Our Pandits
+                  </button>
+                </div>
+              </div>
+              
+              <div className="hero-slider" data-aos="zoom-in">
+                <div className="slider-container">
+                  <img src={sliderImages[carouselIndex]} alt="Spiritual ceremony" />
+                  <div className="slider-overlay">
+                    <div className="slider-info">
+                      <span className="slider-title">Sacred Ceremonies</span>
+                      <span className="slider-subtitle">Experience Divine Bliss</span>
+                    </div>
+                  </div>
+                  <div className="slider-dots">
+                    {sliderImages.map((_, i) => (
+                      <button
+                        key={i}
+                        className={`slider-dot ${i === carouselIndex ? 'active' : ''}`}
+                        onClick={() => setCarouselIndex(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* HIGHLIGHTS */}
+          <section id="highlight" className="highlights-section" data-aos="fade-up">
+            <div className="section-header">
+              <h2 className="section-title">Why Choose Shubhkarya</h2>
+              <p className="section-subtitle">Trusted by thousands for authentic spiritual experiences</p>
+            </div>
+            
+            <div className="highlights-grid">
+              <div className="highlight-card expertise">
+                <div className="highlight-icon">✨</div>
+                <h3>250+ Spiritual Guides</h3>
+                <p>Verified pandits and consultants across India ready to serve</p>
+                <div className="highlight-stat">
+                  <img src="/images/india.jpeg" alt="India" className="highlight-bg" />
+                </div>
+              </div>
+              
+              <div className="highlight-card services">
+                <div className="highlight-icon">🛕</div>
+                <h3>100+ Sacred Services</h3>
+                <p>Wide variety of pujas, havans, and ceremonies for every occasion</p>
+                <div className="highlight-stat">
+                  <img src="/images/kalash.jpeg" alt="Kalash" className="highlight-bg" />
+                </div>
+              </div>
+              
+              <div className="highlight-card completed">
+                <div className="highlight-icon">🕉️</div>
+                <h3>1,000+ Completed</h3>
+                <p>Successfully performed ceremonies bringing joy to families</p>
+                <div className="highlight-stat">
+                  <img src="/images/havan.jpeg" alt="Havan" className="highlight-bg" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* FEATURES GRID */}
+          <section className="features-section" data-aos="fade-up">
+            <div className="features-grid">
+              <div className="feature-card">
+                <div className="feature-icon">✅</div>
+                <h4>Verified Pandits</h4>
+                <p>Background-checked and reviewed spiritual experts</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">🌏</div>
+                <h4>Pan India Support</h4>
+                <p>Services available across all states and cities</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">💰</div>
+                <h4>Transparent Pricing</h4>
+                <p>No hidden charges with clear billing policies</p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">🔆</div>
+                <h4>Custom Traditions</h4>
+                <p>Choose by tradition, language, and preferences</p>
+              </div>
+            </div>
+          </section>
+
+          {/* FESTIVE OFFER */}
+          <div className="festive-offer" data-aos="zoom-in">
+            <div className="offer-content">
+              <div className="offer-icon">🎁</div>
+              <div className="offer-text">
+                <h3>Festive Special Offer!</h3>
+                <p>Get <span className="offer-amount">₹50 OFF</span> on your first puja booking</p>
+                <span className="offer-code">Use code: <strong>SHUBH50</strong></span>
+              </div>
+            </div>
+          </div>
+
+          {/* PANDIT SHOWCASE */}
+          <section id="pandit" className="pandit-section" data-aos="fade-up">
+            <div className="section-header">
+              <h2 className="section-title">Our Verified Pandits</h2>
+              <div className="section-actions">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search by name or city..."
+                  value={searchPandits}
+                  onChange={e => setSearchPandits(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            <div className="pandit-grid">
+              {filteredPandits.slice(0, visiblePandits).map(pandit => (
+                <motion.div
+                  key={pandit._id}
+                  className="pandit-card"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  onClick={() => toggleExpand(pandit._id)}
+                >
+                  <div className="pandit-avatar-section">
+                    <div 
+                      className="pandit-avatar"
+                      style={{ backgroundImage: `url(${pandit.profile_photo_url || '/images/i1.jpeg'})` }}
+                    >
+                      <span className="avatar-initial">{pandit.name.charAt(0)}</span>
+                    </div>
+                    <div className="verification-badge">✓</div>
+                  </div>
+                  
+                  <div className="pandit-info">
+                    <h3 className="pandit-name">{pandit.name}</h3>
+                    <p className="pandit-city">📍 {pandit.city}</p>
+                    
+                    <div className="pandit-badges">
+                      <span className="badge experience">{pandit.experienceYears}+ years</span>
+                      <span className="badge rating">⭐ 4.8</span>
+                    </div>
+                    
+                    {expandedPandits[pandit._id] && (
+                      <motion.div 
+                        className="pandit-details"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                      >
+                        <div className="detail-item">
+                          <strong>Languages:</strong> {pandit.languages?.join(', ')}
+                        </div>
+                        <div className="detail-item">
+                          <strong>Specialties:</strong> {pandit.specialties?.join(', ')}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            
+            {filteredPandits.length > 3 && (
+              <div className="section-actions center">
+                <button
+                  className="action-btn secondary"
+                  onClick={() => setVisiblePandits(v => (v === 3 ? filteredPandits.length : 3))}
+                >
+                  {visiblePandits === 3 ? 'Show All Pandits' : 'Show Less'}
+                </button>
+              </div>
+            )}
+          </section>
+
+          {/* BOOKINGS */}
+          <section id="booking" className="bookings-section" data-aos="fade-up">
+            <div className="section-header">
+              <h2 className="section-title">Your Booking History</h2>
+              <div className="section-actions">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search bookings..."
+                  value={searchBookings}
+                  onChange={e => setSearchBookings(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            <div className="bookings-grid">
+              {filteredBookings.length === 0 ? (
+                <div className="empty-state">
+                  <div className="empty-icon">📅</div>
+                  <h3>No bookings found</h3>
+                  <p>Start your spiritual journey by booking your first puja</p>
+                  <button 
+                    className="action-btn primary"
+                    onClick={() => navigate('/booking')}
+                  >
+                    Book Your First Puja
+                  </button>
+                </div>
+              ) : (
+                filteredBookings.map(booking => (
+                  <motion.div
+                    key={booking._id}
+                    className="booking-card"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="booking-header">
+                      <div className="booking-icon">🛕</div>
+                      <div className="booking-status">
+                        <span className={`status-badge ${booking.status}`}>
+                          {booking.status}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="booking-info">
+                      <h3 className="service-name">{booking.serviceid?.name}</h3>
+                      <p className="pandit-name">👨‍🦳 {booking.panditid?.name}</p>
+                      <div className="booking-details">
+                        <span className="booking-date">
+                          📅 {new Date(booking.puja_date).toLocaleDateString()}
+                        </span>
+                        <span className="booking-time">⏰ {booking.puja_time}</span>
+                        <span className="booking-location">📍 {booking.location}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </section>
+
+          {/* REVIEWS */}
+          <section id="review" className="review-section" data-aos="fade-up">
+            <div className="section-header">
+              <h2 className="section-title">Share Your Experience</h2>
+              <p className="section-subtitle">Help others by sharing your spiritual journey experience</p>
+            </div>
+            
+            {reviewMessage && (
+              <div className={`message ${reviewMessage.includes('Thank') ? 'success' : 'error'}`}>
+                {reviewMessage}
+              </div>
+            )}
+            
+            <form onSubmit={handleReviewSubmit} className="review-form">
+              <div className="form-row">
+                <input 
+                  type="text" 
+                  value={review.name} 
+                  disabled 
+                  className="form-input"
+                  placeholder="Your name"
+                />
+                <StarRating 
+                  rating={review.rating} 
+                  onChange={v => setReview(prev => ({ ...prev, rating: v }))} 
+                />
+              </div>
+              
+              <textarea
+                placeholder="Share your experience with us..."
+                value={review.comment}
+                onChange={e => setReview(prev => ({ ...prev, comment: e.target.value }))}
+                className="form-textarea"
+                required
+              />
+              
+              <button 
+                type="submit" 
+                className="submit-btn"
+                disabled={reviewLoading}
+              >
+                {reviewLoading ? 'Submitting...' : '💬 Submit Review'}
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+
+      {/* CHATBOT */}
       <button
-        aria-label="Toggle Chatbot"
         className="chatbot-toggle"
         onClick={() => setShowChatbot(!showChatbot)}
+        aria-label="Toggle Chatbot"
       >
-        {showChatbot ? '×' : <img src="/images/subh.png" alt="Open Chatbot" style={{ borderRadius: '50%', width: 38, height: 38 }} />}
+        {showChatbot ? '×' : <img src="/images/subh.png" alt="Chat" />}
       </button>
+      
       {showChatbot && (
-        <div className="chatbot-popup" role="dialog" aria-modal="true" aria-label="Chatbot window">
+        <div className="chatbot-popup">
           <iframe
             title="Chatbot"
             src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
-            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 15 }}
+            style={{ width: '100%', height: '100%', border: 'none' }}
             allow="clipboard-write"
           />
         </div>
