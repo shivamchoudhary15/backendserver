@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
+import { postLocation } from '../api/api'; // <-- add this import
 
 const backendURL = "https://backendserver-dryq.onrender.com";
 
@@ -18,6 +19,7 @@ const Home = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +43,22 @@ const Home = () => {
       }
     };
     fetchData();
+  }, []);
+
+  // Location fetching effect (no UI, only post)
+  useEffect(() => {
+    if (!("geolocation" in navigator)) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        postLocation({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude
+        }).catch(() => {});
+      },
+      (err) => {},
+      { enableHighAccuracy: true, maximumAge: 0 }
+    );
+    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   return (
