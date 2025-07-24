@@ -1,73 +1,123 @@
 .pandits-page {
-  max-width: 900px;
+  max-width: 1050px;
   margin: 2rem auto;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
+  background: none;
 }
-
 .pandits-page h2 {
   text-align: center;
   color: #2980b9;
-  margin-bottom: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
 }
-
-.pandit-card {
+.filters-row {
   display: flex;
-  flex-wrap: wrap;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
-  margin-bottom: 1.7rem;
-  padding: 1.3rem 1.5rem;
-  align-items: center;
   gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: flex-end;
+}
+.filter-input {
+  min-width: 160px;
+  padding: 0.35rem 0.9rem;
+  border-radius: 7px;
+  border: 1.5px solid #bed2f3;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: border 0.22s;
+}
+.filter-input:focus {
+  border-color: #2980b9;
 }
 
-.pandit-photo {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+.highlighted-slideshow {
+  max-width: 580px;
+  margin: 0 auto 1.8rem auto;
+  box-shadow: 0 3px 18px rgba(52, 73, 94, 0.13);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.pandit-slide {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 2.2rem;
+  min-height: 105px;
+}
+.pandit-slide-photo {
+  width: 70px;
+  height: 70px;
   object-fit: cover;
-  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2.5px solid #2980b9;
+}
+.pandit-slide-info {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2980b9;
 }
 
-.pandit-info {
-  flex: 1 1 300px;
-  font-size: 0.95rem;
-  color: #34495e;
-  line-height: 1.4;
+.pandit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+  gap: 1.75rem 1.5rem;
 }
-
-.pandit-actions {
+.pandit-card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 21px rgba(41,128,185,0.11);
+  padding: 1.3rem 1.25rem 1.2rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-width: 120px;
-  flex-shrink: 0;
-  align-items: flex-start;
+  align-items: center;
+  position: relative;
+  transition: transform 0.18s, box-shadow 0.18s;
 }
-
+.pandit-card:hover {
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 0 13px 32px rgba(34,49,63,0.19);
+}
+.pandit-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid #27ae60;
+  margin-bottom: 0.7rem;
+}
+.pandit-info {
+  text-align: center;
+  font-size: 0.97rem;
+  color: #355;
+  margin-bottom: 0.5rem;
+  max-width: 220px;
+}
+.pandit-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  margin-bottom: 0.38rem;
+}
 .pandit-actions button {
   cursor: pointer;
   border: none;
   border-radius: 6px;
   padding: 8px 14px;
-  font-size: 0.9rem;
+  font-size: 0.94rem;
   color: white;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.23s;
 }
-
 .btn-verify {
   background-color: #27ae60;
 }
-
 .btn-verify:hover {
   background-color: #1e8449;
 }
-
 .btn-delete {
   background-color: #e74c3c;
 }
-
 .btn-delete:hover {
   background-color: #b93227;
 }
@@ -75,32 +125,49 @@
 .upload-photo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  min-width: 220px;
+  gap: 0.6rem;
+  min-width: 190px;
+  margin-top: 0.5rem;
+  margin-bottom: -0.5rem;
 }
-
 .upload-photo input[type="file"] {
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.87rem;
 }
-
 .upload-photo button {
   cursor: pointer;
   border: none;
   border-radius: 6px;
-  padding: 7px 14px;
+  padding: 6px 14px;
   background-color: #2980b9;
   color: white;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  font-size: 0.93rem;
+  transition: background-color 0.2s;
 }
-
 .upload-photo button:disabled {
   background-color: #95a5a6;
   cursor: not-allowed;
 }
-
 .upload-photo button:hover:not(:disabled) {
   background-color: #1c5980;
+}
+.empty-msg {
+  text-align: center;
+  font-weight: 500;
+  color: #e74c3c;
+  font-size: 1.2rem;
+  margin: 2.4rem 0;
+}
+
+@media (max-width: 720px) {
+  .pandit-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.1rem;
+  }
+  .highlighted-slideshow {
+    max-width: 99vw;
+    border-radius: 7px;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
 }
