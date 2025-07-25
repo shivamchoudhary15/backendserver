@@ -1,113 +1,94 @@
-/* src/pages/PanditsPage.css */
 .pandit-filters {
   display: flex;
   gap: 0.9rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
+
 .pandit-filters input {
   padding: 7px 12px;
   border-radius: 6px;
   border: 1px solid #bbb;
   font-size: 1rem;
+  flex: 1 1 150px;
+  min-width: 140px;
 }
+
 .pandit-filters button {
   border: none;
   background: #2980b9;
   color: #fff;
   border-radius: 6px;
-  padding: 6px 14px;
+  padding: 7px 14px;
   cursor: pointer;
-  transition: background .2s;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
+
 .pandit-filters button:hover {
   background: #1c5980;
 }
 
-.pandit-carousel {
-  display: flex;
-  gap: 1.2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.carousel-controls {
-  text-align: center;
-  margin-top: 1.2rem;
-  gap: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.carousel-controls button {
-  border: none;
-  background: #6c757d;
-  color: #fff;
-  border-radius: 8px;
-  padding: 8px 18px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background .25s;
-  margin: 0 0.6rem;
-}
-.carousel-controls button:disabled {
-  background: #d0d4da;
-  cursor: not-allowed;
-}
-.fade-in {
-  animation: fadeInUp 0.45s ease-in;
-}
-@keyframes fadeInUp {
-  0% { opacity: 0; transform: translateY(24px);}
-  100% { opacity: 1; transform: translateY(0);}
-}
-/* ... rest as in your original file ... */
-
-.pandits-page {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.pandits-page h2 {
-  text-align: center;
-  color: #2980b9;
-  margin-bottom: 1.8rem;
+.pandit-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
 }
 
 .pandit-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.2s;
+  outline: none;
+  user-select: none;
+}
+
+.pandit-card:focus,
+.pandit-card:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.14);
+  transform: translateY(-4px);
+}
+
+.pandit-header {
   display: flex;
-  flex-wrap: wrap;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
-  margin-bottom: 1.7rem;
-  padding: 1.3rem 1.5rem;
-  align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2980b9;
+  margin-bottom: 0.6rem;
+}
+
+.pandit-city {
+  font-weight: 500;
+  color: #555;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.pandit-details {
+  margin-top: 1rem;
+  color: #34495e;
+  font-size: 0.95rem;
 }
 
 .pandit-photo {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
-}
-
-.pandit-info {
-  flex: 1 1 300px;
-  font-size: 0.95rem;
-  color: #34495e;
-  line-height: 1.4;
+  margin-bottom: 1rem;
+  display: block;
 }
 
 .pandit-actions {
+  margin-top: 1rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-width: 120px;
-  flex-shrink: 0;
-  align-items: flex-start;
+  gap: 0.8rem;
+  flex-wrap: wrap;
 }
 
 .pandit-actions button {
@@ -137,16 +118,17 @@
 }
 
 .upload-photo {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;
-  min-width: 220px;
+  flex-wrap: wrap;
 }
 
 .upload-photo input[type="file"] {
   cursor: pointer;
   font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .upload-photo button {
