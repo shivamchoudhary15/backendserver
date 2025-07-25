@@ -1,3 +1,67 @@
+/* src/pages/PanditsPage.css */
+.pandit-filters {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.2rem;
+  align-items: center;
+}
+.pandit-filters input {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 1rem;
+}
+.pandit-filters button {
+  border: none;
+  background: #2980b9;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.pandit-filters button:hover {
+  background: #1c5980;
+}
+
+.pandit-carousel {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.carousel-controls {
+  text-align: center;
+  margin-top: 1.2rem;
+  gap: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-controls button {
+  border: none;
+  background: #6c757d;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background .25s;
+  margin: 0 0.6rem;
+}
+.carousel-controls button:disabled {
+  background: #d0d4da;
+  cursor: not-allowed;
+}
+.fade-in {
+  animation: fadeInUp 0.45s ease-in;
+}
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(24px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+/* ... rest as in your original file ... */
+
 .pandits-page {
   max-width: 900px;
   margin: 2rem auto;
