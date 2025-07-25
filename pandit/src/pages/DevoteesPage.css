@@ -1,3 +1,24 @@
+/* src/pages/DevoteesPage.css */
+.edit-btn {
+  border: none;
+  background: #2980b9;
+  color: #fff;
+  padding: 7px 12px;
+  border-radius: 5px;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  font-size: 0.98rem;
+}
+.edit-btn:hover {
+  background: #18436a;
+}
+.devoEdit input {
+  border-radius: 5px;
+  padding: 7px 11px;
+  border: 1px solid #bbb;
+  margin-right: 10px;
+}
+
 .devotees-page {
   max-width: 700px;
   margin: 2rem auto;
