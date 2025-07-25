@@ -11,16 +11,18 @@ function Home1() {
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const devoteesRes = await getAllDevotees();
-        const panditsRes = await getAllPandits();
-        const bookingsRes = await getBookings();
+        const [devoteesRes, panditsRes, bookingsRes] = await Promise.all([
+          getAllDevotees(),
+          getAllPandits(),
+          getBookings(),
+        ]);
         setStats({
           devotees: devoteesRes.data.length,
           pandits: panditsRes.data.length,
           bookings: bookingsRes.data.length,
         });
       } catch (err) {
-        // handle errors
+        console.error('Error fetching counts', err);
       }
     }
     fetchCounts();
