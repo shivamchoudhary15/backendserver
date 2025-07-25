@@ -5,8 +5,8 @@ import './DevoteesPage.css';
 
 function DevoteesPage() {
   const [devotees, setDevotees] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [form, setForm] = useState({ name: '', email: '' });
+  const [expandedId, setExpandedId] = useState(null);
+  const [editForm, setEditForm] = useState({}); // id -> form data
 
   useEffect(() => { fetchDevotees(); }, []);
 
@@ -14,23 +14,35 @@ function DevoteesPage() {
     try {
       const res = await getAllDevotees();
       setDevotees(res.data);
-    } catch (_) {}
+    } catch (e) { console.error(e); }
   }
-  function handleEdit(d) {
-    setEditId(d._id);
-    setForm({ name: d.name, email: d.email });
+
+  function startEdit(id, d) {
+    setExpandedId(id);
+    setEditForm({ ...editForm, [id]: { ...d } });
   }
-  async function handleSave() {
+
+  async function handleSave(id) {
     try {
-      // Assume an endpoint exists for updating user/admin: `/users/update/:id`
-      await fetch(`https://localhost:5000/api/users/update/${editId}`, {
+      // put updated data except name and email
+      const { name, email, ...rest } = editForm[id];
+      await fetch(`https://localhost:5000/api/users/update/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(rest),
       });
-      setEditId(null);
+      setExpandedId(null);
       fetchDevotees();
-    } catch (_) {}
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function handleChange(id, field, value) {
+    setEditForm(prev => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value },
+    }));
   }
 
   return (
@@ -40,24 +52,67 @@ function DevoteesPage() {
         <p>No devotees found.</p>
       ) : (
         <div className="devotees-list">
-          {devotees.map(d => (
-            <div key={d._id} className="devotee-card">
-              {editId === d._id ? (
-                <>
-                  <input value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))}/>
-                  <input value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />
-                  <button onClick={handleSave}>Save</button>
-                  <button onClick={()=>setEditId(null)}>Cancel</button>
-                </>
-              ) : (
-                <>
-                  <p><strong>{d.name}</strong></p>
-                  <p>{d.email}</p>
-                  <button className="edit-btn" onClick={()=>handleEdit(d)}>Edit</button>
-                </>
-              )}
-            </div>
-          ))}
+          {devotees.map(d => {
+            const isExpanded = expandedId === d._id;
+            const form = editForm[d._id] || d;
+            return (
+              <div
+                key={d._id}
+                className="devotee-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => setExpandedId(isExpanded ? null : d._id)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    setExpandedId(isExpanded ? null : d._id);
+                  }
+                }}
+                aria-expanded={isExpanded}
+              >
+                {!isExpanded ? (
+                  <>
+                    <p><strong>{d.name}</strong></p>
+                    <p>{d.email}</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="devotee-field">
+                      <label>Name:</label>
+                      <input value={form.name} disabled />
+                    </div>
+                    <div className="devotee-field">
+                      <label>Email:</label>
+                      <input value={form.email} disabled />
+                    </div>
+                    <div className="devotee-field">
+                      <label>Phone:</label>
+                      <input
+                        value={form.phone || ''}
+                        onChange={e => handleChange(d._id, 'phone', e.target.value)}
+                      />
+                    </div>
+                    <div className="devotee-field">
+                      <label>Address:</label>
+                      <input
+                        value={form.address || ''}
+                        onChange={e => handleChange(d._id, 'address', e.target.value)}
+                      />
+                    </div>
+                    <div className="devotee-actions">
+                      <button onClick={e => {
+                        e.stopPropagation();
+                        handleSave(d._id);
+                      }}>Save</button>
+                      <button onClick={e => {
+                        e.stopPropagation();
+                        setExpandedId(null);
+                      }}>Cancel</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
