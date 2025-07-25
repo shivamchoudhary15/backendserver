@@ -45,12 +45,15 @@
   transition: box-shadow 0.3s, transform 0.2s;
   outline: none;
   user-select: none;
+  position: relative;
 }
 
 .pandit-card:focus,
-.pandit-card:hover {
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.14);
+.pandit-card:hover,
+.pandit-card.expanded {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
   transform: translateY(-4px);
+  z-index: 10;
 }
 
 .pandit-header {
@@ -69,10 +72,17 @@
   font-style: italic;
 }
 
+/* Hide pandit-details by default; show on hover or if expanded */
 .pandit-details {
+  display: none;
   margin-top: 1rem;
   color: #34495e;
   font-size: 0.95rem;
+}
+
+.pandit-card:hover .pandit-details,
+.pandit-card.expanded .pandit-details {
+  display: block;
 }
 
 .pandit-photo {
