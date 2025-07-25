@@ -1,0 +1,8 @@
+.pooja-mgmt-page { max-width: 650px; margin:2rem auto; }
+.add-pooja-form { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.add-pooja-form input { padding:6px; border-radius:6px; border: 1px solid #ccc; flex:1;}
+.add-pooja-form button { border:none; background: #2980b9; color:#fff; border-radius:6px; padding:7px 14px;}
+.pooja-list { display: flex; flex-direction: column; gap: 1rem;}
+.pooja-card { background:#fafafa; border-radius:10px; box-shadow:0 2px 9px #ececec; padding:1rem 1.2rem; }
+.pooja-card button { margin-right:7px; padding:4px 12px; border:none; background:#2ecc71; color:#fff; border-radius:5px;}
+.pooja-card button:last-child { background:#e74c3c;}
