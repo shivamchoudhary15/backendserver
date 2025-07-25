@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Home,
-  CalendarDays,
-  UserRound,
-  Book,
-  LogOut,
-  ListChecks,
-  MessageCircle,
-  Search,
-  Users,
+  Home, CalendarDays, UserRound, Book, LogOut, ListChecks,
+  MessageCircle, Search, Users
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import AOS from "aos";
@@ -17,6 +10,7 @@ import "./Dashboard.css";
 import { createReview, getBookings, getVerifiedPandits } from "../api/api";
 import ChatWindow from "./ChatWindow";
 
+// Sidebar navigation structure
 const sidebarLinks = [
   { label: "Home", icon: Home, goto: "/" },
   { label: "Book Puja", icon: Book, goto: "/booking" },
@@ -35,7 +29,6 @@ const sliderImages = [
   "/images/i1.jpeg",
 ];
 
-// Star rating component remains unchanged except icon removed and keyboard support retained
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
@@ -60,30 +53,25 @@ export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [pandits, setPandits] = useState([]);
-
   const [collapsed, setCollapsed] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [visiblePandits, setVisiblePandits] = useState(3);
   const [expandedPandits, setExpandedPandits] = useState({});
   const [searchPandits, setSearchPandits] = useState("");
   const [searchBookings, setSearchBookings] = useState("");
-
   const [review, setReview] = useState({ name: "", rating: 0, comment: "" });
   const [reviewMessage, setReviewMessage] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
-
   const [showChatbot, setShowChatbot] = useState(false);
-
   const [chatPanditId, setChatPanditId] = useState(null);
   const [chatPanditName, setChatPanditName] = useState("");
-
   const [currentDateTime, setCurrentDateTime] = useState("");
 
   useEffect(() => {
     AOS.init({ duration: 750, once: true });
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
-    if (!token || !userData) return; // Add your navigation accordingly
+    if (!token || !userData) return;
     try {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
@@ -92,9 +80,7 @@ export default function Dashboard() {
         setBookings(res.data || [])
       );
       getVerifiedPandits().then((res) => setPandits(res.data || []));
-    } catch {
-      // handle error / navigate login
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -165,7 +151,6 @@ export default function Dashboard() {
   function handleNavClick(item) {
     if (item.logout) {
       localStorage.clear();
-      // navigate(item.goto); implement your navigation function here
       alert("Logout clicked, implement navigation");
     } else if (String(item.goto).startsWith("#")) {
       const section = document.querySelector(item.goto);
@@ -176,7 +161,6 @@ export default function Dashboard() {
           inline: "nearest",
         });
     } else {
-      // navigate(item.goto); implement your navigation function here
       alert(`Navigate to: ${item.goto}`);
     }
   }
@@ -184,15 +168,11 @@ export default function Dashboard() {
   return (
     <div className="dashboard-app-bg">
       {/* SIDEBAR */}
-      <aside
-        className={`sidebar-root${collapsed ? " collapsed" : ""}`}
-        onMouseEnter={() => setCollapsed(false)}
-        onMouseLeave={() => setCollapsed(window.innerWidth <= 900)}
-      >
+      <aside className={`sidebar-root${collapsed ? " collapsed" : ""}`}>
         <div className="sidebar-brand">
           <img src="/images/subh.png" alt="Logo" className="sidebar-logo" />
           {!collapsed && (
-            <span className="sidebar-brand-name" tabIndex={0}>
+            <span className="sidebar-brand-name white-logo" tabIndex={0} style={{ color: "#fff" }}>
               Shubhkarya
             </span>
           )}
@@ -221,63 +201,89 @@ export default function Dashboard() {
       </aside>
 
       {/* HEADER */}
-      <header className="header-root" aria-label="User info and date time">
+      <header className="header-root">
         <div className="user-block">
-          <img
-            src={user?.avatar || "/images/avatar_user.png"}
-            alt="User avatar"
-            className="header-avatar"
-          />
           <div>
-            <div className="header-user-name">{user?.name || "User"}</div>
-            <div className="header-user-email">{user?.email || "user@example.com"}</div>
-          </div>
-        </div>
-        <div className="header-datetime" aria-live="polite" aria-atomic="true">
-          {currentDateTime}
-        </div>
-      </header>
-
-      {/* MAIN CONTENT */}
-      <main className="dashboard-main" tabIndex={-1}>
-        {/* CAROUSEL + CAPTION */}
-        <section className="carousel-section" aria-label="Featured Images Carousel">
-          <div className="carousel-frame">
-            <img
-              src={sliderImages[carouselIndex]}
-              alt={`Slide ${carouselIndex + 1}`}
-              loading="lazy"
-            />
-            <div className="carousel-dots" role="tablist" aria-label="Carousel navigation">
-              {sliderImages.map((_, i) => (
-                <button
-                  key={i}
-                  className={`carousel-dot${carouselIndex === i ? " active" : ""}`}
-                  onClick={() => setCarouselIndex(i)}
-                  aria-selected={carouselIndex === i}
-                  role="tab"
-                  aria-label={`Go to slide ${i + 1}`}
-                />
-              ))}
+            <div className="header-user-welcome">
+              {user?.name ? `Welcome, ${user.name}!` : "Welcome to Shubhkarya"}
+            </div>
+            <div className="header-user-email">
+              {user?.email || "user@example.com"}
             </div>
           </div>
-          <div className="carousel-caption">
-            <h1>
-              Book <span className="c-accent">Pandit, Puja & Rituals</span> in{" "}
-              <span className="c-blue">One Place</span>
+        </div>
+        <div className="header-datetime">{currentDateTime}</div>
+      </header>
+
+      <main className="dashboard-main">
+        {/* HERO & SLIDER */}
+        <section className="hero-section">
+          <div className="hero-content">
+            <h1 className="hero-title">
+              Experience <span className="hero-highlight">Auspicious Rituals</span> with <span className="hero-brand-white">Shubhkarya</span>
             </h1>
-            <p>
-              Simplified spiritual arrangements, transparent bookings, verified experts.
-              <br />
-              Inspired by tradition, built for the digital age.
+            <p className="hero-subtitle">
+              Welcome{user?.name && <span>, <b>{user.name}</b></span>}!<br />
+              Book trusted Pandits for your <span style={{ color: "#fcd75a", fontWeight: 600 }}>pujas, havans, and ceremonies</span> with elegance and ease.<br />
+              Now enhanced with same-day bookings and instant chat support.
             </p>
-            <button className="main-cta-btn" onClick={() => alert("Navigate to booking")}>
-              Book Puja Now
-            </button>
+            <div className="hero-actions">
+              <button className="main-cta-btn" onClick={() => alert("Navigate to booking")}>
+                Book Puja Now
+              </button>
+              <button className="main-alt-btn" onClick={() => alert("Browse Pandits")}>
+                Browse Pandits
+              </button>
+            </div>
+            <div className="hero-badges">
+              <span>✨ Verified Pandits</span>
+              <span>📆 Live Availability</span>
+              <span>🚀 Express Service</span>
+            </div>
+          </div>
+          <div className="slider-wrapper">
+            <div className="carousel-frame hero-slider-bg">
+              <img
+                src={sliderImages[carouselIndex]}
+                alt={`Slide ${carouselIndex + 1}`}
+                loading="lazy"
+              />
+              <div className="carousel-dots">
+                {sliderImages.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`carousel-dot${carouselIndex === i ? " active" : ""}`}
+                    onClick={() => setCarouselIndex(i)}
+                    aria-selected={carouselIndex === i}
+                    role="tab"
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+              <div className="slider-caption">
+                <div>Find <span style={{ color: "#fcd75a" }}>expert guidance</span> for every ritual</div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* VERIFIED PANDITS */}
+        {/* Dashboard Features */}
+        <section className="dashboard-features">
+          <div className="feature-card">
+            <h3>Live Chat Support</h3>
+            <p>Ask spiritual or booking questions to our team – instant help, 7am to 10pm.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Preferred Pandit Booking</h3>
+            <p>Save favorite Pandits, see their next available slots, and book with just one tap.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Festive Offers</h3>
+            <p>Special discounts and promo codes for all major festivals and family events.</p>
+          </div>
+        </section>
+
+        {/* Verified Pandits (unchanged) */}
         <section
           id="pandit"
           className="pandit-section"
@@ -381,7 +387,7 @@ export default function Dashboard() {
           )}
         </AnimatePresence>
 
-        {/* BOOKINGS */}
+        {/* BOOKINGS (unchanged) */}
         <section
           id="booking"
           className="bookings-section blur-bg"
@@ -441,7 +447,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* REVIEWS */}
+        {/* REVIEWS (unchanged) */}
         <section
           id="review"
           className="review-section glass-review"
@@ -498,7 +504,7 @@ export default function Dashboard() {
           </form>
         </section>
 
-        {/* CHATBOT BUTTON */}
+        {/* CHATBOT BUTTON (unchanged) */}
         <button
           aria-label="Toggle Chatbot"
           className="chatbot-toggle"
