@@ -1,68 +1,55 @@
-.home1-container {
+/* src/pages/Home1.css */
+.dashboard-cards-container {
   display: flex;
-  gap: 1.6rem;
+  gap: 2rem;
   justify-content: center;
-  flex-wrap: wrap;
-  padding: 1rem;
-  /* Container padding to avoid overlap with navbar if needed */
-  margin-top: 72px; /* adjust if your navbar height differs */
 }
-
-.card {
-  flex: 1 1 180px;
-  max-width: 260px;
-  min-width: 160px;
-  background-color: white;
-  border-radius: 14px;
-  padding: 2rem 1rem;
-  box-shadow: 0 6px 20px rgba(44,62,80,0.1);
-  text-align: center;
+.dashboard-card {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  user-select: none;
-}
-
-.card h3 {
-  font-size: 3.2rem;
-  color: #34495e;
-  margin-bottom: 0.5rem;
-  letter-spacing: 1px;
-  font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.card p {
-  font-size: 1.2rem;
-  color: #7f8c8d;
-  font-weight: 600;
-}
-
-.card:hover, .card:focus {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(44,62,80,0.2);
+  background: linear-gradient(120deg, #e1eaf7 60%, #fafafa 100%);
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(52, 73, 94, 0.10);
+  padding: 2.2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 210px;
+  transition: box-shadow 0.3s, transform 0.2s;
   outline: none;
+  border: none;
+  position: relative;
+}
+.dashboard-card:active, .dashboard-card:focus {
+  box-shadow: 0 12px 32px rgba(52, 73, 94, 0.17);
+  transform: scale(1.03);
+}
+.dashboard-card-title {
+  font-size: 1.25rem;
+  color: #34495e;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+.dashboard-card-value {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #3498db;
+  text-shadow: 0 2px 14px #d6eaf8;
 }
 
-/* Specific color accents */
-.card-pandits {
-  border-top: 6px solid #2980b9;
+.pulse {
+  animation: pulseGlow 2s infinite alternate;
 }
-
-.card-devotees {
-  border-top: 6px solid #27ae60;
-}
-
-.card-bookings {
-  border-top: 6px solid #f39c12;
-}
-
-/* Responsive - On small screens stack cards */
-@media (max-width: 640px) {
-  .home1-container {
-    justify-content: center;
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 0 0 #b2dfdb55;
   }
-  .card {
-    min-width: 90vw;
-    max-width: 90vw;
+  to {
+    box-shadow: 0 0 16px 8px #a0c4ff90;
   }
+}
+
+@media (max-width: 950px) {
+  .dashboard-cards-container { flex-direction: column; align-items: center; }
+  .dashboard-card { min-width: 200px; width: 80%; margin-bottom: 1.5rem; }
 }
