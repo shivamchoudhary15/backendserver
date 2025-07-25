@@ -1,404 +1,693 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Home, CalendarCheck2, Users, MessageSquare, IndianRupee, Phone, ShieldCheck,
-  Timer, XCircle, Star, ArrowRight, Clock3, LogOut, UserCircle2, SunDim
-} from "lucide-react";
-import { motion, AnimatePresence } from 'framer-motion';
-import './PanditDashboard.css';
-
-const ChatWindow = ({ userId, panditId, chatName, onClose }) => (
-  <motion.div
-    className="chat-window-modal"
-    role="dialog"
-    aria-modal="true"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <motion.div
-      className="chat-window-content-wrapper"
-      initial={{ y: 50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 50, opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-      style={{ background: '#fff', borderRadius: 14, maxWidth: 480, width: '95%', boxShadow: '0 9px 28px rgba(0,0,0,0.15)' }}
-    >
-      <div
-        className="chat-window-header"
-        style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 24px', backgroundColor: '#1979c5', borderRadius: '14px 14px 0 0', color: 'white' }}
-      >
-        <span>Chat with {chatName}</span>
-        <button
-          onClick={onClose}
-          aria-label="Close chat window"
-          style={{ fontSize: 22, border: 'none', background: 'transparent', cursor: 'pointer', color: 'white' }}
-        >×</button>
-      </div>
-      <div className="chat-window-content" style={{ padding: 20, minHeight: 180 }}>
-        <p style={{ fontStyle: 'italic', color: '#556779' }}>[Chat feature coming soon]</p>
-      </div>
-    </motion.div>
-  </motion.div>
-);
-
-const pages = {
-  dashboard: "Dashboard",
-  bookings: "Bookings",
-  devotees: "Devotees",
-  chat: "Chats"
-};
-
-function PanditDashboard() {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user')) || {};
-  const [bookings, setBookings] = useState([]);
-  const [currentPage, setCurrentPage] = useState('dashboard');
-  const [showStats, setShowStats] = useState(false);
-  const [filterDate, setFilterDate] = useState('');
-  const [searchName, setSearchName] = useState('');
-  const [filterStatus, setFilterStatus] = useState('');
-  const [activeChatDevoteeId, setActiveChatDevoteeId] = useState(null);
-  const [activeChatDevoteeName, setActiveChatDevoteeName] = useState('');
-  const [filterResetTrigger, setFilterResetTrigger] = useState(0);
-
-  useEffect(() => {
-    if (user?._id) {
-      fetch(`http://localhost:5000/api/bookings/view?panditid=${user._id}`)
-        .then(res => res.json())
-        .then(data => setBookings(data))
-        .catch(() => setBookings([]));
-    }
-  }, [user]);
-
-  const completedCount = bookings.filter(b => b.status === 'Accepted').length;
-  const pendingCount = bookings.filter(b => b.status === 'Pending').length;
-  const rejectedCount = bookings.filter(b => b.status === 'Rejected').length;
-  const uniqueDevotees = useMemo(() => {
-    const ids = new Set();
-    bookings.forEach(b => b.userid?._id && ids.add(b.userid._id));
-    return ids.size;
-  }, [bookings]);
-  const totalEarnings = completedCount * 500;
-
-  const filteredBookings = useMemo(() => bookings.filter(b => {
-    const dateMatch = filterDate ? b.puja_date === filterDate : true;
-    const nameMatch = b.userid?.name?.toLowerCase().includes(searchName.toLowerCase());
-    const statusMatch = filterStatus ? b.status === filterStatus : true;
-    return dateMatch && nameMatch && statusMatch;
-  }), [bookings, filterDate, searchName, filterStatus, filterResetTrigger]);
-
-  const devoteesList = useMemo(() => {
-    const map = {};
-    bookings.forEach(b => {
-      if (b.userid?._id && !map[b.userid._id]) {
-        map[b.userid._id] = {
-          id: b.userid._id,
-          name: b.userid.name,
-          phone: b.userid.phone,
-          city: b.location
-        };
-      }
-    });
-    return Object.values(map);
-  }, [bookings]);
-
-  const updateStatus = async (id, status) => {
-    try {
-      const res = await fetch(`http://localhost:5000/api/bookings/status/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-      });
-      const data = await res.json();
-      if (data.booking) setBookings(prev => prev.map(b => b._id === id ? data.booking : b));
-    } catch (err) {
-      console.error('Failed to update status', err);
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/');
-  };
-
-  const statusIcon = {
-    Pending: <Timer size={18} color="#e5ae28" />,
-    Accepted: <ShieldCheck size={18} color="#23cb7d" />,
-    Rejected: <XCircle size={18} color="#e15d7c" />,
-  };
-
-  const sidebarItems = [
-    { key: 'dashboard', label: 'Dashboard', icon: <Home size={24} /> },
-    { key: 'bookings', label: 'Bookings', icon: <CalendarCheck2 size={24} /> },
-    { key: 'devotees', label: 'Devotees', icon: <Users size={24} /> },
-    { key: 'chat', label: 'Chats', icon: <MessageSquare size={24} /> },
-  ];
-
-  const topServices = useMemo(() => {
-    const stats = {};
-    bookings.forEach(b => {
-      const svc = b.serviceid?.name;
-      if (svc) stats[svc] = (stats[svc] || 0) + 1;
-    });
-    return Object.entries(stats).sort((a, b) => b[1] - a[1]).slice(0, 3);
-  }, [bookings]);
-
-  const upcoming = useMemo(() => bookings
-      .filter(b =>
-        new Date(b.puja_date) >= new Date(Date.now() - 24 * 60 * 60 * 1000)
-        && b.status === "Accepted"
-      )
-      .sort((a, b) => new Date(a.puja_date) - new Date(b.puja_date))
-      .slice(0, 5),
-    [bookings]);
-
-  const clearFilters = () => {
-    setFilterDate('');
-    setSearchName('');
-    setFilterStatus('');
-    setFilterResetTrigger(t => t + 1);
-  };
-
-  return (
-    <div className="pdash-bg">
-      <div className="pandit-main-layout">
-        {/* Sidebar */}
-        <aside className="pandit-sidebar" aria-label="Pandit dashboard navigation">
-          <div className="pandit-profile-sidebar">
-            <img
-              src="/images/subh.png"
-              alt="Pandit profile"
-              className="pandit-logo"
-              style={{ width: 52, height: 52, borderRadius: 12 }}
-            />
-            <div className="sidebar-name" tabIndex={-1}>
-              {user?.name || "Pandit Ji"}
-              <small className={user?.is_verified ? "text-verified" : "text-pending"}>
-                {user?.is_verified
-                  ? <><ShieldCheck size={14} /> Verified</>
-                  : <><Timer size={14} /> Not Verified</>}
-              </small>
-            </div>
-          </div>
-
-          <nav role="navigation" aria-label="Main dashboard pages">
-            {sidebarItems.map(item => (
-              <div
-                key={item.key}
-                className={`sidebar-navitem${currentPage === item.key ? ' active' : ''}`}
-                onClick={() => setCurrentPage(item.key)}
-                tabIndex={0}
-                role="button"
-                aria-current={currentPage === item.key ? "page" : undefined}
-                aria-label={item.label}
-                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setCurrentPage(item.key); }}
-              >
-                {item.icon}
-                <span className="sidebar-item-label">{item.label}</span>
-              </div>
-            ))}
-          </nav>
-
-          {/* Logout below Chats */}
-          <button
-            className="logout-btn sidebar-logout-btn"
-            onClick={handleLogout}
-            aria-label="Logout from dashboard"
-            type="button"
-          >
-            <LogOut size={22} /> Logout
-          </button>
-        </aside>
-
-        {/* Main Content */}
-        <main className="pandit-content">
-          <header className="pandit-header-row2" aria-live="polite">
-            <h1 className="pandit-heading">{pages[currentPage]}</h1>
-          </header>
-
-          {/* Welcome Section */}
-          <section
-            className="welcome-section"
-            aria-label="Welcome section"
-          >
-            <SunDim size={26} aria-hidden="true" />
-            <span>Welcome back, {user?.name || 'Pandit Ji'}. May your spiritual journey today be blessed with peace and prosperity.</span>
-          </section>
-
-          {/* Page-specific Content */}
-          {currentPage === 'dashboard' && <>
-            <section className="spiritual-quote" aria-label="Spiritual quote">
-              “When meditation is mastered, the mind is unwavering like the flame of a lamp in a windless place.” – Bhagavad Gita
-            </section>
-
-            <motion.div
-              className="pandit-profile-card animate-in"
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="pandit-profile-pic" aria-label="Pandit profile picture and status">
-                <UserCircle2 color="#9ddbfa" size={108} className="pandit-avatar" aria-hidden="true" />
-                <span
-                  className={user?.is_verified ? 'pdash-badge verified' : 'pdash-badge notverified'}
-                  aria-live="polite"
-                >
-                  {user?.is_verified ? <><ShieldCheck size={18} /> Verified</> : <><Timer size={18} /> Not Verified</>}
-                </span>
-              </div>
-              <div className="pandit-profile-info">
-                <h2 tabIndex={-1}> {user?.name || 'Pandit Ji'}</h2>
-                <p><strong>City:</strong> {user?.city || 'N/A'}</p>
-                <p><strong>Experience:</strong> {user?.experienceYears || '--'} years</p>
-                <div className="pandit-profile-row">
-                  <span><Phone style={{ marginRight: 4 }} size={18} /> {user?.phone || 'N/A'}</span>
-                  <span><b>Languages:</b> {(user?.languages && user.languages.join(', ')) || 'N/A'}</span>
-                  <span><Star style={{ marginBottom: -3 }} size={18} /> {user?.speciality || 'Puja & Rituals'}</span>
-                </div>
-                <button
-                  className="stats-toggle-btn"
-                  onClick={() => setShowStats(s => !s)}
-                  aria-expanded={showStats}
-                  aria-controls="stats-section"
-                >
-                  {showStats ? 'Hide Stats ▲' : 'Show Stats ▼'}
-                </button>
-                <motion.div
-                  id="stats-section"
-                  style={{ overflow: 'hidden' }}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: showStats ? 'auto' : 0, opacity: showStats ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  aria-live="polite"
-                >
-                  <div className="stats-box" style={{ gap: 26 }}>
-                    <div className="stats-item" aria-label={`Accepted bookings: ${completedCount}`}>
-                      <ShieldCheck size={26} color="#2ec977" aria-hidden="true" />
-                      <span className="stats-num">{completedCount}</span>
-                      <span>Accepted</span>
-                    </div>
-                    <div className="stats-item" aria-label={`Pending bookings: ${pendingCount}`}>
-                      <Timer size={26} color="#e5ae28" aria-hidden="true" />
-                      <span className="stats-num">{pendingCount}</span>
-                      <span>Pending</span>
-                    </div>
-                    <div className="stats-item" aria-label={`Rejected bookings: ${rejectedCount}`}>
-                      <XCircle size={26} color="#e15d7c" aria-hidden="true" />
-                      <span className="stats-num">{rejectedCount}</span>
-                      <span>Rejected</span>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="pandit-dashboard-cards"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="dash-card gradientblue" aria-label={`Devotees: ${uniqueDevotees}`}>
-                <Users size={32} color="#245898" className="dash-card-icon" aria-hidden="true" />
-                <div>
-                  <span className="dash-card-label">Devotees</span>
-                  <span className="dash-card-value">{uniqueDevotees}</span>
-                </div>
-              </div>
-              <div className="dash-card gradientmint" aria-label={`Bookings: ${bookings.length}`}>
-                <CalendarCheck2 size={32} color="#2ecc71" className="dash-card-icon" aria-hidden="true" />
-                <div>
-                  <span className="dash-card-label">Bookings</span>
-                  <span className="dash-card-value">{bookings.length}</span>
-                </div>
-              </div>
-              <div className="dash-card gradientyellow" aria-label={`Chats: ${uniqueDevotees}`}>
-                <MessageSquare size={32} color="#ad920d" className="dash-card-icon" aria-hidden="true" />
-                <div>
-                  <span className="dash-card-label">Chats</span>
-                  <span className="dash-card-value">{uniqueDevotees}</span>
-                </div>
-              </div>
-              <div className="dash-card gradientpink" aria-label={`Earnings: ₹${totalEarnings}`}>
-                <IndianRupee size={32} color="#e15d7c" className="dash-card-icon" aria-hidden="true" />
-                <div>
-                  <span className="dash-card-label">Earnings</span>
-                  <span className="dash-card-value">₹{totalEarnings}</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="dashboard-widgets" role="region" aria-label="Dashboard extra widgets">
-              <div className="widget upcoming-pujas" tabIndex={-1}>
-                <h3><Clock3 size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Upcoming Pujas</h3>
-                {upcoming.length === 0 ? (
-                  <p>No upcoming pujas.</p>
-                ) : (
-                  <ul>
-                    {upcoming.map(b => {
-                      const daysDiff = Math.ceil((new Date(b.puja_date) - new Date()) / (1000 * 60 * 60 * 24));
-                      let tag = '';
-                      let tagColor = '';
-                      if (daysDiff < 1) { tag = 'Today'; tagColor = '#178f36'; }
-                      else if (daysDiff === 1) { tag = 'Tomorrow'; tagColor = '#e5ae28'; }
-                      else { tag = `In ${daysDiff} days`; tagColor = '#26415a'; }
-                      return (
-                        <li key={b._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span><ArrowRight size={14} /> {b.pujaId?.name || "Puja"} – {new Date(b.puja_date).toLocaleDateString()}</span>
-                          <span style={{
-                            backgroundColor: tagColor,
-                            color: 'white',
-                            borderRadius: 12,
-                            padding: '2px 10px',
-                            fontWeight: '700',
-                            fontSize: '0.86em'
-                          }} aria-label={`Date tag: ${tag}`}>{tag}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
-
-              <div className="widget top-services" tabIndex={-1}>
-                <h3><Star size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Top Services</h3>
-                {topServices.length === 0 ? <p>N/A</p> :
-                  <ul>
-                    {topServices.map(([svc, count]) => (
-                      <li key={svc}>{svc}: {count}</li>
-                    ))}
-                  </ul>
-                }
-              </div>
-
-              <div className="offer-banner" tabIndex={-1} aria-live="polite">
-                <span role="alert" aria-atomic="true">🎉 This Shravan: 25% Off on Rudrabhishek Pujas! Book Now </span>
-                <button type="button" onClick={() => alert('Offer details coming soon!')}>See Details</button>
-              </div>
-            </div>
-          </>}
-
-          {/* Bookings, Devotees, and Chat pages ... similar structure with welcome sections omitted here for brevity; see code above for your full content */}
-
-          {/* ... Please paste the full code again or ask if you want full expanded for Bookings, Devotees, and Chat separately */}
-          
-          {/* Chat Modal */}
-          <AnimatePresence>
-            {activeChatDevoteeId && (
-              <ChatWindow
-                userId={user?._id}
-                panditId={activeChatDevoteeId}
-                chatName={activeChatDevoteeName}
-                onClose={() => setActiveChatDevoteeId(null)}
-              />
-            )}
-          </AnimatePresence>
-
-        </main>
-      </div>
-    </div>
-  );
+/* Global & Base Styles */
+body {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background: linear-gradient(135deg, #f9f5f0, #e6e0d6);
+  color: #2c3e50;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-export default PanditDashboard;
+/* Root Container */
+.pdash-bg {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(145deg, #f9f5f0, #e6e0d6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Layout Flex */
+.pandit-main-layout {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.pandit-sidebar {
+  width: 220px;
+  background: linear-gradient(145deg, #2c3e50, #4a627f);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px 14px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #f9f5f0;
+  box-shadow: 3px 0 14px #668dbf88;
+  transition: width 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.pandit-profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1.5px solid rgba(255 255 255 / 0.25);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.pandit-logo {
+  object-fit: contain;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #d4af3788;
+}
+
+.sidebar-name {
+  font-weight: 900;
+  font-size: 1.3em;
+  color: #ffeecc;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 6px #d4af37aa;
+}
+.text-verified {
+  color: #ffdf6f;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-shadow: 0 0 6px #ffe680aa;
+}
+.text-pending {
+  color: #c3b18a;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-shadow: 0 0 5px #c9c190aa;
+}
+
+/* Sidebar nav */
+nav[role="navigation"] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.sidebar-navitem {
+  padding: 12px 20px;
+  font-size: 1.15em;
+  border-radius: 10px;
+  color: #bfcbd9;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+.sidebar-navitem:hover,
+.sidebar-navitem:focus {
+  background: #d4af37;
+  color: #2c3e50;
+  font-weight: 700;
+  box-shadow: 0 0 14px #d4af37cc;
+  outline: none;
+}
+.sidebar-navitem.active {
+  background: #d4af37;
+  font-weight: 700;
+  color: #2c3e50;
+  box-shadow: 0 0 18px #d4af37cc;
+}
+
+.sidebar-item-label {
+  display: inline;
+  user-select: none;
+}
+
+.sidebar-logout-btn {
+  background: #d4af37;
+  color: #2c3e50;
+  font-weight: 800;
+  margin-top: 12px;
+  padding: 10px 0;
+  width: 90%;
+  align-self: center;
+  border: none;
+  border-radius: 14px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 18px #d4af37bb;
+  cursor: pointer;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+.sidebar-logout-btn:hover {
+  background: #bea02d;
+  box-shadow: 0 0 28px #bea02ddd;
+}
+
+@media (max-width: 780px) {
+  .pandit-sidebar {
+    width: 78px;
+    padding: 18px 6px 6px 6px;
+  }
+  .sidebar-item-label,
+  .sidebar-name {
+    display: none;
+  }
+  .sidebar-navitem {
+    font-size: 1.2em;
+    justify-content: center;
+  }
+  .sidebar-logout-btn {
+    padding: 8px 5px;
+    width: 100%;
+  }
+}
+
+/* Main Content */
+.pandit-content {
+  flex: 1;
+  padding: 36px 6vw 48px 6vw;
+  position: relative;
+  min-width: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+  border-radius: 22px 0 0 22px;
+  box-shadow: 4px 0 30px #a9d3ff44;
+  transition: background 0.35s ease;
+}
+
+.pandit-header-row2 {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 26px;
+}
+.pandit-heading {
+  font-size: 2.6rem;
+  color: #2c3e50;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  user-select: none;
+  text-shadow: 0 0 10px #6b7b8f88;
+}
+
+/* Welcome Section */
+.welcome-section {
+  font-family: 'Georgia', serif;
+  text-shadow: 0 0 6px #d4af37aa;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  border-radius: 18px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 6px 20px #81d4fa99;
+  color: #006064;
+  font-weight: 700;
+  font-size: 1.32rem;
+  user-select: none;
+}
+
+/* Spiritual Quote */
+.spiritual-quote {
+  font-family: 'Merriweather', serif;
+  font-size: 1.1rem;
+  color: #5d4037;
+  border-left: 5px solid #d4af37;
+  padding-left: 16px;
+  user-select: text;
+  margin-bottom: 26px;
+}
+
+/* Profile Card */
+.pandit-profile-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 22px;
+  box-shadow: 0 4px 28px #5cb2fd63;
+  padding: 28px 30px 26px 34px;
+  margin: 24px auto 44px;
+  max-width: 700px;
+  align-items: center;
+  gap: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.pandit-profile-card:hover {
+  box-shadow: 0 10px 42px #5189e53d;
+  transform: translateY(-4px);
+}
+
+.pandit-profile-pic {
+  position: relative;
+  margin-right: 22px;
+  will-change: transform;
+  transition: transform 0.3s ease;
+}
+.pandit-profile-pic:hover {
+  transform: scale(1.08);
+}
+.pandit-avatar {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  background: #bbd4f9;
+  box-shadow: 0 0 14px #bbd4f9cc;
+  color: #0a427f;
+}
+
+.pdash-badge {
+  display: inline-flex;
+  border-radius: 11px;
+  font-size: 1em;
+  font-weight: 700;
+  padding: 6px 20px;
+  margin-top: 9px;
+  letter-spacing: 0.02em;
+  background: rgba(236, 239, 255, 0.85);
+  border: 1.6px solid #a8b8ff;
+  align-items: center;
+  gap: 7px;
+  color: #5689c2;
+  box-shadow: 0 0 18px #a8b8ff99;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.pdash-badge.verified {
+  background: #e5ffef;
+  color: #23cb7d;
+  border: 1.8px solid #8cf775;
+  box-shadow: 0 0 13px #2cc865cc;
+}
+.pdash-badge.notverified {
+  background: #fffbe1;
+  color: #e5ae28;
+  border: 1.8px solid #ffd86e;
+  box-shadow: 0 0 15px #ffc726cc;
+}
+
+.pandit-profile-info {
+  flex: 2;
+  user-select: none;
+  color: #0f2c5f;
+}
+.pandit-profile-info h2 {
+  margin: 0 0 9px;
+  font-size: 1.7em;
+  color: #245898;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  user-select: text;
+}
+.pandit-profile-info p {
+  margin: 0 0 5px;
+  color: #3a5e8f;
+  font-size: 1.19em;
+  font-weight: 600;
+}
+.pandit-profile-row {
+  display: flex;
+  gap: 22px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  color: #358196;
+  font-weight: 700;
+  font-size: 1.1em;
+  user-select: none;
+}
+.pandit-profile-row span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pandit-profile-row svg {
+  margin-bottom: 2px;
+}
+
+/* Stats toggle button */
+.stats-toggle-btn {
+  margin-top: 14px;
+  background: linear-gradient(98deg, #f0f5ff, #d7eaff);
+  border: 1.6px solid #a4c9ff;
+  border-radius: 9px;
+  padding: 9px 26px;
+  font-weight: 900;
+  font-size: 1.05em;
+  color: #156dec;
+  cursor: pointer;
+  box-shadow: 0 0 10px #a1c2fccc;
+  transition: background 0.24s ease;
+  user-select: none;
+  user-drag: none;
+}
+.stats-toggle-btn:hover {
+  background: linear-gradient(98deg, #d7eaff, #bbceff);
+}
+
+/* Stats box */
+.stats-box {
+  display: flex;
+  gap: 26px;
+  margin-top: 18px;
+  opacity: 0;
+  max-height: 0;
+  transition: opacity 0.35s ease, max-height 0.45s ease;
+  overflow: hidden;
+}
+.stats-box.visible {
+  opacity: 1;
+  max-height: 92px;
+}
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #eef7ff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #a7d7ff66;
+  font-size: 1.11em;
+  min-width: 70px;
+  padding: 11px 18px 13px 18px;
+  user-select: none;
+}
+.stats-num {
+  font-weight: 900;
+  font-size: 20px;
+  color: #178fe0;
+  user-select: text;
+}
+.stats-item svg {
+  margin-bottom: 8px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Dashboard Cards */
+.pandit-dashboard-cards {
+  display: flex;
+  gap: 36px;
+  margin: 28px 0 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+  user-select: none;
+}
+.dash-card {
+  flex: 1 1 160px;
+  min-width: 160px;
+  max-width: 230px;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 18px;
+  box-shadow: 0 6px 24px #b4e2ff49;
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  padding: 22px 24px;
+  margin-bottom: 10px;
+  border: 1.9px solid #d0e9ff;
+  cursor: default;
+  transition: box-shadow 0.25s ease, transform 0.3s ease;
+}
+.dash-card:hover {
+  box-shadow: 0 14px 41px #75b3f66b;
+  transform: translateY(-4px) scale(1.04);
+}
+.dash-card-icon {
+  font-size: 2.25em;
+  user-select: none;
+  flex-shrink: 0;
+}
+.dash-card-label {
+  font-size: 1.12em;
+  color: #1766a5;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  user-select: text;
+}
+.dash-card-value {
+  font-weight: 900;
+  font-size: 1.32em;
+  color: #0a84e5;
+  user-select: text;
+}
+
+/* Card gradients */
+.gradientblue {
+  background: linear-gradient(100deg, #f3faff, #e0f4ff 90%);
+  border-color: #bddbff;
+}
+.gradientmint {
+  background: linear-gradient(100deg, #ebfff4, #e0fee9 90%);
+  border-color: #b3ffd9;
+}
+.gradientyellow {
+  background: linear-gradient(100deg, #fffbe4, #fff2cc 90%);
+  border-color: #ffed95;
+}
+.gradientpink {
+  background: linear-gradient(100deg, #fdf4f7, #ffe3e3 93%);
+  border-color: #fcb2c0;
+}
+
+/* Widgets */
+.dashboard-widgets {
+  display: flex;
+  gap: 38px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+.widget {
+  background: rgba(250, 252, 255, 0.98);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px #d5e9ff55;
+  padding: 20px 28px 22px;
+  min-width: 210px;
+  max-width: 310px;
+  flex-grow: 1;
+  user-select: none;
+  transition: box-shadow 0.22s ease;
+  cursor: default;
+}
+.widget:hover {
+  box-shadow: 0 10px 45px #c7e1ff88;
+}
+.widget h3 {
+  font-size: 1.15em;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 900;
+  color: #1979c5;
+  margin-bottom: 13px;
+  user-select: text;
+}
+.widget ul {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.widget li {
+  margin-bottom: 9px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05em;
+  color: #164670;
+  user-select: text;
+  cursor: default;
+}
+.widget li:last-child {
+  margin-bottom: 0;
+}
+
+/* Offer banner */
+.offer-banner {
+  background: linear-gradient(120deg, #fddb92, #d1fdff);
+  padding: 16px 28px;
+  border-radius: 16px;
+  box-shadow: 0 0 30px #fddf7055;
+  user-select: none;
+  font-weight: 800;
+  color: #156dec;
+  font-size: 1.2em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  align-items: center;
+  animation: bounce3 1.9s ease-in-out infinite;
+}
+.offer-banner > button {
+  background: #156deccc;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 16px #156decaa;
+  user-select: none;
+  transition: background 0.28s ease;
+}
+.offer-banner > button:hover {
+  background: #0e4abf;
+}
+@keyframes bounce3 {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+/* Chat Modal */
+.chat-window-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(13, 26, 41, 0.3);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.44s ease forwards;
+}
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.chat-window-header {
+  background: #1979c5;
+  color: white;
+  padding: 14px 30px 12px 26px;
+  border-radius: 14px 14px 0 0;
+  font-size: 1.21em;
+  font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  letter-spacing: 0.04em;
+  box-shadow: 0 3px 22px #1878d641;
+  cursor: default;
+}
+.chat-window-header button {
+  color: white;
+  background: transparent;
+  border: none;
+  font-size: 1.7em;
+  cursor: pointer;
+  outline: none;
+  font-weight: 900;
+  padding: 0 5px 3px 5px;
+  user-select: none;
+  transition: color 0.25s ease;
+}
+.chat-window-header button:hover {
+  color: #ffd43b;
+}
+.chat-window-content {
+  background: #fff;
+  min-width: 340px;
+  min-height: 160px;
+  max-width: 90vw;
+  max-height: 80vh;
+  padding: 26px 33px 26px 33px;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 8px 33px #65aaf943;
+  font-size: 1.13em;
+  overflow-y: auto;
+  color: #26415a;
+  user-select: text;
+  word-break: break-word;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeInEase 0.65s cubic-bezier(0.3, 0, 0, 1) forwards;
+  opacity: 0;
+}
+.animate-in {
+  animation: zoomFadeIn 0.82s cubic-bezier(0.39, 0.92, 0.2, 1.01) forwards;
+  opacity: 0;
+}
+@keyframes fadeInEase {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes zoomFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #aacbffbb;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #add7ffdd;
+}
+
+/* Keyboard Focus Style */
+.sidebar-navitem:focus-visible {
+  outline: 3px solid #d4af371a;
+  outline-offset: 3px;
+}
+
+/* Disabled buttons */
+button:disabled,
+button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none !important;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .pandit-profile-card {
+    flex-direction: column;
+    padding: 20px 6vw;
+    gap: 12px;
+  }
+  .pandit-dashboard-cards {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pandit-header-row2 {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pandit-profile-card {
+    padding: 14px 3vw;
+  }
+  .pandit-filters {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pandit-dashboard-cards {
+    gap: 11px;
+    flex-direction: column;
+  }
+}
