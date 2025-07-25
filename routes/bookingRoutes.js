@@ -102,6 +102,8 @@ Thank you.`,
 });
 
 // Booking fetch route
+// Replace your current GET /view implementation with:
+
 router.get('/view', async (req, res) => {
   try {
     const { userid, panditid } = req.query;
@@ -110,18 +112,30 @@ router.get('/view', async (req, res) => {
     if (userid) query.userid = new mongoose.Types.ObjectId(userid);
     if (panditid) query.panditid = new mongoose.Types.ObjectId(panditid);
 
+    // Find and populate references
     const bookings = await Booking.find(query)
       .populate('panditid', 'name')
       .populate('poojaId', 'name')
       .populate('serviceid', 'name')
-      .populate('userid', 'name email phone');  // include phone here
+      .populate('userid', 'name email phone');
 
-    res.status(200).json(bookings);
+    // Map to add panditName and devoteeName fields
+    const bookingsWithNames = bookings.map(b => {
+      const obj = b.toObject();
+      return {
+        ...obj,
+        panditName: obj.panditid ? obj.panditid.name : 'Unknown Pandit',
+        devoteeName: obj.userid ? obj.userid.name : 'Unknown Devotee',
+      };
+    });
+
+    res.status(200).json(bookingsWithNames);
   } catch (err) {
     console.error('Booking fetch error:', err);
     res.status(500).json({ error: 'Failed to retrieve bookings' });
   }
 });
+
 
 // Booking status update route
 router.put('/status/:id', async (req, res) => {
