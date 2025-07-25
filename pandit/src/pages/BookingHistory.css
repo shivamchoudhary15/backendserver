@@ -1,14 +1,52 @@
+/* src/pages/BookingHistory.css */
 .booking-history-page {
   max-width: 1150px;
   margin: 2.5rem auto;
   padding: 0 1.2rem;
 }
+
 .booking-history-page h2 {
   text-align: center;
   color: #9b59b6;
   font-weight: 800;
   margin-bottom: 2rem;
 }
+
+.filters-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  gap: 0.3rem;
+}
+
+.filter-group select,
+.filter-group input[type="date"] {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 140px;
+  font-size: 1rem;
+  outline-color: #2980b9;
+}
+
+.chart-container {
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 24px rgba(41, 128, 185, 0.09);
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  background: #fff;
+}
+
 .history-table-container {
   background: #fff;
   border-radius: 16px;
@@ -16,58 +54,83 @@
   padding: 1.5rem 1.5rem 1.1rem 1.5rem;
   overflow-x: auto;
 }
+
 .history-table {
   width: 100%;
   border-collapse: collapse;
   min-width: 800px;
 }
+
 .history-table th,
 .history-table td {
   padding: 13px 12px;
   text-align: left;
   font-size: 1.06rem;
 }
+
 .history-table th {
   background: #f8f8fc;
   color: #34495e;
   font-weight: 700;
   border-bottom: 2.5px solid #9b59b64d;
 }
+
 .history-table tr {
   transition: background-color 0.12s;
 }
+
 .history-table tr:hover {
   background: #f6faff;
 }
+
 .history-table td {
   border-bottom: 1px solid #e6e2ef;
 }
+
 .status-label {
   border-radius: 5px;
   padding: 4px 12px;
   font-size: 0.97rem;
   font-weight: 600;
-  background: #f8f6ff;
-  color: #8e44ad;
   text-transform: capitalize;
   letter-spacing: 0.6px;
-  border: 1.2px solid #b39ddb55;
+  border: 1.2px solid transparent;
+  display: inline-block;
+  min-width: 72px;
+  text-align: center;
 }
+
 .status-pending {
   background: #fff9e6;
   color: #e67e22;
   border-color: #ffe884;
 }
+
+.status-confirmed,
+.status-accepted { /* Use accepted as alias of confirmed */
+  background: #e6f6fa;
+  color: #2980b9;
+  border-color: #91c8ed;
+}
+
 .status-completed {
   background: #e8f9e6;
   color: #27ae60;
   border-color: #8fd19e;
 }
-.status-cancelled, .status-rejected {
+
+.status-cancelled {
   background: #fee9e6;
   color: #d32f2f;
   border-color: #ffc1c1;
 }
+
+.status-rejected {
+  background: #fee9e6;
+  color: #d32f2f;
+  border-color: #ffc1c1;
+}
+
 @media (max-width: 720px) {
   .history-table {
     font-size: 0.98rem;
@@ -76,5 +139,13 @@
   .history-table-container {
     padding-left: 0.4rem;
     padding-right: 0.4rem;
+  }
+  .filters-container {
+    justify-content: flex-start;
+    gap: 1.2rem;
+  }
+  .filter-group select,
+  .filter-group input[type="date"] {
+    min-width: 120px;
   }
 }
