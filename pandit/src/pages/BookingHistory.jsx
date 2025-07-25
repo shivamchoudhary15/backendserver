@@ -44,31 +44,50 @@ function getMonthString(dateStr) {
 
 function BookingHistory() {
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ status: 'all', date: '' });
   const [timeGroup, setTimeGroup] = useState('month'); // week or month
 
   useEffect(() => {
     async function fetchBookings() {
+      setLoading(true);
       try {
         const res = await getBookings();
         setBookings(res.data);
       } catch (error) {
         console.error('Error fetching bookings', error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchBookings();
   }, []);
 
+  // Normalize a booking's status to class CSS names
+  function normalizeStatus(status) {
+    if (!status) return 'unknown';
+    if (status.toLowerCase() === 'accepted') return 'confirmed';
+    return status.toLowerCase();
+  }
+
+  // Extract booking date field (use `puja_date` if present, else `date`)
+  function getBookingDate(b) {
+    return b.puja_date || b.date;
+  }
+
   // Filter bookings based on status & date
   const filteredBookings = bookings.filter(b => {
-    if (filter.status !== 'all' && b.status !== filter.status) return false;
-    if (filter.date && !b.date.startsWith(filter.date)) return false;
+    if (filter.status !== 'all' && b.status?.toLowerCase() !== filter.status) return false;
+    if (filter.date) {
+      const bookingDate = getBookingDate(b);
+      if (!bookingDate || !bookingDate.startsWith(filter.date)) return false;
+    }
     return true;
   });
 
   // Aggregate bookings counts by status for filtered list (for table and legend)
   const statusCounts = filteredBookings.reduce((acc, b) => {
-    const s = b.status.toLowerCase();
+    const s = normalizeStatus(b.status);
     acc[s] = (acc[s] || 0) + 1;
     return acc;
   }, {});
@@ -78,9 +97,12 @@ function BookingHistory() {
   const timeCountsMap = {};
 
   bookings.forEach((b) => {
-    if (filter.status !== 'all' && b.status !== filter.status) return;
+    if (filter.status !== 'all' && b.status?.toLowerCase() !== filter.status) return;
 
-    const key = timeGroup === 'week' ? getWeekString(b.date) : getMonthString(b.date);
+    const bookingDate = getBookingDate(b);
+    if (!bookingDate) return;
+
+    const key = timeGroup === 'week' ? getWeekString(bookingDate) : getMonthString(bookingDate);
     timeCountsMap[key] = (timeCountsMap[key] || 0) + 1;
   });
 
@@ -111,7 +133,8 @@ function BookingHistory() {
           >
             <option value="all">All</option>
             <option value="pending">Pending</option>
-            <option value="accepted">Confirmed</option>
+            <option value="accepted">Accepted</option>
+            <option value="confirmed">Confirmed</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
             <option value="rejected">Rejected</option>
@@ -142,27 +165,30 @@ function BookingHistory() {
       </div>
 
       <div className="chart-container">
-        <Bar
-          data={data}
-          options={{
-            responsive: true,
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top',
-              },
-              tooltip: {
-                enabled: true,
-              },
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                precision: 0,
-              },
-            },
-          }}
-        />
+        {loading
+          ? <p style={{ textAlign: 'center' }}>Loading...</p>
+          : <Bar
+              data={data}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                  },
+                  tooltip: {
+                    enabled: true,
+                  },
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    precision: 0,
+                  },
+                },
+              }}
+            />
+        }
       </div>
 
       <div className="history-table-container">
@@ -187,12 +213,12 @@ function BookingHistory() {
               filteredBookings.map(b => (
                 <tr key={b._id}>
                   <td>{b._id}</td>
-                  <td>{b.panditName}</td>
-                  <td>{b.devoteeName}</td>
-                  <td>{new Date(b.date).toLocaleDateString()}</td>
+                  <td>{b.panditid?.name || 'Unknown'}</td>
+                  <td>{b.userid?.name || 'Unknown'}</td>
+                  <td>{new Date(getBookingDate(b)).toLocaleDateString()}</td>
                   <td>
-                    <span className={`status-label status-${b.status.toLowerCase()}`}>
-                      {b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                    <span className={`status-label status-${normalizeStatus(b.status)}`}>
+                      {b.status ? b.status.charAt(0).toUpperCase() + b.status.slice(1) : 'Unknown'}
                     </span>
                   </td>
                 </tr>
