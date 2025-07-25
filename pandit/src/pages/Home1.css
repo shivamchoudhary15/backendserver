@@ -1,9 +1,38 @@
-/* src/pages/Home1.css */
+.home1-container {
+  max-width: 1150px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.home1-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.home1-logo {
+  height: 70px;
+  width: auto;
+}
+
+.welcome-message {
+  font-size: 2.3rem;
+  color: #6a1b9a; /* nice purple */
+  font-weight: 700;
+  user-select: none;
+}
+
+/* Keep your current dashboard cards styles */
 .dashboard-cards-container {
   display: flex;
   gap: 2rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
+
 .dashboard-card {
   cursor: pointer;
   background: linear-gradient(120deg, #e1eaf7 60%, #fafafa 100%);
@@ -13,16 +42,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 210px;
+  min-width: 220px;
+  max-width: 240px;
   transition: box-shadow 0.3s, transform 0.2s;
   outline: none;
   border: none;
   position: relative;
+  user-select: none;
 }
-.dashboard-card:active, .dashboard-card:focus {
-  box-shadow: 0 12px 32px rgba(52, 73, 94, 0.17);
-  transform: scale(1.03);
+
+.dashboard-card:active,
+.dashboard-card:focus,
+.dashboard-card:hover {
+  box-shadow: 0 12px 32px rgba(52, 73, 94, 0.25);
+  transform: scale(1.06);
+  outline: none;
 }
+
 .dashboard-card-title {
   font-size: 1.25rem;
   color: #34495e;
@@ -30,11 +66,12 @@
   margin-bottom: 0.8rem;
   letter-spacing: 1px;
 }
+
 .dashboard-card-value {
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: #3498db;
-  text-shadow: 0 2px 14px #d6eaf8;
+  font-size: 2.7rem;
+  font-weight: 900;
+  color: #4a90e2;
+  text-shadow: 0 2px 12px #c0d8ff;
 }
 
 .pulse {
@@ -50,6 +87,14 @@
 }
 
 @media (max-width: 950px) {
-  .dashboard-cards-container { flex-direction: column; align-items: center; }
-  .dashboard-card { min-width: 200px; width: 80%; margin-bottom: 1.5rem; }
+  .dashboard-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .dashboard-card {
+    width: 80%;
+    margin-bottom: 1.5rem;
+    min-width: unset;
+    max-width: none;
+  }
 }
