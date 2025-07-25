@@ -1,60 +1,44 @@
+// src/pages/Home1.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPandits, getAllDevotees, getAllPoojas } from '../api/api';
+import { getAllDevotees, getAllPandits, getBookings } from '../api/api';
 import './Home1.css';
 
 function Home1() {
-  const [stats, setStats] = useState({ pandits: 0, devotees: 0, bookings: 0 });
+  const [stats, setStats] = useState({ devotees: 0, pandits: 0, bookings: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchCounts() {
       try {
-        const [p, d, poojas] = await Promise.all([
-          getAllPandits(),
-          getAllDevotees(),
-          getAllPoojas(),
-        ]);
-        const bookingCount = poojas.data.reduce((acc, pj) => acc + (pj.bookingsCount || 0), 0);
-        setStats({ pandits: p.data.length, devotees: d.data.length, bookings: bookingCount });
-      } catch (e) {
-        console.error('Fetch stats error', e);
+        const devoteesRes = await getAllDevotees();
+        const panditsRes = await getAllPandits();
+        const bookingsRes = await getBookings();
+        setStats({
+          devotees: devoteesRes.data.length,
+          pandits: panditsRes.data.length,
+          bookings: bookingsRes.data.length,
+        });
+      } catch (err) {
+        // handle errors
       }
     }
-    fetchStats();
+    fetchCounts();
   }, []);
 
   return (
-    <div className="home1-container">
-      <div
-        role="button"
-        tabIndex={0}
-        className="card card-pandits"
-        onClick={() => navigate('/admin/pandits')}
-        onKeyPress={() => navigate('/admin/pandits')}
-      >
-        <h3>{stats.pandits}</h3>
-        <p>Total Pandits</p>
+    <div className="dashboard-cards-container">
+      <div className="dashboard-card pulse" onClick={() => navigate('/admin/devotees')} tabIndex={0}>
+        <span className="dashboard-card-title">Total Devotees</span>
+        <span className="dashboard-card-value">{stats.devotees}</span>
       </div>
-      <div
-        role="button"
-        tabIndex={0}
-        className="card card-devotees"
-        onClick={() => navigate('/admin/devotees')}
-        onKeyPress={() => navigate('/admin/devotees')}
-      >
-        <h3>{stats.devotees}</h3>
-        <p>Total Devotees</p>
+      <div className="dashboard-card pulse" onClick={() => navigate('/admin/pandits')} tabIndex={0}>
+        <span className="dashboard-card-title">Total Pandits</span>
+        <span className="dashboard-card-value">{stats.pandits}</span>
       </div>
-      <div
-        role="button"
-        tabIndex={0}
-        className="card card-bookings"
-        onClick={() => navigate('/admin/bookings')}
-        onKeyPress={() => navigate('/admin/bookings')}
-      >
-        <h3>{stats.bookings}</h3>
-        <p>Total Pooja Bookings</p>
+      <div className="dashboard-card pulse" onClick={() => navigate('/admin/bookings')} tabIndex={0}>
+        <span className="dashboard-card-title">Total Bookings</span>
+        <span className="dashboard-card-value">{stats.bookings}</span>
       </div>
     </div>
   );
