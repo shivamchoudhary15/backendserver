@@ -27,7 +27,7 @@ body {
 /* ========== Sidebar ========== */
 .pandit-sidebar {
     width: 220px;
-    background: linear-gradient(120deg, #ff7100, #1f1700); /* Saffron-like gradient (deep orange to deep brown) */
+    background: linear-gradient(94deg, #ff7100, #1f1700); /* Saffron-like gradient (deep orange to deep brown) */
     border-right: 1px solid rgba(255, 255, 255, 0.25);
     padding: 24px 14px 16px 14px;
     display: flex;
@@ -44,7 +44,7 @@ body {
     box-shadow: 6px 0 20px rgba(255, 140, 0, 0.5);
 }
 
-/* Profile Sidebar */
+/* Profile Sidebar (Adjusted for no name) */
 .pandit-profile-sidebar {
     display: flex;
     flex-direction: column;
@@ -70,14 +70,9 @@ body {
     box-shadow: 0 0 12px rgba(255, 165, 0, 0.533); /* Softer saffron glow */
 }
 
-/* Sidebar Name */
-.sidebar-name {
-    font-weight: 900;
-    font-size: 1.3em;
-    color: #fff8e1; /* Lighter cream */
-    margin-top: 3px;
-    letter-spacing: 0.04em;
-    text-shadow: 0 0 6px rgba(255, 215, 0, 0.667); /* Gold text shadow */
+/* Sidebar Verification Status */
+.sidebar-verification-status {
+    margin-top: 5px;
 }
 
 .text-verified {
@@ -142,7 +137,7 @@ nav[role="navigation"] {
 
 /* Logout Button */
 .sidebar-logout-btn {
-    margin-top: auto;
+    margin-top: 15px; /* Adjust margin to place it below chats */
     padding: 10px 0;
     width: 90%;
     align-self: center;
@@ -173,8 +168,7 @@ nav[role="navigation"] {
         padding: 18px 6px 6px 6px;
     }
 
-    .sidebar-item-label,
-    .sidebar-name {
+    .sidebar-item-label {
         display: none;
     }
 
@@ -204,52 +198,102 @@ nav[role="navigation"] {
     transition: background 0.35s ease;
 }
 
-/* Header (moved from pandit-header-row2) */
+/* New Dashboard Top Header (name, email, date, time, actions) */
 .dashboard-main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
+    padding: 18px 0 22px 0;
     margin-bottom: 30px; /* Space between this header and the page title */
-    border-bottom: 1px solid #ffecb3; /* Light saffron line */
+    border-bottom: 1.5px solid #ffdec9; /* Light saffron line */
     color: #6d4c41; /* Spiritual brown */
     font-size: 1.05em;
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    gap: 10px 20px; /* Gap for wrapping */
+    gap: 15px 25px; /* Gap for wrapping */
+    background: linear-gradient(90deg, #fff7ed, #fffaf0);
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(255, 204, 153, 0.2);
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .header-user-info, .header-datetime-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
-.header-user-info .user-name {
+.user-greeting {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #9d5d00; /* Darker saffron */
+}
+
+.user-name-header {
     font-weight: 900;
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #b74f00; /* Deep saffron */
     letter-spacing: 0.02em;
 }
 
-.header-user-info .user-email {
+.user-email-header {
     font-size: 0.9em;
     color: #8d6e63; /* Spiritual brown */
 }
 
 .header-datetime-info {
     text-align: right;
+    display: flex;
+    align-items: flex-end; /* Align date/time items to the right */
+    gap: 8px; /* Space between date and time */
+}
+
+.header-datetime-info span {
+    display: flex;
+    align-items: center;
+    font-size: 0.98em;
+    font-weight: 700;
+    color: #cc5500;
+    text-shadow: 0 0 3px rgba(255, 179, 0, 0.2);
 }
 
 .header-datetime-info .current-date {
-    font-weight: 700;
-    color: #9d5d00; /* Darker saffron */
+    color: #9d5d00;
 }
 
 .header-datetime-info .current-time {
     font-size: 1.1em;
     font-weight: 800;
-    color: #cc5500; /* Deep saffron */
+    color: #cc5500;
 }
+
+.header-action-items {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-button {
+    background: #ffecb3; /* Light saffron */
+    border: 1px solid #ffb300;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 179, 0, 0.3);
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    color: #cc5500; /* Deep saffron icon */
+}
+
+.icon-button:hover {
+    background: #ffb300;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.5);
+    color: white;
+}
+
 
 /* Original Header (now for page titles only) */
 .pandit-header-row2 {
@@ -290,6 +334,10 @@ nav[role="navigation"] {
     letter-spacing: 0.03em;
 }
 
+.welcome-section .highlight-name {
+    color: #e65100; /* Darker saffron for name */
+}
+
 .welcome-section p {
     font-size: 1.15em;
     line-height: 1.6;
@@ -320,7 +368,7 @@ nav[role="navigation"] {
     transform: translateY(-4px);
 }
 
-/* Profile Pic */
+/* Profile Pic Container */
 .pandit-profile-pic {
     position: relative;
     margin-right: 22px;
@@ -332,6 +380,7 @@ nav[role="navigation"] {
     transform: scale(1.08);
 }
 
+/* Default avatar (lucide icon) */
 .pandit-avatar {
     border-radius: 50%;
     display: flex;
@@ -343,6 +392,17 @@ nav[role="navigation"] {
     box-shadow: 0 0 14px rgba(255, 204, 102, 0.8);
     color: #ff9800; /* Darker saffron icon */
 }
+
+/* Styles for actual profile image */
+.pandit-avatar-img {
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    object-fit: cover; /* Ensures the image covers the area */
+    border: 4px solid #ffecb3; /* Light saffron border around the image */
+    box-shadow: 0 0 14px rgba(255, 204, 102, 0.8);
+}
+
 
 /* Verified badge */
 .pdash-badge {
@@ -584,6 +644,73 @@ nav[role="navigation"] {
     }
 }
 
+/* New: Performance Metrics Widget */
+.performance-metrics {
+    background: linear-gradient(145deg, #e3f2fd, #bbdefb); /* Light blue gradient */
+    border: 1.5px solid #90caf9;
+    padding: 25px 35px;
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(144, 202, 249, 0.4);
+    margin-bottom: 40px;
+    color: #1976d2;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.performance-metrics h3 {
+    color: #0d47a1;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+}
+
+.metrics-grid {
+    display: flex; /* Changed to flex for horizontal layout */
+    justify-content: space-around; /* Distribute items evenly */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 25px; /* Gap between items */
+}
+
+.metric-item {
+    background: #e1f5fe;
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid #b3e5fc;
+    box-shadow: inset 0 1px 6px rgba(179, 229, 252, 0.4);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1; /* Allows items to grow and shrink */
+    min-width: 160px; /* Minimum width before wrapping */
+}
+
+.metric-label {
+    font-size: 0.95em;
+    color: #42a5f5;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    font-size: 1.6em;
+    font-weight: 900;
+    color: #0d47a1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Divider for visual separation */
+.divider {
+    border: none;
+    border-top: 1px dashed #ffb300; /* Saffron dashed line */
+    margin: 40px auto;
+    width: 80%;
+    opacity: 0.6;
+}
+
 /* ========== Widgets ========== */
 
 .dashboard-widgets {
@@ -656,6 +783,52 @@ nav[role="navigation"] {
     font-size: 0.86em;
     white-space: nowrap;
 }
+
+/* Recent Activity specific styles */
+.widget.recent-activity .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    color: #4a3e2a;
+    font-weight: 600;
+}
+
+.widget.recent-activity .activity-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.widget.recent-activity .status-text {
+    font-weight: 800;
+    color: #b74f00;
+}
+
+/* New: Pandit Tips Widget */
+.widget.pandit-tips {
+    background: linear-gradient(135deg, #ffe0b2, #fff3e0); /* Light saffron tint */
+    border: 1px solid #ffcc80;
+    color: #6d4c41;
+}
+.widget.pandit-tips h3 {
+    color: #e65100;
+}
+.widget.pandit-tips li {
+    font-size: 0.95em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.widget.pandit-tips li svg {
+    margin-top: 3px; /* Adjust alignment of icon */
+    color: #ff9800; /* Saffron bullet */
+    flex-shrink: 0;
+}
+
 
 /* ========== Booking Filters ========== */
 
@@ -741,29 +914,34 @@ nav[role="navigation"] {
     }
 }
 
-/* ========== Booking Cards ========== */
-
-.pandit-bookings {
+/* ========== Booking Cards Grid Layout ========== */
+.pandit-bookings-grid { /* Renamed class for grid layout */
     margin-top: 30px;
     margin-bottom: 28px;
     user-select: none;
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 100%; /* Allow grid to fill available width */
+    display: grid; /* Use grid for layout */
+    /* Auto-fill columns, min 300px width, max 1fr (equal width) */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px; /* Gap between cards */
+    justify-content: center; /* Center items in grid */
 }
 
+/* Individual Booking Card */
 .pandit-booking-card {
     background: rgba(255, 255, 255, 0.98);
     border-radius: 18px;
     padding: 22px 28px 20px 28px;
-    margin: 18px auto 20px auto;
-    max-width: 640px;
+    /* margin: 18px auto 20px auto; Removed margin here to let grid handle spacing */
+    max-width: 100%; /* Ensure card fits within grid column */
     box-shadow: 0 6px 24px rgba(255, 224, 178, 0.125);
     border-left: 8px solid transparent;
     transition: box-shadow 0.3s ease, transform 0.22s ease;
     position: relative;
     cursor: default;
     user-select: none;
+    display: flex; /* Make card content a flex column */
+    flex-direction: column;
 }
 
 .pandit-booking-card:hover {
@@ -792,6 +970,7 @@ nav[role="navigation"] {
     font-size: 1.1em;
     font-weight: 800;
     letter-spacing: 0.02em;
+    margin-bottom: 10px; /* Added margin for spacing */
 }
 
 .booking-devotee {
@@ -880,6 +1059,7 @@ nav[role="navigation"] {
     display: flex;
     gap: 16px;
     user-select: none;
+    flex-wrap: wrap; /* Allow buttons to wrap */
 }
 
 .accept-btn,
@@ -896,6 +1076,8 @@ nav[role="navigation"] {
     transition: background 0.26s ease, box-shadow 0.26s ease, transform 0.26s ease;
     box-shadow: 0 3px 10px;
     user-select: none;
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    justify-content: center; /* Center content within buttons */
 }
 
 .accept-btn {
@@ -924,7 +1106,7 @@ nav[role="navigation"] {
 
 /* Chat with Devotee Button */
 .chat-from-booking-btn {
-    margin-top: 16px;
+    margin-top: auto; /* Push to bottom of card */
     background: linear-gradient(120deg, #ffc107, #ff8c00); /* Saffron gradient */
     border: none;
     border-radius: 16px;
@@ -937,7 +1119,8 @@ nav[role="navigation"] {
     transition: background 0.32s ease, box-shadow 0.32s ease, transform 0.24s ease;
     display: block;
     user-select: none;
-    width: max-content;
+    width: 100%; /* Fill width */
+    text-align: center;
 }
 
 .chat-from-booking-btn:disabled {
@@ -1013,6 +1196,8 @@ nav[role="navigation"] {
     font-weight: 900;
     margin-bottom: 18px;
     user-select: text;
+    display: flex; /* Added for icon alignment */
+    align-items: center;
 }
 
 /* Table style replaced by Grid + Card look */
@@ -1292,7 +1477,15 @@ nav[role="navigation"] {
     }
     .header-datetime-info {
         text-align: left;
+        flex-direction: column; /* Stack date and time */
+        align-items: flex-start;
+        gap: 2px;
     }
+    .header-action-items {
+        align-self: flex-end; /* Push action buttons to the right */
+        margin-top: -40px; /* Adjust as needed to position them well */
+    }
+
     .pandit-profile-card {
         flex-direction: column;
         padding: 20px 6vw;
@@ -1303,6 +1496,11 @@ nav[role="navigation"] {
         padding: 14px 4vw;
     }
 
+    /* Adjust grid for smaller screens */
+    .pandit-bookings-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Allow 2 per row on smaller screens */
+    }
+
     .pandit-dashboard-cards {
         gap: 16px;
     }
@@ -1310,6 +1508,9 @@ nav[role="navigation"] {
     .stats-item {
         min-width: 54px;
         font-size: 0.95em;
+    }
+    .metrics-grid {
+        grid-template-columns: 1fr; /* Stack metrics vertically on small screens */
     }
 }
 
@@ -1342,6 +1543,10 @@ nav[role="navigation"] {
         gap: 11px;
         flex-direction: column;
     }
+
+    .pandit-bookings-grid {
+        grid-template-columns: 1fr; /* Stack vertically on very small screens */
+    }
 }
 
 /* Keyboard Focus Style */
@@ -1354,7 +1559,8 @@ nav[role="navigation"] {
 .chat-devotee-btn:focus-visible,
 .offer-banner>button:focus-visible,
 .pandit-input:focus-visible,
-.pandit-select:focus-visible {
+.pandit-select:focus-visible,
+.icon-button:focus-visible { /* Added new button focus */
     outline: 3px solid #ff9800; /* Saffron focus ring */
     outline-offset: 3px;
     box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.4); /* Saffron shadow */
