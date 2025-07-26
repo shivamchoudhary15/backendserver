@@ -1,14 +1,18 @@
 body {
   margin: 0;
-  font-family: 'Rubik', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Inter', 'Montserrat', 'Segoe UI', Arial, sans-serif;
   background: #faf7f2;
+  color: #2d1a05;
+  letter-spacing: 0.01em;
 }
 
 .home-container {
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #faf7f2;
+  background: linear-gradient(120deg, #faf7f2 80%, #fffbe7 100%);
+  box-shadow: 0 2px 24px #f7e2b1a0;
+  padding-top: 95px; /* Increased padding-top to accommodate taller header */
 }
 
 /* Navbar */
@@ -16,31 +20,43 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 30px 18px 30px;
+  padding: 18px 30px; /* Increased vertical padding to make it taller */
   background: #fff;
   border-bottom: 1px solid #eee;
-  position: sticky;
+  position: fixed; /* Ensures it stays at the top */
   top: 0;
+  width: 100%; /* Ensures it spans the full full-width */
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(227,163,79,0.04);
+  box-shadow: 0 2px 12px rgba(227,163,79,0.08);
+  border-radius: 0 0 0 0;
+  transition: box-shadow 0.3s;
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+.navbar:hover {
+  box-shadow: 0 4px 20px #f7e2b1a0;
 }
 .logo-circle {
-  width: 44px;
-  height: 44px;
+  width: 48px; /* Restored to original size for a slightly larger logo */
+  height: 48px; /* Restored to original size */
   border-radius: 50%;
-  margin-right: 13px;
+  margin-right: 13px; /* Restored original margin */
   box-shadow: 0 4px 18px #f2c27739;
-  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, transform 0.2s;
+  flex-shrink: 0;
+  object-fit: cover;
 }
 .logo-circle:hover {
   box-shadow: 0 8px 32px #e6b34731;
+  transform: scale(1.07);
 }
 .logo-text {
-  font-size: 26px;
-  font-weight: bold;
+  font-size: 28px; /* Restored to original font size */
+  font-weight: 800;
   color: #d67f2a;
-  font-family: inherit;
+  font-family: 'Montserrat', 'Inter', sans-serif;
   letter-spacing: .5px;
+  text-shadow: 0 2px 8px #f7c96a29;
+  white-space: nowrap;
 }
 .navbar-left {
   display: flex;
@@ -48,46 +64,53 @@ body {
 }
 .navbar-right a,
 .login-box {
-  margin-left: 22px;
+  margin-left: 22px; /* Restored original margin */
   text-decoration: none;
   color: #512700;
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 1.07rem; /* Restored original font size */
   padding: 3px 2px;
-  transition: color 0.2s;
+  transition: color 0.2s, border-bottom 0.2s;
   position: relative;
+  border-bottom: 2px solid transparent;
 }
 .navbar-right a:hover {
   color: #d67f2a;
+  border-bottom: 2px solid #d67f2a;
 }
 
 .login-box {
   background: linear-gradient(90deg, #d67f2a 0%, #e0a143 100%);
   color: #fff;
-  padding: 7px 22px;
-  border-radius: 5px;
+  padding: 9px 26px; /* Restored original padding */
+  border-radius: 7px;
   font-weight: bold;
   box-shadow: 0 2px 10px #daa75d39;
   border: none;
   cursor: pointer;
-  transition: box-shadow 0.3s, background 0.2s;
-  font-size: 1em;
+  transition: box-shadow 0.3s, background 0.2s, transform 0.18s;
+  font-size: 1.07em;
+  letter-spacing: 0.02em;
 }
 .login-box:hover {
   background: linear-gradient(90deg, #c89023 10%, #d67f2a 100%);
   box-shadow: 0 8px 32px #ffc57143;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* Hero */
 .hero {
-  height: 83vh;
-  min-height: 480px;
+  height: 85vh;
+  min-height: 420px;
   background-size: cover;
   background-position: 60% 40%;
   position: relative;
   display: flex;
   align-items: center;
   color: white;
+  border-radius: 0 0 0 0;
+  box-shadow: 0 8px 32px #f7c96a29;
+  overflow: hidden;
 }
 .hero-overlay {
   width: 100%;
@@ -99,22 +122,28 @@ body {
 .hero-content {
   padding: 0 60px;
   max-width: 700px;
+  animation: fadeInHero 0.7s;
+}
+@keyframes fadeInHero {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
 }
 .main-heading {
-  font-size: 46px;
-  font-weight: bold;
-  line-height: 1.23;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1.18;
   color: #fff;
   margin-bottom: 13px;
   letter-spacing: .3px;
-  font-family: 'Rubik', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Montserrat', 'Inter', sans-serif;
   text-shadow: 0 2px 10px #53290255;
 }
 .tagline {
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 500;
   color: #f8e3a9;
   margin-bottom: 38px;
+  letter-spacing: 0.01em;
 }
 .hero-buttons {
   display: flex;
@@ -122,14 +151,15 @@ body {
 }
 .book-btn,
 .get-started-btn {
-  padding: 11px 30px;
-  font-weight: bold;
+  padding: 12px 15px;
+  font-weight: 800;
   border: none;
-  border-radius: 5px;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 20px;
   box-shadow: 0 2px 10px #c37b1177;
-  transition: background 0.2s, color 0.2s, box-shadow 0.28s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.28s, transform 0.18s;
+  letter-spacing: 0.02em;
 }
 .book-btn {
   background: linear-gradient(90deg,#d67f2a 60%,#e49c30 100%);
@@ -139,6 +169,7 @@ body {
   background: linear-gradient(90deg,#e49c30 0%, #d67f2a 100%);
   color: #fff3e0;
   box-shadow: 0 8px 32px #d67f2a44;
+  transform: translateY(-2px) scale(1.04);
 }
 .get-started-btn {
   background: #fff;
@@ -149,6 +180,7 @@ body {
 .get-started-btn:hover {
   background: #fff5ce;
   color: #d67f2a;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* About Section */
@@ -225,9 +257,50 @@ body {
 /* Services Section */
 .services-container {
   padding: 60px 10vw 60px 10vw;
-  background: #fbf0d8;
+  background: #fbf0d8; /* This is the background for the entire section */
   text-align: center;
+  position: relative; /* Needed for absolute positioning of background images */
+  overflow: hidden; /* Ensures background images don't spill out */
 }
+
+/* Add background patterns as seen in the screenshot */
+.services-container::before,
+.services-container::after {
+    content: "";
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.3; /* Adjust opacity as needed to match the screenshot */
+    z-index: 0; /* Keep behind content */
+}
+
+.services-container::before {
+    /* Assuming you have these pattern images in your public/images folder */
+     /* Replace with your actual pattern */
+    top: 0;
+    left: 0;
+    width: 200px; /* Adjust size as needed */
+    height: 200px; /* Adjust size as needed */
+}
+
+.services-container::after {
+    /* Assuming you have these pattern images in your public/images folder */
+     /* Replace with your actual pattern */
+    bottom: 0;
+    right: 0;
+    width: 200px; /* Adjust size as needed */
+    height: 200px; /* Adjust size as needed */
+}
+
+/* Ensure content stays above the patterns */
+.services-container h2,
+.services-container p,
+.services-grid,
+.service-details-grid {
+    position: relative;
+    z-index: 1;
+}
+
 .services-container h2 {
   font-size: 2.5rem;
   color: #b76b11;
@@ -302,21 +375,55 @@ body {
 .book-now:hover {
   background: #c89023;
 }
-.service-details {
-  margin-top: 50px;
-  color: #6b3a01;
+
+/* This is the new grid for the "4000+ Spiritual Guide" type sections */
+.service-details-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px; /* Adjust gap between items */
+    margin-top: 60px; /* Space from the services grid above */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    /* No background, border, shadow here to match the image */
 }
-.service-details h4 {
-  margin-top: 18px;
-  font-weight: bold;
-  font-size: 21px;
-  margin-bottom: 0;
+
+.detail-item {
+    /* Removed background, border, border-radius, padding, box-shadow */
+    width: 280px; /* Fixed width for each item */
+    text-align: center;
+    /* Removed hover effects as well */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically */
+    /* Added some margin to create separation that was previously padding/gap */
+    margin: 10px 0; /* Minimal vertical margin for spacing */
 }
-.service-details p {
-  font-size: 15px;
-  color: #764e00;
-  margin-bottom: 10px;
+
+/* Removed detail-item:hover styles */
+
+
+.detail-icon {
+    width: 100px; /* Size of the image/icon */
+    height: 100px;
+    object-fit: contain; /* Ensures the image fits without cropping */
+    margin-bottom: 15px; /* Slightly adjusted space between image and text */
 }
+
+.detail-item h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #cc6600; /* Matching screenshot text color */
+    margin-bottom: 8px; /* Space between title and description */
+    margin-top: 0;
+}
+
+.detail-item p {
+    font-size: 15px;
+    color: #776130; /* Matching screenshot text color */
+    line-height: 1.5;
+    margin: 0; /* Remove default paragraph margin */
+}
+
 
 /* Pooja Provided */
 .poojas {
@@ -398,6 +505,7 @@ body {
   font-size: 2.15rem;
   font-weight: 800;
   letter-spacing: 1.2px;
+  font-family: inherit;
 }
 .card-section {
   display: flex;
@@ -442,17 +550,158 @@ body {
   margin: 1.5px 0;
 }
 
-/* Footer */
+/* New Enhanced Footer */
 .footer {
-  text-align: center;
-  padding: 20px;
-  background: #f5f5f5;
-  color: #6d6223;
-  font-size: 15px;
-  margin-top: 38px;
-  box-shadow: 0 -2px 10px #c39b1844;
-  letter-spacing: 1px;
+  background: #f9d382; /* A pleasant light cream/brown background */
+  color: #512700; /* Dark brown for text */
+  padding: 40px 20px;
+  margin-top: 0px; /* Some space from the section above */
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Subtle shadow at the top */
 }
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 30px; /* Space between columns */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1; /* Allows sections to grow and shrink */
+  min-width: 250px; /* Minimum width for each section before wrapping */
+  padding: 15px;
+}
+
+.footer-logo-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  width: 50px; /* Size for logo in footer */
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  box-shadow: 0 2px 8px rgba(214, 127, 42, 0.2);
+}
+
+.footer-company-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: #d67f2a;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: .5px;
+}
+
+.footer-description {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.footer-copyright {
+  font-size: 13px;
+  color: #776130;
+  margin-top: 20px;
+  border-top: 1px solid rgba(119, 97, 48, 0.2); /* Subtle line above copyright */
+  padding-top: 15px;
+}
+
+.footer-section h3 {
+  font-size: 20px;
+  color: #a86200; /* Matching existing brown tones */
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+  color: #512700;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.footer-links ul li a:hover {
+  color: #d67f2a; /* Highlight on hover */
+  text-decoration: underline;
+}
+
+.footer-contact p {
+  font-size: 15px;
+  margin-bottom: 10px;
+  display: flex; /* For icon alignment */
+  align-items: flex-start;
+}
+
+.footer-contact p i {
+  margin-right: 10px;
+  color: #d67f2a; /* Icon color */
+  font-size: 17px;
+  line-height: inherit; /* Align icon with text line height */
+}
+
+/* Chatbot toggle button */
+.chatbot-toggle-button {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: linear-gradient(90deg, #d67f2a 0%, #e0a143 100%);
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(214, 127, 42, 0.4);
+  z-index: 99; /* Ensure it's above other content */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.chatbot-toggle-button:hover {
+  box-shadow: 0 6px 20px rgba(214, 127, 42, 0.6);
+  transform: translateY(-2px);
+}
+
+.chatbot-toggle-button:active {
+  transform: scale(0.95);
+}
+
+.chatbot-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; /* Make the icon itself circular if not already */
+}
+
+/* Chatbot popup container */
+.chatbot-popup {
+  position: fixed;
+  bottom: 100px; /* Adjust based on button height */
+  right: 25px;
+  width: 350px; /* Standard chatbot width */
+  height: 500px; /* Standard chatbot height */
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Ensures the iframe content respects border-radius */
+  z-index: 100; /* Ensure it's above the button and other content */
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 1100px) {
@@ -469,6 +718,67 @@ body {
     height: 130px;
   }
   .about-content { flex-direction: column; gap: 18px; align-items: center; }
+
+  /* Navbar Adjustments for 900px */
+  .navbar-right a,
+  .login-box {
+    margin-left: 18px; /* Slight adjustment */
+    font-size: 1rem;
+  }
+  .login-box {
+    padding: 7px 18px;
+  }
+  .logo-text {
+    font-size: 24px;
+  }
+  .logo-circle { /* Ensure logo scales down gracefully */
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  .home-container {
+    padding-top: 85px; /* Adjust padding-top for slightly smaller header on tablets */
+  }
+
+  /* Footer responsiveness */
+  .footer-content {
+    flex-direction: column; /* Stack sections vertically */
+    align-items: center;
+    text-align: center;
+  }
+  .footer-section {
+    min-width: unset; /* Remove min-width to allow full width */
+    width: 100%; /* Take full width */
+    padding: 15px 0; /* Adjust padding */
+  }
+  .footer-logo-area {
+    justify-content: center; /* Center logo in about section */
+  }
+  .footer-copyright {
+    text-align: center;
+  }
+  .footer-links ul {
+    text-align: center; /* Center list items */
+  }
+
+  /* Responsive adjustments for the new grid */
+  .service-details-grid {
+      gap: 30px; /* Smaller gap on tablets */
+  }
+  .detail-item {
+      width: 250px; /* Adjust width for smaller screens */
+      padding: 0; /* Removed padding */
+  }
+  .detail-icon {
+      width: 80px;
+      height: 80px;
+  }
+  .detail-item h4 {
+      font-size: 20px;
+  }
+  .detail-item p {
+      font-size: 14px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -483,7 +793,99 @@ body {
   }
   .logo-center img { width: 95px; height: 95px; }
   .main-heading { font-size: 26px; }
+  .tagline { font-size: 18px; }
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .book-btn,
+  .get-started-btn {
+    font-size: 18px;
+    width: 100%;
+    padding: 10px 15px;
+  }
   .section-title { font-size: 23px; }
+
+  /* Chatbot Responsive */
+  .chatbot-popup {
+    width: 90vw;
+    height: 70vh;
+    bottom: 80px;
+    right: 5vw;
+    left: 5vw;
+  }
+  .chatbot-toggle-button {
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+  }
+  .chatbot-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Navbar Adjustments for 600px (Mobile) */
+  .navbar {
+    padding: 10px 15px;
+  }
+  .logo-circle {
+    width: 35px;
+    height: 35px;
+    margin-right: 8px;
+  }
+  .logo-text {
+    font-size: 18px;
+  }
+  .navbar-right {
+    display: none;
+  }
+  .login-box {
+    display: block;
+    margin-left: auto;
+    padding: 6px 14px;
+  }
+  .home-container {
+    padding-top: 70px;
+  }
+
+  /* Footer responsiveness */
+  .footer {
+    padding: 30px 15px;
+  }
+  .footer-description,
+  .footer-contact p,
+  .footer-copyright {
+    font-size: 14px; /* Slightly smaller text for mobile */
+  }
+  .footer-section h3 {
+    font-size: 18px;
+  }
+  .footer-links ul li a {
+    font-size: 14px;
+  }
+
+  /* Responsive adjustments for the new grid */
+  .service-details-grid {
+      flex-direction: column; /* Stack vertically on mobile */
+      align-items: center;
+      gap: 25px; /* Adjust gap for stacked items */
+  }
+  .detail-item {
+      width: 90%; /* Take more width on mobile */
+      max-width: 300px; /* Limit max width */
+      padding: 0; /* Removed padding */
+  }
+  .detail-icon {
+      width: 70px;
+      height: 70px;
+  }
+  .detail-item h4 {
+      font-size: 18px;
+  }
+  .detail-item p {
+      font-size: 13px;
+  }
 }
 
 /* Scrollbar styling */
