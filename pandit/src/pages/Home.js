@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Home.css";
-import { postLocation } from '../api/api'; // <-- add this import
+import { postLocation } from '../api/api';
 
-const backendURL = "https://backendserver-lnxc.onrender.com";
+const backendURL = "http://localhost:5000";
 
 function getPoojaImage(img) {
   if (!img) return "/images/default-pooja.png";
@@ -19,6 +19,7 @@ const Home = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   const navigate = useNavigate();
 
@@ -76,7 +77,7 @@ const Home = () => {
           <a href="#services">Services</a>
           <a href="#poojas">Pooja Provided</a>
           <a href="#pandits">Pandits</a>
-          <a href="#footer">Contact</a>
+          <a href="#new-footer">Contact</a>
           <Link to="/login" className="login-box">Login</Link>
         </div>
       </nav>
@@ -113,21 +114,21 @@ const Home = () => {
         <div className="about-content">
           <motion.div className="about-column" initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}>
             <div className="feature-row">
-              <img src="/images/i1.jpeg" alt="Pooja Icon" />
+              <img src="/images/i1.jpeg" alt="Vedic Poojas Icon" />
               <div>
                 <h3>Vedic Poojas</h3>
                 <p>Performed by experienced Pandits with authentic rituals.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/i2.jpeg" alt="Calendar Icon" />
+              <img src="/images/i2.jpeg" alt="Easy Booking Icon" />
               <div>
                 <h3>Easy Booking</h3>
                 <p>Book poojas anytime with a few simple clicks.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/i4.jpeg" alt="Verified Icon" />
+              <img src="/images/i4.jpeg" alt="Verified Pandits Icon" />
               <div>
                 <h3>Verified Pandits</h3>
                 <p>Only trusted and verified professionals available.</p>
@@ -139,21 +140,21 @@ const Home = () => {
           </div>
           <motion.div className="about-column" initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}>
             <div className="feature-row">
-              <img src="/images/i6.jpeg" alt="Blessings Icon" />
+              <img src="/images/i6.jpeg" alt="Traditional Rituals Icon" />
               <div>
                 <h3>Traditional Rituals</h3>
                 <p>Rooted in ancient Vedic traditions and customs.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/i5.jpeg" alt="Services Icon" />
+              <img src="/images/i5.jpeg" alt="Multiple Services Icon" />
               <div>
                 <h3>Multiple Services</h3>
                 <p>From Griha Pravesh to Wedding, all covered.</p>
               </div>
             </div>
             <div className="feature-row">
-              <img src="/images/i3.jpeg" alt="Support Icon" />
+              <img src="/images/i3.jpeg" alt="24x7 Support Icon" />
               <div>
                 <h3>24x7 Support</h3>
                 <p>We’re here to help you anytime, anywhere.</p>
@@ -187,16 +188,26 @@ const Home = () => {
             </motion.div>
           ))}
         </div>
-        <motion.div className="service-details"
+        {/* Updated service-details section to match the image */}
+        <motion.div className="service-details-grid"
           initial={{ y: 60, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}
         >
-          <h4>4000+ Spiritual Guides</h4>
-          <p>Priests, Pandits, Religious Experts & Consultants</p>
-          <h4>500+ Types of Puja</h4>
-          <p>Comprehensive coverage of religious services</p>
-          <h4>100000+ Pujas Performed</h4>
-          <p>Trusted by thousands across India</p>
+            <div className="detail-item">
+                <img src="/images/s1.png" alt="Spiritual Guide Icon" className="detail-icon" />
+                <h4>4000+ Spiritual Guide</h4>
+                <p>Priests, Pandits, Religious Experts & Consultants</p>
+            </div>
+            <div className="detail-item">
+                <img src="/images/s2.png" alt="Pooja Types Icon" className="detail-icon" />
+                <h4>500+ Types of Puja</h4>
+                <p>500+ Types of Religious Services</p>
+            </div>
+            <div className="detail-item">
+                <img src="/images/s3.png" alt="Pooja Performed Icon" className="detail-icon" />
+                <h4>100000+ Puja Performed</h4>
+                <p>4000+ Spiritual Guides performed more than 100000+ Puja</p>
+            </div>
         </motion.div>
       </section>
 
@@ -288,10 +299,82 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer" id="footer">
-        <p>&copy; 2025 Shubhkarya. All rights reserved.</p>
+      {/* New Enhanced Footer */}
+      <footer className="footer" id="new-footer">
+        <div className="footer-content">
+          {/* Company Info Section */}
+          <div className="footer-section footer-about">
+            <div className="footer-logo-area">
+              <img src="/images/subh.png" alt="Shubhkarya Logo" className="footer-logo" />
+              <span className="footer-company-name">Shubhkarya</span>
+            </div>
+            <p className="footer-description">
+              Shubhkarya is your trusted online platform for booking experienced Pandits and
+              performing authentic Vedic Poojas. We ensure a seamless spiritual experience
+              for every sacred occasion, bringing ancient traditions to your doorstep.
+            </p>
+            <p className="footer-copyright">&copy; {new Date().getFullYear()} Shubhkarya. All rights reserved.</p>
+          </div>
+
+          {/* Quick Links Section (Content you want to add) */}
+          <div className="footer-section footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#services">Our Services</a></li>
+              <li><a href="#poojas">Pooja Types</a></li>
+              <li><a href="#pandits">Our Pandits</a></li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li> {/* Opens new page */}
+              <li><Link to="/terms-conditions">Terms & Conditions</Link></li> {/* Opens new page */}
+            </ul>
+          </div>
+
+          {/* Contact Info Section */}
+          <div className="footer-section footer-contact">
+            <h3>Contact Us</h3>
+            <p><i className="fas fa-phone-alt"></i> Mobile: +91 98765 43210</p>
+            <p><i className="fas fa-envelope"></i> Email: info@shubhkarya.com</p>
+            <p><i className="fas fa-map-marker-alt"></i> Address: 123 Divine Path, Spiritual Nagar, Hathras, Uttar Pradesh, India - 204101</p>
+          </div>
+        </div>
       </footer>
+
+      {/* Chatbot Icon */}
+      <motion.button
+        className="chatbot-toggle-button"
+        onClick={() => setShowChatbot(!showChatbot)}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        aria-label="Toggle Chatbot"
+      >
+        <img src="/images/subh.png" alt="Chatbot Icon" className="chatbot-icon" />
+      </motion.button>
+
+      {/* Chatbot Popup */}
+      <AnimatePresence>
+        {showChatbot && (
+          <motion.div
+            className="chatbot-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Chatbot window"
+            initial={{ opacity: 0, y: 50, x: 50 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: 50, x: 50 }}
+            transition={{ duration: 0.3 }}
+          >
+            <iframe
+              title="Chatbot"
+              src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
+              style={{ width: "100%", height: "100%", border: "none", borderRadius: 15 }}
+              allow="clipboard-write"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
