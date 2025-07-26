@@ -27,7 +27,7 @@ body {
 /* ========== Sidebar ========== */
 .pandit-sidebar {
     width: 220px;
-    background: linear-gradient(94deg, #ff7100, #1f1700); /* Saffron-like gradient (deep orange to deep brown) */
+    background: linear-gradient(123deg, #ff7100, #1f1700); /* Saffron-like gradient (deep orange to deep brown) */
     border-right: 1px solid rgba(255, 255, 255, 0.25);
     padding: 24px 14px 16px 14px;
     display: flex;
@@ -36,8 +36,12 @@ body {
     color: white;
     box-shadow: 3px 0 8px rgba(255, 140, 0, 0.3); /* Saffron shadow */
     transition: width 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    z-index: 10;
+    position: fixed; /* Make sidebar fixed */
+    top: 0; /* Align to top */
+    left: 0; /* Align to left */
+    height: 100%; /* Take full height of viewport */
+    z-index: 1000; /* Ensure it's above other content */
+    overflow-y: auto; /* Allow scrolling if content overflows */
 }
 
 .pandit-sidebar:hover {
@@ -137,28 +141,30 @@ nav[role="navigation"] {
 
 /* Logout Button */
 .sidebar-logout-btn {
-    margin-top: 15px; /* Adjust margin to place it below chats */
-    padding: 10px 0;
+    margin-top: 20px; /* Adjusted margin to bring it up from the very bottom */
+    margin-bottom: 10px; /* Add some space from the actual bottom of the sidebar */
+    padding: 12px 0; /* Increased padding for better click area */
     width: 90%;
     align-self: center;
-    background: #e74c3c; /* Red for logout */
+    background: linear-gradient(90deg, #e74c3c, #c0392b); /* Gradient for a richer look */
     color: #fff;
     border: none;
     border-radius: 14px;
     font-weight: 900;
-    font-size: 1em;
+    font-size: 1.05em; /* Slightly larger font */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    box-shadow: 0 0 15px rgba(231, 76, 60, 0.733);
+    gap: 10px; /* Increased gap */
+    box-shadow: 0 4px 18px rgba(231, 76, 60, 0.733); /* More prominent shadow */
     cursor: pointer;
-    transition: background 0.25s ease, box-shadow 0.25s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .sidebar-logout-btn:hover {
-    background: #c0392b;
-    box-shadow: 0 0 28px rgba(192, 57, 43, 0.733);
+    background: linear-gradient(90deg, #c0392b, #a52a2a); /* Darker gradient on hover */
+    box-shadow: 0 8px 30px rgba(192, 57, 43, 0.9); /* Stronger, lifted shadow */
+    transform: translateY(-3px) scale(1.02); /* Slight lift and scale */
 }
 
 /* Sidebar Responsive */
@@ -180,6 +186,8 @@ nav[role="navigation"] {
     .sidebar-logout-btn {
         padding: 8px 5px;
         width: 100%;
+        font-size: 0.9em; /* Smaller font for compact view */
+        gap: 5px;
     }
 }
 
@@ -187,15 +195,17 @@ nav[role="navigation"] {
 
 .pandit-content {
     flex: 1;
+    /* Add left margin to push content when sidebar is fixed */
+    margin-left: 220px; /* Same width as sidebar */
     padding: 36px 6vw 48px 6vw;
     position: relative;
     min-width: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: #fffdf7; /* Off-white background for content */
+    background: #fff3e0; /* Off-white background for content *//*ffdf7/
     border-radius: 22px 0 0 22px;
     box-shadow: 4px 0 30px rgba(255, 224, 178, 0.4); /* Subtle saffron tint shadow */
-    transition: background 0.35s ease;
+    transition: background 0.35s ease, margin-left 0.3s ease; /* Animate margin change */
 }
 
 /* New Dashboard Top Header (name, email, date, time, actions) */
@@ -1513,6 +1523,13 @@ nav[role="navigation"] {
         grid-template-columns: 1fr; /* Stack metrics vertically on small screens */
     }
 }
+
+@media (max-width: 780px) { /* Adjust sidebar width and content margin for fixed sidebar */
+    .pandit-content {
+        margin-left: 78px; /* Match the collapsed sidebar width */
+    }
+}
+
 
 @media (max-width: 600px) {
     .pandit-header-row2 {
