@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Home, CalendarCheck2, Users, MessageCircle, IndianRupee, Phone, ShieldCheck,
-    Timer, XCircle, Star, ArrowRight, Clock3, LogOut, UserCircle2
+    Timer, XCircle, Star, ArrowRight, Clock3, LogOut, UserCircle2, MapPin, Lamp, Calendar, Clock, Gift,
+    Zap, TrendingUp, TrendingDown, Bell, Wallet, Percent // Added new icons for dashboard
 } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import './PanditDashboard.css';
@@ -65,13 +66,13 @@ const WelcomeSection = ({ userName }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
         >
-            <h2>{getGreeting()}, **{userName || 'Pandit Ji'}**! 🙏</h2>
+            <h2>{getGreeting()}, <span className="highlight-name">{userName || 'Pandit Ji'}</span>!</h2>
             <p>Your devotion strengthens the path. Here's a quick overview of your activities.</p>
         </motion.div>
     );
 };
 
-// New DashboardHeader Component
+// DashboardHeader Component (Improved)
 const DashboardHeader = ({ userName, userEmail }) => {
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
@@ -93,12 +94,16 @@ const DashboardHeader = ({ userName, userEmail }) => {
     return (
         <header className="dashboard-main-header">
             <div className="header-user-info">
-                <span className="user-name">Welcome, {userName || 'Pandit Ji'}!</span>
-                <span className="user-email">{userEmail || 'pandit@example.com'}</span>
+                <span className="user-greeting">Namaste, <span className="user-name-header">{userName || 'Pandit Ji'}</span>!</span>
+                <span className="user-email-header">{userEmail || 'pandit@example.com'}</span>
             </div>
             <div className="header-datetime-info">
-                <span className="current-date">{formattedDate}</span>
-                <span className="current-time">{formattedTime}</span>
+                <span className="current-date"><Calendar size={18} style={{ marginRight: 5, verticalAlign: 'middle' }} /> {formattedDate}</span>
+                <span className="current-time"><Clock size={18} style={{ marginRight: 5, verticalAlign: 'middle' }} /> {formattedTime}</span>
+            </div>
+            <div className="header-action-items">
+                <button className="icon-button" aria-label="Notifications"><Bell size={22} /></button>
+                <button className="icon-button" aria-label="Settings"><UserCircle2 size={22} /></button>
             </div>
         </header>
     );
@@ -114,9 +119,9 @@ const pages = {
 
 function PanditDashboard() {
     const navigate = useNavigate();
-    // Destructure user properties for cleaner access
+    // Destructure profile_photo_url from user
     const user = useMemo(() => JSON.parse(localStorage.getItem('user')) || {}, []);
-    const { _id, name, email, is_verified, city, experienceYears, phone, languages, speciality } = user; // Added email here
+    const { _id, name, email, is_verified, city, experienceYears, phone, languages, speciality, profile_photo_url } = user;
 
     const [bookings, setBookings] = useState([]);
     const [currentPage, setCurrentPage] = useState('dashboard');
@@ -156,12 +161,14 @@ function PanditDashboard() {
     const completedCount = useMemo(() => bookings.filter(b => b.status === 'Accepted').length, [bookings]);
     const pendingCount = useMemo(() => bookings.filter(b => b.status === 'Pending').length, [bookings]);
     const rejectedCount = useMemo(() => bookings.filter(b => b.status === 'Rejected').length, [bookings]);
+    const totalBookingsCount = bookings.length;
+
     const uniqueDevoteesCount = useMemo(() => {
         const ids = new Set();
         bookings.forEach(b => b.userid?._id && ids.add(b.userid._id));
         return ids.size;
     }, [bookings]);
-    const totalEarnings = completedCount * 500;
+    const totalEarnings = completedCount * 500; // Assuming 500 per completed puja
 
     const filteredBookings = useMemo(() => {
         return bookings.filter(b => {
@@ -169,7 +176,7 @@ function PanditDashboard() {
             const nameMatch = b.userid?.name?.toLowerCase().includes(searchName.toLowerCase());
             const statusMatch = filterStatus ? b.status === filterStatus : true;
             return dateMatch && nameMatch && statusMatch;
-        });
+        }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by most recent
     }, [bookings, filterDate, searchName, filterStatus, filterResetTrigger]);
 
     const devoteesList = useMemo(() => {
@@ -242,12 +249,35 @@ function PanditDashboard() {
             .slice(0, 5);
     }, [bookings]);
 
+    // Added for Recent Activity Widget
+    const recentBookings = useMemo(() => {
+        return bookings
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by creation date, most recent first
+            .slice(0, 5); // Get the latest 5
+    }, [bookings]);
+
+
     const clearFilters = () => {
         setFilterDate('');
         setSearchName('');
         setFilterStatus('');
         setFilterResetTrigger(t => t + 1);
     };
+
+    // New: Performance Metrics (Example Data)
+    const performanceMetrics = useMemo(() => {
+        const acceptRate = totalBookingsCount > 0 ? (completedCount / totalBookingsCount * 100).toFixed(1) : 0;
+        const avgResponseTime = "2.5 hrs"; // Static for now, would be dynamic from backend
+        return { acceptRate, avgResponseTime };
+    }, [completedCount, totalBookingsCount]);
+
+    // New: Tips for Pandits
+    const panditTips = [
+        "Ensure prompt responses to pending bookings to improve your acceptance rate.",
+        "Keep your profile updated with your latest services and availability.",
+        "Engage with devotees via chat for better coordination and service.",
+        "Collect feedback from devotees to enhance your reputation."
+    ];
 
     return (
         <div className="pdash-bg">
@@ -257,12 +287,11 @@ function PanditDashboard() {
                 <aside className="pandit-sidebar" aria-label="Pandit dashboard navigation">
                     <div className="pandit-profile-sidebar">
                         <img
-                            src="/images/subh.png"
+                            src="/images/subh.png" // Ensure this path is correct
                             alt="App Logo"
                             className="pandit-logo"
                         />
-                        <div className="sidebar-name" tabIndex={-1}>
-                            {name || "Pandit Ji"}
+                        <div className="sidebar-verification-status" tabIndex={-1}>
                             <small className={is_verified ? "text-verified" : "text-pending"}>
                                 {is_verified ? (
                                     <>
@@ -293,16 +322,16 @@ function PanditDashboard() {
                                 <span className="sidebar-item-label">{item.label}</span>
                             </div>
                         ))}
+                        {/* Logout button moved here, directly after chat */}
+                        <button
+                            className="logout-btn sidebar-logout-btn"
+                            onClick={handleLogout}
+                            aria-label="Logout from dashboard"
+                            type="button"
+                        >
+                            <LogOut size={22} /> Logout
+                        </button>
                     </nav>
-
-                    <button
-                        className="logout-btn sidebar-logout-btn"
-                        onClick={handleLogout}
-                        aria-label="Logout from dashboard"
-                        type="button"
-                    >
-                        <LogOut size={22} /> Logout
-                    </button>
                 </aside>
 
                 {/* Main Content */}
@@ -326,21 +355,27 @@ function PanditDashboard() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <div className="pandit-profile-pic" aria-label="Pandit profile picture and status">
-                                    <UserCircle2 color="#ffecb3" size={108} className="pandit-avatar" aria-hidden="true" />
+                                    {/* Conditional rendering for profile picture */}
+                                    {profile_photo_url ? (
+                                        <img src={profile_photo_url} alt={`${name}'s profile`} className="pandit-avatar-img" />
+                                    ) : (
+                                        <UserCircle2 color="#ffecb3" size={108} className="pandit-avatar" aria-hidden="true" />
+                                    )}
                                     <span
                                         className={is_verified ? 'pdash-badge verified' : 'pdash-badge notverified'}
                                         aria-live="polite"
+                                        aria-atomic="true"
                                     >
                                         {is_verified ? <><ShieldCheck size={18} /> Verified</> : <><Timer size={18} /> Not Verified</>}
                                     </span>
                                 </div>
                                 <div className="pandit-profile-info">
-                                    <h2 tabIndex={-1}>🙏 {name || 'Pandit Ji'}</h2>
+                                    <h2 tabIndex={-1}>{name || 'Pandit Ji'}</h2>
                                     <p><strong>City:</strong> {city || 'N/A'}</p>
                                     <p><strong>Experience:</strong> {experienceYears || '--'} years</p>
                                     <div className="pandit-profile-row">
                                         <span><Phone style={{ marginRight: 4 }} size={18} /> {phone || 'N/A'}</span>
-                                        <span><b>🗣</b> {(languages && languages.join(', ')) || 'N/A'}</span>
+                                        <span><b><MessageCircle size={18} style={{ marginBottom: -3 }} /></b> {(languages && languages.join(', ')) || 'N/A'}</span>
                                         <span><Star style={{ marginBottom: -3 }} size={18} /> {speciality || 'Puja & Rituals'}</span>
                                     </div>
                                     <button
@@ -362,17 +397,17 @@ function PanditDashboard() {
                                     >
                                         <div className="stats-box" style={{ gap: 26 }}>
                                             <div className="stats-item" aria-label={`Accepted bookings: ${completedCount}`}>
-                                                <ShieldCheck size={26} color="#4CAF50" aria-hidden="true" /> {/* Adjusted color */}
+                                                <ShieldCheck size={26} color="#4CAF50" aria-hidden="true" />
                                                 <span className="stats-num">{completedCount}</span>
                                                 <span>Accepted</span>
                                             </div>
                                             <div className="stats-item" aria-label={`Pending bookings: ${pendingCount}`}>
-                                                <Timer size={26} color="#ffb300" aria-hidden="true" /> {/* Adjusted color */}
+                                                <Timer size={26} color="#ffb300" aria-hidden="true" />
                                                 <span className="stats-num">{pendingCount}</span>
                                                 <span>Pending</span>
                                             </div>
                                             <div className="stats-item" aria-label={`Rejected bookings: ${rejectedCount}`}>
-                                                <XCircle size={26} color="#e74c3c" aria-hidden="true" /> {/* Adjusted color */}
+                                                <XCircle size={26} color="#e74c3c" aria-hidden="true" />
                                                 <span className="stats-num">{rejectedCount}</span>
                                                 <span>Rejected</span>
                                             </div>
@@ -389,34 +424,66 @@ function PanditDashboard() {
                                 transition={{ duration: 0.6 }}
                             >
                                 <div className="dash-card gradientblue" aria-label={`Devotees: ${uniqueDevoteesCount}`}>
-                                    <Users size={32} color="#cc5500" className="dash-card-icon" aria-hidden="true" /> {/* Adjusted color */}
+                                    <Users size={32} color="#cc5500" className="dash-card-icon" aria-hidden="true" />
                                     <div>
                                         <span className="dash-card-label">Devotees</span>
                                         <span className="dash-card-value">{uniqueDevoteesCount}</span>
                                     </div>
                                 </div>
                                 <div className="dash-card gradientmint" aria-label={`Bookings: ${bookings.length}`}>
-                                    <CalendarCheck2 size={32} color="#4CAF50" className="dash-card-icon" aria-hidden="true" /> {/* Adjusted color */}
+                                    <CalendarCheck2 size={32} color="#4CAF50" className="dash-card-icon" aria-hidden="true" />
                                     <div>
-                                        <span className="dash-card-label">Bookings</span>
+                                        <span className="dash-card-label">Total Bookings</span>
                                         <span className="dash-card-value">{bookings.length}</span>
                                     </div>
                                 </div>
                                 <div className="dash-card gradientyellow" aria-label={`Chats: ${uniqueDevoteesCount}`}>
-                                    <MessageCircle size={32} color="#ff9800" className="dash-card-icon" aria-hidden="true" /> {/* Adjusted color */}
+                                    <MessageCircle size={32} color="#ff9800" className="dash-card-icon" aria-hidden="true" />
                                     <div>
-                                        <span className="dash-card-label">Chats</span>
-                                        <span className="dash-card-value">{uniqueDevoteesCount}</span>
+                                        <span className="dash-card-label">Active Chats</span>
+                                        <span className="dash-card-value">{uniqueDevoteesCount}</span> {/* Placeholder for actual active chats */}
                                     </div>
                                 </div>
                                 <div className="dash-card gradientpink" aria-label={`Earnings: ₹${totalEarnings}`}>
-                                    <IndianRupee size={32} color="#e65100" className="dash-card-icon" aria-hidden="true" /> {/* Adjusted color */}
+                                    <IndianRupee size={32} color="#e65100" className="dash-card-icon" aria-hidden="true" />
                                     <div>
-                                        <span className="dash-card-label">Earnings</span>
+                                        <span className="dash-card-label">Total Earnings</span>
                                         <span className="dash-card-value">₹{totalEarnings}</span>
                                     </div>
                                 </div>
                             </motion.div>
+
+                            {/* New: Performance Metrics Widget */}
+                            <motion.div
+                                className="widget performance-metrics"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.3 }}
+                                tabIndex={-1}
+                            >
+                                <h3><Zap size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Your Performance Insights</h3>
+                                <div className="metrics-grid"> {/* This grid will handle horizontal layout */}
+                                    <div className="metric-item">
+                                        <span className="metric-label">Acceptance Rate</span>
+                                        <span className="metric-value" style={{ color: performanceMetrics.acceptRate >= 80 ? '#4CAF50' : '#ffb300' }}>
+                                            {performanceMetrics.acceptRate}% {performanceMetrics.acceptRate >= 80 ? <TrendingUp size={18} /> : <TrendingDown size={18} color="#e74c3c" />}
+                                        </span>
+                                    </div>
+                                    <div className="metric-item">
+                                        <span className="metric-label">Avg. Response Time</span>
+                                        <span className="metric-value">{performanceMetrics.avgResponseTime}</span>
+                                    </div>
+                                    <div className="metric-item">
+                                        <span className="metric-label">Total Pujas</span>
+                                        <span className="metric-value">{completedCount}</span>
+                                    </div>
+                                    <div className="metric-item">
+                                        <span className="metric-label">Devotee Rating</span>
+                                        <span className="metric-value">4.8 <Star size={18} color="#FFD700" style={{ verticalAlign: 'middle' }} /></span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                            <hr className="divider" />
 
                             {/* Extra Widgets */}
                             <div className="dashboard-widgets" role="region" aria-label="Dashboard extra widgets">
@@ -448,6 +515,26 @@ function PanditDashboard() {
                                     )}
                                 </div>
 
+                                {/* Recent Activity Widget */}
+                                <div className="widget recent-activity" tabIndex={-1}>
+                                    <h3><Clock size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Recent Activity</h3>
+                                    {loadingBookings ? (
+                                        <p className="loading-message">Loading recent activity...</p>
+                                    ) : recentBookings.length === 0 ? (
+                                        <p className="empty-state-message">No recent bookings.</p>
+                                    ) : (
+                                        <ul>
+                                            {recentBookings.map(b => (
+                                                <li key={b._id} className={`activity-item ${b.status.toLowerCase()}`}>
+                                                    <span className="activity-status-dot" style={{ backgroundColor: b.status === 'Accepted' ? '#4CAF50' : b.status === 'Pending' ? '#ffb300' : '#e74c3c' }}></span>
+                                                    <span>{b.userid?.name || 'Devotee'} - {b.pujaId?.name || 'Puja'} (<strong className="status-text">{b.status}</strong>)</span>
+                                                    <small>{new Date(b.createdAt).toLocaleDateString('en-IN')}</small>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+
                                 {/* Top services widget */}
                                 <div className="widget top-services" tabIndex={-1}>
                                     <h3><Star size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Top Services</h3>
@@ -458,18 +545,28 @@ function PanditDashboard() {
                                     ) :
                                         <ul>
                                             {topServices.map(([svc, count]) => (
-                                                <li key={svc}>{svc}: {count}</li>
+                                                <li key={svc}>{svc}: <strong>{count} bookings</strong></li>
                                             ))}
                                         </ul>
                                     }
                                 </div>
 
-                                {/* Offers banner example */}
-                                <div className="offer-banner" tabIndex={-1} aria-live="polite">
-                                    <span role="alert" aria-atomic="true">🎉 This Shravan: 25% Off on Rudrabhishek Pujas! Book Now </span>
-                                    <button type="button" onClick={() => alert('Offer details coming soon!')}>See Details</button>
+                                {/* New: Pandit Tips Widget */}
+                                <div className="widget pandit-tips" tabIndex={-1}>
+                                    <h3><Lamp size={22} aria-hidden="true" style={{ marginRight: 6 }} /> Pandit Tips</h3>
+                                    <ul>
+                                        {panditTips.map((tip, index) => (
+                                            <li key={index}><ArrowRight size={14} aria-hidden="true" /> {tip}</li>
+                                        ))}
+                                    </ul>
                                 </div>
 
+                                {/* Offers banner example */}
+                                <div className="offer-banner" tabIndex={-1} aria-live="polite">
+                                    <Gift size={22} style={{ marginRight: 8, color: 'white' }} aria-hidden="true" />
+                                    <span role="alert" aria-atomic="true">This Shravan: 25% Off on Rudrabhishek Pujas! Book Now </span>
+                                    <button type="button" onClick={() => alert('Offer details coming soon!')}>See Details</button>
+                                </div>
                             </div>
                         </>
                     )}
@@ -527,7 +624,7 @@ function PanditDashboard() {
                                     </p>
 
                                     {/* Bookings List */}
-                                    <div className="pandit-bookings" role="list" aria-label="Filtered bookings list">
+                                    <div className="pandit-bookings-grid" role="list" aria-label="Filtered bookings list">
                                         <AnimatePresence>
                                             {filteredBookings.length ? filteredBookings.map((b, i) => (
                                                 <motion.div
@@ -552,12 +649,12 @@ function PanditDashboard() {
                                                         <span><Users size={16} aria-hidden="true" /> {b.serviceid?.name || 'N/A'}</span>
                                                     </div>
                                                     <div className="pandit-booking-row">
-                                                        <span>🛕 <b>Puja:</b> {b.pujaId?.name || 'N/A'}</span>
-                                                        <span>📅 <b>Date:</b> {new Date(b.puja_date).toLocaleDateString('en-IN')}</span>
-                                                        <span>⏰ <b>Time:</b> {b.puja_time}</span>
+                                                        <span><Lamp size={16} aria-hidden="true" /> <b>Puja:</b> {b.pujaId?.name || 'N/A'}</span>
+                                                        <span><Calendar size={16} aria-hidden="true" /> <b>Date:</b> {new Date(b.puja_date).toLocaleDateString('en-IN')}</span>
+                                                        <span><Clock size={16} aria-hidden="true" /> <b>Time:</b> {b.puja_time}</span>
                                                     </div>
                                                     <div className="pandit-booking-row">
-                                                        <span>📍 <b>Location:</b> {b.location || 'N/A'}</span>
+                                                        <span><MapPin size={16} aria-hidden="true" /> <b>Location:</b> {b.location || 'N/A'}</span>
                                                     </div>
                                                     <button
                                                         className="chat-from-booking-btn"
@@ -612,7 +709,7 @@ function PanditDashboard() {
                     {/* Devotees Page */}
                     {currentPage === "devotees" && (
                         <div className="pandit-devotee-list" role="region" aria-label="List of devotees">
-                            <h3 className="devotee-list-title" tabIndex={-1}>✨ My Devotees ({devoteesList.length})</h3>
+                            <h3 className="devotee-list-title" tabIndex={-1}><Users size={22} style={{ marginRight: 6 }} aria-hidden="true" /> My Devotees ({devoteesList.length})</h3>
                             {loadingDevotees ? (
                                 <p className="loading-message">Loading devotees list...</p>
                             ) : devoteesList.length === 0 ? (
