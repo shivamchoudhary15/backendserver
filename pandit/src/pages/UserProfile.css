@@ -1,0 +1,159 @@
+/* src/pages/UserProfile.css */
+
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 80px 20px 40px 20px;
+  background: var(--sidebar-bg); /* Use dashboard background */
+  color: var(--sidebar-text);
+  margin-left: 220px; /* Adjust for sidebar */
+  gap: 30px;
+}
+
+/* Ensure main content is pushed by sidebar */
+.sidebar-root.collapsed ~ .dashboard-main .user-profile-container {
+  margin-left: 56px;
+}
+
+.profile-card,
+.booking-history-card {
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7); /* Light purple gradient */
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  width: 100%;
+  max-width: 700px;
+  color: #4a148c;
+  text-align: center;
+}
+
+.profile-card h2,
+.booking-history-card h3 {
+  font-size: 2.2em;
+  color: #6a1b9a;
+  margin-bottom: 25px;
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.profile-info p {
+  font-size: 1.15em;
+  margin-bottom: 10px;
+  color: #7b1fa2;
+}
+
+.profile-info strong {
+  color: #4a148c;
+}
+
+.edit-profile-btn {
+  margin-top: 20px;
+  padding: 10px 25px;
+}
+
+.booking-history-card {
+  margin-top: 30px;
+}
+
+.booking-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.booking-item-card {
+  background: linear-gradient(135deg, #ede7f6, #d1c4e9);
+  border: 1px solid #9575cd;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.booking-item-card h4 {
+  font-size: 1.3em;
+  color: #512da8;
+  margin-bottom: 10px;
+}
+
+.booking-item-card p {
+  font-size: 0.95em;
+  color: #673ab7;
+  margin-bottom: 5px;
+}
+
+.booking-item-card strong {
+  color: #311b92;
+}
+
+.booking-item-card .status {
+  margin-top: 15px;
+  padding: 5px 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  width: fit-content;
+}
+
+.loading-state, .error-state {
+    text-align: center;
+    font-size: 1.2em;
+    padding: 50px;
+    color: #fff;
+}
+
+.error-message {
+    color: #ff6e6e;
+    font-weight: bold;
+}
+
+/* Reusing dashboard's status classes */
+.status.accepted {
+  background: #d4f4dd;
+  color: #1d9d3f;
+  border-color: #5af07a;
+}
+.status.pending {
+  background: #fff6e0;
+  color: #d18b1a;
+  border-color: #ffdd7a;
+}
+.status.rejected {
+  background: #ffd7d7;
+  color: #e31212;
+  border-color: #ff6e6e;
+}
+
+/* Responsive adjustments for User Profile Page */
+@media (max-width: 768px) {
+  .user-profile-container {
+    margin-left: 56px; /* Adjust for collapsed sidebar */
+    padding: 60px 15px 30px 15px;
+  }
+  .profile-card, .booking-history-card {
+    padding: 25px;
+    border-radius: 15px;
+  }
+  .profile-card h2, .booking-history-card h3 {
+    font-size: 1.8em;
+  }
+  .profile-info p {
+    font-size: 1em;
+  }
+  .booking-list-grid {
+    grid-template-columns: 1fr; /* Stack cards on smaller screens */
+  }
+  .booking-item-card h4 {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-profile-container {
+    margin-left: 0;
+  }
+}
