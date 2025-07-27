@@ -857,3 +857,413 @@ textarea:focus-visible {
     outline: 2px solid var(--primary-btn-bg);
     outline-offset: 2px;
 }
+
+/* Add these styles to your existing Dashboard.css */
+
+/* Custom Buttons (used by Chat with Pandit, Book Festival, etc.) */
+.custom-btn {
+  background: var(--primary-btn-bg);
+  color: var(--alt-btn-text); /* Or a contrasting color like #fff */
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.custom-btn:hover {
+  background: var(--primary-btn-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.glow-btn {
+  box-shadow: 0 0 15px var(--highlight-color);
+  color: #fff; /* White text for glow buttons */
+  background: var(--highlight-color);
+}
+
+.glow-btn:hover {
+  box-shadow: 0 0 25px var(--highlight-color);
+  background: #ff2e63;
+}
+
+
+/* Pooja Services Section */
+.pooja-section {
+  margin-top: 3.5rem;
+}
+
+.pooja-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1.5rem;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight-color) transparent;
+}
+
+/* Pooja Card Styling (similar to Pandit Card but adapted for poojas) */
+.pooja-card {
+  flex: 0 0 280px; /* Fixed width for consistency */
+  max-width: 280px;
+  background: linear-gradient(145deg, #e3f2fd, #bbdefb); /* Light blue gradient */
+  border: 2px solid #90caf9;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 150, 255, 0.15);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pooja-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 150, 255, 0.25);
+}
+
+.pooja-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #a7d9f7;
+}
+
+.pooja-name {
+  font-size: 1.35em;
+  font-weight: 800;
+  color: #1976d2;
+  margin-bottom: 8px;
+}
+
+.pooja-description {
+  font-size: 0.95em;
+  color: #424242;
+  margin-bottom: 15px;
+  flex-grow: 1; /* Allows description to take available space */
+}
+
+.pooja-price {
+  font-size: 1.25em;
+  font-weight: 900;
+  color: #e94560; /* Highlight color for price */
+  margin-bottom: 15px;
+}
+
+.pooja-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.pooja-actions .custom-btn {
+  flex: 1;
+  padding: 8px 10px;
+  font-size: 0.9em;
+}
+
+/* Floating Cart Button */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 100px; /* Adjust to be above chatbot if both are present */
+  right: 26px;
+  z-index: 10000;
+  background: linear-gradient(135deg, #ff9800, #ffc107); /* Orange gradient */
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.floating-cart-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.6);
+}
+
+.cart-item-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #e94560; /* Highlight color */
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  font-weight: bold;
+  min-width: 24px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Cart Modal Overlay */
+.cart-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10020;
+}
+
+/* Cart Modal Content */
+.cart-modal-content {
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cart-modal-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.cart-modal-close-btn:hover {
+  color: #333;
+}
+
+.cart-modal-content h3 {
+  font-size: 1.8em;
+  color: #1a1a2e;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.cart-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px; /* Limit height and enable scroll if many items */
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.cart-item-price {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.cart-item-quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-btn {
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #555;
+  transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+  background: #ddd;
+}
+
+.quantity-input {
+  width: 40px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 0;
+  font-size: 1em;
+  -moz-appearance: textfield; /* Hide arrows in Firefox */
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: #e94560;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-left: 15px;
+}
+
+.cart-summary {
+  text-align: right;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.cart-checkout-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  margin-top: 25px;
+  background: var(--primary-btn-bg);
+  color: var(--alt-btn-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cart-checkout-btn:hover {
+  background: var(--primary-btn-hover-bg);
+}
+
+.empty-cart-message {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 20px;
+}
+
+/* Upcoming Festivals Section */
+.festivals-section {
+  margin-top: 3.5rem;
+}
+
+.festival-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1.5rem;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight-color) transparent;
+}
+
+.festival-card {
+  flex: 0 0 280px;
+  max-width: 280px;
+  background: linear-gradient(145deg, #fce4ec, #f8bbd0); /* Pink gradient */
+  border: 2px solid #f48fb1;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(255, 100, 150, 0.15);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default; /* Not directly clickable like Pandits */
+  user-select: none;
+}
+
+.festival-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 100, 150, 0.25);
+}
+
+.festival-name {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: #ad1457;
+  margin-bottom: 8px;
+}
+
+.festival-date {
+  font-size: 1em;
+  color: #d81b60;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.festival-description {
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.book-festival-btn {
+  margin-top: auto; /* Push button to bottom */
+}
+
+
+/* General improvements */
+.empty-msg {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
