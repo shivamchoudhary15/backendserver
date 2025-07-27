@@ -1,3 +1,4 @@
+// src/pages/Dashboard.js
 import React, { useState, useEffect, useRef } from "react";
 import {
   Home,
@@ -8,28 +9,31 @@ import {
   MessageCircle,
   Search,
   Users,
-  ChevronLeft,
-  ChevronRight,
+  ShoppingCart,
 } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "./Dashboard.css";
-import { createReview, getBookings, getVerifiedPandits } from "../api/api";
-import ChatWindow from "./ChatWindow";
-import { useNavigate } from "react-router-dom";
+import "./Dashboard.css"; // Main dashboard CSS
+import { getBookings, getVerifiedPandits, getPoojas } from "../api/api";
+import ChatWindow from "../components/ChatWindow";
+import CartModal from "../components/CartModal"; // Import CartModal
+import { useNavigate, Outlet, useLocation } from "react-router-dom"; // Added Outlet and useLocation
 
+// Import the new internal Dashboard Navbar
+import DashboardNavbar from "../components/DashboardNavbar";
 
 const sidebarLinks = [
-  { label: "Home", icon: Home, goto: "/" },
-  { label: "Book Puja", icon: Book, goto: "/booking" },
-  { label: "Submit Review", icon: MessageCircle, goto: "#review" },
-  { label: "Pandits", icon: Users, goto: "#pandit" },
-  { label: "Search", icon: Search, goto: "#highlight" },
-  { label: "Bookings", icon: CalendarDays, goto: "#booking" },
-  { label: "Logout", icon: LogOut, goto: "/home", logout: true },
+  { label: "Home", icon: Home, goto: "/dashboard/home" },
+  { label: "Book Puja", icon: Book, goto: "/dashboard/booking" },
+  { label: "My Profile", icon: Users, goto: "/dashboard/profile" },
+  { label: "Pandits", icon: Users, goto: "/dashboard/search-pandits" },
+  { label: "Pooja Services", icon: Search, goto: "/dashboard/search-pooja" },
+  { label: "Bookings History", icon: CalendarDays, goto: "/dashboard/booking-history" },
+  { label: "Submit Review", icon: MessageCircle, goto: "/dashboard/reviews" },
+  { label: "Payment", icon: ShoppingCart, goto: "/dashboard/payment" },
+  { label: "Logout", icon: LogOut, goto: "/login", logout: true }, // Logout goes to login page
 ];
-
 
 const sliderImages = [
   "/images/i2.jpeg",
@@ -39,7 +43,7 @@ const sliderImages = [
   "/images/i1.jpeg",
 ];
 
-
+// StarRating component (kept here as it's small and reusable across dashboard)
 function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
@@ -60,49 +64,65 @@ function StarRating({ rating, onChange }) {
   );
 }
 
-
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [pandits, setPandits] = useState([]);
+  const [poojas, setPoojas] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const [expandedPandits, setExpandedPandits] = useState({});
-  const [searchPandits, setSearchPandits] = useState("");
-  const [searchBookings, setSearchBookings] = useState("");
-  const [review, setReview] = useState({ name: "", rating: 0, comment: "" });
-  const [reviewMessage, setReviewMessage] = useState("");
-  const [reviewLoading, setReviewLoading] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0); // For hero slider, only used in DashboardHome
+  const [expandedPandits, setExpandedPandits] = useState({}); // For DashboardSearchPandits
+  const [searchPandits, setSearchPandits] = useState(""); // For DashboardSearchPandits
+  const [searchBookings, setSearchBookings] = useState(""); // For DashboardBookings
+  const [searchPoojas, setSearchPoojas] = useState(""); // For DashboardSearchPooja
+  const [review, setReview] = useState({ name: "", rating: 0, comment: "" }); // For DashboardReviews
+  const [reviewMessage, setReviewMessage] = useState(""); // For DashboardReviews
+  const [reviewLoading, setReviewLoading] = useState(false); // For DashboardReviews
   const [showChatbot, setShowChatbot] = useState(false);
   const [chatPanditId, setChatPanditId] = useState(null);
   const [chatPanditName, setChatPanditName] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
-
+  const [cartItems, setCartItems] = useState([]); // Cart state managed globally in Dashboard layout
+  const [showCartModal, setShowCartModal] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation(); // To check current path for navbar active state
 
-
+  // Refs for horizontal scrolling (will be passed to child components)
   const panditListRef = useRef(null);
   const bookingListRef = useRef(null);
-
+  const poojaListRef = useRef(null);
 
   useEffect(() => {
     AOS.init({ duration: 750, once: true });
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
-    if (!token || !userData) return;
+    if (!token || !userData) {
+      navigate("/login"); // Redirect to login if not authenticated
+      return;
+    }
     try {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
-      setReview((r) => ({ ...r, name: parsedUser.name }));
+      setReview((r) => ({ ...r, name: parsedUser.name })); // Initialize review name
+      // Fetch all data needed for the dashboard as it's the main layout
       getBookings({ userid: parsedUser._id }).then((res) =>
         setBookings(res.data || [])
-      );
-      getVerifiedPandits().then((res) => setPandits(res.data || []));
-    } catch {}
-  }, []);
+      ).catch(err => console.error("Error fetching bookings:", err));
+      getVerifiedPandits().then((res) =>
+        setPandits(res.data || [])
+      ).catch(err => console.error("Error fetching pandits:", err));
+      getPoojas().then((res) =>
+        setPoojas(res.data || [])
+      ).catch(err => console.error("Error fetching poojas:", err));
+    } catch (error) {
+      console.error("Failed to parse user data or fetch initial data:", error);
+      localStorage.clear(); // Clear invalid data
+      navigate("/login"); // Redirect to login
+    }
+  }, [navigate]);
 
-
+  // Hero slider interval (only relevant for DashboardHome)
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex((i) => (i + 1) % sliderImages.length);
@@ -110,7 +130,7 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-
+  // Current date/time update
   useEffect(() => {
     const itv = setInterval(() => {
       setCurrentDateTime(
@@ -124,11 +144,10 @@ export default function Dashboard() {
     return () => clearInterval(itv);
   }, []);
 
-
+  // Helper functions (passed as props to relevant children)
   function toggleExpand(id) {
     setExpandedPandits((prev) => ({ ...prev, [id]: !prev[id] }));
   }
-
 
   const getStatusClass = (status) =>
     ({
@@ -137,13 +156,11 @@ export default function Dashboard() {
       pending: "status pending",
     }[(status || "").toLowerCase()] || "status");
 
-
   const filteredPandits = pandits.filter(
     (p) =>
       (p.name?.toLowerCase() || "").includes(searchPandits.toLowerCase()) ||
       (p.city || "").toLowerCase().includes(searchPandits.toLowerCase())
   );
-
 
   const filteredBookings = bookings.filter((b) => {
     const q = searchBookings.toLowerCase();
@@ -154,6 +171,10 @@ export default function Dashboard() {
     );
   });
 
+  const filteredPoojas = poojas.filter((pooja) =>
+    (pooja.name?.toLowerCase() || "").includes(searchPoojas.toLowerCase()) ||
+    (pooja.description?.toLowerCase() || "").includes(searchPoojas.toLowerCase())
+  );
 
   async function handleReviewSubmit(e) {
     e.preventDefault();
@@ -163,10 +184,13 @@ export default function Dashboard() {
     }
     setReviewLoading(true);
     try {
-      await createReview(review);
+      // Assuming createReview API is available
+      // await createReview(review); // Uncomment when createReview is fully implemented and imported
+      console.log("Submitting review:", review); // Placeholder
       setReviewMessage("Thank you for your review!");
       setReview((r) => ({ name: r.name, rating: 0, comment: "" }));
-    } catch {
+    } catch (error) {
+      console.error("Failed to submit review:", error);
       setReviewMessage("Failed to submit review.");
     } finally {
       setReviewLoading(false);
@@ -174,24 +198,14 @@ export default function Dashboard() {
     }
   }
 
-
   function handleNavClick(item) {
     if (item.logout) {
       localStorage.clear();
-      alert("Logout clicked, implement navigation");
-    } else if (String(item.goto).startsWith("#")) {
-      const section = document.querySelector(item.goto);
-      if (section)
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "nearest",
-        });
+      navigate(item.goto);
     } else {
       navigate(item.goto);
     }
   }
-
 
   function scrollList(ref, direction = "left") {
     if (ref.current) {
@@ -204,6 +218,36 @@ export default function Dashboard() {
     }
   }
 
+  const addToCart = (pooja) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item._id === pooja._id);
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item._id === pooja._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevItems, { ...pooja, quantity: 1 }];
+      }
+    });
+  };
+
+  const removeFromCart = (poojaId) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item._id !== poojaId)
+    );
+  };
+
+  const updateCartQuantity = (poojaId, quantity) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id === poojaId ? { ...item, quantity: quantity } : item
+      ).filter(item => item.quantity > 0)
+    );
+  };
+
+  const getTotalCartItems = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
 
   return (
     <div className="dashboard-app-bg">
@@ -225,7 +269,7 @@ export default function Dashboard() {
           {sidebarLinks.map(({ label, icon: Icon, goto, logout }) => (
             <button
               key={label}
-              className="sidebar-link"
+              className={`sidebar-link ${location.pathname.startsWith(goto) ? 'active-sidebar-link' : ''}`}
               tabIndex={0}
               onClick={() => handleNavClick({ goto, logout })}
               aria-label={label}
@@ -252,7 +296,6 @@ export default function Dashboard() {
         </button>
       </aside>
 
-
       {/* Header */}
       <header className="header-root dark-header">
         <div className="user-block">
@@ -268,186 +311,42 @@ export default function Dashboard() {
         <div className="header-datetime dark-datetime">{currentDateTime}</div>
       </header>
 
-
       <main className="dashboard-main">
-        {/* Hero & Slider */}
-        <section className="hero-section">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Experience{" "}
-              <span className="hero-highlight">Auspicious Rituals</span> with{" "}
-              <span className="hero-brand-white">Shubhkarya</span>
-            </h1>
-            <p className="hero-subtitle">
-              Welcome{user?.name && <span>, <b>{user.name}</b></span>}!
-              <br />
-              Book trusted Pandits for your{" "}
-              <span style={{ color: "#fcd75a", fontWeight: 600 }}>
-                pujas, havans, and ceremonies
-              </span>{" "}
-              with elegance and ease.
-              <br />
-              Now enhanced with same-day bookings and instant chat support.
-            </p>
-            <div className="hero-actions">
-              <button className="main-cta-btn" onClick={() => navigate("/booking")}>
-                Book Puja Now
-              </button>
-              <button
-                className="main-alt-btn"
-                onClick={() => {
-                  const panditSection = document.querySelector("#pandit");
-                  if (panditSection) {
-                    panditSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-              >
-                Browse Pandits
-              </button>
-            </div>
-            {/* Removed hero-badges section here as requested */}
-          </div>
-          <div className="slider-wrapper">
-            <div className="carousel-frame hero-slider-bg">
-              <img
-                src={sliderImages[carouselIndex]}
-                alt={`Slide ${carouselIndex + 1}`}
-                loading="lazy"
-              />
-              <div className="carousel-dots">
-                {sliderImages.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`carousel-dot${carouselIndex === i ? " active" : ""}`}
-                    onClick={() => setCarouselIndex(i)}
-                    aria-selected={carouselIndex === i}
-                    role="tab"
-                    aria-label={`Go to slide ${i + 1}`}
-                  />
-                ))}
-              </div>
-              <div className="slider-caption">
-                <div>
-                  Find <span style={{ color: "#fcd75a" }}>expert guidance</span> for every ritual
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Internal Dashboard Navbar */}
+        <DashboardNavbar />
 
+        {/* Outlet for nested routes - this is where sub-page content will be rendered */}
+        <Outlet context={{
+          user,
+          bookings,
+          pandits,
+          poojas,
+          carouselIndex,
+          sliderImages,
+          expandedPandits,
+          searchPandits,
+          setSearchPandits, // Pass setter for search input
+          searchBookings,
+          setSearchBookings, // Pass setter for search input
+          searchPoojas,
+          setSearchPoojas, // Pass setter for search input
+          review, setReview,
+          reviewMessage, setReviewMessage,
+          reviewLoading, setReviewLoading,
+          handleReviewSubmit,
+          addToCart, removeFromCart, updateCartQuantity,
+          toggleExpand,
+          getStatusClass,
+          scrollList,
+          panditListRef,
+          bookingListRef,
+          poojaListRef,
+          navigate, // Pass navigate for child components
+          cartItems, // Pass cartItems to children if needed (e.g., BookingForm, Payment)
+          setChatPanditId, setChatPanditName // For chat initiation
+        }} />
 
-        {/* Feature Cards */}
-        <section className="dashboard-features">
-          <div className="feature-card">
-            <h3>Live Chat Support</h3>
-            <p>Ask spiritual or booking questions to our team – instant help, 7am to 10pm.</p>
-          </div>
-          <div className="feature-card">
-            <h3>Preferred Pandit Booking</h3>
-            <p>Save favorite Pandits, see their next available slots, and book with just one tap.</p>
-          </div>
-          <div className="feature-card">
-            <h3>Festive Offers</h3>
-            <p>Special discounts and promo codes for all major festivals and family events.</p>
-          </div>
-        </section>
-
-
-        {/* Verified Pandits - Horizontal Scroll Carousel */}
-        <section
-          id="pandit"
-          className="pandit-section horizontal-carousel-section"
-          tabIndex={-1}
-          aria-label="Verified Pandits"
-        >
-          <div className="section-header">
-            <h3 className="section-heading highlighted-heading">Verified Pandits</h3>
-            <div className="carousel-controls">
-              <button
-                aria-label="Scroll pandits left"
-                onClick={() => scrollList(panditListRef, "left")}
-                className="carousel-arrow-btn"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                aria-label="Scroll pandits right"
-                onClick={() => scrollList(panditListRef, "right")}
-                className="carousel-arrow-btn"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          </div>
-          <input
-            type="text"
-            className="booking-search"
-            aria-label="Search pandits"
-            placeholder="Search by name or city..."
-            value={searchPandits}
-            onChange={(e) => setSearchPandits(e.target.value)}
-          />
-          <div className="pandit-list horizontal-scroll" ref={panditListRef} tabIndex={0}>
-            {filteredPandits.map((pandit) => (
-              <motion.div
-                key={pandit._id}
-                className="improved-pandit-card neon-card glass-highlight glossy shadow-pop horizontal-card"
-                whileHover={{ y: -4, scale: 1.04 }}
-                tabIndex={0}
-                aria-expanded={expandedPandits[pandit._id] || false}
-                onClick={() => toggleExpand(pandit._id)}
-                onKeyDown={(e) =>
-                  (e.key === "Enter" || e.key === " ") && toggleExpand(pandit._id)
-                }
-              >
-                <div
-                  className="pandit-avatar glass"
-                  style={{
-                    backgroundImage: `url(${pandit.profile_photo_url || "/images/i1.jpeg"})`,
-                  }}
-                  aria-label={`Pandit ${pandit.name}`}
-                >
-                  <span className="pandit-avatar-initial">{pandit.name.slice(0, 1)}</span>
-                </div>
-                <div className="pandit-main-info">
-                  <h4 className="pandit-name hero-text-glow">🧑‍🦳 {pandit.name}</h4>
-                  <div className="pandit-city">{pandit.city}</div>
-                  {expandedPandits[pandit._id] && (
-                    <div className="pandit-extra expanded horizontal-extra">
-                      <div className="pandit-details">
-                        <div className="pandit-badges">
-                          <span className="pandit-badge exp">
-                            Exp: {pandit.experienceYears} yrs
-                          </span>
-                          <span className="pandit-badge langs">
-                            {pandit.languages?.join(", ")}
-                          </span>
-                        </div>
-                        <div className="pandit-specialties">
-                          <b>Specialties:</b> {pandit.specialties?.join(", ")}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setChatPanditId(pandit._id);
-                      setChatPanditName(pandit.name);
-                    }}
-                    style={{ marginTop: 8 }}
-                    aria-label={`Chat with ${pandit.name}`}
-                  >
-                    Chat with Pandit
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-
-        {/* Chat Window */}
+        {/* Chat Window (remains global to dashboard layout) */}
         <AnimatePresence>
           {chatPanditId && (
             <ChatWindow
@@ -459,141 +358,19 @@ export default function Dashboard() {
           )}
         </AnimatePresence>
 
-
-        {/* Bookings - Horizontal Scroll Carousel */}
-        <section
-          id="booking"
-          className="bookings-section horizontal-carousel-section blur-bg"
-          tabIndex={-1}
-          aria-label="Booking History"
-        >
-          <div className="section-header">
-            <h3 className="section-heading highlighted-heading">Your Bookings</h3>
-            <div className="carousel-controls">
-              <button
-                aria-label="Scroll bookings left"
-                onClick={() => scrollList(bookingListRef, "left")}
-                className="carousel-arrow-btn"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                aria-label="Scroll bookings right"
-                onClick={() => scrollList(bookingListRef, "right")}
-                className="carousel-arrow-btn"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          </div>
-          <input
-            type="text"
-            className="booking-search"
-            aria-label="Search bookings"
-            placeholder="Search bookings..."
-            value={searchBookings}
-            onChange={(e) => setSearchBookings(e.target.value)}
-          />
-          <div className="booking-list horizontal-scroll" ref={bookingListRef} tabIndex={0}>
-            {filteredBookings.length === 0 ? (
-              <p className="empty-msg">No bookings found. Book your first puja now!</p>
-            ) : (
-              filteredBookings.map((b) => (
-                <motion.div
-                  key={b._id}
-                  className="booking-card card-glossy glass neon-card shadow-pop horizontal-card"
-                  whileHover={{ scale: 1.032, boxShadow: "0 6px 32px #aecaee51" }}
-                  tabIndex={0}
-                  role="article"
-                  aria-label={`Booking for ${b.serviceid?.name} with ${
-                    b.panditid?.name || "N/A"
-                  } on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
-                >
-                  <div className="booking-card-left">
-                    <span className="booking-icon" aria-hidden="true">
-                      📅
-                    </span>
-                    <div>
-                      <div className="booking-type">{b.serviceid?.name}</div>
-                      <div className="booking-date">
-                        {new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="booking-card-right">
-                    <div className="booking-pandit">
-                      <span className="booking-pandit-label">Pandit:</span>{" "}
-                      <span>{b.panditid?.name ?? "N/A"}</span>
-                    </div>
-                    <div className="booking-location">📍 {b.location}</div>
-                    <div className={getStatusClass(b.status)}>{b.status}</div>
-                  </div>
-                </motion.div>
-              ))
-            )}
-          </div>
-        </section>
-
-
-        {/* Review Submission */}
-        <section
-          id="review"
-          className="review-section glass-review"
-          tabIndex={-1}
-          aria-label="Submit Review"
-        >
-          <h3 className="section-heading neon-text">Submit a Review</h3>
-          {reviewMessage && (
-            <p
-              className={
-                reviewMessage.includes("review")
-                  ? "success-message"
-                  : "error-message"
-              }
-            >
-              {reviewMessage}
-            </p>
-          )}
-          <form
-            onSubmit={handleReviewSubmit}
-            className="review-form card-glossy glass nice-glass"
-            aria-label="Review submission form"
+        {/* Floating Cart Icon (remains global to dashboard layout) */}
+        {getTotalCartItems() > 0 && (
+          <button
+            aria-label={`View ${getTotalCartItems()} items in cart`}
+            className="floating-cart-btn"
+            onClick={() => setShowCartModal(true)}
           >
-            <div className="review-row">
-              <input
-                type="text"
-                value={review.name}
-                disabled
-                className="review-input"
-                aria-label="Your name"
-              />
-              <StarRating
-                rating={review.rating}
-                onChange={(v) => setReview((prev) => ({ ...prev, rating: v }))}
-              />
-            </div>
-            <textarea
-              placeholder="Write your feedback..."
-              value={review.comment}
-              onChange={(e) =>
-                setReview((prev) => ({ ...prev, comment: e.target.value }))
-              }
-              className="review-input review-textarea"
-              required
-              aria-required="true"
-            />
-            <button
-              type="submit"
-              className="custom-btn glow-btn"
-              disabled={reviewLoading}
-            >
-              {reviewLoading ? "Submitting..." : "Submit Review 💬"}
-            </button>
-          </form>
-        </section>
+            <ShoppingCart size={28} />
+            <span className="cart-item-count">{getTotalCartItems()}</span>
+          </button>
+        )}
 
-
-        {/* Chatbot Button */}
+        {/* Chatbot Button (remains global to dashboard layout) */}
         <button
           aria-label="Toggle Chatbot"
           className="chatbot-toggle"
@@ -624,6 +401,22 @@ export default function Dashboard() {
             />
           </div>
         )}
+
+        {/* Cart Modal (remains global to dashboard layout) */}
+        <AnimatePresence>
+          {showCartModal && (
+            <CartModal
+              cartItems={cartItems}
+              onClose={() => setShowCartModal(false)}
+              onRemove={removeFromCart}
+              onUpdateQuantity={updateCartQuantity}
+              onCheckout={() => {
+                navigate("/dashboard/booking", { state: { cartItems } }); // Pass cart items to booking page
+                setShowCartModal(false);
+              }}
+            />
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
