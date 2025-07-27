@@ -7,12 +7,20 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ReviewForm from './pages/Review';
 import Payment from './pages/Payment';
-import Booking from './pages/Booking';
 import Notifications from './pages/Notifications';
+
+// Import the new Dashboard component with added features
 import Dashboard from './pages/Dashboard';
+
+// Import the new BookingPage component (from previous turn)
+import BookingPage from './pages/BookingPage';
+
+// Import the new UserProfile component (from previous turn)
+import UserProfile from './pages/UserProfile';
+
 import PanditSignup from './pages/PanditSignup';
 import PanditDashboard from './pages/PanditDashboard';
-import AdminDashboard from './pages/AdminDashboard';  // AdminDashboard as nested routes component
+import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 
 import ProtectedRoute from './components/ProtectedRoute';
@@ -49,11 +57,21 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* Replaced existing Booking with the new BookingPage component */}
         <Route
           path="/booking"
           element={
             <ProtectedRoute>
-              <Booking />
+              <BookingPage /> {/* Using the new BookingPage */}
+            </ProtectedRoute>
+          }
+        />
+        {/* New protected route for User Profile */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile /> {/* New UserProfile page */}
             </ProtectedRoute>
           }
         />
