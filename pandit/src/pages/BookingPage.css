@@ -1,0 +1,175 @@
+/* src/pages/BookingPage.css */
+
+.booking-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to top */
+  min-height: 100vh;
+  padding: 80px 20px 40px 20px; /* Adjust padding for header */
+  background: var(--sidebar-bg); /* Use dashboard background */
+  color: var(--sidebar-text);
+  margin-left: 220px; /* Adjust for sidebar */
+}
+
+/* Ensure main content is pushed by sidebar */
+.sidebar-root.collapsed ~ .dashboard-main .booking-page-container {
+  margin-left: 56px;
+}
+
+.booking-form-card {
+  background: linear-gradient(135deg, #e0f2f7, #c1e4f2); /* Light blue/cyan for booking form */
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+  color: #0d47a1;
+}
+
+.booking-form-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.2em;
+  color: #1a237e;
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1565c0;
+  font-size: 1.1em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group select,
+.form-group textarea {
+  width: calc(100% - 24px); /* Account for padding */
+  padding: 12px;
+  border: 1.5px solid #90caf9;
+  border-radius: 10px;
+  font-size: 1.05em;
+  background-color: #f0f8ff;
+  color: #212121;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="date"]:focus,
+.form-group input[type="time"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+}
+
+.form-group .disabled-input {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    font-weight: bold;
+}
+
+.submit-booking-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(96deg, #42a5f5 75%, #2196f3 100%); /* Blue gradient */
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3em;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(66, 165, 245, 0.4);
+}
+
+.submit-booking-btn:hover {
+  background: linear-gradient(96deg, #2196f3 75%, #42a5f5 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(66, 165, 245, 0.6);
+}
+
+.submit-booking-btn:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.booking-message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #90caf9;
+}
+
+.back-to-dashboard-btn {
+  display: block;
+  width: fit-content;
+  margin: 20px auto 0;
+  padding: 10px 25px;
+  background: #757575;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-to-dashboard-btn:hover {
+  background: #555;
+}
+
+/* Responsive adjustments for Booking Page */
+@media (max-width: 768px) {
+  .booking-page-container {
+    margin-left: 56px; /* Adjust for collapsed sidebar */
+    padding: 60px 15px 30px 15px;
+  }
+  .booking-form-card {
+    padding: 25px;
+  }
+  .booking-form-card h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    font-size: 1em;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    font-size: 0.95em;
+  }
+  .submit-booking-btn {
+    font-size: 1.1em;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-page-container {
+    margin-left: 0; /* No sidebar on very small screens, or adjust as per your main app layout */
+  }
+  .booking-form-card {
+    border-radius: 10px;
+  }
+}
