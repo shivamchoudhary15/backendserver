@@ -1,0 +1,859 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@400;600;700&display=swap');
+
+/* --- Root Variables & General Resets --- */
+:root {
+    --sidebar-bg: #1a1a2e;
+    --sidebar-text: #a8c0ff;
+    --sidebar-hover-bg: #16213e;
+    --sidebar-accent: #0f3460;
+    --header-bg: #0f3460;
+    --header-text: #fffffe;
+    --highlight-color: #e94560; /* Unused in provided snippet, kept for consistency */
+    --primary-btn-bg: linear-gradient(123deg, #ff7100, #1f1700);
+    --primary-btn-hover-bg: linear-gradient(96deg, #ff7100 55%, #1f1700 90%);
+    --alt-btn-bg: #fffffe; /* Unused in provided snippet, kept for consistency */
+    --alt-btn-text: #0f3460; /* Adjusted for contrast with primary-btn-bg */
+
+    /* New/Adjusted Variables for better consistency where hardcoded values existed */
+    --link-active-bg: rgba(255, 113, 0, 0.15);
+    --link-active-shadow: inset 4px 0 8px #ff7100cc;
+    --submenu-link-color: #64ffda;
+    --submenu-link-hover-bg: rgba(100, 255, 218, 0.25);
+    --hero-gradient: linear-gradient(99deg, #914515 72%, #fff3e094 122%);
+    --hero-shadow: 0 14px 32px #91451555;
+    --festival-section-gradient: linear-gradient(90deg, #ffeedb 0%, #fde5b1 100%);
+    --festival-section-shadow: 0 14px 36px #ffa50044;
+    --festival-card-gradient: linear-gradient(118deg, #fff6e4 85%, #ffecd3 110%);
+    --festival-card-shadow: 0 10px 30px #ff7f0095;
+    --pandit-card-gradient: linear-gradient(124deg, #fff1eb 75%, #ffe5d3 100%);
+    --pandit-card-shadow: 0 6px 24px #ff71009c;
+    --review-section-gradient: linear-gradient(112deg, #fffbe7ea 85%, #ffeede95 100%);
+    --review-section-shadow: 0 9px 33px #ffe7c366;
+}
+
+body {
+    background: var(--sidebar-bg);
+    min-height: 100vh;
+    font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+    color: var(--sidebar-text);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Added for better box model consistency */
+}
+
+/* Ensure consistent box-sizing throughout */
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.dashboard-app-bg {
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    transition: background 0.5s ease-in-out;
+}
+
+/* --- Sidebar --- */
+.sidebar-root {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--sidebar-bg);
+    border-right: 2.5px solid var(--sidebar-accent);
+    box-shadow: inset 5px 0 10px #08122990;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 50;
+    transition: width 0.3s cubic-bezier(0.6, 0.01, 0.6, 1);
+}
+
+.sidebar-root.collapsed {
+    width: 56px;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    min-height: 61px;
+    gap: 11px;
+    justify-content: flex-start;
+    padding: 13px 0 4px 19px;
+}
+
+.sidebar-logo {
+    width: 42px;
+    height: 42px;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid var(--primary-btn-bg);
+    box-shadow: 0 2px 11px var(--primary-btn-bg);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.sidebar-brand-name,
+.sidebar-link span {
+    color: var(--sidebar-text);
+    font-weight: 700;
+    font-family: 'Montserrat', Arial, sans-serif;
+    white-space: nowrap; /* Prevent text wrapping in collapsed state */
+    overflow: hidden; /* Hide overflow in collapsed state */
+}
+
+.sidebar-root.collapsed .sidebar-brand-name {
+    display: none; /* Hide brand name when collapsed */
+}
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: stretch;
+    margin-top: 21px;
+}
+
+/* Sidebar buttons + hover pop (scale & shadow) */
+.sidebar-link {
+    background: none;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    padding: 9px 0 9px 27px;
+    font-size: 1em;
+    color: var(--sidebar-text);
+    cursor: pointer;
+    border-radius: 0 14px 14px 0;
+    font-weight: 600;
+    font-family: inherit;
+    position: relative;
+    transition:
+        box-shadow 0.25s ease,
+        transform 0.25s ease,
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus {
+    background-color: var(--sidebar-hover-bg);
+    color: var(--primary-btn-bg);
+    transform: translateX(6px) scale(1.1);
+    box-shadow: 0 8px 30px var(--primary-btn-bg);
+    outline: none;
+}
+
+/* Active sidebar link */
+.sidebar-link.active {
+    background-color: var(--link-active-bg);
+    box-shadow: var(--link-active-shadow);
+    color: var(--primary-btn-bg);
+    font-weight: 700;
+}
+
+.sidebar-link.active .sidebar-link-icon {
+    color: var(--primary-btn-bg);
+}
+
+.sidebar-link-icon {
+    color: var(--primary-btn-bg);
+    transition: color 0.3s;
+    min-width: 24px; /* Ensure icon has consistent space */
+    text-align: center;
+}
+
+/* Settings toggle icon (assuming this is part of a sidebar link) */
+.settings-toggle-icon {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    color: var(--primary-btn-bg);
+    padding-right: 10px; /* Added for better spacing */
+}
+
+/* Settings submenu */
+.sidebar-submenu {
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+    overflow: hidden; /* For animation/transition of height if content changes */
+}
+
+.sidebar-link.sub-link {
+    padding-left: 40px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border-radius: 8px;
+    color: var(--submenu-link-color);
+    background: transparent;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar-link.sub-link.active,
+.sidebar-link.sub-link:hover,
+.sidebar-link.sub-link:focus {
+    background: var(--submenu-link-hover-bg);
+    outline: none;
+    transform: scale(1.05);
+}
+
+/* Sidebar Collapse button */
+.sidebar-collapse-btn {
+    margin-block: auto 22px;
+    align-self: flex-end;
+    border: none;
+    background: none;
+    padding: 0 0 0 10px;
+    color: var(--primary-btn-bg);
+    cursor: pointer;
+    font-size: 1.17em;
+    min-height: 44px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    display: flex; /* Ensure icon is centered if it's an icon */
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* Make it a square for consistent click area */
+    border-radius: 50%; /* Make it circular if desired */
+}
+
+.sidebar-collapse-btn:hover,
+.sidebar-collapse-btn:focus {
+    transform: scale(1.15);
+    box-shadow: 0 10px 30px rgba(28, 212, 151, 0.7); /* Original green shadow */
+    outline: none;
+}
+
+/* Sidebar tooltip text on collapse */
+.sidebar-tooltip {
+    position: absolute;
+    left: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-btn-bg);
+    padding: 4px 9px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    box-shadow: 0 0 8px var(--primary-btn-bg);
+    font-size: 0.88rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 100;
+    user-select: none;
+}
+
+.sidebar-root.collapsed .sidebar-link:hover .sidebar-tooltip,
+.sidebar-root.collapsed .sidebar-link:focus .sidebar-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar-link:not(.sidebar-root.collapsed .sidebar-link):hover .sidebar-tooltip {
+    /* Hide tooltip when sidebar is not collapsed, even if hovered */
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- Header --- */
+.header-root.dark-header {
+    position: fixed;
+    top: 0;
+    left: 220px;
+    width: calc(100% - 220px);
+    height: 68px;
+    background: var(--header-bg);
+    color: var(--header-text);
+    border-bottom: 2px solid var(--primary-btn-bg);
+    box-shadow: 0 4px 20px #0008;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 38px;
+    z-index: 40;
+    transition: left 0.18s ease, width 0.18s ease;
+}
+
+.sidebar-root.collapsed ~ .header-root.dark-header {
+    left: 56px;
+    width: calc(100% - 56px);
+}
+
+.user-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.header-user-welcome.dark-welcome {
+    font-weight: 800;
+    background: var(--primary-btn-bg);
+    color: #fff;
+    font-size: 1.23em;
+    border-radius: 8px;
+    padding: 4px 18px;
+    margin-bottom: 3px;
+    text-shadow: 0 0 8px var(--primary-btn-bg);
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.header-user-email.dark-email {
+    font-size: 0.99em;
+    color: #ffd6e8;
+    line-height: 1.2em;
+}
+
+.header-datetime.dark-datetime {
+    font-size: 1.06em;
+    background: #16213e;
+    color: var(--primary-btn-bg);
+    font-weight: 700;
+    border-radius: 9px;
+    padding: 4px 14px;
+    box-shadow: 0 0 8px var(--primary-btn-bg);
+    font-family: "Montserrat", sans-serif;
+}
+
+/* --- Main Layout --- */
+.dashboard-main {
+    margin-left: 220px;
+    padding: 90px 3vw 28px 3vw;
+    min-height: 100vh;
+    transition: margin-left 0.3s cubic-bezier(0.71, 0.18, 0.69, 0.96);
+}
+
+.sidebar-root.collapsed ~ .header-root.dark-header ~ .dashboard-main {
+    margin-left: 56px;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    background: var(--hero-gradient);
+    border-radius: 27px;
+    margin: 32px 0 50px 0;
+    box-shadow: var(--hero-shadow);
+    padding: 41px 30px 39px 39px;
+    gap: 54px;
+    min-height: 324px;
+    animation: fadeInHero 0.7s ease forwards;
+}
+
+@keyframes fadeInHero {
+    from {
+        opacity: 0;
+        transform: translateY(-22px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.hero-content {
+    flex: 2 1 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.hero-title {
+    color: #fff;
+    font-size: 2.45em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.65em;
+    text-shadow: 0 8px 34px #4a1407c0, 0 1px 17px #f6bfad44;
+}
+
+.hero-brand-white {
+    color: #fff;
+    text-shadow: 0 2px 12px #89aaff65;
+}
+
+.hero-highlight {
+    color: #fcd75a;
+    text-shadow: 0 2px 17px #fff1af8f;
+}
+
+.hero-subtitle {
+    font-size: 1.22em;
+    color: #ffe7c8;
+    background: rgba(145, 69, 21, 0.1);
+    border-radius: 10px;
+    padding: 13px 14px;
+    margin-bottom: 22px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 17px;
+    align-items: center;
+    margin-bottom: 13px;
+}
+
+.main-cta-btn {
+    border-radius: 9px;
+    font-size: 1.17em;
+    font-weight: 700;
+    padding: 10px 26px;
+    cursor: pointer;
+    border: none;
+    user-select: none;
+    font-family: inherit;
+    background: var(--primary-btn-bg);
+    color: var(--alt-btn-text); /* Ensure good contrast */
+    box-shadow: 0 4px 30px #91451540;
+    transition: box-shadow 0.2s ease, transform 0.15s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.main-cta-btn:hover,
+.main-cta-btn:focus {
+    background: var(--primary-btn-hover-bg);
+    color: #382104; /* Darker text for hover on brighter background */
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--primary-btn-hover-bg);
+    outline: none;
+}
+
+/* --- Festival Section --- */
+.upcoming-festivals-section {
+    background: var(--festival-section-gradient);
+    padding: 28px 28px 34px;
+    border-radius: 22px;
+    box-shadow: var(--festival-section-shadow);
+    margin-bottom: 44px;
+}
+
+.upcoming-festivals-section .section-heading {
+    font-size: 2.0rem;
+    font-weight: 900;
+    color: #ff5e00;
+    margin-bottom: 22px;
+    text-shadow: 0 0 14px #ff7100bb;
+    user-select: none;
+}
+
+.festival-cards-responsive-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px 26px;
+    justify-content: flex-start;
+}
+
+/* Media Queries for Festival Cards */
+@media (max-width: 1080px) {
+    .festival-cards-responsive-container {
+        gap: 22px 18px;
+    }
+    .festival-card {
+        min-width: 225px;
+        max-width: 340px;
+    }
+}
+
+@media (max-width: 900px) {
+    .festival-cards-responsive-container {
+        justify-content: center;
+    }
+    .festival-card {
+        flex-basis: 44vw; /* More flexible sizing */
+    }
+}
+
+@media (max-width: 700px) {
+    .festival-cards-responsive-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .festival-card {
+        width: 90vw; /* Adjusted from 98vw for better overall padding */
+        min-width: unset;
+        max-width: unset;
+    }
+}
+
+@media (max-width: 540px) {
+    .festival-card {
+        width: 98vw; /* Back to 98vw for very small screens to fit better */
+        border-radius: 14px;
+    }
+    .festival-info {
+        padding: 14px 10px 16px;
+    }
+    .upcoming-festivals-section {
+        padding: 14px 3vw 25px;
+    }
+}
+
+.festival-card {
+    flex: 1 1 320px;
+    min-width: 270px;
+    max-width: 350px;
+    background: var(--festival-card-gradient);
+    box-shadow: var(--festival-card-shadow);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.28s, transform 0.23s;
+    user-select: none;
+    cursor: default;
+    outline-offset: 2px;
+}
+
+.festival-card:focus-visible {
+    outline: 2.5px solid #ffd080;
+}
+
+.festival-img-wrapper {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #ffe;
+    overflow: hidden;
+}
+
+.festival-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s cubic-bezier(0.61, 0.56, 0.52, 1.19);
+}
+
+.festival-card:hover .festival-img,
+.festival-card:focus .festival-img {
+    transform: scale(1.03) rotate(-1deg);
+}
+
+.festival-info {
+    padding: 16px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.festival-info h4 {
+    margin: 0 0 3px 0;
+    font-weight: 800;
+    font-size: 1.3em;
+    color: #cc6600;
+    text-shadow: 0 0 4px #ff710044, 0 0 2px #fcb37544;
+}
+
+.festival-date {
+    font-weight: 700;
+    font-size: 1.08em;
+    letter-spacing: 0.01em;
+    color: #a94f00;
+    margin-bottom: 2px;
+}
+
+.festival-desc {
+    font-weight: 600;
+    color: #704000;
+    font-size: 1em;
+    line-height: 1.37;
+    margin-bottom: 0;
+}
+
+/* --- Pandit Card --- */
+.improved-pandit-card.horizontal-card {
+    position: relative;
+    background: var(--pandit-card-gradient);
+    border-radius: 18px;
+    box-shadow: var(--pandit-card-shadow);
+    transition: box-shadow 0.25s, transform 0.2s;
+    cursor: pointer;
+    outline-offset: 2px;
+    min-width: 270px;
+    max-width: 330px;
+}
+
+.improved-pandit-card.horizontal-card:hover,
+.improved-pandit-card.horizontal-card:focus {
+    z-index: 3;
+    transform: scale(1.045) translateY(-7px);
+    box-shadow: 0 14px 40px #ff7100b0;
+    outline: 2.5px solid #ff7100cc;
+}
+
+.pandit-avatar.glass {
+    border: 3.5px solid var(--primary-btn-bg);
+    box-shadow: 0 0 19px #ff710099;
+}
+
+.pandit-main-info button {
+    margin-top: 8px;
+    background: var(--primary-btn-bg);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 17px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1.03em;
+    letter-spacing: 0.01em;
+    transition: background 0.25s, box-shadow 0.2s;
+}
+
+.pandit-main-info button:hover,
+.pandit-main-info button:focus {
+    background: linear-gradient(123deg, #ff8d3b 75%, #63390a 100%);
+    box-shadow: 0 4px 18px #ff7100bb;
+    outline: none;
+}
+
+.pandit-extra.expanded.horizontal-extra {
+    animation: fadePanditExpand 0.25s;
+}
+
+@keyframes fadePanditExpand {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.pandit-badges {
+    margin-bottom: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.pandit-badge.exp,
+.pandit-badge.langs {
+    padding: 3px 11px;
+    font-size: 0.94em;
+    border: 1.2px solid #ffc580;
+    border-radius: 9px;
+    box-shadow: 0 0 6px #ffeaac54;
+}
+
+.pandit-badge.exp {
+    background: #eaf7d5;
+    color: #50a517;
+}
+
+.pandit-badge.langs {
+    background: #e0f5fd;
+    color: #1789b5;
+}
+
+.pandit-specialties {
+    color: #8f4e13;
+    font-weight: 600;
+    font-size: 0.99em;
+}
+
+/* --- Enhanced Booking Section --- */
+.booking-card.horizontal-card {
+    transition: box-shadow 0.23s, transform 0.22s;
+    cursor: default;
+    outline-offset: 2px;
+}
+
+.booking-card.horizontal-card:hover,
+.booking-card.horizontal-card:focus {
+    transform: scale(1.038) translateY(-7px);
+    box-shadow: 0 17px 50px #5082ff31;
+    outline: 2.5px solid #336bea44;
+}
+
+.booking-type {
+    color: #09307c;
+}
+
+.status {
+    padding: 4px 20px;
+    border-radius: 14px;
+    border: 3px solid transparent;
+    transition: background 0.25s, color 0.2s, border-color 0.2s;
+    text-align: center;
+    font-weight: 900;
+    user-select: none;
+    width: fit-content;
+}
+
+.status.accepted {
+    background: #d4f4dd;
+    color: #1d9d3f;
+    border-color: #5af07a;
+}
+
+.status.pending {
+    background: #fff6e0;
+    color: #d18b1a;
+    border-color: #ffdd7a;
+}
+
+.status.rejected {
+    background: #ffd7d7;
+    color: #e31212;
+    border-color: #ff6e6e;
+}
+
+.booking-search {
+    transition: border-color 0.3s, background-color 0.3s;
+    border-width: 2.2px;
+}
+
+.booking-search:focus {
+    border-color: #74b1fa;
+    background: #ecf6ff;
+}
+
+.carousel-arrow-btn {
+    background: var(--primary-btn-bg);
+    transition: background-color 0.3s, box-shadow 0.3s;
+    color: #fff;
+}
+
+.carousel-arrow-btn:hover,
+.carousel-arrow-btn:focus {
+    background: #ff4e00;
+    box-shadow: 0 0 14px #ff7100cc;
+    outline: none;
+}
+
+.empty-msg {
+    font-weight: 700;
+    color: #ea891a;
+    opacity: 0.95;
+    margin: 44px 0 12px;
+    padding: 0 20px;
+    font-size: 1.17em;
+}
+
+/* --- Enhanced Review Section --- */
+.review-section.glass-review {
+    background: var(--review-section-gradient);
+    border-radius: 20px;
+    box-shadow: var(--review-section-shadow);
+}
+
+.review-form {
+    gap: 16px;
+    padding: 19px 25px;
+}
+
+.review-row {
+    gap: 14px;
+}
+
+.star-rating .star {
+    font-size: 2em;
+    margin: 0 2px;
+    transition: color 0.13s, transform 0.15s;
+    cursor: pointer; /* Added cursor to indicate interactivity */
+}
+
+.star-rating .star.active {
+    color: #ffbb11;
+    transform: scale(1.19);
+}
+
+.star-rating .star:hover,
+.star-rating .star:focus {
+    color: #ffd661;
+    text-shadow: 0 4px 12px #ffeaaa77;
+    transform: scale(1.22);
+}
+
+.review-input,
+.review-textarea {
+    padding: 14px 17px;
+    font-size: 1.09em;
+    border-radius: 10px;
+    border: 2.2px solid #f2db99;
+    background: #fffdfa;
+    color: #63390a;
+    font-weight: 700;
+    outline: none;
+    transition: border-color 0.25s;
+    width: 100%; /* Ensure inputs take full width */
+}
+
+.review-input:focus,
+.review-textarea:focus {
+    border-color: #ffc108;
+}
+
+.custom-btn.glow-btn {
+    background: var(--primary-btn-bg);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 11px 32px;
+    cursor: pointer;
+    transition: box-shadow 0.3s, transform 0.18s, background 0.32s;
+}
+
+.custom-btn.glow-btn:hover,
+.custom-btn.glow-btn:focus {
+    box-shadow: 0 0 14px #ff7100cc;
+    transform: scale(1.06);
+    outline: none;
+}
+
+.success-message,
+.error-message {
+    font-weight: 800;
+    font-size: 1.13em;
+    padding: 7px 0 0 0;
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+}
+
+.success-message {
+    color: #16a624;
+}
+
+.error-message {
+    color: #d5441a;
+}
+
+/* --- Global Hover/Focus Effects (Unified) --- */
+.custom-btn.glow-btn,
+.booking-card.horizontal-card,
+.feature-card, /* Assuming .feature-card exists */
+.improved-pandit-card.horizontal-card, /* Specificity for pandit card */
+.chatbot-toggle { /* Assuming .chatbot-toggle exists */
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.custom-btn.glow-btn:hover,
+.booking-card.horizontal-card:hover,
+.feature-card:hover,
+.improved-pandit-card.horizontal-card:hover,
+.chatbot-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(255, 113, 0, 0.5);
+}
+
+/* --- Accessibility --- */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--primary-btn-bg);
+    outline-offset: 2px;
+}
