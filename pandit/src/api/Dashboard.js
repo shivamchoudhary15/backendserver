@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Home,
   CalendarDays,
@@ -10,38 +10,27 @@ import {
   Users,
   ChevronLeft,
   ChevronRight,
-  Settings,
-  PlusCircle,
-  MinusCircle,
-  Bell,
-  Lock,
-  Star, // Import Star icon for dynamic star ratings
-  Clock, // For event time
-  MapPin, // For event location
+  ShoppingCart, // New icon for cart
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Dashboard.css";
-import { createReview, getBookings, getVerifiedPandits } from "../api/api";
+import { createReview, getBookings, getVerifiedPandits, getPoojas } from "../api/api"; // Added getPoojas
 import ChatWindow from "./ChatWindow";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import PoojaCard from "../components/PoojaCard"; // Import new PoojaCard component
+import CartModal from "../components/CartModal"; // Import new CartModal component
 
-// --- Configuration Data ---
-const mainSidebarLinks = [
+const sidebarLinks = [
   { label: "Home", icon: Home, goto: "/" },
   { label: "Book Puja", icon: Book, goto: "/booking" },
+  { label: "My Profile", icon: Users, goto: "/profile" }, // New link
   { label: "Submit Review", icon: MessageCircle, goto: "#review" },
   { label: "Pandits", icon: Users, goto: "#pandit" },
-  { label: "Search", icon: Search, goto: "#highlight" }, // Changed to highlight for dynamic content
+  { label: "Search", icon: Search, goto: "#highlight" },
   { label: "Bookings", icon: CalendarDays, goto: "#booking" },
   { label: "Logout", icon: LogOut, goto: "/home", logout: true },
-];
-
-const settingsSubLinks = [
-  { label: "Profile", icon: Users, goto: "/profile" },
-  { label: "Notifications", icon: Bell, goto: "/notifications" },
-  { label: "Privacy", icon: Lock, goto: "/privacy" },
 ];
 
 const sliderImages = [
@@ -52,82 +41,46 @@ const sliderImages = [
   "/images/i1.jpeg",
 ];
 
-// Upcoming Festivals sample data (more detailed with dynamic content)
+// Dummy data for upcoming festivals
 const upcomingFestivals = [
-  {
-    name: "Diwali",
-    date: "November 4, 2025",
-    description: "Festival of Lights celebrating victory of good over evil. Involves Lakshmi Puja and fireworks.",
-    img: "/images/diwali.jpg",
-    location: "Pan India",
-    time: "Evening",
-  },
-  {
-    name: "Holi",
-    date: "March 14, 2026",
-    description: "Festival of Colors marking arrival of spring and joy. Celebrated with bonfires and vibrant colors.",
-    img: "/images/holi.jpg",
-    location: "Pan India",
-    time: "Day",
-  },
-  {
-    name: "Navratri",
-    date: "October 10 - 18, 2025",
-    description: "Nine nights dedicated to Goddess Durga with fasting, prayers, and traditional dances (Garba, Dandiya).",
-    img: "/images/navratri.jpg",
-    location: "Pan India",
-    time: "Evening",
-  },
-  {
-    name: "Maha Shivaratri",
-    date: "February 26, 2026",
-    description: "A major Hindu festival celebrating the Maha Shivaratri. Devotees observe fasts and offer prayers to Shiva.",
-    img: "/images/shivaratri.jpg",
-    location: "Pan India",
-    time: "Night",
-  },
-  {
-    name: "Janmashtami",
-    date: "August 16, 2026",
-    description: "Celebrates the birth of Lord Krishna. Devotees fast, sing bhajans, and decorate temples.",
-    img: "/images/janmashtami.jpg",
-    location: "Pan India",
-    time: "Midnight",
-  },
+  { name: "Raksha Bandhan", date: "2025-08-19", description: "A celebration of sibling love." },
+  { name: "Janmashtami", date: "2025-08-26", description: "Birth of Lord Krishna." },
+  { name: "Ganesh Chaturthi", date: "2025-09-06", description: "Arrival of Lord Ganesha." },
+  { name: "Navratri", date: "2025-09-26", description: "Nine nights of devotion to Goddess Durga." },
+  { name: "Dussehra", date: "2025-10-06", description: "Celebration of victory of good over evil." },
 ];
 
-
-// --- StarRating Component (re-usable) ---
-function StarRating({ rating, onChange, editable = true }) {
+function StarRating({ rating, onChange }) {
   return (
     <div className="star-rating" aria-label="Rating">
       {[1, 2, 3, 4, 5].map((i) => (
         <span
           key={i}
-          role={editable ? "button" : "img"} // Role changes based on editability
-          tabIndex={editable ? "0" : "-1"}
+          role="button"
+          tabIndex="0"
           className={`star ${i <= rating ? "active" : ""}`}
-          aria-label={editable ? `Rate ${i} star${i > 1 ? "s" : ""}` : `Rated ${i} star${i > 1 ? "s" : ""}`}
-          onClick={() => editable && onChange(i)}
-          onKeyDown={(e) => editable && (e.key === "Enter" || e.key === " ") && onChange(i)}
+          aria-label={`Rate ${i} star${i > 1 ? "s" : ""}`}
+          onClick={() => onChange(i)}
+          onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onChange(i)}
         >
-          {i <= rating ? <Star fill="#ffc107" strokeWidth={0} size={20} /> : <Star color="#ccc" strokeWidth={1} size={20} />}
+          ★
         </span>
       ))}
     </div>
   );
 }
 
-// --- Dashboard Component ---
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [pandits, setPandits] = useState([]);
+  const [poojas, setPoojas] = useState([]); // New state for Pooja services
   const [collapsed, setCollapsed] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [expandedPandits, setExpandedPandits] = useState({});
   const [searchPandits, setSearchPandits] = useState("");
   const [searchBookings, setSearchBookings] = useState("");
+  const [searchPoojas, setSearchPoojas] = useState(""); // New state for Pooja search
   const [review, setReview] = useState({ name: "", rating: 0, comment: "" });
   const [reviewMessage, setReviewMessage] = useState("");
   const [reviewLoading, setReviewLoading] = useState(false);
@@ -135,58 +88,34 @@ export default function Dashboard() {
   const [chatPanditId, setChatPanditId] = useState(null);
   const [chatPanditName, setChatPanditName] = useState("");
   const [currentDateTime, setCurrentDateTime] = useState("");
-  const [activeLink, setActiveLink] = useState("/");
-  const [settingsExpanded, setSettingsExpanded] = useState(false);
-  const [showScrollToTop, setShowScrollToTop] = useState(false); // New state for scroll to top button
+  const [cartItems, setCartItems] = useState([]); // New state for cart items
+  const [showCartModal, setShowCartModal] = useState(false); // New state for cart modal visibility
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const panditListRef = useRef(null);
   const bookingListRef = useRef(null);
-  const mainContentRef = useRef(null); // Ref for main content area to detect scroll
+  const poojaListRef = useRef(null); // New ref for pooja carousel
 
-  // --- Initial Data Load & AOS Animation ---
   useEffect(() => {
-    AOS.init({ duration: 750, once: true, offset: 50 }); // Adjusted offset for better trigger
+    AOS.init({ duration: 750, once: true });
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
-
-    if (!token || !userData) {
-      navigate("/home"); // Redirect to home if not authenticated
-      return;
-    }
-
+    if (!token || !userData) return;
     try {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
       setReview((r) => ({ ...r, name: parsedUser.name }));
-
-      // Fetch bookings and pandits concurrently for faster loading
-      Promise.all([
-        getBookings({ userid: parsedUser._id }),
-        getVerifiedPandits(),
-      ]).then(([bookingsRes, panditsRes]) => {
-        setBookings(bookingsRes.data || []);
-        setPandits(panditsRes.data || []);
-      }).catch(error => {
-        console.error("Failed to fetch dashboard data:", error);
-        // Optionally show a user-friendly error message
-      });
-
+      getBookings({ userid: parsedUser._id }).then((res) =>
+        setBookings(res.data || [])
+      );
+      getVerifiedPandits().then((res) => setPandits(res.data || []));
+      getPoojas().then((res) => setPoojas(res.data || [])); // Fetch Pooja services
     } catch (error) {
-      console.error("Failed to parse user data from localStorage:", error);
-      localStorage.clear(); // Clear invalid data
-      navigate("/home");
+      console.error("Error fetching data:", error);
     }
-  }, [navigate]);
+  }, []);
 
-  // --- Active Link Tracking ---
-  useEffect(() => {
-    setActiveLink(location.pathname || "/");
-  }, [location.pathname]);
-
-  // --- Carousel Auto-Play ---
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex((i) => (i + 1) % sliderImages.length);
@@ -194,7 +123,6 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  // --- Current Date & Time Display ---
   useEffect(() => {
     const itv = setInterval(() => {
       setCurrentDateTime(
@@ -208,40 +136,76 @@ export default function Dashboard() {
     return () => clearInterval(itv);
   }, []);
 
-  // --- Scroll-to-Top Button Logic ---
-  const handleScroll = useCallback(() => {
-    if (mainContentRef.current) {
-      if (mainContentRef.current.scrollTop > 300) {
-        setShowScrollToTop(true);
-      } else {
-        setShowScrollToTop(false);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const mainContent = mainContentRef.current;
-    if (mainContent) {
-      mainContent.addEventListener("scroll", handleScroll);
-      return () => mainContent.removeEventListener("scroll", handleScroll);
-    }
-  }, [handleScroll]);
-
-  const scrollToTop = () => {
-    if (mainContentRef.current) {
-      mainContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  // --- Pandit Card Expansion ---
   function toggleExpand(id) {
     setExpandedPandits((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  // --- Horizontal Scroll for lists ---
+  const getStatusClass = (status) =>
+    ({
+      accepted: "status accepted",
+      rejected: "status rejected",
+      pending: "status pending",
+    }[(status || "").toLowerCase()] || "status");
+
+  const filteredPandits = pandits.filter(
+    (p) =>
+      (p.name?.toLowerCase() || "").includes(searchPandits.toLowerCase()) ||
+      (p.city || "").toLowerCase().includes(searchPandits.toLowerCase())
+  );
+
+  const filteredBookings = bookings.filter((b) => {
+    const q = searchBookings.toLowerCase();
+    return (
+      (b.panditid?.name || "").toLowerCase().includes(q) ||
+      (b.serviceid?.name || "").toLowerCase().includes(q) ||
+      new Date(b.puja_date).toLocaleDateString().includes(q)
+    );
+  });
+
+  const filteredPoojas = poojas.filter((pooja) =>
+    (pooja.name?.toLowerCase() || "").includes(searchPoojas.toLowerCase()) ||
+    (pooja.description?.toLowerCase() || "").includes(searchPoojas.toLowerCase())
+  );
+
+  async function handleReviewSubmit(e) {
+    e.preventDefault();
+    if (!review.name || !review.comment || !review.rating) {
+      setReviewMessage("Please complete all fields and provide star rating.");
+      return;
+    }
+    setReviewLoading(true);
+    try {
+      await createReview(review);
+      setReviewMessage("Thank you for your review!");
+      setReview((r) => ({ name: r.name, rating: 0, comment: "" }));
+    } catch {
+      setReviewMessage("Failed to submit review.");
+    } finally {
+      setReviewLoading(false);
+      setTimeout(() => setReviewMessage(""), 2500);
+    }
+  }
+
+  function handleNavClick(item) {
+    if (item.logout) {
+      localStorage.clear();
+      navigate(item.goto); // Navigate to home after logout
+    } else if (String(item.goto).startsWith("#")) {
+      const section = document.querySelector(item.goto);
+      if (section)
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+    } else {
+      navigate(item.goto);
+    }
+  }
+
   function scrollList(ref, direction = "left") {
     if (ref.current) {
-      const scrollAmount = ref.current.clientWidth * 0.7; // Scroll by 70% of visible width
+      const scrollAmount = 320;
       if (direction === "left") {
         ref.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
       } else {
@@ -250,135 +214,67 @@ export default function Dashboard() {
     }
   }
 
-  // --- Filtered Data (Pandits & Bookings) ---
-  const filteredPandits = pandits.filter(
-    (p) =>
-      (p.name?.toLowerCase() || "").includes(searchPandits.toLowerCase()) ||
-      (p.city || "").toLowerCase().includes(searchPandits.toLowerCase()) ||
-      (p.specialties?.some(s => s.toLowerCase().includes(searchPandits.toLowerCase())) || false) // Search by specialty
-  );
-
-  const filteredBookings = bookings.filter((b) => {
-    const q = searchBookings.toLowerCase();
-    return (
-      (b.panditid?.name || "").toLowerCase().includes(q) ||
-      (b.serviceid?.name || "").toLowerCase().includes(q) ||
-      new Date(b.puja_date).toLocaleDateString().includes(q) ||
-      (b.location || "").toLowerCase().includes(q) || // Search by location
-      (b.status || "").toLowerCase().includes(q) // Search by status
-    );
-  });
-
-  // --- Review Submission Handler ---
-  async function handleReviewSubmit(e) {
-    e.preventDefault();
-    if (!review.name || !review.comment || review.rating === 0) {
-      setReviewMessage("Please complete all fields and provide a star rating.");
-      return;
-    }
-    setReviewLoading(true);
-    try {
-      await createReview(review);
-      setReviewMessage("Thank you for your review!");
-      setReview((r) => ({ name: r.name, rating: 0, comment: "" })); // Reset form, keep name
-    } catch (error) {
-      console.error("Review submission failed:", error);
-      setReviewMessage("Failed to submit review. Please try again later.");
-    } finally {
-      setReviewLoading(false);
-      setTimeout(() => setReviewMessage(""), 3000); // Clear message after 3 seconds
-    }
-  }
-
-  // --- Sidebar Navigation Handler ---
-  function handleNavClick(item) {
-    if (item.logout) {
-      localStorage.clear();
-      navigate("/home");
-    } else if (String(item.goto).startsWith("#")) {
-      // Smooth scroll to section
-      const section = document.querySelector(item.goto);
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-          inline: "nearest",
-        });
-        setActiveLink(item.goto);
+  const addToCart = (pooja) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item._id === pooja._id);
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item._id === pooja._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevItems, { ...pooja, quantity: 1 }];
       }
-    } else {
-      navigate(item.goto);
-      setActiveLink(item.goto);
-    }
-  }
-
-  // --- Booking Status Class Helper ---
-  const getStatusClass = (status) => {
-    switch ((status || "").toLowerCase()) {
-      case "accepted":
-        return "status accepted";
-      case "rejected":
-        return "status rejected";
-      case "pending":
-        return "status pending";
-      case "completed": // New status for completed bookings
-        return "status completed";
-      case "cancelled": // New status for cancelled bookings
-        return "status cancelled";
-      default:
-        return "status";
-    }
+    });
   };
 
-  // --- Framer Motion Variants ---
-  const heroVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  const removeFromCart = (poojaId) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item._id !== poojaId)
+    );
   };
-  const btnHoverTap = {
-    hover: { scale: 1.05, boxShadow: "0 6px 20px rgba(255, 113, 0, 0.6)" },
-    tap: { scale: 0.95 },
+
+  const updateCartQuantity = (poojaId, quantity) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
+        item._id === poojaId ? { ...item, quantity: quantity } : item
+      ).filter(item => item.quantity > 0) // Remove if quantity becomes 0
+    );
   };
-  const sidebarTransition = { type: "tween", duration: 0.3 };
+
+  const getTotalCartItems = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getUpcomingFestivals = () => {
+    const today = new Date();
+    return upcomingFestivals.filter(festival => new Date(festival.date) >= today).sort((a,b) => new Date(a.date) - new Date(b.date));
+  };
+
 
   return (
-    <div
-      className="dashboard-app-bg"
-      style={{
-        background: "linear-gradient(123deg, #ff7100, #1f1700)",
-        transition: "background 0.5s ease-in-out",
-      }}
-    >
+    <div className="dashboard-app-bg">
       {/* Sidebar */}
-      <motion.aside
-        className={`sidebar-root${collapsed ? " collapsed" : ""}`}
-        initial={false}
-        animate={{ width: collapsed ? 60 : 240 }}
-        transition={sidebarTransition}
-        aria-label="Main navigation sidebar"
-      >
-        <div className="sidebar-brand" tabIndex={0} role="banner">
-          <img src="/images/subh.png" alt="Shubhkarya Logo" className="sidebar-logo" />
+      <aside className={`sidebar-root${collapsed ? " collapsed" : ""}`}>
+        <div className="sidebar-brand">
+          <img src="/images/subh.png" alt="Logo" className="sidebar-logo" />
           {!collapsed && (
-            <span className="sidebar-brand-name white-logo" style={{ color: "#1abc9c" }}>
+            <span
+              className="sidebar-brand-name white-logo"
+              tabIndex={0}
+              style={{ color: "#1abc9c" }}
+            >
               Shubhkarya
             </span>
           )}
         </div>
-        <nav className="sidebar-links" aria-label="Main navigation links">
-          {mainSidebarLinks.map(({ label, icon: Icon, goto, logout }) => (
-            <motion.button
+        <nav className="sidebar-links" aria-label="Main navigation">
+          {sidebarLinks.map(({ label, icon: Icon, goto, logout }) => (
+            <button
               key={label}
-              className={`sidebar-link ${
-                (activeLink === goto || (activeLink === "/" && goto === "/")) ? "active" : ""
-              }`}
+              className="sidebar-link"
               tabIndex={0}
               onClick={() => handleNavClick({ goto, logout })}
               aria-label={label}
-              aria-current={activeLink === goto ? "page" : false}
-              title={collapsed ? label : undefined}
-              whileHover={{ scale: 1.1, boxShadow: "0 6px 20px rgba(255, 113, 0, 0.6)" }}
-              whileTap={{ scale: 0.95 }}
             >
               <Icon
                 size={22}
@@ -386,108 +282,47 @@ export default function Dashboard() {
                 aria-hidden="true"
                 style={{ color: "#1abc9c" }}
               />
-              {!collapsed && <span>{label}</span>}
-            </motion.button>
-          ))}
-
-          {/* Settings expandable menu */}
-          <div className="sidebar-setting-group">
-            <motion.button
-              className={`sidebar-link settings-link ${settingsExpanded ? "expanded" : ""}`}
-              onClick={() => setSettingsExpanded((v) => !v)}
-              aria-expanded={settingsExpanded}
-              aria-controls="settings-submenu"
-              tabIndex={0}
-              title={collapsed ? "Settings" : undefined}
-              whileHover={{ scale: 1.1, boxShadow: "0 6px 20px rgba(255, 113, 0, 0.6)" }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Settings size={22} aria-hidden="true" style={{ color: "#1abc9c" }} />
-              {!collapsed && <span>Settings</span>}
               {!collapsed && (
-                <span className="settings-toggle-icon">
-                  {settingsExpanded ? <MinusCircle size={18} /> : <PlusCircle size={18} />}
-                </span>
+                <span style={{ color: "#1abc9c", fontWeight: "700" }}>{label}</span>
               )}
-            </motion.button>
-            <AnimatePresence initial={false}>
-              {settingsExpanded && !collapsed && (
-                <motion.div
-                  id="settings-submenu"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }} // Softer animation
-                  className="sidebar-submenu"
-                >
-                  {settingsSubLinks.map(({ label, icon: Icon, goto }) => (
-                    <motion.button
-                      key={label}
-                      className={`sidebar-link sub-link ${
-                        activeLink === goto ? "active" : ""
-                      }`}
-                      onClick={() => handleNavClick({ goto })}
-                      tabIndex={0}
-                      aria-current={activeLink === goto ? "page" : false}
-                      title={label}
-                      whileHover={{ scale: 1.05, boxShadow: "0 4px 12px rgba(100,255,218,0.4)" }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Icon size={18} aria-hidden="true" style={{ color: "#64ffda" }} />
-                      <span>{label}</span>
-                    </motion.button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            </button>
+          ))}
         </nav>
-        <motion.button
+        <button
           className="sidebar-collapse-btn"
           onClick={() => setCollapsed((c) => !c)}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          aria-pressed={collapsed}
           style={{ color: "#1abc9c" }}
-          whileHover={{ scale: 1.15, boxShadow: "0 8px 24px rgba(28, 212, 151, 0.6)" }}
-          whileTap={{ scale: 0.95 }}
         >
           <ListChecks size={22} />
-        </motion.button>
-      </motion.aside>
+        </button>
+      </aside>
 
       {/* Header */}
-      <header className="header-root dark-header" role="banner">
+      <header className="header-root dark-header">
         <div className="user-block">
           <div>
             <div className="header-user-welcome dark-welcome">
               {user?.name ? `Welcome, ${user.name}!` : "Welcome to Shubhkarya"}
             </div>
-            <div className="header-user-email dark-email">{user?.email || "user@example.com"}</div>
+            <div className="header-user-email dark-email">
+              {user?.email || "user@example.com"}
+            </div>
           </div>
         </div>
-        <div className="header-datetime dark-datetime" aria-live="polite">{currentDateTime}</div>
+        <div className="header-datetime dark-datetime">{currentDateTime}</div>
       </header>
 
-      <main className="dashboard-main" tabIndex={-1} ref={mainContentRef}>
+      <main className="dashboard-main">
         {/* Hero & Slider */}
-        <section className="hero-section" aria-labelledby="hero-title">
-          <motion.div
-            className="hero-content"
-            initial="initial"
-            animate="animate"
-            variants={heroVariants}
-          >
-            <h1 id="hero-title" className="hero-title">
+        <section className="hero-section">
+          <div className="hero-content">
+            <h1 className="hero-title">
               Experience{" "}
               <span className="hero-highlight">Auspicious Rituals</span> with{" "}
               <span className="hero-brand-white">Shubhkarya</span>
             </h1>
-            <motion.p
-              className="hero-subtitle"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-            >
+            <p className="hero-subtitle">
               Welcome{user?.name && <span>, <b>{user.name}</b></span>}!
               <br />
               Book trusted Pandits for your{" "}
@@ -497,42 +332,32 @@ export default function Dashboard() {
               with elegance and ease.
               <br />
               Now enhanced with same-day bookings and instant chat support.
-            </motion.p>
+            </p>
             <div className="hero-actions">
-              <motion.button
-                className="main-cta-btn"
-                onClick={() => navigate("/booking")}
-                whileHover="hover"
-                whileTap="tap"
-                variants={btnHoverTap}
-                style={{
-                  background: "linear-gradient(123deg, #ff7100, #1f1700)",
-                  color: "#fff",
-                  border: "none",
-                  fontWeight: "700",
-                }}
-                aria-label="Book Puja Now"
-              >
+              <button className="main-cta-btn" onClick={() => navigate("/booking")}>
                 Book Puja Now
-              </motion.button>
+              </button>
+              <button
+                className="main-alt-btn"
+                onClick={() => {
+                  const panditSection = document.querySelector("#pandit");
+                  if (panditSection) {
+                    panditSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                Browse Pandits
+              </button>
             </div>
-          </motion.div>
-          <div className="slider-wrapper" aria-live="polite" aria-atomic="true">
+          </div>
+          <div className="slider-wrapper">
             <div className="carousel-frame hero-slider-bg">
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={carouselIndex}
-                  src={sliderImages[carouselIndex]}
-                  alt={`Religious ritual imagery - Slide ${carouselIndex + 1}`}
-                  loading="eager" // Eager loading for main hero image
-                  initial={{ opacity: 0.7, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  style={{ borderRadius: 12 }}
-                />
-              </AnimatePresence>
-              <div className="carousel-dots" role="tablist" aria-label="Image Carousel Pagination">
+              <img
+                src={sliderImages[carouselIndex]}
+                alt={`Slide ${carouselIndex + 1}`}
+                loading="lazy"
+              />
+              <div className="carousel-dots">
                 {sliderImages.map((_, i) => (
                   <button
                     key={i}
@@ -541,7 +366,6 @@ export default function Dashboard() {
                     aria-selected={carouselIndex === i}
                     role="tab"
                     aria-label={`Go to slide ${i + 1}`}
-                    tabIndex={0}
                   />
                 ))}
               </div>
@@ -554,61 +378,114 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Upcoming Festivals & Events */}
-        <section className="upcoming-festivals-section" aria-label="Upcoming festivals and events" id="highlight">
-          <h3 className="section-heading highlighted-heading">Upcoming Festivals & Events</h3>
-          <div className="festival-cards-responsive-container">
-            {upcomingFestivals.map(({ name, date, description, img, location, time }) => (
-              <motion.div
-                key={name}
-                className="festival-card"
-                tabIndex={0}
-                initial={{ y: 18, opacity: 0.85 }}
-                whileInView={{ y: 0, opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.06, boxShadow: "0 12px 40px #ff710077" }}
-                whileFocus={{ scale: 1.06, boxShadow: "0 12px 40px #ff71007f" }}
-                viewport={{ once: true, amount: 0.3 }} // Trigger when 30% of item is in view
-                transition={{ type: "spring", stiffness: 180, damping: 19 }}
-                aria-label={`${name} festival details`}
-                role="article"
-              >
-                <div className="festival-img-wrapper">
-                  <img
-                    src={img}
-                    alt={`${name} festival`}
-                    className="festival-img"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="festival-info">
-                  <h4>{name}</h4>
-                  <p className="festival-date"><CalendarDays size={16} /> {date}</p>
-                  <p className="festival-desc">{description}</p>
-                  <div className="festival-meta">
-                    <span className="festival-location"><MapPin size={16} /> {location}</span>
-                    <span className="festival-time"><Clock size={16} /> {time}</span>
-                  </div>
-                  <motion.button
-                    className="festival-learn-more-btn"
-                    onClick={() => navigate(`/festival/${name.toLowerCase().replace(/\s/g, '-')}`)} // Dynamic routing for festival details
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    aria-label={`Learn more about ${name}`}
-                  >
-                    Learn More
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))}
+        {/* Feature Cards */}
+        <section className="dashboard-features">
+          <div className="feature-card">
+            <h3>Live Chat Support</h3>
+            <p>Ask spiritual or booking questions to our team – instant help, 7am to 10pm.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Preferred Pandit Booking</h3>
+            <p>Save favorite Pandits, see their next available slots, and book with just one tap.</p>
+          </div>
+          <div className="feature-card">
+            <h3>Festive Offers</h3>
+            <p>Special discounts and promo codes for all major festivals and family events.</p>
           </div>
         </section>
 
-        {/* Verified Pandits */}
+        {/* Upcoming Festivals */}
+        <section className="festivals-section horizontal-carousel-section" tabIndex={-1} aria-label="Upcoming Festivals">
+          <div className="section-header">
+            <h3 className="section-heading highlighted-heading">Upcoming Festivals</h3>
+            <div className="carousel-controls">
+              <button
+                aria-label="Scroll festivals left"
+                onClick={() => scrollList(poojaListRef, "left")} // Reusing ref for simplicity or add a new one
+                className="carousel-arrow-btn"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button
+                aria-label="Scroll festivals right"
+                onClick={() => scrollList(poojaListRef, "right")} // Reusing ref
+                className="carousel-arrow-btn"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          </div>
+          <div className="festival-list horizontal-scroll" ref={poojaListRef} tabIndex={0}>
+            {getUpcomingFestivals().length === 0 ? (
+              <p className="empty-msg">No upcoming festivals planned yet. Check back soon!</p>
+            ) : (
+              getUpcomingFestivals().map((festival, index) => (
+                <motion.div
+                  key={index}
+                  className="festival-card neon-card glass-highlight glossy shadow-pop horizontal-card"
+                  whileHover={{ y: -4, scale: 1.04 }}
+                  tabIndex={0}
+                >
+                  <h4 className="festival-name">🎉 {festival.name}</h4>
+                  <p className="festival-date">🗓️ {new Date(festival.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                  <p className="festival-description">{festival.description}</p>
+                  <button className="book-festival-btn custom-btn glow-btn" onClick={() => navigate(`/booking?festival=${encodeURIComponent(festival.name)}`)}>
+                    Explore Pujas
+                  </button>
+                </motion.div>
+              ))
+            )}
+          </div>
+        </section>
+
+
+        {/* Pooja Services - Horizontal Scroll Carousel */}
+        <section id="pooja-services" className="pooja-section horizontal-carousel-section" tabIndex={-1} aria-label="Pooja Services">
+          <div className="section-header">
+            <h3 className="section-heading highlighted-heading">Pooja Services</h3>
+            <div className="carousel-controls">
+              <button
+                aria-label="Scroll pooja services left"
+                onClick={() => scrollList(poojaListRef, "left")}
+                className="carousel-arrow-btn"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button
+                aria-label="Scroll pooja services right"
+                onClick={() => scrollList(poojaListRef, "right")}
+                className="carousel-arrow-btn"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          </div>
+          <input
+            type="text"
+            className="booking-search"
+            aria-label="Search pooja services"
+            placeholder="Search by pooja name or description..."
+            value={searchPoojas}
+            onChange={(e) => setSearchPoojas(e.target.value)}
+          />
+          <div className="pooja-list horizontal-scroll" ref={poojaListRef} tabIndex={0}>
+            {filteredPoojas.length === 0 ? (
+              <p className="empty-msg">No pooja services found matching your search.</p>
+            ) : (
+              filteredPoojas.map((pooja) => (
+                <PoojaCard key={pooja._id} pooja={pooja} addToCart={addToCart} navigate={navigate} />
+              ))
+            )}
+          </div>
+        </section>
+
+
+        {/* Verified Pandits - Horizontal Scroll Carousel */}
         <section
           id="pandit"
           className="pandit-section horizontal-carousel-section"
           tabIndex={-1}
-          aria-label="Verified Pandits section"
+          aria-label="Verified Pandits"
         >
           <div className="section-header">
             <h3 className="section-heading highlighted-heading">Verified Pandits</h3>
@@ -617,7 +494,6 @@ export default function Dashboard() {
                 aria-label="Scroll pandits left"
                 onClick={() => scrollList(panditListRef, "left")}
                 className="carousel-arrow-btn"
-                tabIndex={0}
               >
                 <ChevronLeft size={24} />
               </button>
@@ -625,7 +501,6 @@ export default function Dashboard() {
                 aria-label="Scroll pandits right"
                 onClick={() => scrollList(panditListRef, "right")}
                 className="carousel-arrow-btn"
-                tabIndex={0}
               >
                 <ChevronRight size={24} />
               </button>
@@ -633,115 +508,92 @@ export default function Dashboard() {
           </div>
           <input
             type="text"
-            className="booking-search search-input-glow"
-            aria-label="Search pandits by name, city, or specialty"
-            placeholder="Search by name, city, or specialty..."
+            className="booking-search"
+            aria-label="Search pandits"
+            placeholder="Search by name or city..."
             value={searchPandits}
             onChange={(e) => setSearchPandits(e.target.value)}
           />
-          <div className="pandit-list horizontal-scroll" ref={panditListRef} tabIndex={0} role="list">
-            {filteredPandits.length === 0 ? (
-              <p className="empty-msg">No pandits found matching your search.</p>
-            ) : (
-              filteredPandits.map((pandit) => (
-                <motion.div
-                  key={pandit._id}
-                  className="improved-pandit-card neon-card glass-highlight glossy shadow-pop horizontal-card"
-                  whileHover={{ y: -4, scale: 1.04, boxShadow: "0 6px 24px #ff710099" }}
-                  tabIndex={0}
-                  role="listitem"
-                  aria-expanded={expandedPandits[pandit._id] || false}
-                  onClick={() => toggleExpand(pandit._id)}
-                  onKeyDown={(e) =>
-                    (e.key === "Enter" || e.key === " ") && toggleExpand(pandit._id)
-                  }
+          <div className="pandit-list horizontal-scroll" ref={panditListRef} tabIndex={0}>
+            {filteredPandits.map((pandit) => (
+              <motion.div
+                key={pandit._id}
+                className="improved-pandit-card neon-card glass-highlight glossy shadow-pop horizontal-card"
+                whileHover={{ y: -4, scale: 1.04 }}
+                tabIndex={0}
+                aria-expanded={expandedPandits[pandit._id] || false}
+                onClick={() => toggleExpand(pandit._id)}
+                onKeyDown={(e) =>
+                  (e.key === "Enter" || e.key === " ") && toggleExpand(pandit._id)
+                }
+              >
+                <div
+                  className="pandit-avatar glass"
+                  style={{
+                    backgroundImage: `url(${pandit.profile_photo_url || "/images/i1.jpeg"})`,
+                  }}
+                  aria-label={`Pandit ${pandit.name}`}
                 >
-                  <div
-                    className="pandit-avatar glass"
-                    style={{
-                      backgroundImage: `url(${pandit.profile_photo_url || "/images/placeholder_pandit.jpg"})`, // Placeholder image
-                    }}
-                    aria-label={`Profile photo of Pandit ${pandit.name}`}
-                  >
-                    {!pandit.profile_photo_url && (
-                      <span className="pandit-avatar-initial">{pandit.name.slice(0, 1)}</span>
-                    )}
-                  </div>
-                  <div className="pandit-main-info">
-                    <h4 className="pandit-name hero-text-glow">🧑‍🦳 {pandit.name}</h4>
-                    <div className="pandit-city"><MapPin size={16} /> {pandit.city}</div>
-                    {pandit.averageRating && (
-                      <div className="pandit-rating">
-                        <StarRating rating={pandit.averageRating} editable={false} />
-                        <span className="rating-value">({pandit.averageRating.toFixed(1)})</span>
+                  <span className="pandit-avatar-initial">{pandit.name.slice(0, 1)}</span>
+                </div>
+                <div className="pandit-main-info">
+                  <h4 className="pandit-name hero-text-glow">🧑‍🦳 {pandit.name}</h4>
+                  <div className="pandit-city">{pandit.city}</div>
+                  {expandedPandits[pandit._id] && (
+                    <div className="pandit-extra expanded horizontal-extra">
+                      <div className="pandit-details">
+                        <div className="pandit-badges">
+                          <span className="pandit-badge exp">
+                            Exp: {pandit.experienceYears} yrs
+                          </span>
+                          <span className="pandit-badge langs">
+                            {pandit.languages?.join(", ")}
+                          </span>
+                        </div>
+                        <div className="pandit-specialties">
+                          <b>Specialties:</b> {pandit.specialties?.join(", ")}
+                        </div>
                       </div>
-                    )}
-                    <AnimatePresence>
-                      {expandedPandits[pandit._id] && (
-                        <motion.div
-                          className="pandit-extra expanded horizontal-extra"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <div className="pandit-details">
-                            <div className="pandit-badges">
-                              <span className="pandit-badge exp">
-                                Exp: {pandit.experienceYears} yrs
-                              </span>
-                              <span className="pandit-badge langs">
-                                {pandit.languages?.join(", ")}
-                              </span>
-                            </div>
-                            <div className="pandit-specialties">
-                              <b>Specialties:</b> {pandit.specialties?.join(", ") || "N/A"}
-                            </div>
-                            <p className="pandit-bio">{pandit.bio || "No detailed bio available."}</p> {/* Added bio */}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                    <motion.button
-                      className="chat-pandit-btn"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent card expansion
-                        setChatPanditId(pandit._id);
-                        setChatPanditName(pandit.name);
-                        setShowChatbot(true); // Automatically open chatbot
-                      }}
-                      style={{ marginTop: 8 }}
-                      aria-label={`Chat with ${pandit.name}`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Chat with Pandit <MessageCircle size={18} />
-                    </motion.button>
-                  </div>
-                </motion.div>
-              ))
-            )}
+                    </div>
+                  )}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChatPanditId(pandit._id);
+                      setChatPanditName(pandit.name);
+                    }}
+                    style={{ marginTop: 8 }}
+                    className="custom-btn glow-btn"
+                    aria-label={`Chat with ${pandit.name}`}
+                  >
+                    Chat with Pandit
+                  </button>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
 
+
         {/* Chat Window */}
         <AnimatePresence>
-          {chatPanditId && showChatbot && ( // Ensure chatbot is visible if pandit is selected
+          {chatPanditId && (
             <ChatWindow
               userId={user?._id}
               panditId={chatPanditId}
               chatName={chatPanditName}
-              onClose={() => { setChatPanditId(null); setShowChatbot(false); }}
+              onClose={() => setChatPanditId(null)}
             />
           )}
         </AnimatePresence>
 
-        {/* Booking History Section */}
+
+        {/* Bookings - Horizontal Scroll Carousel */}
         <section
           id="booking"
           className="bookings-section horizontal-carousel-section blur-bg"
           tabIndex={-1}
-          aria-label="Booking History section"
+          aria-label="Booking History"
         >
           <div className="section-header">
             <h3 className="section-heading highlighted-heading">Your Bookings</h3>
@@ -750,7 +602,6 @@ export default function Dashboard() {
                 aria-label="Scroll bookings left"
                 onClick={() => scrollList(bookingListRef, "left")}
                 className="carousel-arrow-btn"
-                tabIndex={0}
               >
                 <ChevronLeft size={24} />
               </button>
@@ -758,7 +609,6 @@ export default function Dashboard() {
                 aria-label="Scroll bookings right"
                 onClick={() => scrollList(bookingListRef, "right")}
                 className="carousel-arrow-btn"
-                tabIndex={0}
               >
                 <ChevronRight size={24} />
               </button>
@@ -766,13 +616,13 @@ export default function Dashboard() {
           </div>
           <input
             type="text"
-            className="booking-search search-input-glow"
-            aria-label="Search bookings by pandit, service, date, location, or status"
-            placeholder="Search bookings by pandit, service, date, location or status..."
+            className="booking-search"
+            aria-label="Search bookings"
+            placeholder="Search bookings..."
             value={searchBookings}
             onChange={(e) => setSearchBookings(e.target.value)}
           />
-          <div className="booking-list horizontal-scroll" ref={bookingListRef} tabIndex={0} role="list">
+          <div className="booking-list horizontal-scroll" ref={bookingListRef} tabIndex={0}>
             {filteredBookings.length === 0 ? (
               <p className="empty-msg">No bookings found. Book your first puja now!</p>
             ) : (
@@ -782,52 +632,29 @@ export default function Dashboard() {
                   className="booking-card card-glossy glass neon-card shadow-pop horizontal-card"
                   whileHover={{ scale: 1.032, boxShadow: "0 6px 32px #aecaee51" }}
                   tabIndex={0}
-                  role="listitem"
+                  role="article"
                   aria-label={`Booking for ${b.serviceid?.name} with ${
                     b.panditid?.name || "N/A"
-                  } on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}. Status: ${b.status}`}
+                  } on ${new Date(b.puja_date).toLocaleDateString()} at ${b.puja_time}`}
                 >
                   <div className="booking-card-left">
                     <span className="booking-icon" aria-hidden="true">
-                      ✨
-                    </span> {/* Changed icon for visual appeal */}
+                      📅
+                    </span>
                     <div>
-                      <div className="booking-type">
-                        <Book size={18} style={{ verticalAlign: "middle", marginRight: 5 }} />
-                        {b.serviceid?.name || "N/A Puja Service"}
-                      </div>
+                      <div className="booking-type">{b.serviceid?.name}</div>
                       <div className="booking-date">
-                        <CalendarDays size={18} style={{ verticalAlign: "middle", marginRight: 5 }} />
                         {new Date(b.puja_date).toLocaleDateString()} at {b.puja_time}
                       </div>
                     </div>
                   </div>
                   <div className="booking-card-right">
                     <div className="booking-pandit">
-                      <Users size={18} style={{ verticalAlign: "middle", marginRight: 5 }} />
                       <span className="booking-pandit-label">Pandit:</span>{" "}
                       <span>{b.panditid?.name ?? "N/A"}</span>
                     </div>
-                    <div className="booking-location">
-                      <MapPin size={18} style={{ verticalAlign: "middle", marginRight: 5 }} />
-                      {b.location}
-                    </div>
+                    <div className="booking-location">📍 {b.location}</div>
                     <div className={getStatusClass(b.status)}>{b.status}</div>
-                    {b.status?.toLowerCase() === 'completed' && b.panditid && (
-                      <motion.button
-                        className="review-booking-btn"
-                        onClick={() => {
-                          setReview({ ...review, panditId: b.panditid._id });
-                          const reviewSection = document.querySelector("#review");
-                          if (reviewSection) reviewSection.scrollIntoView({ behavior: "smooth" });
-                        }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        aria-label={`Review your booking with ${b.panditid.name}`}
-                      >
-                        Review this booking
-                      </motion.button>
-                    )}
                   </div>
                 </motion.div>
               ))
@@ -835,27 +662,25 @@ export default function Dashboard() {
           </div>
         </section>
 
+
         {/* Review Submission */}
         <section
           id="review"
           className="review-section glass-review"
           tabIndex={-1}
-          aria-label="Submit Review section"
+          aria-label="Submit Review"
         >
           <h3 className="section-heading neon-text">Submit a Review</h3>
           {reviewMessage && (
-            <motion.p
+            <p
               className={
-                reviewMessage.includes("review") ? "success-message" : "error-message"
+                reviewMessage.includes("review")
+                  ? "success-message"
+                  : "error-message"
               }
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              role="alert"
             >
               {reviewMessage}
-            </motion.p>
+            </p>
           )}
           <form
             onSubmit={handleReviewSubmit}
@@ -865,20 +690,18 @@ export default function Dashboard() {
             <div className="review-row">
               <input
                 type="text"
-                value={user?.name || review.name} // Ensure user's name is pre-filled
-                disabled // Name should not be editable by the user for a review
+                value={review.name}
+                disabled
                 className="review-input"
-                aria-label="Your name (disabled)"
-                title="Your name is pre-filled from your profile."
+                aria-label="Your name"
               />
               <StarRating
                 rating={review.rating}
                 onChange={(v) => setReview((prev) => ({ ...prev, rating: v }))}
-                editable={true}
               />
             </div>
             <textarea
-              placeholder="Share your experience with us..." // More engaging placeholder
+              placeholder="Write your feedback..."
               value={review.comment}
               onChange={(e) =>
                 setReview((prev) => ({ ...prev, comment: e.target.value }))
@@ -886,61 +709,77 @@ export default function Dashboard() {
               className="review-input review-textarea"
               required
               aria-required="true"
-              rows={4} // Give more space for typing
-              maxLength={500} // Add character limit
-              aria-label="Your feedback or comment about the service"
             />
-            <motion.button
+            <button
               type="submit"
               className="custom-btn glow-btn"
               disabled={reviewLoading}
-              whileHover={{ scale: 1.05, boxShadow: "0 6px 25px #ff7100bb" }}
-              whileTap={{ scale: 0.95 }}
-              aria-live="polite" // Announce changes to screen readers
             >
-              {reviewLoading ? "Submitting Review..." : "Submit Review 💬"}
-            </motion.button>
+              {reviewLoading ? "Submitting..." : "Submit Review 💬"}
+            </button>
           </form>
         </section>
 
+        {/* Floating Cart Icon */}
+        {getTotalCartItems() > 0 && (
+          <button
+            aria-label={`View ${getTotalCartItems()} items in cart`}
+            className="floating-cart-btn"
+            onClick={() => setShowCartModal(true)}
+          >
+            <ShoppingCart size={28} />
+            <span className="cart-item-count">{getTotalCartItems()}</span>
+          </button>
+        )}
+
         {/* Chatbot Button */}
-        <motion.button
-          aria-label={showChatbot ? "Close Chatbot" : "Open Chatbot"}
+        <button
+          aria-label="Toggle Chatbot"
           className="chatbot-toggle"
           onClick={() => setShowChatbot((s) => !s)}
-          whileHover={{ scale: 1.1, boxShadow: "0 8px 38px rgba(38, 82, 132, 0.25)" }}
-          whileTap={{ scale: 0.9 }}
-          data-aos="fade-up" // AOS animation for the button itself
-          data-aos-anchor-placement="bottom-bottom" // Appear when scrolling to bottom
         >
           {showChatbot ? (
             "×"
           ) : (
             <img
               src="/images/subh.png"
-              alt="Shubhkarya Chatbot Icon"
+              alt="Open Chatbot"
               style={{ borderRadius: "50%", width: 38, height: 38 }}
             />
           )}
-        </motion.button>
-
-        {/* Scroll to Top Button */}
-        <AnimatePresence>
-          {showScrollToTop && (
-            <motion.button
-              className="scroll-to-top-btn"
-              onClick={scrollToTop}
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 100 }}
-              transition={{ duration: 0.3 }}
-              aria-label="Scroll to top"
-            >
-              <ChevronUp size={24} />
-            </motion.button>
-          )}
-        </AnimatePresence>
+        </button>
+        {showChatbot && (
+          <div
+            className="chatbot-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Chatbot window"
+          >
+            <iframe
+              title="Chatbot"
+              src="https://www.chatbase.co/chatbot-iframe/usovl2iS71gPfrO5xmRyP"
+              style={{ width: "100%", height: "100%", border: "none", borderRadius: 15 }}
+              allow="clipboard-write"
+            />
+          </div>
+        )}
       </main>
+
+      {/* Cart Modal */}
+      <AnimatePresence>
+        {showCartModal && (
+          <CartModal
+            cartItems={cartItems}
+            onClose={() => setShowCartModal(false)}
+            onRemove={removeFromCart}
+            onUpdateQuantity={updateCartQuantity}
+            onCheckout={() => {
+              navigate("/booking", { state: { cartItems } }); // Pass cart items to booking page
+              setShowCartModal(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
