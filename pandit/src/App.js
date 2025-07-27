@@ -2,23 +2,32 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
+// Public Pages
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import ReviewForm from './pages/Review'; // This might be moved into DashboardReviews.js later
-import Payment from './pages/Payment'; // This will be used as DashboardPayment.js
+
+// Dashboard Layout and Sub-pages
+import Dashboard from './pages/Dashboard';
+import DashboardHome from './pages/DashboardHome';
+import DashboardProfile from './pages/DashboardProfile';
+import DashboardSearchPooja from './pages/DashboardSearchPooja';
+import DashboardSearchPandits from './pages/DashboardSearchPandits';
+import DashboardBookingForm from './pages/DashboardBookingForm';
+import DashboardBookings from './pages/DashboardBookings';
+import DashboardReviews from './pages/DashboardReviews';
+import DashboardPayment from './pages/DashboardPayment';
+
+// Other Protected Pages (if not nested under dashboard)
 import Notifications from './pages/Notifications';
 
-// Import the main Dashboard layout component
-import Dashboard from './pages/Dashboard';
-
-// Import Pandit and Admin related pages
+// Pandit and Admin related pages
 import PanditSignup from './pages/PanditSignup';
 import PanditDashboard from './pages/PanditDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 
-// Import ProtectedRoute components
+// Protected Route Components
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
 
@@ -54,14 +63,22 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           }
-        />
+        >
+          {/* Nested Routes for Dashboard */}
+          <Route index element={<DashboardHome />} /> {/* Default route for /dashboard */}
+          <Route path="home" element={<DashboardHome />} />
+          <Route path="profile" element={<DashboardProfile />} />
+          <Route path="search-pooja" element={<DashboardSearchPooja />} />
+          <Route path="search-pandits" element={<DashboardSearchPandits />} />
+          <Route path="booking" element={<DashboardBookingForm />} />
+          <Route path="booking-history" element={<DashboardBookings />} />
+          <Route path="reviews" element={<DashboardReviews />} />
+          <Route path="payment" element={<DashboardPayment />} />
+          {/* Catch-all for /dashboard/* routes if a specific sub-route isn't found */}
+          <Route path="*" element={<Navigate to="home" replace />} />
+        </Route>
 
         {/* Other Protected User Routes (if not nested under /dashboard) */}
-        {/* If you want these to be direct top-level protected routes, keep them.
-            Otherwise, they should be moved as sub-routes under /dashboard.
-            For this solution, I'm moving Payment and ReviewForm under /dashboard.
-            Notifications can stay here if it's a separate full-page view.
-        */}
         <Route
           path="/notifications"
           element={
