@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { Search } from 'lucide-react'; // Import the Search icon from Lucide React
 import "./Home.css";
 import { postLocation } from '../api/api';
 
@@ -20,6 +21,8 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(null);
   const [showChatbot, setShowChatbot] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isHoveringSearch, setIsHoveringSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -61,6 +64,11 @@ const Home = () => {
     );
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
+
+  // Filtered poojas based on search query
+  const filteredPoojas = poojas.filter((pooja) =>
+    pooja.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="home-container">
@@ -213,31 +221,84 @@ const Home = () => {
 
       {/* Pooja Provided */}
       <section id="poojas" className="poojas">
-        <h2>Pooja Provided</h2>
+        {/* Heading and Search Icon/Bar Wrapper */}
+        <div className="poojas-header-wrapper">
+          <h2>Pooja Provided</h2>
+          <motion.div
+            className="pooja-search-wrapper"
+            onMouseEnter={() => setIsHoveringSearch(true)}
+            onMouseLeave={() => setIsHoveringSearch(false)}
+            layout // Enables automatic layout animations for the wrapper
+            transition={{ duration: 0.4, type: "spring", damping: 20, stiffness: 200 }}
+          >
+            {/* Search Icon (Lucide React) */}
+            <motion.div
+              className="search-pooja-icon"
+              initial={false}
+              animate={{
+                scale: isHoveringSearch ? 1.15 : 1,
+                rotate: isHoveringSearch ? 20 : 0,
+                backgroundColor: isHoveringSearch ? 'rgba(255, 197, 85, 0.4)' : 'rgba(255, 197, 85, 0.2)',
+                boxShadow: isHoveringSearch ? '0 8px 25px rgba(214, 127, 42, 0.4)' : '0 2px 10px rgba(214, 127, 42, 0.2)',
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <Search size={28} /> {/* Lucide Search icon */}
+            </motion.div>
+
+            {/* Search Bar - Conditionally rendered with AnimatePresence */}
+            <AnimatePresence>
+              {isHoveringSearch && (
+                <motion.div
+                  className="pooja-search-bar"
+                  initial={{ width: 0, opacity: 0, x: -20, padding: '0 5px' }}
+                  animate={{ width: '400px', opacity: 1, x: 0, padding: '0 15px' }}
+                  exit={{ width: 0, opacity: 0, x: -20, padding: '0 5px' }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <input
+                    type="text"
+                    placeholder="Search for a Pooja..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pooja-search-input"
+                    autoFocus
+                  />
+                  <Search size={24} className="search-input-icon" /> {/* Lucide Search icon */}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+
         {loading ? (
           <p>Loading poojas...</p>
         ) : (
           <motion.div className="card-grid" initial="hidden" animate="visible" variants={{
             visible: { transition: { staggerChildren: 0.08 } }
           }}>
-            {poojas.map((pooja, i) => (
-              <motion.div
-                className="service-card"
-                key={pooja._id}
-                onClick={() => setSelectedService(pooja)}
-                whileHover={{ scale: 1.07, boxShadow: "0 8px 32px #ffa72640" }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 + 0.2, duration: 0.32 }}
-              >
-                <img
-                  src={getPoojaImage(pooja.imageUrl)}
-                  alt={pooja.name}
-                  className="service-img"
-                />
-                <h3>{pooja.name}</h3>
-              </motion.div>
-            ))}
+            {filteredPoojas.length > 0 ? (
+              filteredPoojas.map((pooja, i) => (
+                <motion.div
+                  className="service-card"
+                  key={pooja._id}
+                  onClick={() => setSelectedService(pooja)}
+                  whileHover={{ scale: 1.07, boxShadow: "0 8px 32px #ffa72640" }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.06 + 0.2, duration: 0.32 }}
+                >
+                  <img
+                    src={getPoojaImage(pooja.imageUrl)}
+                    alt={pooja.name}
+                    className="service-img"
+                  />
+                  <h3>{pooja.name}</h3>
+                </motion.div>
+              ))
+            ) : (
+              <p className="no-poojas-found">No Poojas found matching your search.</p>
+            )}
           </motion.div>
         )}
         <AnimatePresence>
