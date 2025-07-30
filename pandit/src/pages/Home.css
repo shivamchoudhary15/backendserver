@@ -276,7 +276,7 @@ body {
 
 .services-container::before {
     /* Assuming you have these pattern images in your public/images folder */
-     /* Replace with your actual pattern */
+      /* Replace with your actual pattern */
     top: 0;
     left: 0;
     width: 200px; /* Adjust size as needed */
@@ -285,7 +285,7 @@ body {
 
 .services-container::after {
     /* Assuming you have these pattern images in your public/images folder */
-     /* Replace with your actual pattern */
+      /* Replace with your actual pattern */
     bottom: 0;
     right: 0;
     width: 200px; /* Adjust size as needed */
@@ -369,7 +369,6 @@ body {
   cursor: pointer;
   margin-bottom: 2px;
   font-size: 17px;
-  transition: background 0.18s;
   box-shadow: 0 2px 8px #ffc57135;
 }
 .book-now:hover {
@@ -403,8 +402,8 @@ body {
 
 
 .detail-icon {
-    width: 100px; /* Size of the image/icon */
-    height: 100px;
+    width: 200px; /* Size of the image/icon */
+    height: 200px;
     object-fit: contain; /* Ensures the image fits without cropping */
     margin-bottom: 15px; /* Slightly adjusted space between image and text */
 }
@@ -434,11 +433,115 @@ body {
 .poojas h2 {
   font-size: 2.4rem;
   color: #b56a01;
-  margin-bottom: 38px;
+  margin-bottom: 38px; /* Adjust this if needed */
   font-weight: 800;
   letter-spacing: 1.2px;
   font-family: inherit;
 }
+
+/* New Wrapper for Heading and Search elements */
+.poojas-header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center the entire header block */
+  gap: 15px; /* Space between heading and search elements */
+  margin-bottom: 40px; /* Space below this header block */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+.poojas-header-wrapper h2 {
+  margin-bottom: 0; /* Remove default h2 margin as it's now in a flex container */
+}
+
+
+/* Search Wrapper for hover effect - now motion.div */
+.pooja-search-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 60px; /* Fixed height for the wrapper */
+  /* Remove max-width: fit-content so it can expand horizontally */
+  /* Remove margin: 0 auto as it's now part of flex layout */
+  background: rgba(255, 197, 85, 0.15); /* Initial subtle background */
+  border-radius: 30px; /* More rounded pill shape */
+  box-shadow: 0 4px 15px rgba(214, 127, 42, 0.2); /* Initial shadow */
+  padding: 5px; /* Padding for the wrapper container */
+  overflow: hidden; /* Ensure content stays within bounds during animation */
+  cursor: pointer; /* Indicate it's interactive */
+  transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for background and shadow */
+}
+
+/* On hover, increase shadow and darken background */
+.pooja-search-wrapper:hover {
+  background: rgba(255, 197, 85, 0.3); /* Darker background on hover */
+  box-shadow: 0 8px 25px rgba(214, 127, 42, 0.4); /* Larger shadow on hover */
+}
+
+
+/* Search Icon for hover */
+.search-pooja-icon {
+  font-size: 2.2rem; /* Larger icon */
+  color: #d67f2a;
+  padding: 10px; /* Increased padding to make it circular with a 60px height */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevents icon from shrinking */
+  z-index: 2; /* Ensure icon is above the expanding input */
+}
+
+
+/* Search Bar Styles for Pooja Provided section */
+.pooja-search-bar {
+  display: flex; /* Use flex for input and its internal icon */
+  align-items: center;
+  position: relative; /* For positioning the internal icon */
+  
+  /* Initial state: hidden and collapsed */
+  width: 0; /* Important for the initial collapsed state */
+  opacity: 0; /* Important for the initial hidden state */
+  pointer-events: none; /* Make it unclickable when hidden */
+  /* No direct transitions here, Framer Motion handles it */
+}
+
+
+/* Individual input field within the search bar */
+.pooja-search-input {
+  width: 100%; /* Take full width of its parent (.pooja-search-bar motion div) */
+  padding: 14px 25px; /* Larger padding for a bigger input */
+  padding-right: 55px; /* More space for the internal icon */
+  border: none; /* No border for a cleaner look */
+  border-radius: 25px; /* More rounded corners for the input */
+  font-size: 1.2rem; /* Larger font size */
+  color: #512700;
+  background-color: #fff; /* Solid white background for input */
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); /* Subtle inner shadow */
+  box-sizing: border-box; /* Include padding in width */
+  transition: all 0.3s ease; /* Smooth transition for focus states */
+}
+
+.pooja-search-input:focus {
+  outline: none;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.1), 0 0 0 3px rgba(214, 127, 42, 0.3); /* Enhanced focus ring */
+}
+
+.search-input-icon {
+  position: absolute;
+  right: 18px; /* Adjusted position for larger input */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d67f2a;
+  font-size: 1.4rem; /* Larger internal icon */
+  pointer-events: none;
+}
+
+.no-poojas-found {
+  font-size: 1.1rem;
+  color: #776130;
+  margin-top: 30px;
+}
+
+
 .card-grid {
   display: flex;
   flex-wrap: wrap;
@@ -779,6 +882,34 @@ body {
   .detail-item p {
       font-size: 14px;
   }
+
+  /* Responsive adjustments for hover search bar on smaller screens */
+  .poojas-header-wrapper {
+    flex-direction: column; /* Stack heading and search on small screens */
+    align-items: center;
+    gap: 20px;
+  }
+  .pooja-search-wrapper {
+    height: 50px; /* Smaller height on mobile */
+    width: 100%; /* Take full width on smaller screens */
+    max-width: 300px; /* Limit max-width */
+  }
+  .pooja-search-wrapper .pooja-search-bar { /* Ensure it still expands */
+    width: calc(100% - 60px); /* Adjust for icon width on small screens */
+  }
+  .search-pooja-icon {
+    font-size: 1.8rem;
+    padding: 8px; /* Adjust padding */
+  }
+  .pooja-search-input {
+    padding: 10px 20px;
+    padding-right: 45px;
+    font-size: 1rem;
+  }
+  .search-input-icon {
+    font-size: 1.2rem;
+    right: 15px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -865,26 +996,9 @@ body {
     font-size: 14px;
   }
 
-  /* Responsive adjustments for the new grid */
-  .service-details-grid {
-      flex-direction: column; /* Stack vertically on mobile */
-      align-items: center;
-      gap: 25px; /* Adjust gap for stacked items */
-  }
-  .detail-item {
-      width: 90%; /* Take more width on mobile */
-      max-width: 300px; /* Limit max width */
-      padding: 0; /* Removed padding */
-  }
-  .detail-icon {
-      width: 70px;
-      height: 70px;
-  }
-  .detail-item h4 {
-      font-size: 18px;
-  }
-  .detail-item p {
-      font-size: 13px;
+  /* Further small screen adjustments */
+  .poojas-header-wrapper {
+    gap: 10px; /* Even less gap on very small screens */
   }
 }
 
