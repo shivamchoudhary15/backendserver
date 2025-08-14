@@ -1,9 +1,16 @@
+/* Universal Box-Sizing for consistency */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Base styles for the entire application */
 body {
   margin: 0;
   font-family: 'Inter', 'Montserrat', 'Segoe UI', Arial, sans-serif;
-  background: #faf7f2;
-  color: #2d1a05;
+  background: #faf7f2; /* Soft cream background */
+  color: #2d1a05; /* Deep brown text */
   letter-spacing: 0.01em;
+  line-height: 1.6;
 }
 
 .home-container {
@@ -11,11 +18,11 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background: linear-gradient(120deg, #faf7f2 80%, #fffbe7 100%);
-  box-shadow: 0 2px 24px #f7e2b1a0;
-  padding-top: 95px; /* Increased padding-top to accommodate taller header */
+  box-shadow: 0 2px 24px rgba(247, 226, 177, 0.627);
+  padding-top: 95px; /* Space for fixed navbar */
 }
 
-/* Navbar */
+/* --- Navbar Styles --- */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -23,57 +30,63 @@ body {
   padding: 18px 30px; /* Increased vertical padding to make it taller */
   background: #fff;
   border-bottom: 1px solid #eee;
-  position: fixed; /* Ensures it stays at the top */
+  position: fixed;
   top: 0;
-  width: 100%; /* Ensures it spans the full full-width */
-  z-index: 10;
-  box-shadow: 0 2px 12px rgba(227,163,79,0.08);
-  border-radius: 0 0 0 0;
-  transition: box-shadow 0.3s;
-  box-sizing: border-box; /* Include padding in the width calculation */
+  left: 0; /* Ensure it spans full width */
+  width: 100%;
+  z-index: 1000; /* High z-index to be always on top */
+  box-shadow: 0 2px 12px rgba(227, 163, 79, 0.08);
+  transition: box-shadow 0.3s ease-in-out;
 }
+
 .navbar:hover {
-  box-shadow: 0 4px 20px #f7e2b1a0;
+  box-shadow: 0 4px 20px rgba(247, 226, 177, 0.627);
 }
-.logo-circle {
-  width: 48px; /* Restored to original size for a slightly larger logo */
-  height: 48px; /* Restored to original size */
-  border-radius: 50%;
-  margin-right: 13px; /* Restored original margin */
-  box-shadow: 0 4px 18px #f2c27739;
-  transition: box-shadow 0.3s, transform 0.2s;
-  flex-shrink: 0;
-  object-fit: cover;
-}
-.logo-circle:hover {
-  box-shadow: 0 8px 32px #e6b34731;
-  transform: scale(1.07);
-}
-.logo-text {
-  font-size: 28px; /* Restored to original font size */
-  font-weight: 800;
-  color: #d67f2a;
-  font-family: 'Montserrat', 'Inter', sans-serif;
-  letter-spacing: .5px;
-  text-shadow: 0 2px 8px #f7c96a29;
-  white-space: nowrap;
-}
+
 .navbar-left {
   display: flex;
   align-items: center;
 }
+
+.logo-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 13px;
+  box-shadow: 0 4px 18px rgba(242, 194, 119, 0.224);
+  transition: box-shadow 0.3s, transform 0.2s;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.logo-circle:hover {
+  box-shadow: 0 8px 32px rgba(230, 179, 71, 0.192);
+  transform: scale(1.07);
+}
+
+.logo-text {
+  font-size: 28px;
+  font-weight: 800;
+  color: #d67f2a;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: .5px;
+  text-shadow: 0 2px 8px rgba(247, 201, 106, 0.16);
+  white-space: nowrap;
+}
+
 .navbar-right a,
 .login-box {
-  margin-left: 22px; /* Restored original margin */
+  margin-left: 22px;
   text-decoration: none;
   color: #512700;
   font-weight: 600;
-  font-size: 1.07rem; /* Restored original font size */
+  font-size: 1.07rem;
   padding: 3px 2px;
   transition: color 0.2s, border-bottom 0.2s;
   position: relative;
   border-bottom: 2px solid transparent;
 }
+
 .navbar-right a:hover {
   color: #d67f2a;
   border-bottom: 2px solid #d67f2a;
@@ -82,23 +95,16 @@ body {
 .login-box {
   background: linear-gradient(90deg, #d67f2a 0%, #e0a143 100%);
   color: #fff;
-  padding: 9px 26px; /* Restored original padding */
+  padding: 9px 26px;
   border-radius: 7px;
   font-weight: bold;
-  box-shadow: 0 2px 10px #daa75d39;
+  box-shadow: 0 2px 10px rgba(218, 167, 93, 0.227);
   border: none;
   cursor: pointer;
-  transition: box-shadow 0.3s, background 0.2s, transform 0.18s;
-  font-size: 1.07em;
   letter-spacing: 0.02em;
 }
-.login-box:hover {
-  background: linear-gradient(90deg, #c89023 10%, #d67f2a 100%);
-  box-shadow: 0 8px 32px #ffc57143;
-  transform: translateY(-2px) scale(1.04);
-}
 
-/* Hero */
+/* --- Hero Section --- */
 .hero {
   height: 85vh;
   min-height: 420px;
@@ -108,26 +114,23 @@ body {
   display: flex;
   align-items: center;
   color: white;
-  border-radius: 0 0 0 0;
-  box-shadow: 0 8px 32px #f7c96a29;
+  box-shadow: 0 8px 32px rgba(247, 201, 106, 0.16);
   overflow: hidden;
 }
+
 .hero-overlay {
   width: 100%;
-  background: linear-gradient(90deg,rgba(0,0,0,0.38) 70%,rgba(17,17,17,0.05) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.38) 70%, rgba(17, 17, 17, 0.05) 100%);
   height: 100%;
   display: flex;
   align-items: center;
 }
+
 .hero-content {
   padding: 0 60px;
   max-width: 700px;
-  animation: fadeInHero 0.7s;
 }
-@keyframes fadeInHero {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: none; }
-}
+
 .main-heading {
   font-size: 48px;
   font-weight: 900;
@@ -135,9 +138,10 @@ body {
   color: #fff;
   margin-bottom: 13px;
   letter-spacing: .3px;
-  font-family: 'Montserrat', 'Inter', sans-serif;
-  text-shadow: 0 2px 10px #53290255;
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 0 2px 10px rgba(83, 41, 2, 0.333);
 }
+
 .tagline {
   font-size: 22px;
   font-weight: 500;
@@ -145,160 +149,162 @@ body {
   margin-bottom: 38px;
   letter-spacing: 0.01em;
 }
+
 .hero-buttons {
   display: flex;
   gap: 22px;
 }
+
 .book-btn,
 .get-started-btn {
-  padding: 12px 15px;
+  padding: 12px 25px; /* Increased horizontal padding */
   font-weight: 800;
   border: none;
   border-radius: 7px;
   cursor: pointer;
   font-size: 20px;
-  box-shadow: 0 2px 10px #c37b1177;
-  transition: background 0.2s, color 0.2s, box-shadow 0.28s, transform 0.18s;
+  box-shadow: 0 2px 10px rgba(195, 123, 17, 0.467);
   letter-spacing: 0.02em;
 }
+
 .book-btn {
-  background: linear-gradient(90deg,#d67f2a 60%,#e49c30 100%);
+  background: linear-gradient(90deg, #d67f2a 60%, #e49c30 100%);
   color: white;
 }
-.book-btn:hover {
-  background: linear-gradient(90deg,#e49c30 0%, #d67f2a 100%);
-  color: #fff3e0;
-  box-shadow: 0 8px 32px #d67f2a44;
-  transform: translateY(-2px) scale(1.04);
-}
+
 .get-started-btn {
   background: #fff;
   color: #ad6301;
   border: 2px solid #fff3e0;
   font-weight: 900;
 }
-.get-started-btn:hover {
-  background: #fff5ce;
-  color: #d67f2a;
-  transform: translateY(-2px) scale(1.04);
-}
 
-/* About Section */
+/* --- About Us Section --- */
 .about-section {
-  padding: 80px 0 80px 0;
+  padding: 80px 0;
   text-align: center;
-  background: #fff8dc;
+  background: #fff8dc; /* Light cream background */
   position: relative;
   z-index: 1;
 }
+
 .section-title {
   font-size: 38px;
   font-weight: bold;
   margin-bottom: 44px;
-  color: #cc6600;
+  color: #cc6600; /* Warm orange-brown */
   letter-spacing: 1.1px;
-  text-shadow: 0 1px 8px #f7c96a29;
+  text-shadow: 0 1px 8px rgba(247, 201, 106, 0.16);
 }
+
 .about-content {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 80px;
   flex-wrap: wrap;
+  max-width: 1200px; /* Limit content width */
   margin: 0 auto;
 }
+
 .about-column {
   display: flex;
   flex-direction: column;
   gap: 35px;
   max-width: 350px;
 }
+
 .feature-row {
   display: flex;
   align-items: center;
   text-align: left;
   gap: 19px;
-  margin-bottom: 6px;
-  background: #fff3e6b7;
+  background: rgba(255, 243, 230, 0.718);
   border-radius: 12px;
   padding: 13px 14px;
-  box-shadow: 0 2px 6px #d8941a11;
+  box-shadow: 0 2px 6px rgba(216, 148, 26, 0.067);
 }
+
 .feature-row img {
   width: 62px;
   height: 62px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 2px 14px #fbc46640;
+  box-shadow: 0 2px 14px rgba(251, 196, 102, 0.251);
+  flex-shrink: 0;
 }
+
 .feature-row h3 {
   font-size: 19px;
   font-weight: bold;
   margin: 0;
   color: #cc6600;
 }
+
 .feature-row p {
   font-size: 14.6px;
   margin: 4px 0 0;
   color: #6d4111;
 }
+
 .logo-center {
   margin: 0 8px;
   flex-shrink: 0;
 }
+
 .logo-center img {
   width: 180px;
   height: 180px;
   object-fit: contain;
   border-radius: 50%;
-  box-shadow: 0 8px 36px #fff3e0bb;
+  box-shadow: 0 8px 36px rgba(255, 243, 224, 0.733);
 }
+
+
 
 /* Services Section */
 .services-container {
-  padding: 60px 10vw 60px 10vw;
-  background: #fbf0d8; /* This is the background for the entire section */
+  padding: 60px 10vw;
+  background: #fbf0d8;
   text-align: center;
-  position: relative; /* Needed for absolute positioning of background images */
-  overflow: hidden; /* Ensures background images don't spill out */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Add background patterns as seen in the screenshot */
 .services-container::before,
 .services-container::after {
-    content: "";
-    position: absolute;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.3; /* Adjust opacity as needed to match the screenshot */
-    z-index: 0; /* Keep behind content */
+  content: "";
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  z-index: 0;
 }
 
 .services-container::before {
-    /* Assuming you have these pattern images in your public/images folder */
-      /* Replace with your actual pattern */
-    top: 0;
-    left: 0;
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
+  /* You MUST place an actual image file named pattern1.png in your public/images folder */
+  /* For example: background-image: url('/images/pattern1.png'); */
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
 }
 
 .services-container::after {
-    /* Assuming you have these pattern images in your public/images folder */
-      /* Replace with your actual pattern */
-    bottom: 0;
-    right: 0;
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
+  /* You MUST place an actual image file named pattern2.png in your public/images folder */
+  /* For example: background-image: url('/images/pattern2.png'); */
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
 }
 
-/* Ensure content stays above the patterns */
 .services-container h2,
 .services-container p,
 .services-grid,
 .service-details-grid {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .services-container h2 {
@@ -308,6 +314,7 @@ body {
   font-weight: 800;
   letter-spacing: 2.1px;
 }
+
 .services-grid {
   display: flex;
   flex-wrap: wrap;
@@ -315,6 +322,7 @@ body {
   gap: 38px;
   margin-top: 34px;
 }
+
 .service-card {
   background: white;
   border: 2px solid #f6dfab;
@@ -322,8 +330,8 @@ body {
   border-radius: 17px;
   width: 282px;
   min-height: 250px;
-  box-shadow: 0 6px 22px rgba(198,127,27,0.13);
-  transition: transform 0.34s cubic-bezier(.8,.3,0,1.43), box-shadow 0.35s;
+  box-shadow: 0 6px 22px rgba(198, 127, 27, 0.13);
+  transition: transform 0.34s cubic-bezier(.8, .3, 0, 1.43), box-shadow 0.35s;
   cursor: pointer;
   text-align: center;
   display: flex;
@@ -331,6 +339,7 @@ body {
   align-items: center;
   user-select: none;
 }
+
 .service-card h3 {
   padding: 17px 10px 8px 10px;
   color: #a86200;
@@ -339,25 +348,29 @@ body {
   text-transform: capitalize;
   font-family: inherit;
 }
+
 .service-card p {
   font-size: 15px;
   color: #776130;
   margin-bottom: 13px;
   margin-top: 2px;
 }
+
 .service-card:hover {
   transform: translateY(-7px) scale(1.03);
-  box-shadow: 0 16px 36px #faad3848, 0 4px 20px #c37b111b;
+  box-shadow: 0 16px 36px rgba(250, 173, 56, 0.282), 0 4px 20px rgba(195, 123, 17, 0.106);
   border: 2px solid #ffc563;
 }
+
 .service-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
   border-radius: 13px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
 }
+
 .book-now {
   background: linear-gradient(90deg, #d67f2a 60%, #e49c30 100%);
   color: white;
@@ -369,311 +382,422 @@ body {
   cursor: pointer;
   margin-bottom: 2px;
   font-size: 17px;
-  box-shadow: 0 2px 8px #ffc57135;
+  box-shadow: 0 2px 8px rgba(255, 197, 113, 0.212);
 }
+
 .book-now:hover {
   background: #c89023;
 }
 
-/* This is the new grid for the "4000+ Spiritual Guide" type sections */
+/* Service Details Grid (e.g., "4000+ Spiritual Guides") */
 .service-details-grid {
-    display: flex;
-    justify-content: center;
-    gap: 40px; /* Adjust gap between items */
-    margin-top: 60px; /* Space from the services grid above */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    /* No background, border, shadow here to match the image */
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 60px;
+  flex-wrap: wrap;
 }
 
 .detail-item {
-    /* Removed background, border, border-radius, padding, box-shadow */
-    width: 280px; /* Fixed width for each item */
-    text-align: center;
-    /* Removed hover effects as well */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* Center content vertically */
-    /* Added some margin to create separation that was previously padding/gap */
-    margin: 10px 0; /* Minimal vertical margin for spacing */
+  width: 280px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
 }
 
-/* Removed detail-item:hover styles */
-
-
 .detail-icon {
-    width: 200px; /* Size of the image/icon */
-    height: 200px;
-    object-fit: contain; /* Ensures the image fits without cropping */
-    margin-bottom: 15px; /* Slightly adjusted space between image and text */
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 15px;
 }
 
 .detail-item h4 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #cc6600; /* Matching screenshot text color */
-    margin-bottom: 8px; /* Space between title and description */
-    margin-top: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #cc6600;
+  margin-bottom: 8px;
+  margin-top: 0;
 }
 
 .detail-item p {
-    font-size: 15px;
-    color: #776130; /* Matching screenshot text color */
-    line-height: 1.5;
-    margin: 0; /* Remove default paragraph margin */
+  font-size: 15px;
+  color: #776130;
+  line-height: 1.5;
+  margin: 0;
 }
 
-
-/* Pooja Provided */
-.poojas {
-  padding: 60px 8vw;
+/* --- Pooja Provided Section (Enhanced) --- */
+.poojas-section { /* Renamed for clarity and to avoid conflict with old .poojas */
+  padding: 80px 8vw;
   text-align: center;
-  background: #fff8eb;
-}
-.poojas h2 {
-  font-size: 2.4rem;
-  color: #b56a01;
-  margin-bottom: 38px; /* Adjust this if needed */
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  font-family: inherit;
+  background: #fbf0d8;
+  position: relative;
+  overflow: hidden;
 }
 
-/* New Wrapper for Heading and Search elements */
+/* Decorative background elements for poojas section - REMOVED IMAGE REFERENCES */
+.poojas-section::before,
+.poojas-section::after {
+  content: "";
+  position: absolute;
+  /* background-image removed */
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.poojas-section::before {
+  top: -50px;
+  left: -50px;
+  width: 250px;
+  height: 250px;
+}
+
+.poojas-section::after {
+  bottom: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+}
+
+.poojas-section h2 {
+  font-size: 2.8rem;
+  color: #a0522d;
+  margin-bottom: 50px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 0 3px 10px rgba(160, 82, 45, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
 .poojas-header-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center the entire header block */
-  gap: 15px; /* Space between heading and search elements */
-  margin-bottom: 40px; /* Space below this header block */
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
-.poojas-header-wrapper h2 {
-  margin-bottom: 0; /* Remove default h2 margin as it's now in a flex container */
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
-
-/* Search Wrapper for hover effect - now motion.div */
 .pooja-search-wrapper {
   display: flex;
   align-items: center;
   position: relative;
-  height: 60px; /* Fixed height for the wrapper */
-  /* Remove max-width: fit-content so it can expand horizontally */
-  /* Remove margin: 0 auto as it's now part of flex layout */
-  background: rgba(255, 197, 85, 0.15); /* Initial subtle background */
-  border-radius: 30px; /* More rounded pill shape */
-  box-shadow: 0 4px 15px rgba(214, 127, 42, 0.2); /* Initial shadow */
-  padding: 5px; /* Padding for the wrapper container */
-  overflow: hidden; /* Ensure content stays within bounds during animation */
-  cursor: pointer; /* Indicate it's interactive */
-  transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for background and shadow */
+  height: 60px;
+  background: rgba(255, 197, 85, 0.1);
+  border-radius: 35px;
+  box-shadow: 0 6px 20px rgba(214, 127, 42, 0.15);
+  padding: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid rgba(255, 197, 85, 0.2);
 }
 
-/* On hover, increase shadow and darken background */
 .pooja-search-wrapper:hover {
-  background: rgba(255, 197, 85, 0.3); /* Darker background on hover */
-  box-shadow: 0 8px 25px rgba(214, 127, 42, 0.4); /* Larger shadow on hover */
+  background: rgba(255, 197, 85, 0.25);
+  box-shadow: 0 12px 35px rgba(214, 127, 42, 0.3);
+  border-color: rgba(255, 197, 85, 0.5);
 }
 
-
-/* Search Icon for hover */
 .search-pooja-icon {
-  font-size: 2.2rem; /* Larger icon */
+  font-size: 2.4rem;
   color: #d67f2a;
-  padding: 10px; /* Increased padding to make it circular with a 60px height */
+  padding: 12px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Prevents icon from shrinking */
-  z-index: 2; /* Ensure icon is above the expanding input */
+  flex-shrink: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(214, 127, 42, 0.2);
+  transition: all 0.3s ease;
 }
 
-
-/* Search Bar Styles for Pooja Provided section */
 .pooja-search-bar {
-  display: flex; /* Use flex for input and its internal icon */
+  display: flex;
   align-items: center;
-  position: relative; /* For positioning the internal icon */
-  
-  /* Initial state: hidden and collapsed */
-  width: 0; /* Important for the initial collapsed state */
-  opacity: 0; /* Important for the initial hidden state */
-  pointer-events: none; /* Make it unclickable when hidden */
-  /* No direct transitions here, Framer Motion handles it */
+  position: relative;
+  pointer-events: auto;
 }
 
-
-/* Individual input field within the search bar */
 .pooja-search-input {
-  width: 100%; /* Take full width of its parent (.pooja-search-bar motion div) */
-  padding: 14px 25px; /* Larger padding for a bigger input */
-  padding-right: 55px; /* More space for the internal icon */
-  border: none; /* No border for a cleaner look */
-  border-radius: 25px; /* More rounded corners for the input */
-  font-size: 1.2rem; /* Larger font size */
-  color: #512700;
-  background-color: #fff; /* Solid white background for input */
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); /* Subtle inner shadow */
-  box-sizing: border-box; /* Include padding in width */
-  transition: all 0.3s ease; /* Smooth transition for focus states */
+  width: 100%;
+  padding: 16px 30px;
+  padding-right: 60px;
+  border: none;
+  border-radius: 28px;
+  font-size: 1.25rem;
+  color: #3d220c;
+  background-color: #fcfafa;
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .pooja-search-input:focus {
   outline: none;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.1), 0 0 0 3px rgba(214, 127, 42, 0.3); /* Enhanced focus ring */
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.12), 0 0 0 4px rgba(214, 127, 42, 0.4);
 }
 
 .search-input-icon {
   position: absolute;
-  right: 18px; /* Adjusted position for larger input */
+  right: 22px;
   top: 50%;
   transform: translateY(-50%);
   color: #d67f2a;
-  font-size: 1.4rem; /* Larger internal icon */
+  font-size: 1.6rem;
   pointer-events: none;
 }
 
-.no-poojas-found {
-  font-size: 1.1rem;
-  color: #776130;
-  margin-top: 30px;
+.loading-message,
+.no-results-message {
+  font-size: 1.3rem;
+  color: #8c734b;
+  margin-top: 50px;
+  font-weight: 500;
 }
 
-
-.card-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 32px 28px;
+.pooja-card-grid { /* Renamed from .card-grid for distinction */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px;
+  justify-items: center;
+  margin-top: 40px;
+  position: relative;
+  z-index: 1;
 }
-.service-img {
+
+/* Specific styles for Pooja cards (pooja-item-card) in the "Pooja Provided" section */
+.pooja-item-card { /* Renamed for specificity */
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf2 100%);
+  border: 1px solid #f6e3c0;
+  padding: 22px; /* Adjusted overall padding */
+  border-radius: 20px;
   width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 9px 9px 13px 13px;
-  margin-top: auto;
-  box-shadow: 0 6px 12px #b8850c21;
+  max-width: 320px;
+  height: auto; /* Let content define height */
+  box-shadow: 0 8px 25px rgba(198, 127, 27, 0.1);
+  cursor: pointer; /* Indicate clickability */
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* Stacks name above image */
+  align-items: center;
+  user-select: none;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transitions */
 }
 
-/* Modal overlay for service description */
-.service-description-overlay {
+.pooja-item-card:hover {
+  transform: translateY(-7px) scale(1.02); /* Slight lift and scale on hover */
+  box-shadow: 0 15px 40px rgba(250, 173, 56, 0.3), 0 5px 25px rgba(195, 123, 17, 0.15); /* More pronounced shadow */
+  border: 1px solid #ffcc70;
+}
+
+.pooja-item-card h3 { /* Applies to h3 inside pooja-item-card */
+  padding: 0 10px; /* Horizontal padding, no top/bottom from h3 itself */
+  color: #a86200;
+  font-weight: 700;
+  font-size: 24px;
+  text-transform: capitalize;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 0;
+  margin-bottom: 15px; /* Creates gap between name and image */
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+/* Image inside Pooja card (pooja-item-image) */
+.pooja-item-image { /* Renamed for specificity */
+  width: calc(100% + 44px); /* Full bleed effect */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0 0 18px 18px; /* Rounded bottom corners, sharp top */
+  margin-top: 0; /* No negative margin needed anymore */
+  margin-left: -22px;
+  margin-right: -22px;
+  box-shadow: 0 4px 15px rgba(184, 133, 12, 0.1);
+  transition: transform 0.3s ease;
+  flex-grow: 1; /* Make image grow to fill available space */
+}
+
+.pooja-item-card:hover .pooja-item-image {
+  transform: scale(1.03); /* Slight image zoom on card hover */
+}
+
+
+/* Modal Overlay for Service Description */
+.pooja-description-overlay { /* Renamed for specificity */
   position: fixed;
-  z-index: 100;
-  left: 0; top: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.43);
+  z-index: 1000; /* Higher z-index for modals */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(5px);
 }
-.service-description-modal {
-  background: #fff;
-  border-radius: 16px;
-  max-width: 400px;
-  width: 94vw;
-  padding: 36px 25px 22px 25px;
-  box-shadow: 0 12px 40px #c37b1122;
+
+.pooja-description-modal { /* Renamed for specificity */
+  background: linear-gradient(145deg, #fffaf0 0%, #fff7eb 100%);
+  border-radius: 20px;
+  max-width: 450px;
+  width: 90vw;
+  padding: 40px 30px 25px 30px;
+  box-shadow: 0 15px 50px rgba(195, 123, 17, 0.3);
   text-align: center;
   position: relative;
-  animation: pop-in 0.2s;
+  border: 1px solid #f9d8a0;
 }
-@keyframes pop-in {
-  0% { transform: scale(0.84);}
-  100%{ transform: scale(1);}
+
+.pooja-description-modal h3 {
+  font-size: 28px;
+  color: #a86200;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
 }
+
+.modal-pooja-image { /* New class for image inside modal */
+  width: 100%;
+  height: 220px; /* Fixed height for modal image */
+  object-fit: cover;
+  margin-bottom: 15px; /* Slightly more space */
+  border-radius: 8px; /* Slightly more rounded corners */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.pooja-description-modal p {
+  font-size: 16px;
+  color: #5d4a30;
+  line-height: 1.7;
+  margin-bottom: 25px;
+}
+
 .close-btn {
-  margin-top: 16px;
-  padding: 8px 32px;
+  margin-top: 20px;
+  padding: 12px 40px;
   border: none;
-  background: linear-gradient(90deg,#d67f2a 60%,#e49c30 100%);
+  background: linear-gradient(90deg, #d67f2a 0%, #e0a143 100%);
   color: #fff;
-  font-size: 1rem;
-  border-radius: 5px;
+  font-size: 1.1rem;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  letter-spacing: .1px;
-  box-shadow: 0 1px 10px #ffc5711e;
+  letter-spacing: .5px;
+  box-shadow: 0 4px 15px rgba(255, 197, 85, 0.3);
+  transition: all 0.2s ease;
 }
-.close-btn:hover { background: #b46214; }
 
-/* Pandits */
-.pandits {
+.close-btn:hover {
+  background: linear-gradient(90deg, #c37b11 0%, #d67f2a 100%);
+  box-shadow: 0 6px 20px rgba(255, 197, 85, 0.4);
+  transform: translateY(-2px);
+}
+/* --- Pandits Section --- */
+.pandits-section { /* Renamed from .pandits for consistency */
   padding: 60px 8vw;
   text-align: center;
   background: #f9f2e3;
-}
-.pandits h2 {
-  color: #a44e1d;
-  font-size: 2.15rem;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  font-family: inherit;
-}
-.card-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 26px;
-  justify-content: center;
-  margin-top: 28px;
-}
-.pandit-card {
-  background: white;
-  padding: 18px 13px;
-  border-radius: 9px;
-  width: 225px;
-  box-shadow: 0 4px 14px #efc25c13;
-  text-align: center;
-  transition: transform 0.21s, box-shadow 0.23s;
-  border: 2px solid #f3e0ba;
-  cursor: pointer;
-}
-.pandit-card:hover {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 12px 36px #edac111a;
-  border: 2px solid #ffc255;
-}
-.pandit-card img {
-  width: 100%;
-  height: 108px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 13px;
-  box-shadow: 0 2px 8px #e1ae2a12;
-}
-.pandit-card h3 {
-  margin-bottom: 5px;
-  color: #bb6200;
-  font-size: 19px;
-  font-weight: bold;
-}
-.pandit-card p {
-  color: #5f4320;
-  font-size: 15px;
-  margin: 1.5px 0;
+  position: relative;
+  z-index: 1; /* Above any potential background patterns */
 }
 
-/* New Enhanced Footer */
+.pandits-section h2 {
+  color: #a44e1d;
+  font-size: 2.5rem; /* Larger font size */
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 40px; /* More space */
+}
+
+.pandits-grid { /* Renamed from .card-section for clarity */
+  display: grid; /* Use grid for layout */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive columns */
+  gap: 30px; /* Consistent gap */
+  justify-items: center;
+  margin-top: 28px;
+}
+
+.pandit-card-item { /* Renamed for consistency */
+  background: white;
+  padding: 20px 15px; /* Adjusted padding */
+  border-radius: 12px; /* Slightly more rounded */
+  width: 100%; /* Take full grid cell width */
+  max-width: 250px; /* Max width for individual cards */
+  height: auto; /* Let content define height */
+  box-shadow: 0 4px 14px rgba(239, 194, 92, 0.075);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.pandit-card-item:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 36px rgba(237, 172, 17, 0.102);
+  border: 2px solid #ffc255;
+}
+
+.pandit-profile-image { /* New class for pandit images */
+  width: 100%;
+  height: 140px; /* Slightly larger height */
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px; /* More space below image */
+  box-shadow: 0 2px 8px rgba(225, 174, 42, 0.071);
+}
+
+.pandit-card-item h3 {
+  margin-bottom: 8px; /* Adjusted spacing */
+  color: #bb6200;
+  font-size: 20px; /* Slightly larger font */
+  font-weight: bold;
+}
+
+.pandit-card-item p {
+  color: #5f4320;
+  font-size: 15px;
+  margin: 3px 0; /* Adjusted vertical margin */
+}
+
+/* --- Enhanced Footer --- */
 .footer {
-  background: #f9d382; /* A pleasant light cream/brown background */
-  color: #512700; /* Dark brown for text */
+  background: #f9d382; /* Warm, inviting background */
+  color: #512700;
   padding: 40px 20px;
-  margin-top: 0px; /* Some space from the section above */
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Subtle shadow at the top */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .footer-content {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  gap: 30px; /* Space between columns */
+  gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .footer-section {
-  flex: 1; /* Allows sections to grow and shrink */
-  min-width: 250px; /* Minimum width for each section before wrapping */
+  flex: 1;
+  min-width: 250px;
   padding: 15px;
 }
 
@@ -684,7 +808,7 @@ body {
 }
 
 .footer-logo {
-  width: 50px; /* Size for logo in footer */
+  width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
@@ -709,13 +833,13 @@ body {
   font-size: 13px;
   color: #776130;
   margin-top: 20px;
-  border-top: 1px solid rgba(119, 97, 48, 0.2); /* Subtle line above copyright */
+  border-top: 1px solid rgba(119, 97, 48, 0.2);
   padding-top: 15px;
 }
 
 .footer-section h3 {
   font-size: 20px;
-  color: #a86200; /* Matching existing brown tones */
+  color: #a86200;
   margin-bottom: 20px;
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -739,25 +863,25 @@ body {
 }
 
 .footer-links ul li a:hover {
-  color: #d67f2a; /* Highlight on hover */
+  color: #d67f2a;
   text-decoration: underline;
 }
 
 .footer-contact p {
   font-size: 15px;
   margin-bottom: 10px;
-  display: flex; /* For icon alignment */
+  display: flex;
   align-items: flex-start;
 }
 
 .footer-contact p i {
   margin-right: 10px;
-  color: #d67f2a; /* Icon color */
+  color: #d67f2a;
   font-size: 17px;
-  line-height: inherit; /* Align icon with text line height */
+  line-height: inherit;
 }
 
-/* Chatbot toggle button */
+/* --- Chatbot Toggle Button & Popup --- */
 .chatbot-toggle-button {
   position: fixed;
   bottom: 25px;
@@ -772,7 +896,7 @@ body {
   align-items: center;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(214, 127, 42, 0.4);
-  z-index: 99; /* Ensure it's above other content */
+  z-index: 99;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -788,44 +912,62 @@ body {
 .chatbot-icon {
   width: 35px;
   height: 35px;
-  border-radius: 50%; /* Make the icon itself circular if not already */
+  border-radius: 50%;
 }
 
-/* Chatbot popup container */
 .chatbot-popup {
   position: fixed;
-  bottom: 100px; /* Adjust based on button height */
+  bottom: 100px;
   right: 25px;
-  width: 350px; /* Standard chatbot width */
-  height: 500px; /* Standard chatbot height */
+  width: 350px;
+  height: 500px;
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  overflow: hidden; /* Ensures the iframe content respects border-radius */
-  z-index: 100; /* Ensure it's above the button and other content */
+  overflow: hidden;
+  z-index: 100;
 }
 
-
-/* Responsive adjustments */
+/* --- Responsive Adjustments --- */
 @media (max-width: 1100px) {
   .about-content {
     gap: 37px;
   }
-  .logo-center img { width: 140px; height: 140px; }
+  .logo-center img {
+    width: 140px;
+    height: 140px;
+  }
 }
+
 @media (max-width: 900px) {
-  .services-container, .pandits, .poojas { padding-left: 4vw; padding-right: 4vw; }
-  .service-card, .pandit-card { width: 97vw; max-width: 355px; min-width: 190px;}
-  .service-image,
-  .service-img {
+  .services-container,
+  .pandits-section,
+  .poojas-section {
+    padding-left: 4vw;
+    padding-right: 4vw;
+  }
+
+  /* Specific service-card styles for OUR SERVICES section on smaller screens */
+  .service-card {
+    width: 97vw; /* Example, adjust if it clashes with grid */
+    max-width: 355px;
+    min-width: 190px;
+  }
+
+  .service-image {
     height: 130px;
   }
-  .about-content { flex-direction: column; gap: 18px; align-items: center; }
 
-  /* Navbar Adjustments for 900px */
+  .about-content {
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+  }
+
+  /* Navbar Adjustments */
   .navbar-right a,
   .login-box {
-    margin-left: 18px; /* Slight adjustment */
+    margin-left: 18px;
     font-size: 1rem;
   }
   .login-box {
@@ -834,81 +976,113 @@ body {
   .logo-text {
     font-size: 24px;
   }
-  .logo-circle { /* Ensure logo scales down gracefully */
+  .logo-circle {
     width: 40px;
     height: 40px;
     margin-right: 10px;
   }
   .home-container {
-    padding-top: 85px; /* Adjust padding-top for slightly smaller header on tablets */
+    padding-top: 85px;
   }
 
   /* Footer responsiveness */
   .footer-content {
-    flex-direction: column; /* Stack sections vertically */
+    flex-direction: column;
     align-items: center;
     text-align: center;
   }
   .footer-section {
-    min-width: unset; /* Remove min-width to allow full width */
-    width: 100%; /* Take full width */
-    padding: 15px 0; /* Adjust padding */
+    min-width: unset;
+    width: 100%;
+    padding: 15px 0;
   }
   .footer-logo-area {
-    justify-content: center; /* Center logo in about section */
+    justify-content: center;
   }
   .footer-copyright {
     text-align: center;
   }
   .footer-links ul {
-    text-align: center; /* Center list items */
+    text-align: center;
   }
 
-  /* Responsive adjustments for the new grid */
+  /* Responsive for service details grid */
   .service-details-grid {
-      gap: 30px; /* Smaller gap on tablets */
+    gap: 30px;
   }
   .detail-item {
-      width: 250px; /* Adjust width for smaller screens */
-      padding: 0; /* Removed padding */
+    width: 250px;
+    padding: 0;
   }
   .detail-icon {
-      width: 80px;
-      height: 80px;
+    width: 80px;
+    height: 80px;
   }
   .detail-item h4 {
-      font-size: 20px;
+    font-size: 20px;
   }
   .detail-item p {
-      font-size: 14px;
+    font-size: 14px;
   }
 
-  /* Responsive adjustments for hover search bar on smaller screens */
+  /* Responsive for poojas search bar */
+  .poojas-section {
+    padding: 60px 4vw;
+  }
+  .poojas-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
   .poojas-header-wrapper {
-    flex-direction: column; /* Stack heading and search on small screens */
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 50px;
   }
   .pooja-search-wrapper {
-    height: 50px; /* Smaller height on mobile */
-    width: 100%; /* Take full width on smaller screens */
-    max-width: 300px; /* Limit max-width */
+    height: 55px;
+    width: 100%;
+    max-width: 300px;
   }
-  .pooja-search-wrapper .pooja-search-bar { /* Ensure it still expands */
-    width: calc(100% - 60px); /* Adjust for icon width on small screens */
+  .pooja-search-wrapper .pooja-search-bar {
+    width: calc(100% - 60px);
   }
   .search-pooja-icon {
-    font-size: 1.8rem;
-    padding: 8px; /* Adjust padding */
+    font-size: 2rem;
+    padding: 10px;
   }
   .pooja-search-input {
-    padding: 10px 20px;
-    padding-right: 45px;
-    font-size: 1rem;
+    padding: 12px 25px;
+    padding-right: 50px;
+    font-size: 1.1rem;
   }
   .search-input-icon {
-    font-size: 1.2rem;
-    right: 15px;
+    font-size: 1.4rem;
+    right: 18px;
+  }
+  .pooja-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  .pooja-item-card {
+    max-width: 300px;
+    padding: 25px 20px;
+    border-radius: 18px;
+  }
+  .pooja-item-image {
+    height: 180px;
+    margin-top: 0;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .pooja-item-card h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .pandits-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .pandit-card-item {
+    max-width: 230px;
   }
 }
 
@@ -917,14 +1091,21 @@ body {
   .hero-content,
   .services-container,
   .about-section,
-  .poojas,
-  .pandits {
+  .poojas-section,
+  .pandits-section {
     padding-left: 8px;
     padding-right: 8px;
   }
-  .logo-center img { width: 95px; height: 95px; }
-  .main-heading { font-size: 26px; }
-  .tagline { font-size: 18px; }
+  .logo-center img {
+    width: 95px;
+    height: 95px;
+  }
+  .main-heading {
+    font-size: 26px;
+  }
+  .tagline {
+    font-size: 18px;
+  }
   .hero-buttons {
     flex-direction: column;
     gap: 15px;
@@ -935,7 +1116,9 @@ body {
     width: 100%;
     padding: 10px 15px;
   }
-  .section-title { font-size: 23px; }
+  .section-title {
+    font-size: 23px;
+  }
 
   /* Chatbot Responsive */
   .chatbot-popup {
@@ -956,7 +1139,7 @@ body {
     height: 30px;
   }
 
-  /* Navbar Adjustments for 600px (Mobile) */
+  /* Navbar Adjustments */
   .navbar {
     padding: 10px 15px;
   }
@@ -981,24 +1164,84 @@ body {
   }
 
   /* Footer responsiveness */
-  .footer {
-    padding: 30px 15px;
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
-  .footer-description,
-  .footer-contact p,
+  .footer-section {
+    min-width: unset;
+    width: 100%;
+    padding: 15px 0;
+  }
+  .footer-logo-area {
+    justify-content: center;
+  }
   .footer-copyright {
-    font-size: 14px; /* Slightly smaller text for mobile */
+    text-align: center;
   }
-  .footer-section h3 {
-    font-size: 18px;
-  }
-  .footer-links ul li a {
-    font-size: 14px;
+  .footer-links ul {
+    text-align: center;
   }
 
   /* Further small screen adjustments */
   .poojas-header-wrapper {
-    gap: 10px; /* Even less gap on very small screens */
+    gap: 10px;
+  }
+  .pooja-search-wrapper {
+    height: 50px;
+  }
+  .search-pooja-icon {
+    font-size: 1.6rem;
+  }
+  .pooja-search-input {
+    font-size: 1rem;
+  }
+  .search-input-icon {
+    font-size: 1.2rem;
+  }
+  .pooja-card-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .pooja-item-card {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  .pooja-item-image {
+    height: 160px;
+    margin-top: 0;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .pooja-item-card h3 {
+    font-size: 24px;
+  }
+  .pandits-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .pandit-card-item {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+  .pandit-profile-image {
+    height: 120px;
+  }
+  .service-description-modal {
+    max-width: 90vw;
+    padding: 30px 20px;
+    border-radius: 15px;
+  }
+  .service-description-modal h3 {
+    font-size: 24px;
+  }
+  .service-description-modal p {
+    font-size: 15px;
+  }
+  .close-btn {
+    padding: 10px 30px;
+    font-size: 1rem;
   }
 }
 
