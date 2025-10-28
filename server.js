@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');                  // Required to create HTTP server
 const { Server } = require('socket.io');       // Socket.IO server
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');        // to connect to mongoose
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -9,7 +9,7 @@ const path = require('path');
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);         // Create HTTP server from Express app
+//const server = http.createServer(app);        
 
 // Initialize Socket.IO with CORS configuration
 const io = new Server(server, {
