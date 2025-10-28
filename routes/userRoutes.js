@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const Pandit = require('../models/pandit');
+//const Pandit = require('../models/pandit');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const Otp = require('../models/Otp');
 
@@ -53,7 +53,6 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Google Sign-In
 router.post('/google-login', async (req, res) => {
   try {
     const { credential } = req.body;
