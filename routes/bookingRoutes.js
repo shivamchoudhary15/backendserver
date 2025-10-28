@@ -1,10 +1,10 @@
 const express = require('express');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const router = express.Router();
-const Booking = require('../models/booking');
-const Pandit = require('../models/pandit');       // Import Pandit model
+//const Booking = require('../models/booking');
+const Pandit = require('../models/pandit');       
 const nodemailer = require('nodemailer');
-require('dotenv').config();                       // Load .env variables
+require('dotenv').config();                       
 
 // Setup nodemailer transporter with env credentials
 const transporter = nodemailer.createTransport({
