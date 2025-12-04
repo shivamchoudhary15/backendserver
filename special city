@@ -52,3 +52,23 @@ class Solution {
         return -1;
     }
 }
+
+
+class Solution {
+    public long nthPrime(int n) {
+        int limit = 7400000;
+        boolean[] x = new boolean[limit + 1];
+        int c = 0;
+
+        for (int i = 2; i <= limit; i++) {
+            if (!x[i]) {
+                c++;
+                if (c == n) return i;
+                if ((long)i * i <= limit) {
+                    for (int j = i * i; j <= limit; j += i) x[j] = true;
+                }
+            }
+        }
+        return -1;
+    }
+}
