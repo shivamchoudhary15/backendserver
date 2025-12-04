@@ -1,0 +1,21 @@
+class Solution {
+    public String solve(int n, int x, int y) {
+        int[] ans = new int[n];
+        
+        for(int i=1;i<=n;i++) {
+            for (int j=i+1;j<=n;j++) {
+                int d=j-i; 
+                if(i<=x && y<=j) {
+                    int k=(x-i)+(j-y)+1;
+                    d= Math.min(d, k);
+                }
+                ans[d]++;
+            }
+        }
+        StringBuilder sb=new StringBuilder();
+        for (int k=1;k<n;k++) {
+            sb.append(ans[k]).append(" ");
+        }
+        return sb.toString().trim();
+    }
+}
